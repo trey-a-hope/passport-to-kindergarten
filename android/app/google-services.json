@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "666438074166",
+    "firebase_url": "https://passport-to-kindergarten.firebaseio.com",
+    "project_id": "passport-to-kindergarten",
+    "storage_bucket": "passport-to-kindergarten.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666438074166:android:5ef0369fce5ca198c17d97",
+        "android_client_info": {
+          "package_name": "com.io.p2k"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666438074166-0elrrbgrsf0m8d31e9rl732q55idooj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMzVcpG5vkvVfrWVe__65P-dXSYxwyGZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666438074166-0elrrbgrsf0m8d31e9rl732q55idooj4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666438074166-q9nmae15iluufok729ct21n378gls4gv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.p2k"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

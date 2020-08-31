@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/ServiceLocator.dart';
+import 'package:p/models/UserModel.dart';
+import 'package:p/services/UserService.dart';
 import 'SplashEvent.dart';
 import 'SplashState.dart';
 
