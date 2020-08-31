@@ -1,4 +1,4 @@
-package com.example.p2k
+package com.io.p2k
 
 import io.flutter.embedding.android.FlutterActivity
 
