@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,8 +35,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     }
 
     if (event is Signup) {
-      final String firstName = event.firstName;
-      final String lastName = event.lastName;
       final String email = event.email;
       final String password = event.password;
       final GlobalKey<FormState> formKey = event.formKey;
@@ -61,8 +58,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             fcmToken: '',
             created: DateTime.now(),
             uid: firebaseUser.uid,
-            firstName: firstName,
-            lastName: lastName,
+            firstName: '',
+            lastName: '',
           );
 
           await locator<UserService>().createUser(user: user);
@@ -70,7 +67,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           _signupBlocDelegate.navigateHome();
         }
       } catch (error) {
-        _signupBlocDelegate.showMessage(message: error.message);
+        _signupBlocDelegate.showMessage(message: error.toString());
 
         yield SignupNotStarted(
           autoValidate: true,

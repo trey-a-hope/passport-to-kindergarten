@@ -59,12 +59,7 @@ class LoginPageState extends State<LoginPage>
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (BuildContext context, LoginState state) {
                 if (state is LoggingIn) {
-                  return Container(
-                    height: screenHeight,
-                    width: screenWidth,
-                    color: Colors.white,
-                    child: SpinnerWidget(),
-                  );
+                  return SpinnerWidget();
                 }
 
                 if (state is LoginNotStarted) {
@@ -175,9 +170,18 @@ class LoginPageState extends State<LoginPage>
                       Spacer(),
                       FullWidthButtonWidget(
                         buttonColor: HexColorExtension('ff4880'),
-                        text: 'Login Up',
+                        text: 'Login',
                         textColor: Colors.white,
-                        onPressed: () {},
+                        onPressed: () {
+                          final String email = _emailController.text;
+                          final String password = _passwordController.text;
+
+                          _loginBloc.add(Login(
+                            email: email,
+                            password: password,
+                            formKey: state.formKey,
+                          ));
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20),
@@ -185,9 +189,14 @@ class LoginPageState extends State<LoginPage>
                       ),
                       FullWidthButtonWidget(
                         buttonColor: Colors.grey.shade900,
-                        text: 'Login Up With Google',
+                        text: 'Login With Google',
                         textColor: Colors.white,
-                        onPressed: () {},
+                        onPressed: () {
+                          locator<ModalService>().showAlert(
+                              context: context,
+                              title: 'To Do',
+                              message: 'Login with Google');
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.all(20),
@@ -203,7 +212,7 @@ class LoginPageState extends State<LoginPage>
                                 child: SIGNUP_BP.SignupPage(),
                               ),
                             );
-                            Navigator.push(context, route);
+                            Navigator.pushReplacement(context, route);
                           },
                           child: RichText(
                             text: TextSpan(

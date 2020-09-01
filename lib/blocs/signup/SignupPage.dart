@@ -59,166 +59,158 @@ class SignupPageState extends State<SignupPage>
             child: BlocBuilder<SignupBloc, SignupState>(
               builder: (BuildContext context, SignupState state) {
                 if (state is SigningIn) {
-                  return Container(
-                    height: screenHeight,
-                    width: screenWidth,
-                    color: Colors.white,
-                    child: SpinnerWidget(),
-                  );
+                  return SpinnerWidget();
                 }
 
                 if (state is SignupNotStarted) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.arrow_back),
-                              color: Colors.white,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Image.asset(ASSET_IMAGE_P2K_LOGO),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(ASSET_IMAGE_P2K_TEXT),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: TextFormField(
-                          controller: _emailController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.alternate_email,
+                  return Form(
+                    autovalidate: state.autoValidate,
+                    key: state.formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.arrow_back),
                                 color: Colors.white,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                               ),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(90.0),
-                                ),
-                                borderSide: BorderSide.none,
-
-                                //borderSide: const BorderSide(),
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "WorkSansLight"),
-                              filled: true,
-                              fillColor: Colors.white24,
-                              hintText: 'Email'),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              ),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(90.0),
-                                ),
-                                borderSide: BorderSide.none,
-
-                                //borderSide: const BorderSide(),
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "WorkSansLight"),
-                              filled: true,
-                              fillColor: Colors.white24,
-                              hintText: 'Password'),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(27),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              child: Text(
-                                'Forget Password?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onTap: () {
-                                locator<ModalService>().showAlert(
-                                    context: context,
-                                    title: 'To Do',
-                                    message: 'Open Forgot Password Page.');
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      FullWidthButtonWidget(
-                        buttonColor: HexColorExtension('ff4880'),
-                        text: 'Sign Up',
-                        textColor: Colors.white,
-                        onPressed: () {},
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Image.asset(ASSET_IMAGE_OR),
-                      ),
-                      FullWidthButtonWidget(
-                        buttonColor: Colors.grey.shade900,
-                        text: 'Sign Up With Google',
-                        textColor: Colors.white,
-                        onPressed: () {},
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: InkWell(
-                          onTap: () {
-                            Route route = MaterialPageRoute(
-                              builder: (BuildContext context) => BlocProvider(
-                                create: (BuildContext context) =>
-                                    LOGIN_BP.LoginBloc()
-                                      ..add(
-                                        LOGIN_BP.LoadPageEvent(),
-                                      ),
-                                child: LOGIN_BP.LoginPage(),
-                              ),
-                            );
-                            Navigator.push(context, route);
-                          },
-                          child: RichText(
-                            text: TextSpan(
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                              children: [
-                                TextSpan(
-                                    text: 'Already have an account?',
-                                    style: TextStyle(color: Colors.grey)),
-                                TextSpan(text: ' Log in')
-                              ],
-                            ),
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Image.asset(ASSET_IMAGE_P2K_LOGO),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Image.asset(ASSET_IMAGE_P2K_TEXT),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: TextFormField(
+                            controller: _emailController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.alternate_email,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Email'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            controller: _passwordController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Password'),
+                          ),
+                        ),
+                        Spacer(),
+                        FullWidthButtonWidget(
+                          buttonColor: HexColorExtension('ff4880'),
+                          text: 'Sign Up',
+                          textColor: Colors.white,
+                          onPressed: () {
+                            final String email = _emailController.text;
+                            final String password = _passwordController.text;
+
+                            _signupBloc.add(
+                              Signup(
+                                email: email,
+                                password: password,
+                                formKey: state.formKey,
+                              ),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Image.asset(ASSET_IMAGE_OR),
+                        ),
+                        FullWidthButtonWidget(
+                          buttonColor: Colors.grey.shade900,
+                          text: 'Sign Up With Google',
+                          textColor: Colors.white,
+                          onPressed: () {
+                            locator<ModalService>().showAlert(
+                                context: context,
+                                title: 'To Do',
+                                message: 'Sign Up With Google');
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: InkWell(
+                            onTap: () {
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) => BlocProvider(
+                                  create: (BuildContext context) =>
+                                      LOGIN_BP.LoginBloc()
+                                        ..add(
+                                          LOGIN_BP.LoadPageEvent(),
+                                        ),
+                                  child: LOGIN_BP.LoginPage(),
+                                ),
+                              );
+                              Navigator.pushReplacement(context, route);
+                            },
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                children: [
+                                  TextSpan(
+                                      text: 'Already have an account?',
+                                      style: TextStyle(color: Colors.grey)),
+                                  TextSpan(text: ' Log in')
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 }
 
