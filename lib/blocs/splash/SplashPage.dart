@@ -5,6 +5,8 @@ import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import '../../constants.dart';
 import 'Bloc.dart';
+import 'package:p/blocs/signup/Bloc.dart' as SIGNUP_BP;
+import 'package:p/blocs/login/Bloc.dart' as LOGIN_BP;
 
 class SplashPage extends StatefulWidget {
   @override
@@ -67,18 +69,18 @@ class SplashPageState extends State<SplashPage> implements SplashDelegate {
                                   text: 'Login',
                                   textColor: Colors.black,
                                   onPressed: () {
-                                    // Route route = MaterialPageRoute(
-                                    //   builder: (BuildContext context) =>
-                                    //       BlocProvider(
-                                    //     create: (BuildContext context) =>
-                                    //         LOGIN_BP.LoginBloc()
-                                    //           ..add(
-                                    //             LOGIN_BP.LoadPageEvent(),
-                                    //           ),
-                                    //     child: LOGIN_BP.LoginPage(),
-                                    //   ),
-                                    // );
-                                    // Navigator.push(context, route);
+                                    Route route = MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          BlocProvider(
+                                        create: (BuildContext context) =>
+                                            LOGIN_BP.LoginBloc()
+                                              ..add(
+                                                LOGIN_BP.LoadPageEvent(),
+                                              ),
+                                        child: LOGIN_BP.LoginPage(),
+                                      ),
+                                    );
+                                    Navigator.push(context, route);
                                   },
                                 ),
                                 SizedBox(
@@ -89,18 +91,18 @@ class SplashPageState extends State<SplashPage> implements SplashDelegate {
                                   text: 'Sign Up',
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    // Route route = MaterialPageRoute(
-                                    //   builder: (BuildContext context) =>
-                                    //       BlocProvider(
-                                    //     create: (BuildContext context) =>
-                                    //         SIGNUP_BP.SignupBloc()
-                                    //           ..add(
-                                    //             SIGNUP_BP.LoadPageEvent(),
-                                    //           ),
-                                    //     child: SIGNUP_BP.SignupPage(),
-                                    //   ),
-                                    // );
-                                    // Navigator.push(context, route);
+                                    Route route = MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          BlocProvider(
+                                        create: (BuildContext context) =>
+                                            SIGNUP_BP.SignupBloc()
+                                              ..add(
+                                                SIGNUP_BP.LoadPageEvent(),
+                                              ),
+                                        child: SIGNUP_BP.SignupPage(),
+                                      ),
+                                    );
+                                    Navigator.push(context, route);
                                   },
                                 ),
                               ],

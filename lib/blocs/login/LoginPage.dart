@@ -1,14 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p/blocs/splash/SplashState.dart';
+import 'package:p/constants.dart';
 import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/services/ValidatorService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
 import 'Bloc.dart';
+import 'package:p/blocs/login/Bloc.dart' as LOGIN_BP;
+import 'package:p/blocs/signup/Bloc.dart' as SIGNUP_BP;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,9 +23,9 @@ class LoginPageState extends State<LoginPage>
     implements LoginBlocDelegate {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final Color _orangeColor = HexColorExtension('#E95316');
-  final Color _graniteColor = HexColorExtension('#2E2E2E');
 
   LoginBloc _loginBloc;
 
@@ -39,245 +42,192 @@ class LoginPageState extends State<LoginPage>
     final double screenHeight = MediaQuery.of(context).size.height;
     const double CARD_BORDER_RADIUS = 30;
 
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (BuildContext context, LoginState state) {
-        if (state is LoggingIn) {
-          return Container(
-            height: screenHeight,
-            width: screenWidth,
-            color: Colors.white,
-            child: SpinnerWidget(),
-          );
-        }
-
-        if (state is LoginNotStarted) {
-          final Container layerOne = Container(
-            height: screenHeight,
-            width: screenWidth,
-            color: Colors.black,
-          );
-
-          final double secondLayerCardPadding = 45;
-
-          final Container layerTwo = Container(
-            height: screenHeight,
-            width: screenWidth * 0.8,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: secondLayerCardPadding,
-                ),
-                Container(
-                  height: screenHeight - secondLayerCardPadding,
-                  width: screenWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(
-                        CARD_BORDER_RADIUS,
-                      ),
-                      topRight: const Radius.circular(CARD_BORDER_RADIUS),
-                    ),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      key: _scaffoldKey,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: Container(
+          width: screenWidth,
+          height: screenHeight,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(ASSET_IMAGE_SPLASH_BACKGROUND),
+              fit: BoxFit.cover,
             ),
-          );
-
-          final double thirdLayerPadding = 60;
-
-          final Container layerThree = Container(
-            // height: screenHeight,
-            // width: screenWidth * 0.9,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: thirdLayerPadding,
-                ),
-                Container(
-                  height: screenHeight - thirdLayerPadding,
-                  width: screenWidth,
-                  decoration: BoxDecoration(
+          ),
+          child: SafeArea(
+            child: BlocBuilder<LoginBloc, LoginState>(
+              builder: (BuildContext context, LoginState state) {
+                if (state is LoggingIn) {
+                  return Container(
+                    height: screenHeight,
+                    width: screenWidth,
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(
-                        CARD_BORDER_RADIUS,
-                      ),
-                      topRight: const Radius.circular(CARD_BORDER_RADIUS),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+                    child: SpinnerWidget(),
+                  );
+                }
 
-          final double forthLayerPadding =
-              40; //Extra padding added from Safe Area.
-
-          final Container layerFour = Container(
-            height: screenHeight,
-            width: screenWidth,
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: forthLayerPadding,
-                  ),
-                  Row(
+                if (state is LoginNotStarted) {
+                  return Column(
                     children: [
-                      Spacer(),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              color: Colors.white,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(
-                        height: 60.0,
-                        width: 60.0,
-                        child: IconButton(
-                          icon: new Image.asset('assets/images/icon_close.png'),
-                          // tooltip: 'Closes application',
-                          onPressed: () {
-                            Navigator.of(context).pop();
+                        height: 30,
+                      ),
+                      Image.asset(ASSET_IMAGE_P2K_LOGO),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Image.asset(ASSET_IMAGE_P2K_TEXT),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: TextFormField(
+                          controller: _emailController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.alternate_email,
+                                color: Colors.white,
+                              ),
+                              border: OutlineInputBorder(
+                                // width: 0.0 produces a thin "hairline" border
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(90.0),
+                                ),
+                                borderSide: BorderSide.none,
+
+                                //borderSide: const BorderSide(),
+                              ),
+                              hintStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "WorkSansLight"),
+                              filled: true,
+                              fillColor: Colors.white24,
+                              hintText: 'Email'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: TextFormField(
+                          controller: _passwordController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.white,
+                              ),
+                              border: OutlineInputBorder(
+                                // width: 0.0 produces a thin "hairline" border
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(90.0),
+                                ),
+                                borderSide: BorderSide.none,
+
+                                //borderSide: const BorderSide(),
+                              ),
+                              hintStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "WorkSansLight"),
+                              filled: true,
+                              fillColor: Colors.white24,
+                              hintText: 'Password'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(27),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              child: Text(
+                                'Forget Password?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onTap: () {
+                                locator<ModalService>().showAlert(
+                                    context: context,
+                                    title: 'To Do',
+                                    message: 'Open Forgot Password Page.');
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      FullWidthButtonWidget(
+                        buttonColor: HexColorExtension('ff4880'),
+                        text: 'Login Up',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Image.asset(ASSET_IMAGE_OR),
+                      ),
+                      FullWidthButtonWidget(
+                        buttonColor: Colors.grey.shade900,
+                        text: 'Login Up With Google',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: InkWell(
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                              builder: (BuildContext context) => BlocProvider(
+                                create: (BuildContext context) =>
+                                    SIGNUP_BP.SignupBloc()
+                                      ..add(
+                                        SIGNUP_BP.LoadPageEvent(),
+                                      ),
+                                child: SIGNUP_BP.SignupPage(),
+                              ),
+                            );
+                            Navigator.push(context, route);
                           },
+                          child: RichText(
+                            text: TextSpan(
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              children: [
+                                TextSpan(
+                                    text: 'New User?',
+                                    style: TextStyle(color: Colors.grey)),
+                                TextSpan(text: ' Create an Account')
+                              ],
+                            ),
+                          ),
                         ),
                       )
                     ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                    ),
-                    child: SizedBox(
-                      height: 50.0,
-                      width: 50.0,
-                      child: IconButton(
-                        icon: new Image.asset('assets/images/icon_lock.png'),
-                        // tooltip: 'Closes application',
-                        onPressed: () {},
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      top: 30,
-                    ),
-                    child: Text(
-                      'Welcome',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      top: 10,
-                    ),
-                    child: Text(
-                      'Please login to your account.',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  ),
-                  Form(
-                    key: state.formKey,
-                    autovalidate: state.autoValidate,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                          child: TextFormField(
-                            cursorColor: _graniteColor,
-                            validator: locator<ValidatorService>().email,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.done,
-                            controller: _emailController,
-                            style: TextStyle(
-                                color: Colors.black, fontFamily: 'SFUIDisplay'),
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Email Address',
-                                prefixIcon: Icon(Icons.email),
-                                labelStyle: TextStyle(fontSize: 15)),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                          child: TextFormField(
-                            cursorColor: _graniteColor,
-                            validator: locator<ValidatorService>().password,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.done,
-                            controller: _passwordController,
-                            obscureText: true,
-                            style: TextStyle(
-                                color: Colors.black, fontFamily: 'SFUIDisplay'),
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.lock_outline),
-                                labelStyle: TextStyle(fontSize: 15)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      top: 30,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        locator<ModalService>().showAlert(context: context, title: 'Forgot Password', message: 'Coming soon...');
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: _orangeColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Center(
-                    child: FullWidthButtonWidget(
-                      text: 'Login',
-                      textColor: Colors.white,
-                      buttonColor: _graniteColor,
-                      onPressed: () {
-                        _loginBloc.add(
-                          Login(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                              formKey: state.formKey),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
+                  );
+                }
 
-          return Scaffold(
-            key: _scaffoldKey,
-            body: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle.light,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  layerOne,
-                  layerTwo,
-                  layerThree,
-                  layerFour,
-                ],
-              ),
+                return Container();
+              },
             ),
-          );
-        }
-
-        return null;
-      },
+          ),
+        ),
+      ),
     );
   }
 
