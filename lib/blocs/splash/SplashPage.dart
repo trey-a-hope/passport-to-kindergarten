@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:p/ServiceLocator.dart';
 import 'package:p/extensions/HexColorExtension.dart';
-import 'package:p/services/AuthService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import '../../constants.dart';
 import 'Bloc.dart';
@@ -53,7 +51,12 @@ class SplashPageState extends State<SplashPage> implements SplashDelegate {
                             flex: 1,
                             child: Container(),
                           ),
-                          Expanded(flex: 1, child: Container()),
+                          Expanded(
+                            flex: 1,
+                            child: Center(
+                              child: Image.asset(ASSET_IMAGE_LOGO),
+                            ),
+                          ),
                           Expanded(
                             flex: 1,
                             child: Column(
@@ -82,7 +85,7 @@ class SplashPageState extends State<SplashPage> implements SplashDelegate {
                                   height: 20,
                                 ),
                                 FullWidthButtonWidget(
-                                  buttonColor: HexColorExtension('e95316'),
+                                  buttonColor: HexColorExtension('ff4880'),
                                   text: 'Sign Up',
                                   textColor: Colors.white,
                                   onPressed: () {
