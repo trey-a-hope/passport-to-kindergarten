@@ -14,15 +14,8 @@ project 'Runner', {
 }
 
 pod 'Firebase/Core'
-pod 'Firebase/ABTesting'     # No watchOS support yet
-pod 'Firebase/Auth'          # No watchOS support yet
-pod 'Firebase/Crashlytics'   # No watchOS support yet
-pod 'Firebase/Database'      # No watchOS support yet
-pod 'Firebase/Firestore'     # No watchOS support yet
-pod 'Firebase/Functions'     # No watchOS support yet
-pod 'Firebase/Messaging'
-pod 'Firebase/RemoteConfig'  # No watchOS support yet
-pod 'Firebase/Storage'
+pod 'Firebase/Analytics'
+pod 'Firebase/Crashlytics'
 
 platform :ios, '9.0'
 
