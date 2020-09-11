@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,12 +15,20 @@ import 'blocs/splash/Bloc.dart';
 import 'constants.dart';
 import 'services/AuthService.dart';
 
+FirebaseAnalytics analytics;
+PackageInfo packageInfo;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setUpLocater();
 
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  analytics = FirebaseAnalytics();
+  packageInfo = await PackageInfo.fromPlatform();
+
+  Crashlytics.instance.enableInDevMode = true;
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
   version = packageInfo.version;
   buildNumber = packageInfo.buildNumber;
 
@@ -38,6 +49,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       home: StreamBuilder(
         stream: locator<AuthService>().onAuthStateChanged(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
