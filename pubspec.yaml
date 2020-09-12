@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+    
+  algolia: ^0.1.7
   cloud_firestore: ^0.13.4+2
   equatable: ^1.2.0
   firebase_analytics: 5.0.16

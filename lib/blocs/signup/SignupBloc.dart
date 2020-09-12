@@ -60,6 +60,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             uid: firebaseUser.uid,
             firstName: '',
             lastName: '',
+            profileType: PROFILE_TYPE.ADMIN.name, //todo: dont hardcode this.
           );
 
           await locator<UserService>().createUser(user: user);
