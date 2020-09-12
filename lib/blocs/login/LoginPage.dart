@@ -65,30 +65,9 @@ class LoginPageState extends State<LoginPage>
                 if (state is LoginNotStarted) {
                   return Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.arrow_back),
-                              color: Colors.white,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Image.asset(ASSET_IMAGE_P2K_LOGO),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(ASSET_IMAGE_P2K_TEXT),
-                      SizedBox(
-                        height: 20,
+                      Expanded(
+                        flex: 2,
+                        child: Image.asset(ASSET_IMAGE_P2K_LOGO),
                       ),
                       Padding(
                         padding: EdgeInsets.all(20),
@@ -120,6 +99,7 @@ class LoginPageState extends State<LoginPage>
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: TextFormField(
+                          obscureText: true,
                           controller: _passwordController,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -161,7 +141,7 @@ class LoginPageState extends State<LoginPage>
                                 locator<ModalService>().showAlert(
                                     context: context,
                                     title: 'To Do',
-                                    message: 'Open Forgot Password Page.');
+                                    message: 'Create Forgot Password Page.');
                               },
                             ),
                           ],
@@ -181,21 +161,6 @@ class LoginPageState extends State<LoginPage>
                             password: password,
                             formKey: state.formKey,
                           ));
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Image.asset(ASSET_IMAGE_OR),
-                      ),
-                      FullWidthButtonWidget(
-                        buttonColor: Colors.grey.shade900,
-                        text: 'Login With Google',
-                        textColor: Colors.white,
-                        onPressed: () {
-                          locator<ModalService>().showAlert(
-                              context: context,
-                              title: 'To Do',
-                              message: 'Login with Google');
                         },
                       ),
                       Padding(
@@ -219,7 +184,7 @@ class LoginPageState extends State<LoginPage>
                               style: TextStyle(fontWeight: FontWeight.bold),
                               children: [
                                 TextSpan(
-                                    text: 'New User?',
+                                    text: 'New Teacher or Parent?',
                                     style: TextStyle(color: Colors.grey)),
                                 TextSpan(text: ' Create an Account')
                               ],
@@ -238,11 +203,6 @@ class LoginPageState extends State<LoginPage>
         ),
       ),
     );
-  }
-
-  @override
-  void navigateHome() {
-    Navigator.of(context).pop();
   }
 
   @override

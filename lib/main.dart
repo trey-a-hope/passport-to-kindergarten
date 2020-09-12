@@ -8,7 +8,8 @@ import 'package:p/services/UserService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:package_info/package_info.dart';
 import 'ServiceLocator.dart';
-import 'blocs/splash/Bloc.dart';
+// import 'blocs/splash/Bloc.dart';
+import 'blocs/login/Bloc.dart' as LOGIN_BP;
 import 'constants.dart';
 import 'services/AuthService.dart';
 
@@ -46,8 +47,8 @@ class MyApp extends StatelessWidget {
           return firebaseUser == null
               ? BlocProvider(
                   create: (BuildContext context) =>
-                      SplashBloc()..add(LoadPageEvent()),
-                  child: SplashPage(),
+                      LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),
+                  child: LOGIN_BP.LoginPage(),
                 )
               : Container(
                   color: Colors.orange,
