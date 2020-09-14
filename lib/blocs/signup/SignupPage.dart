@@ -589,9 +589,7 @@ class SignupPageState extends State<SignupPage>
 
   @override
   void navigateHome() {
-    Route route =
-        MaterialPageRoute(builder: (BuildContext context) => HomePage());
-    Navigator.pushReplacement(context, route);
+    Navigator.pop(context);
   }
 
   @override

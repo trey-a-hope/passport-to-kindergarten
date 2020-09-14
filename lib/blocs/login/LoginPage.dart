@@ -156,11 +156,13 @@ class LoginPageState extends State<LoginPage>
                           final String email = _emailController.text;
                           final String password = _passwordController.text;
 
-                          _loginBloc.add(Login(
-                            email: email,
-                            password: password,
-                            formKey: state.formKey,
-                          ));
+                          _loginBloc.add(
+                            Login(
+                              email: email,
+                              password: password,
+                              formKey: state.formKey,
+                            ),
+                          );
                         },
                       ),
                       Padding(
@@ -177,7 +179,7 @@ class LoginPageState extends State<LoginPage>
                                 child: SIGNUP_BP.SignupPage(),
                               ),
                             );
-                            Navigator.pushReplacement(context, route);
+                            Navigator.push(context, route);
                           },
                           child: RichText(
                             text: TextSpan(
