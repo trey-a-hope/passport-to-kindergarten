@@ -6,11 +6,27 @@ class SignupState extends Equatable {
   List<Object> get props => [];
 }
 
-class SignupNotStarted extends SignupState {
+class TeacherState extends SignupState {
   final bool autoValidate;
   final GlobalKey<FormState> formKey;
 
-  SignupNotStarted({
+  TeacherState({
+    @required this.autoValidate,
+    @required this.formKey,
+  });
+
+  @override
+  List<Object> get props => [
+        autoValidate,
+        formKey,
+      ];
+}
+
+class ParentState extends SignupState {
+  final bool autoValidate;
+  final GlobalKey<FormState> formKey;
+
+  ParentState({
     @required this.autoValidate,
     @required this.formKey,
   });

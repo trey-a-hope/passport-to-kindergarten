@@ -1,6 +1,6 @@
 import 'package:p/models/UserModel.dart';
 
-class SearchUsersCache {
+class SearchTeachersCache {
   final _cache = <String, List<UserModel>>{};
 
   List<UserModel> get(String term) => _cache[term];

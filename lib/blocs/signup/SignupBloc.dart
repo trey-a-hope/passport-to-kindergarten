@@ -13,11 +13,13 @@ import 'SignupState.dart';
 abstract class SignupBlocDelegate {
   void navigateHome();
   void showMessage({@required String message});
+  void clearForm();
 }
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(null);
   SignupBlocDelegate _signupBlocDelegate;
+  bool _isTeacher = true;
 
   void setDelegate({
     @required SignupBlocDelegate delegate,
@@ -28,21 +30,40 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
     if (event is LoadPageEvent) {
-      yield SignupNotStarted(
+      yield TeacherState(
         autoValidate: false,
         formKey: GlobalKey<FormState>(),
       );
     }
 
+    if (event is ToggleProfileTypeEvent) {
+      _signupBlocDelegate.clearForm();
+      _isTeacher = !_isTeacher;
+      if (_isTeacher) {
+        yield TeacherState(
+          autoValidate: false,
+          formKey: GlobalKey<FormState>(),
+        );
+      } else {
+        yield ParentState(
+          autoValidate: false,
+          formKey: GlobalKey<FormState>(),
+        );
+      }
+    }
+
     if (event is Signup) {
+      UserModel user;
       final String email = event.email;
       final String password = event.password;
+      final String firstName = event.firstName;
+      final String lastName = event.lastName;
       final GlobalKey<FormState> formKey = event.formKey;
 
-      try {
-        if (formKey.currentState.validate()) {
-          yield SigningIn();
+      if (formKey.currentState.validate()) {
+        yield SigningIn();
 
+        try {
           AuthResult authResult =
               await locator<AuthService>().createUserWithEmailAndPassword(
             email: email,
@@ -51,29 +72,53 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
           final FirebaseUser firebaseUser = authResult.user;
 
-          UserModel user = UserModel(
-            imgUrl: DUMMY_PROFILE_PHOTO_URL,
-            isAdmin: false,
-            email: email,
-            fcmToken: '',
-            created: DateTime.now(),
-            uid: firebaseUser.uid,
-            firstName: '',
-            lastName: '',
-            profileType: PROFILE_TYPE.ADMIN.name, //todo: dont hardcode this.
-          );
+          if (_isTeacher) {
+            final String school = event.school;
 
+            user = UserModel(
+              imgUrl: DUMMY_PROFILE_PHOTO_URL,
+              isAdmin: false,
+              email: email,
+              fcmToken: '',
+              created: DateTime.now(),
+              uid: firebaseUser.uid,
+              firstName: firstName,
+              lastName: lastName,
+              profileType: PROFILE_TYPE.TEACHER.name,
+              school: school,
+              teacherID: null,
+            );
+          } else {
+            user = UserModel(
+              imgUrl: DUMMY_PROFILE_PHOTO_URL,
+              isAdmin: false,
+              email: email,
+              fcmToken: '',
+              created: DateTime.now(),
+              uid: firebaseUser.uid,
+              firstName: firstName,
+              lastName: lastName,
+              profileType: PROFILE_TYPE.PARENT.name,
+              school: null,
+              teacherID: null,
+            );
+          }
           await locator<UserService>().createUser(user: user);
 
           _signupBlocDelegate.navigateHome();
-        }
-      } catch (error) {
-        _signupBlocDelegate.showMessage(message: error.toString());
+        } catch (error) {
+          _signupBlocDelegate.showMessage(message: error.toString());
 
-        yield SignupNotStarted(
-          autoValidate: true,
-          formKey: event.formKey,
-        );
+          yield _isTeacher
+              ? TeacherState(
+                  autoValidate: true,
+                  formKey: event.formKey,
+                )
+              : ParentState(
+                  autoValidate: true,
+                  formKey: event.formKey,
+                );
+        }
       }
     }
   }

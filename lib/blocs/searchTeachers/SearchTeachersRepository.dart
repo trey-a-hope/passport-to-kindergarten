@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:algolia/algolia.dart';
 import 'package:p/models/UserModel.dart';
 import '../../Constants.dart';
-import 'SearchUsersCache.dart';
+import 'SearchTeachersCache.dart';
 
-class SearchUsersRepository {
-  final SearchUsersCache cache;
+class SearchTeachersRepository {
+  final SearchTeachersCache cache;
 
   final Algolia _algolia = Algolia.init(
     applicationId: ALGOLIA_APP_ID,
     apiKey: ALGOLIA_SEARCH_API_KEY,
   );
 
-  SearchUsersRepository({@required this.cache});
+  SearchTeachersRepository({@required this.cache});
 
   Future<List<UserModel>> search(
       {@required String term, String profileType}) async {

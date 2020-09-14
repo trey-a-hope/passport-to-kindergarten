@@ -64,21 +64,25 @@ class MyApp extends StatelessWidget {
                       LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),
                   child: LOGIN_BP.LoginPage(),
                 )
-              : Container(
-                  color: Colors.orange,
-                  child: Center(
-                    child: FullWidthButtonWidget(
-                      buttonColor: Colors.white,
-                      text: 'Sign Out',
-                      textColor: Colors.orange,
-                      onPressed: () {
-                        locator<AuthService>().signOut();
-                      },
-                    ),
-                  ),
-                );
+              : HomePage();
         },
       ),
     );
   }
+}
+
+HomePage() {
+  return Container(
+    color: Colors.orange,
+    child: Center(
+      child: FullWidthButtonWidget(
+        buttonColor: Colors.white,
+        text: 'Sign Out',
+        textColor: Colors.orange,
+        onPressed: () {
+          locator<AuthService>().signOut();
+        },
+      ),
+    ),
+  );
 }

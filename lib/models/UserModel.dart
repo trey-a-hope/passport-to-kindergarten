@@ -12,6 +12,8 @@ class UserModel {
   String firstName;
   String lastName;
   String profileType;
+  String school;
+  String teacherID;
 
   UserModel({
     @required this.email,
@@ -23,6 +25,8 @@ class UserModel {
     @required this.firstName,
     @required this.lastName,
     @required this.profileType,
+    @required this.school,
+    @required this.teacherID,
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -36,6 +40,8 @@ class UserModel {
       firstName: ds.data['firstName'],
       lastName: ds.data['lastName'],
       profileType: ds.data['profileType'],
+      school: ds.data['school'],
+      teacherID: ds.data['teacherID'],
     );
   }
 
@@ -52,6 +58,8 @@ class UserModel {
       firstName: data['firstName'],
       lastName: data['lastName'],
       profileType: data['profileType'],
+      school: data['school'],
+      teacherID: data['teacherID'],
       // created: data['created'].toDate(),//todo:
     );
   }
@@ -67,6 +75,8 @@ class UserModel {
       'firstName': firstName,
       'lastName': lastName,
       'profileType': profileType,
+      'school': school,
+      'teacherID': teacherID,
     };
   }
 }
