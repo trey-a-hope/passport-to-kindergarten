@@ -1,3 +1,4 @@
+import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class UserModel {
   String uid;
   String firstName;
   String lastName;
+  String profileType;
 
   UserModel({
     @required this.email,
@@ -20,6 +22,7 @@ class UserModel {
     @required this.uid,
     @required this.firstName,
     @required this.lastName,
+    @required this.profileType,
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -32,6 +35,24 @@ class UserModel {
       uid: ds.data['uid'],
       firstName: ds.data['firstName'],
       lastName: ds.data['lastName'],
+      profileType: ds.data['profileType'],
+    );
+  }
+
+  factory UserModel.extractAlgoliaObjectSnapshot(
+      {@required AlgoliaObjectSnapshot aob}) {
+    Map<String, dynamic> data = aob.data;
+    return UserModel(
+      email: data['email'],
+      imgUrl: data['imgUrl'],
+      fcmToken: data['fcmToken'],
+      isAdmin: data['isAdmin'],
+      created: DateTime.now(),
+      uid: data['uid'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      profileType: data['profileType'],
+      // created: data['created'].toDate(),//todo:
     );
   }
 
@@ -45,6 +66,7 @@ class UserModel {
       'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
+      'profileType': profileType,
     };
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/services/AuthService.dart';
@@ -9,7 +8,6 @@ import 'LoginEvent.dart';
 import 'LoginState.dart';
 
 abstract class LoginBlocDelegate {
-  void navigateHome();
   void showMessage({@required String message});
 }
 
@@ -40,11 +38,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         await locator<AuthService>()
             .signInWithEmailAndPassword(email: email, password: password);
-
-        _loginBlocDelegate.navigateHome();
       } catch (error) {
         _loginBlocDelegate.showMessage(message: error.message);
-        
+
         yield LoginNotStarted(
           autoValidate: true,
           formKey: event.formKey,

@@ -68,30 +68,9 @@ class SignupPageState extends State<SignupPage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.arrow_back),
-                                color: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
                         Image.asset(ASSET_IMAGE_P2K_LOGO),
                         SizedBox(
                           height: 50,
-                        ),
-                        Image.asset(ASSET_IMAGE_P2K_TEXT),
-                        SizedBox(
-                          height: 20,
                         ),
                         Padding(
                           padding: EdgeInsets.all(20),
@@ -163,21 +142,6 @@ class SignupPageState extends State<SignupPage>
                                 formKey: state.formKey,
                               ),
                             );
-                          },
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Image.asset(ASSET_IMAGE_OR),
-                        ),
-                        FullWidthButtonWidget(
-                          buttonColor: Colors.grey.shade900,
-                          text: 'Sign Up With Google',
-                          textColor: Colors.white,
-                          onPressed: () {
-                            locator<ModalService>().showAlert(
-                                context: context,
-                                title: 'To Do',
-                                message: 'Sign Up With Google');
                           },
                         ),
                         Padding(

@@ -10,3 +10,27 @@ const String DUMMY_PROFILE_PHOTO_URL =
 
 String version;
 String buildNumber;
+
+const String ALGOLIA_APP_ID = 'UO39GB988T';
+const String ALGOLIA_SEARCH_API_KEY = 'a2688a24cb08d1b78aae5dcde6f1d54f';
+
+enum PROFILE_TYPE {
+  TEACHER,
+  PARENT,
+  ADMIN,
+}
+
+extension PROFILE_TYPE_EXTENSION on PROFILE_TYPE {
+  String get name {
+    switch (this) {
+      case PROFILE_TYPE.TEACHER:
+        return 'TEACHER';
+      case PROFILE_TYPE.PARENT:
+        return 'PARENT';
+      case PROFILE_TYPE.ADMIN:
+        return 'ADMIN';
+      default:
+        return null;
+    }
+  }
+}
