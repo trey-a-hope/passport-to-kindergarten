@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,13 +5,11 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:p/models/UserModel.dart';
-import 'package:p/services/UserService.dart';
-import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:package_info/package_info.dart';
 import 'ServiceLocator.dart';
-// import 'blocs/splash/Bloc.dart';
 import 'blocs/login/Bloc.dart' as LOGIN_BP;
+import 'blocs/home/Bloc.dart' as HOME_BP;
+
 import 'constants.dart';
 import 'services/AuthService.dart';
 
@@ -64,25 +61,13 @@ class MyApp extends StatelessWidget {
                       LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),
                   child: LOGIN_BP.LoginPage(),
                 )
-              : HomePage();
+              : BlocProvider(
+                  create: (BuildContext context) =>
+                      HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
+                  child: HOME_BP.HomePage(),
+                );
         },
       ),
     );
   }
-}
-
-HomePage() {
-  return Container(
-    color: Colors.orange,
-    child: Center(
-      child: FullWidthButtonWidget(
-        buttonColor: Colors.white,
-        text: 'Sign Out',
-        textColor: Colors.orange,
-        onPressed: () {
-          locator<AuthService>().signOut();
-        },
-      ),
-    ),
-  );
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p/blocs/splash/SplashState.dart';
 import 'package:p/constants.dart';
 import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/services/ModalService.dart';
@@ -10,7 +8,6 @@ import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
 import 'Bloc.dart';
-import 'package:p/blocs/login/Bloc.dart' as LOGIN_BP;
 import 'package:p/blocs/signup/Bloc.dart' as SIGNUP_BP;
 
 class LoginPage extends StatefulWidget {
@@ -23,8 +20,6 @@ class LoginPageState extends State<LoginPage>
     implements LoginBlocDelegate {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   LoginBloc _loginBloc;
