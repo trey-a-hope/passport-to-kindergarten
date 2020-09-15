@@ -20,6 +20,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(null);
   SignupBlocDelegate _signupBlocDelegate;
   bool _isTeacher = true;
+  DateTime _selectedDate = DateTime.now();
+  UserModel _selectedTeacher;
 
   void setDelegate({
     @required SignupBlocDelegate delegate,
@@ -48,8 +50,17 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         yield ParentState(
           autoValidate: false,
           formKey: GlobalKey<FormState>(),
+          selectedDate: _selectedDate,
         );
       }
+    }
+
+    if (event is SelectDateEvent) {
+      this._selectedDate = event.selectedDate;
+    }
+
+    if (event is SelectTeacherEvent) {
+      this._selectedTeacher = event.selectedTeacher;
     }
 
     if (event is Signup) {
@@ -79,7 +90,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               imgUrl: DUMMY_PROFILE_PHOTO_URL,
               isAdmin: false,
               email: email,
-              fcmToken: '',
+              fcmToken: null,
               created: DateTime.now(),
               uid: firebaseUser.uid,
               firstName: firstName,
@@ -87,20 +98,27 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               profileType: PROFILE_TYPE.TEACHER.name,
               school: school,
               teacherID: null,
+              parentFirstName: null,
+              parentLastName: null,
             );
           } else {
+            final String parentFirstName = event.parentFirstName;
+            final String parentLastName = event.parentLastName;
+
             user = UserModel(
               imgUrl: DUMMY_PROFILE_PHOTO_URL,
               isAdmin: false,
               email: email,
-              fcmToken: '',
+              fcmToken: null,
               created: DateTime.now(),
               uid: firebaseUser.uid,
               firstName: firstName,
               lastName: lastName,
               profileType: PROFILE_TYPE.PARENT.name,
               school: null,
-              teacherID: null,
+              teacherID: _selectedTeacher.uid, //use selected teacher
+              parentFirstName: parentFirstName,
+              parentLastName: parentLastName,
             );
           }
           await locator<UserService>().createUser(user: user);
@@ -117,6 +135,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               : ParentState(
                   autoValidate: true,
                   formKey: event.formKey,
+                  selectedDate: _selectedDate,
                 );
         }
       }

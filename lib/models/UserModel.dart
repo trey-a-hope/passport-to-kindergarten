@@ -14,6 +14,8 @@ class UserModel {
   String profileType;
   String school;
   String teacherID;
+  String parentFirstName;
+  String parentLastName;
 
   UserModel({
     @required this.email,
@@ -27,6 +29,8 @@ class UserModel {
     @required this.profileType,
     @required this.school,
     @required this.teacherID,
+    @required this.parentFirstName,
+    @required this.parentLastName,
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -42,6 +46,8 @@ class UserModel {
       profileType: ds.data['profileType'],
       school: ds.data['school'],
       teacherID: ds.data['teacherID'],
+      parentFirstName: ds.data['parentFirstName'],
+      parentLastName: ds.data['parentLastName'],
     );
   }
 
@@ -49,19 +55,21 @@ class UserModel {
       {@required AlgoliaObjectSnapshot aob}) {
     Map<String, dynamic> data = aob.data;
     return UserModel(
-      email: data['email'],
-      imgUrl: data['imgUrl'],
-      fcmToken: data['fcmToken'],
-      isAdmin: data['isAdmin'],
-      created: DateTime.now(),
-      uid: data['uid'],
-      firstName: data['firstName'],
-      lastName: data['lastName'],
-      profileType: data['profileType'],
-      school: data['school'],
-      teacherID: data['teacherID'],
-      // created: data['created'].toDate(),//todo:
-    );
+        email: data['email'],
+        imgUrl: data['imgUrl'],
+        fcmToken: data['fcmToken'],
+        isAdmin: data['isAdmin'],
+        created: DateTime.now(),
+        uid: data['uid'],
+        firstName: data['firstName'],
+        lastName: data['lastName'],
+        profileType: data['profileType'],
+        school: data['school'],
+        teacherID: data['teacherID'],
+        parentFirstName: data['parentFirstName'],
+        parentLastName: data['parentLastName']
+        // created: data['created'].toDate(),//todo:
+        );
   }
 
   Map<String, dynamic> toMap() {
@@ -77,6 +85,8 @@ class UserModel {
       'profileType': profileType,
       'school': school,
       'teacherID': teacherID,
+      'parentFirstName': parentFirstName,
+      'parentLastName': parentLastName,
     };
   }
 }

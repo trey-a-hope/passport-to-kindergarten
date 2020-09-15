@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/UserModel.dart';
 
 abstract class SignupEvent extends Equatable {
   @override
@@ -18,6 +19,30 @@ class ToggleProfileTypeEvent extends SignupEvent {
   List<Object> get props => [];
 }
 
+class SelectDateEvent extends SignupEvent {
+  final DateTime selectedDate;
+
+  SelectDateEvent({
+    @required this.selectedDate,
+  });
+
+  List<Object> get props => [
+        selectedDate,
+      ];
+}
+
+class SelectTeacherEvent extends SignupEvent {
+  final UserModel selectedTeacher;
+
+  SelectTeacherEvent({
+    @required this.selectedTeacher,
+  });
+
+  List<Object> get props => [
+        selectedTeacher,
+      ];
+}
+
 class Signup extends SignupEvent {
   final String email;
   final String password;
@@ -25,6 +50,8 @@ class Signup extends SignupEvent {
   final String lastName;
   final GlobalKey<FormState> formKey;
   final String school;
+  final String parentFirstName;
+  final String parentLastName;
 
   Signup({
     @required this.email,
@@ -33,6 +60,8 @@ class Signup extends SignupEvent {
     @required this.lastName,
     @required this.formKey,
     @required this.school,
+    @required this.parentFirstName,
+    @required this.parentLastName,
   });
 
   List<Object> get props => [
@@ -42,5 +71,7 @@ class Signup extends SignupEvent {
         lastName,
         formKey,
         school,
+        parentFirstName,
+        parentLastName,
       ];
 }

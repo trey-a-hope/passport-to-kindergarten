@@ -34,8 +34,7 @@ class _SearchBarState extends State<_SearchBar> {
   @override
   void initState() {
     super.initState();
-    _searchTeachersBloc =
-        BlocProvider.of<SearchTeachersBloc>(context);
+    _searchTeachersBloc = BlocProvider.of<SearchTeachersBloc>(context);
   }
 
   @override
@@ -75,10 +74,8 @@ class _SearchBarState extends State<_SearchBar> {
 class _SearchBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchTeachersBloc,
-        SearchTeachersState>(
-      builder:
-          (BuildContext context, SearchTeachersState state) {
+    return BlocBuilder<SearchTeachersBloc, SearchTeachersState>(
+      builder: (BuildContext context, SearchTeachersState state) {
         if (state is SearchTeachersStateStart) {
           return Expanded(
             child: Center(
@@ -130,7 +127,7 @@ class _SearchBody extends StatelessWidget {
                   ),
                   subtitle: Text('${teacher.school}'),
                   onTap: () {
-                    //Return to sign up page with this teacher.
+                    Navigator.pop(context, teacher);
                   },
                 );
               },

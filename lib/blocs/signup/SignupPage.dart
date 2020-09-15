@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
 import 'package:p/extensions/HexColorExtension.dart';
+import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -25,6 +27,15 @@ class SignupPageState extends State<SignupPage>
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _teacherController = TextEditingController();
+
+  final TextEditingController _parentFirstNameController =
+      TextEditingController();
+
+  final TextEditingController _parentLastNameController =
+      TextEditingController();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   SignupBloc _signupBloc;
@@ -100,6 +111,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _firstNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -127,6 +139,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _lastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -154,6 +167,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _schoolController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -181,6 +195,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -208,6 +223,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -240,7 +256,15 @@ class SignupPageState extends State<SignupPage>
                             buttonColor: HexColorExtension('ff4880'),
                             text: 'Sign Up',
                             textColor: Colors.white,
-                            onPressed: () {
+                            onPressed: () async {
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
+
+                              if (!confirm) return;
+
                               final String email = _emailController.text;
                               final String password = _passwordController.text;
                               final String firstName =
@@ -256,6 +280,8 @@ class SignupPageState extends State<SignupPage>
                                   lastName: lastName,
                                   formKey: state.formKey,
                                   school: school,
+                                  parentFirstName: null,
+                                  parentLastName: null,
                                 ),
                               );
                             },
@@ -338,6 +364,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _firstNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -366,6 +393,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _lastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -393,11 +421,33 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              controller: _firstNameController,
+                              autovalidate: state.autoValidate,
+                              onTap: () async {
+                                final DateTime picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: state.selectedDate,
+                                  firstDate: DateTime(2000, 1),
+                                  lastDate: DateTime.now(),
+                                );
+
+                                if (picked != null &&
+                                    picked != state.selectedDate) {
+                                  _signupBloc.add(
+                                    SelectDateEvent(selectedDate: picked),
+                                  );
+                                  print(picked.toString());
+
+                                  String formattedDate =
+                                      DateFormat('MMMM dd, yyyy')
+                                          .format(picked);
+                                  _dobController.text = formattedDate;
+                                }
+                              },
+                              controller: _dobController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.person,
+                                    Icons.calendar_today,
                                     color: Colors.white,
                                   ),
                                   border: OutlineInputBorder(
@@ -421,9 +471,69 @@ class SignupPageState extends State<SignupPage>
                             'Parent/Guardian Info',
                             style: TextStyle(color: Colors.white),
                           ),
+
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _parentFirstNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Parent/Guardian First Name'),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _parentLastNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Parent/Guardian Last Name'),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -451,6 +561,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
+                              autovalidate: state.autoValidate,
                               controller: _passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -475,63 +586,73 @@ class SignupPageState extends State<SignupPage>
                                   hintText: 'Password'),
                             ),
                           ),
+                          Text(
+                            'Other Info',
+                            style: TextStyle(color: Colors.white),
+                          ),
                           Padding(
                             padding: EdgeInsets.all(20),
-                            child: InkWell(
-                              child: TextFormField(
-                                onTap: () {
-                                  final SEARCH_TEACHERS_BP
-                                          .SearchTeachersRepository
-                                      _searchTeachersRepository =
-                                      SEARCH_TEACHERS_BP
-                                          .SearchTeachersRepository(
-                                    cache: SEARCH_TEACHERS_BP
-                                        .SearchTeachersCache(),
-                                  );
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              onTap: () async {
+                                final SEARCH_TEACHERS_BP
+                                        .SearchTeachersRepository
+                                    _searchTeachersRepository =
+                                    SEARCH_TEACHERS_BP.SearchTeachersRepository(
+                                  cache:
+                                      SEARCH_TEACHERS_BP.SearchTeachersCache(),
+                                );
 
-                                  Route route = MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        BlocProvider(
-                                      create: (BuildContext context) =>
-                                          SEARCH_TEACHERS_BP.SearchTeachersBloc(
-                                              searchTeachersRepository:
-                                                  _searchTeachersRepository)
-                                            ..add(
-                                              SEARCH_TEACHERS_BP
-                                                  .LoadPageEvent(),
-                                            ),
-                                      child: SEARCH_TEACHERS_BP
-                                          .SearchTeachersPage(),
-                                    ),
-                                  );
-                                  Navigator.push(context, route);
-                                },
-                                controller: _passwordController,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.book,
-                                      color: Colors.white,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      // width: 0.0 produces a thin "hairline" border
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(90.0),
-                                      ),
-                                      borderSide: BorderSide.none,
+                                Route route = MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      BlocProvider(
+                                    create: (BuildContext context) =>
+                                        SEARCH_TEACHERS_BP.SearchTeachersBloc(
+                                            searchTeachersRepository:
+                                                _searchTeachersRepository)
+                                          ..add(
+                                            SEARCH_TEACHERS_BP.LoadPageEvent(),
+                                          ),
+                                    child:
+                                        SEARCH_TEACHERS_BP.SearchTeachersPage(),
+                                  ),
+                                );
 
-                                      //borderSide: const BorderSide(),
-                                    ),
-                                    hintStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "WorkSansLight"),
-                                    filled: true,
-                                    fillColor: Colors.white24,
-                                    hintText: 'Teacher'),
-                              ),
-                              onTap: () {
-                                print('hello');
+                                final result =
+                                    await Navigator.push(context, route);
+
+                                final selectedTeacher = result as UserModel;
+
+                                _signupBloc.add(
+                                  SelectTeacherEvent(
+                                      selectedTeacher: selectedTeacher),
+                                );
+
+                                _teacherController.text =
+                                    '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
                               },
+                              controller: _teacherController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.book,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Teacher'),
                             ),
                           ),
                           Divider(
@@ -542,7 +663,15 @@ class SignupPageState extends State<SignupPage>
                             buttonColor: HexColorExtension('ff4880'),
                             text: 'Sign Up',
                             textColor: Colors.white,
-                            onPressed: () {
+                            onPressed: () async {
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
+
+                              if (!confirm) return;
+
                               final String email = _emailController.text;
                               final String password = _passwordController.text;
                               final String firstName =
@@ -557,6 +686,10 @@ class SignupPageState extends State<SignupPage>
                                   lastName: lastName,
                                   formKey: state.formKey,
                                   school: null,
+                                  parentFirstName:
+                                      _parentFirstNameController.text,
+                                  parentLastName:
+                                      _parentLastNameController.text,
                                 ),
                               );
                             },
