@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/extensions/HexColorExtension.dart';
+import 'package:p/services/AuthService.dart';
+import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
+import '../../ServiceLocator.dart';
 import '../../constants.dart';
 import 'Bloc.dart';
 import 'package:p/blocs/signup/Bloc.dart' as SIGNUP_BP;
@@ -32,9 +35,15 @@ class HomePageState extends State<HomePage> implements HomeDelegate {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (BuildContext context, HomeState state) {
+
+
         if (state is DefaultState) {
           return Scaffold(
             key: _scaffoldKey,
+            appBar: AppBar(
+              title: Text('Home'),
+            ),
+            drawer: DrawerWidget(),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Center(

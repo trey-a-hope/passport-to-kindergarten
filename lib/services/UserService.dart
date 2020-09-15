@@ -22,8 +22,7 @@ class UserService extends IUserService {
     try {
       final WriteBatch batch = Firestore.instance.batch();
 
-      DocumentReference userDocRef = _usersColRef.document();
-      user.uid = userDocRef.documentID;
+      DocumentReference userDocRef = _usersColRef.document(user.uid);
 
       batch.setData(userDocRef, user.toMap());
 
@@ -45,9 +44,7 @@ class UserService extends IUserService {
   Future<UserModel> retrieveUser({@required String uid}) async {
     try {
       DocumentSnapshot documentSnapshot =
-          (await _usersColRef.where('uid', isEqualTo: uid).getDocuments())
-              .documents
-              .first;
+          await _usersColRef.document(uid).get();
       return UserModel.fromDocumentSnapshot(ds: documentSnapshot);
     } catch (e) {
       throw Exception(e.toString());
@@ -58,12 +55,9 @@ class UserService extends IUserService {
   Future<void> updateUser(
       {@required String uid, @required Map<String, dynamic> data}) async {
     try {
-      DocumentReference documentReference =
-          (await _usersColRef.where('uid', isEqualTo: uid).getDocuments())
-              .documents
-              .first
-              .reference;
-
+      DocumentSnapshot documentSnapshot =
+          await _usersColRef.document(uid).get();
+      DocumentReference documentReference = documentSnapshot.reference;
       await documentReference.updateData(data);
       return;
     } catch (e) {
