@@ -9,7 +9,6 @@ import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
-import '../../main.dart';
 import 'Bloc.dart';
 import 'package:p/blocs/login/Bloc.dart' as LOGIN_BP;
 import 'package:p/blocs/searchTeachers/Bloc.dart' as SEARCH_TEACHERS_BP;
@@ -51,7 +50,6 @@ class SignupPageState extends State<SignupPage>
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    const double CARD_BORDER_RADIUS = 30;
 
     return Scaffold(
       key: _scaffoldKey,

@@ -2,18 +2,24 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/UserModel.dart';
 
-class HomeState extends Equatable {
-  const HomeState();
+abstract class MyPassportState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends HomeState {}
+class LoadingState extends MyPassportState {
+  LoadingState();
 
-class LoadedState extends HomeState {
+  @override
+  List<Object> get props => [];
+}
+
+class LoadedState extends MyPassportState {
   final UserModel user;
 
-  LoadedState({@required this.user});
+  LoadedState({
+    @required this.user,
+  });
 
   @override
   List<Object> get props => [
@@ -21,7 +27,7 @@ class LoadedState extends HomeState {
       ];
 }
 
-class ErrorState extends HomeState {
+class ErrorState extends MyPassportState {
   final dynamic error;
 
   ErrorState({

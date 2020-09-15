@@ -20,6 +20,11 @@ enum PROFILE_TYPE {
   ADMIN,
 }
 
+enum APP_PAGES {
+  HOME,
+  MY_PASSPORT
+}
+
 extension PROFILE_TYPE_EXTENSION on PROFILE_TYPE {
   String get name {
     switch (this) {

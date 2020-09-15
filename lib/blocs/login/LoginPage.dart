@@ -35,7 +35,6 @@ class LoginPageState extends State<LoginPage>
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    const double CARD_BORDER_RADIUS = 30;
 
     return Scaffold(
       key: _scaffoldKey,
