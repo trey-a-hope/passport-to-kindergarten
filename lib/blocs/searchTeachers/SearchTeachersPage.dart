@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
-import 'Bloc.dart' as SEARCH_TEACHERS_BP;
+import 'Bloc.dart';
 
 class SearchTeachersPage extends StatelessWidget {
   @override
@@ -29,13 +29,13 @@ class _SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<_SearchBar> {
   final TextEditingController _textController = TextEditingController();
-  SEARCH_TEACHERS_BP.SearchTeachersBloc _searchTeachersBloc;
+  SearchTeachersBloc _searchTeachersBloc;
 
   @override
   void initState() {
     super.initState();
     _searchTeachersBloc =
-        BlocProvider.of<SEARCH_TEACHERS_BP.SearchTeachersBloc>(context);
+        BlocProvider.of<SearchTeachersBloc>(context);
   }
 
   @override
@@ -51,7 +51,7 @@ class _SearchBarState extends State<_SearchBar> {
       autocorrect: false,
       onChanged: (text) {
         _searchTeachersBloc.add(
-          SEARCH_TEACHERS_BP.TextChangedEvent(text: text),
+          TextChangedEvent(text: text),
         );
       },
       decoration: InputDecoration(
@@ -68,28 +68,34 @@ class _SearchBarState extends State<_SearchBar> {
 
   void _onClearTapped() {
     _textController.text = '';
-    _searchTeachersBloc.add(SEARCH_TEACHERS_BP.TextChangedEvent(text: ''));
+    _searchTeachersBloc.add(TextChangedEvent(text: ''));
   }
 }
 
 class _SearchBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SEARCH_TEACHERS_BP.SearchTeachersBloc,
-        SEARCH_TEACHERS_BP.SearchTeachersState>(
+    return BlocBuilder<SearchTeachersBloc,
+        SearchTeachersState>(
       builder:
-          (BuildContext context, SEARCH_TEACHERS_BP.SearchTeachersState state) {
-        if (state is SEARCH_TEACHERS_BP.SearchTeachersState) {
+          (BuildContext context, SearchTeachersState state) {
+        if (state is SearchTeachersStateStart) {
           return Expanded(
-            child: Center(child: Icon(Icons.book, size: 200, color: Colors.grey.shade300,)),
+            child: Center(
+              child: Icon(
+                Icons.book,
+                size: 200,
+                color: Colors.grey.shade300,
+              ),
+            ),
           );
         }
 
-        if (state is SEARCH_TEACHERS_BP.SearchTeachersStateLoading) {
+        if (state is SearchTeachersStateLoading) {
           return SpinnerWidget();
         }
 
-        if (state is SEARCH_TEACHERS_BP.SearchTeachersStateError) {
+        if (state is SearchTeachersStateError) {
           return Expanded(
             child: Center(
               child: Text(state.error.message),
@@ -97,7 +103,7 @@ class _SearchBody extends StatelessWidget {
           );
         }
 
-        if (state is SEARCH_TEACHERS_BP.SearchTeachersStateNoResults) {
+        if (state is SearchTeachersStateNoResults) {
           return Expanded(
             child: Center(
               child: Text('No results found. :('),
@@ -105,7 +111,7 @@ class _SearchBody extends StatelessWidget {
           );
         }
 
-        if (state is SEARCH_TEACHERS_BP.SearchTeachersStateFoundResults) {
+        if (state is SearchTeachersStateFoundResults) {
           final List<UserModel> teachers = state.teachers;
 
           return Expanded(
@@ -118,9 +124,11 @@ class _SearchBody extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(teacher.imgUrl),
                   ),
-                  title: Text('${teacher.firstName} ${teacher.lastName}'),
+                  title: Text(
+                    '${teacher.firstName} ${teacher.lastName}',
+                    style: TextStyle(color: Colors.black),
+                  ),
                   subtitle: Text('${teacher.school}'),
-                  trailing: Icon(Icons.chevron_right),
                   onTap: () {
                     //Return to sign up page with this teacher.
                   },
@@ -130,9 +138,7 @@ class _SearchBody extends StatelessWidget {
           );
         }
 
-        return Center(
-          child: Text('YOU SHOULD NEVER SEE THIS...'),
-        );
+        return Container();
       },
     );
   }

@@ -22,6 +22,7 @@ class SearchTeachersRepository {
     } else {
       AlgoliaQuery query = _algolia.instance.index('Users').search(term);
 
+      //Be sure to active field in the Facets section of the Configuration tab.
       if (profileType != null) {
         query = query.setFacetFilter('profileType:$profileType');
       }
@@ -30,7 +31,9 @@ class SearchTeachersRepository {
           (await query.getObjects()).hits;
 
       final List<UserModel> users = results
-          .map((result) => UserModel.extractAlgoliaObjectSnapshot(aob: result))
+          .map(
+            (result) => UserModel.extractAlgoliaObjectSnapshot(aob: result),
+          )
           .toList();
 
       cache.set(term, users);

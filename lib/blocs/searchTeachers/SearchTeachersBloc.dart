@@ -3,75 +3,70 @@ import 'package:meta/meta.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:bloc/bloc.dart';
-import 'package:p/services/AuthService.dart';
-import '../../ServiceLocator.dart';
-import 'Bloc.dart' as SEARCH_TEACHERS_BP;
+import 'Bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-class SearchTeachersBloc extends Bloc<SEARCH_TEACHERS_BP.SearchTeachersEvent,
-    SEARCH_TEACHERS_BP.SearchTeachersState> {
-  final SEARCH_TEACHERS_BP.SearchTeachersRepository searchTeachersRepository;
+class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
+    SearchTeachersState> {
+  final SearchTeachersRepository searchTeachersRepository;
   SearchTeachersBloc({@required this.searchTeachersRepository})
       : super(
-          SEARCH_TEACHERS_BP.SearchTeachersStateStart(),
+          SearchTeachersStateStart(),
         );
 
-  // @override
-  // Stream<
-  //     Transition<SEARCH_TEACHERS_BP.SearchTeachersEvent,
-  //         SEARCH_TEACHERS_BP.SearchTeachersState>> transformEvents(
-  //   Stream<SEARCH_TEACHERS_BP.SearchTeachersEvent> events,
-  //   Stream<
-  //               Transition<SEARCH_TEACHERS_BP.SearchTeachersEvent,
-  //                   SEARCH_TEACHERS_BP.SearchTeachersState>>
-  //           Function(
-  //     SEARCH_TEACHERS_BP.SearchTeachersEvent event,
-  //   )
-  //       transitionFn,
-  // ) {
-  //   return events.deb
-  //       .debounceTime(const Duration(milliseconds: 300))
-  //       .switchMap(transitionFn);
-  // }
+  @override
+  Stream<
+      Transition<SearchTeachersEvent,
+          SearchTeachersState>> transformEvents(
+      Stream<SearchTeachersEvent> events,
+      TransitionFunction<SearchTeachersEvent,
+              SearchTeachersState>
+          transitionFn) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 300)),
+      transitionFn,
+    );
+  }
 
   @override
   void onTransition(
-      Transition<SEARCH_TEACHERS_BP.SearchTeachersEvent,
-              SEARCH_TEACHERS_BP.SearchTeachersState>
+      Transition<SearchTeachersEvent,
+              SearchTeachersState>
           transition) {
     print(transition);
     super.onTransition(transition);
   }
 
   @override
-  Stream<SEARCH_TEACHERS_BP.SearchTeachersState> mapEventToState(
-    SEARCH_TEACHERS_BP.SearchTeachersEvent event,
+  Stream<SearchTeachersState> mapEventToState(
+    SearchTeachersEvent event,
   ) async* {
-    if (event is SEARCH_TEACHERS_BP.LoadPageEvent) {
+    if (event is LoadPageEvent) {
       try {
-//todo:
+        yield SearchTeachersStateStart();
       } catch (error) {
         print(error.toString()); //todo: Display error message.
       }
     }
 
-    if (event is SEARCH_TEACHERS_BP.TextChangedEvent) {
+    if (event is TextChangedEvent) {
       final String searchTerm = event.text;
       if (searchTerm.isEmpty) {
-        yield SEARCH_TEACHERS_BP.SearchTeachersStateStart();
+        yield SearchTeachersStateStart();
       } else {
-        yield SEARCH_TEACHERS_BP.SearchTeachersStateLoading();
+        yield SearchTeachersStateLoading();
         try {
-          final List<UserModel> results =
-              await searchTeachersRepository.search(term: searchTerm, profileType: PROFILE_TYPE.TEACHER.name);
-
+          final List<UserModel> results = await searchTeachersRepository.search(
+              term: searchTerm, profileType: PROFILE_TYPE.TEACHER.name);
 
           if (results.isEmpty) {
-            yield SEARCH_TEACHERS_BP.SearchTeachersStateNoResults();
+            yield SearchTeachersStateNoResults();
           } else {
-            yield SEARCH_TEACHERS_BP.SearchTeachersStateFoundResults(teachers: results);
+            yield SearchTeachersStateFoundResults(
+                teachers: results);
           }
         } catch (error) {
-          yield SEARCH_TEACHERS_BP.SearchTeachersStateError(error: error);
+          yield SearchTeachersStateError(error: error);
         }
       }
     }

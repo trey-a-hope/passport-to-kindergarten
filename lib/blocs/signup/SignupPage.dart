@@ -73,14 +73,20 @@ class SignupPageState extends State<SignupPage>
                           const SizedBox(
                             height: 50,
                           ),
-                          const Text(
-                            'Teacher',
-                            style: TextStyle(color: Colors.white),
-                          ),
                           SwitchListTile(
-                            title: const Text(
-                              'Are you a teacher?',
-                              style: TextStyle(color: Colors.white),
+                            title: RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 18),
+                                children: [
+                                  TextSpan(text: 'I am a '),
+                                  TextSpan(
+                                    text: 'teacher.',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             value: true,
                             onChanged: (bool value) {
@@ -301,14 +307,20 @@ class SignupPageState extends State<SignupPage>
                           SizedBox(
                             height: 50,
                           ),
-                          Text(
-                            'Parent',
-                            style: TextStyle(color: Colors.white),
-                          ),
                           SwitchListTile(
-                            title: const Text(
-                              'Are you a teacher?',
-                              style: TextStyle(color: Colors.white),
+                            title: RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 18),
+                                children: [
+                                  TextSpan(text: 'I am a '),
+                                  TextSpan(
+                                    text: 'parent/guardian.',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             value: false,
                             onChanged: (bool value) {
@@ -319,7 +331,10 @@ class SignupPageState extends State<SignupPage>
                               color: Colors.white,
                             ),
                           ),
-                          //First name
+                          Text(
+                            'Child\s Info',
+                            style: TextStyle(color: Colors.white),
+                          ),
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
@@ -401,6 +416,10 @@ class SignupPageState extends State<SignupPage>
                                   fillColor: Colors.white24,
                                   hintText: 'Child\'s DOB'),
                             ),
+                          ),
+                          Text(
+                            'Parent/Guardian Info',
+                            style: TextStyle(color: Colors.white),
                           ),
                           Padding(
                             padding: EdgeInsets.all(20),
