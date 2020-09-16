@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p/SettingsPage.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
@@ -58,6 +59,19 @@ class DrawerWidgetState extends State<DrawerWidget> {
       return Container();
   }
 
+  void logout() async {
+    bool confirm = await locator<ModalService>().showConfirmation(
+        context: context, title: 'Logout', message: 'Are you sure?');
+
+    if (!confirm) return;
+
+    Navigator.popUntil(
+      context,
+      ModalRoute.withName(Navigator.defaultRouteName),
+    );
+    locator<AuthService>().signOut();
+  }
+
   Widget _buildTeacherLayout() {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -79,27 +93,22 @@ class DrawerWidgetState extends State<DrawerWidget> {
           ),
         ),
         ListTile(
-          leading: Icon(MdiIcons.email, color: _drawerIconColor),
+          leading: Icon(Icons.settings, color: _drawerIconColor),
           title: Text(
-            'Messages',
+            'Settings',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => MessagesPage(),
-            //   ),
-            // );
+            if (page == APP_PAGES.SETTINGS) return;
+
+            Route route = MaterialPageRoute(
+              builder: (BuildContext context) => SettingsPage(
+                currentUser: currentUser,
+              ),
+            );
+
+            Navigator.push(context, route);
           },
-        ),
-        ListTile(
-          leading: Icon(MdiIcons.accountEdit, color: _drawerIconColor),
-          title: Text(
-            'Edit Profile',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () async {},
         ),
         Spacer(),
         ListTile(
@@ -108,14 +117,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
             'Logout',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () async {
-            bool confirm = await locator<ModalService>().showConfirmation(
-                context: context, title: 'Logout', message: 'Are you sure?');
-
-            if (!confirm) return;
-
-            locator<AuthService>().signOut();
-          },
+          onTap: logout,
         ),
         SizedBox(
           height: 40,
@@ -193,6 +195,24 @@ class DrawerWidgetState extends State<DrawerWidget> {
             Navigator.push(context, route);
           },
         ),
+        ListTile(
+          leading: Icon(Icons.settings, color: _drawerIconColor),
+          title: Text(
+            'Settings',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            if (page == APP_PAGES.SETTINGS) return;
+
+            Route route = MaterialPageRoute(
+              builder: (BuildContext context) => SettingsPage(
+                currentUser: currentUser,
+              ),
+            );
+
+            Navigator.push(context, route);
+          },
+        ),
         Spacer(),
         ListTile(
           leading: Icon(MdiIcons.logout, color: _drawerIconColor),
@@ -200,14 +220,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
             'Logout',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () async {
-            bool confirm = await locator<ModalService>().showConfirmation(
-                context: context, title: 'Logout', message: 'Are you sure?');
-
-            if (!confirm) return;
-
-            locator<AuthService>().signOut();
-          },
+          onTap: logout,
         ),
         SizedBox(
           height: 40,
@@ -237,27 +250,22 @@ class DrawerWidgetState extends State<DrawerWidget> {
           ),
         ),
         ListTile(
-          leading: Icon(MdiIcons.email, color: _drawerIconColor),
+          leading: Icon(Icons.settings, color: _drawerIconColor),
           title: Text(
-            'Messages',
+            'Settings',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => MessagesPage(),
-            //   ),
-            // );
+            if (page == APP_PAGES.SETTINGS) return;
+
+            Route route = MaterialPageRoute(
+              builder: (BuildContext context) => SettingsPage(
+                currentUser: currentUser,
+              ),
+            );
+
+            Navigator.push(context, route);
           },
-        ),
-        ListTile(
-          leading: Icon(MdiIcons.accountEdit, color: _drawerIconColor),
-          title: Text(
-            'Edit Profile',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () async {},
         ),
         Spacer(),
         ListTile(
@@ -266,14 +274,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
             'Logout',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () async {
-            bool confirm = await locator<ModalService>().showConfirmation(
-                context: context, title: 'Logout', message: 'Are you sure?');
-
-            if (!confirm) return;
-
-            locator<AuthService>().signOut();
-          },
+          onTap: logout,
         ),
         SizedBox(
           height: 40,
