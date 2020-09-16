@@ -12,6 +12,7 @@ dependencies:
     
   algolia: ^0.1.7
   cloud_firestore: ^0.13.4+2
+  confetti: ^0.5.4+1
   equatable: ^1.2.0
   firebase_analytics: 5.0.16
   firebase_auth: ^0.16.1
