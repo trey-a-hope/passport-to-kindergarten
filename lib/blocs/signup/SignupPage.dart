@@ -696,18 +696,7 @@ class SignupPageState extends State<SignupPage>
                             padding: EdgeInsets.all(20),
                             child: InkWell(
                               onTap: () {
-                                Route route = MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      BlocProvider(
-                                    create: (BuildContext context) =>
-                                        LOGIN_BP.LoginBloc()
-                                          ..add(
-                                            LOGIN_BP.LoadPageEvent(),
-                                          ),
-                                    child: LOGIN_BP.LoginPage(),
-                                  ),
-                                );
-                                Navigator.pushReplacement(context, route);
+                                Navigator.of(context).pop();
                               },
                               child: RichText(
                                 text: TextSpan(
@@ -739,7 +728,10 @@ class SignupPageState extends State<SignupPage>
 
   @override
   void navigateHome() {
-    Navigator.pop(context);
+    Navigator.popUntil(
+      context,
+      ModalRoute.withName(Navigator.defaultRouteName),
+    );
   }
 
   @override

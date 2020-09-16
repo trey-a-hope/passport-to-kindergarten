@@ -100,7 +100,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               teacherID: null,
               parentFirstName: null,
               parentLastName: null,
-              dob: null,
+              dob: _selectedDate,
             );
           } else {
             final String parentFirstName = event.parentFirstName;

@@ -9,6 +9,7 @@ import 'LoginState.dart';
 
 abstract class LoginBlocDelegate {
   void showMessage({@required String message});
+  void navigateHome();
 }
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -38,6 +39,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         await locator<AuthService>()
             .signInWithEmailAndPassword(email: email, password: password);
+
+        _loginBlocDelegate.navigateHome();
       } catch (error) {
         _loginBlocDelegate.showMessage(message: error.message);
 

@@ -206,4 +206,12 @@ class LoginPageState extends State<LoginPage>
     locator<ModalService>()
         .showAlert(context: context, title: 'Error', message: message);
   }
+
+  @override
+  void navigateHome() {
+    Navigator.popUntil(
+      context,
+      ModalRoute.withName(Navigator.defaultRouteName),
+    );
+  }
 }
