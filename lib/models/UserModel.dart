@@ -16,6 +16,7 @@ class UserModel {
   String teacherID;
   String parentFirstName;
   String parentLastName;
+  DateTime dob;
 
   UserModel({
     @required this.email,
@@ -31,6 +32,7 @@ class UserModel {
     @required this.teacherID,
     @required this.parentFirstName,
     @required this.parentLastName,
+    @required this.dob,
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -48,6 +50,7 @@ class UserModel {
       teacherID: ds.data['teacherID'],
       parentFirstName: ds.data['parentFirstName'],
       parentLastName: ds.data['parentLastName'],
+      dob: ds.data['dob'].toDate(),
     );
   }
 
@@ -67,8 +70,8 @@ class UserModel {
         school: data['school'],
         teacherID: data['teacherID'],
         parentFirstName: data['parentFirstName'],
-        parentLastName: data['parentLastName']
-        // created: data['created'].toDate(),//todo:
+        parentLastName: data['parentLastName'],
+        dob: DateTime.now() //todo: Set accurate dob.
         );
   }
 
@@ -87,6 +90,7 @@ class UserModel {
       'teacherID': teacherID,
       'parentFirstName': parentFirstName,
       'parentLastName': parentLastName,
+      'dob': dob,
     };
   }
 }

@@ -15,15 +15,18 @@ class LoadingState extends MyPassportState {
 }
 
 class LoadedState extends MyPassportState {
-  final UserModel user;
+  final UserModel childUser;
+  final UserModel teacherUser;
 
   LoadedState({
-    @required this.user,
+    @required this.childUser,
+    @required this.teacherUser,
   });
 
   @override
   List<Object> get props => [
-        user,
+        childUser,
+        teacherUser,
       ];
 }
 

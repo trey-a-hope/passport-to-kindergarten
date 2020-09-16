@@ -100,6 +100,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               teacherID: null,
               parentFirstName: null,
               parentLastName: null,
+              dob: null,
             );
           } else {
             final String parentFirstName = event.parentFirstName;
@@ -119,6 +120,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               teacherID: _selectedTeacher.uid, //use selected teacher
               parentFirstName: parentFirstName,
               parentLastName: parentLastName,
+              dob: _selectedDate,
             );
           }
           await locator<UserService>().createUser(user: user);
