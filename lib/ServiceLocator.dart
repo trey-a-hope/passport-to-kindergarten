@@ -6,6 +6,7 @@ import 'package:p/services/ModalService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'package:p/services/ValidatorService.dart';
+import 'package:p/services/VisitingLogService.dart';
 
 GetIt locator = GetIt.I;
 
@@ -17,4 +18,5 @@ void setUpLocater() {
   locator.registerLazySingleton(() => StorageService());
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => ValidatorService());
+  locator.registerLazySingleton(() => VisitingLogService());
 }
