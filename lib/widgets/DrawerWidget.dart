@@ -9,6 +9,7 @@ import 'package:p/services/ModalService.dart';
 import '../ServiceLocator.dart';
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
+import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -72,6 +73,117 @@ class DrawerWidgetState extends State<DrawerWidget> {
     locator<AuthService>().signOut();
   }
 
+  ListTile _homeListTile() {
+    return ListTile(
+      leading: Icon(
+        Icons.home,
+        color: _drawerIconColor,
+      ),
+      title: Text(
+        'Home',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () async {
+        if (page == APP_PAGES.HOME) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => HOME_BP.HomeBloc()
+              ..add(
+                HOME_BP.LoadPageEvent(),
+              ),
+            child: HOME_BP.HomePage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
+  ListTile _bookOfTheMonthListTile() {
+    return ListTile(
+      leading: Icon(Icons.book, color: _drawerIconColor),
+      title: Text(
+        'Book of The Month',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.BOOK_OF_THE_MONTH) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) =>
+                BOOK_OF_THE_MONTH_BP.BookOfTheMonthBloc()
+                  ..add(
+                    BOOK_OF_THE_MONTH_BP.LoadPageEvent(),
+                  ),
+            child: BOOK_OF_THE_MONTH_BP.BookOfTheMonthPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
+  ListTile _myPassportListTile() {
+    return ListTile(
+      leading: Icon(
+        Icons.person,
+        color: _drawerIconColor,
+      ),
+      title: Text(
+        'My Passport',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () async {
+        if (page == APP_PAGES.MY_PASSPORT) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => MY_PASSPORT_BP.MyPassportBloc()
+              ..add(
+                MY_PASSPORT_BP.LoadPageEvent(),
+              ),
+            child: MY_PASSPORT_BP.MyPassportPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
+  ListTile _settingsListTile() {
+    return ListTile(
+      leading: Icon(Icons.settings, color: _drawerIconColor),
+      title: Text(
+        'Settings',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.SETTINGS) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => SettingsPage(
+            currentUser: currentUser,
+          ),
+        );
+
+        Navigator.push(context, route);
+      },
+    );
+  }
+
+  ListTile _logOutListTile() {
+    return ListTile(
+      leading: Icon(MdiIcons.logout, color: _drawerIconColor),
+      title: Text(
+        'Logout',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: logout,
+    );
+  }
+
   Widget _buildTeacherLayout() {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -92,33 +204,10 @@ class DrawerWidgetState extends State<DrawerWidget> {
             color: Colors.black,
           ),
         ),
-        ListTile(
-          leading: Icon(Icons.settings, color: _drawerIconColor),
-          title: Text(
-            'Settings',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            if (page == APP_PAGES.SETTINGS) return;
-
-            Route route = MaterialPageRoute(
-              builder: (BuildContext context) => SettingsPage(
-                currentUser: currentUser,
-              ),
-            );
-
-            Navigator.push(context, route);
-          },
-        ),
+        _bookOfTheMonthListTile(),
+        _settingsListTile(),
         Spacer(),
-        ListTile(
-          leading: Icon(MdiIcons.logout, color: _drawerIconColor),
-          title: Text(
-            'Logout',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: logout,
-        ),
+        _logOutListTile(),
         SizedBox(
           height: 40,
         )
@@ -146,82 +235,12 @@ class DrawerWidgetState extends State<DrawerWidget> {
             color: Colors.black,
           ),
         ),
-        ListTile(
-          leading: Icon(
-            Icons.home,
-            color: _drawerIconColor,
-          ),
-          title: Text(
-            'Home',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () async {
-            if (page == APP_PAGES.HOME) return;
-
-            Route route = MaterialPageRoute(
-              builder: (BuildContext context) => BlocProvider(
-                create: (BuildContext context) => HOME_BP.HomeBloc()
-                  ..add(
-                    HOME_BP.LoadPageEvent(),
-                  ),
-                child: HOME_BP.HomePage(),
-              ),
-            );
-            Navigator.push(context, route);
-          },
-        ),
-        ListTile(
-          leading: Icon(
-            Icons.person,
-            color: _drawerIconColor,
-          ),
-          title: Text(
-            'My Passport',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () async {
-            if (page == APP_PAGES.MY_PASSPORT) return;
-
-            Route route = MaterialPageRoute(
-              builder: (BuildContext context) => BlocProvider(
-                create: (BuildContext context) =>
-                    MY_PASSPORT_BP.MyPassportBloc()
-                      ..add(
-                        MY_PASSPORT_BP.LoadPageEvent(),
-                      ),
-                child: MY_PASSPORT_BP.MyPassportPage(),
-              ),
-            );
-            Navigator.push(context, route);
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.settings, color: _drawerIconColor),
-          title: Text(
-            'Settings',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            if (page == APP_PAGES.SETTINGS) return;
-
-            Route route = MaterialPageRoute(
-              builder: (BuildContext context) => SettingsPage(
-                currentUser: currentUser,
-              ),
-            );
-
-            Navigator.push(context, route);
-          },
-        ),
+        _homeListTile(),
+        _bookOfTheMonthListTile(),
+        _myPassportListTile(),
+        _settingsListTile(),
         Spacer(),
-        ListTile(
-          leading: Icon(MdiIcons.logout, color: _drawerIconColor),
-          title: Text(
-            'Logout',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: logout,
-        ),
+        _logOutListTile(),
         SizedBox(
           height: 40,
         )
@@ -249,33 +268,9 @@ class DrawerWidgetState extends State<DrawerWidget> {
             color: Colors.black,
           ),
         ),
-        ListTile(
-          leading: Icon(Icons.settings, color: _drawerIconColor),
-          title: Text(
-            'Settings',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            if (page == APP_PAGES.SETTINGS) return;
-
-            Route route = MaterialPageRoute(
-              builder: (BuildContext context) => SettingsPage(
-                currentUser: currentUser,
-              ),
-            );
-
-            Navigator.push(context, route);
-          },
-        ),
+        _settingsListTile(),
         Spacer(),
-        ListTile(
-          leading: Icon(MdiIcons.logout, color: _drawerIconColor),
-          title: Text(
-            'Logout',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: logout,
-        ),
+        _logOutListTile(),
         SizedBox(
           height: 40,
         )
