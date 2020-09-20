@@ -13,6 +13,7 @@ import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
 import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
+import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -245,6 +246,30 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  ListTile _adminListTile() {
+    return ListTile(
+      leading: Icon(MdiIcons.accountBox, color: _drawerIconColor),
+      title: Text(
+        'Admin',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.ADMIN) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => ADMIN_LOG_BP.AdminBloc()
+              ..add(
+                ADMIN_LOG_BP.LoadPageEvent(),
+              ),
+            child: ADMIN_LOG_BP.AdminPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
   ListTile _logOutListTile() {
     return ListTile(
       leading: Icon(MdiIcons.logout, color: _drawerIconColor),
@@ -277,6 +302,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
           ),
         ),
         _bookOfTheMonthListTile(),
+        _adminListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
@@ -344,6 +370,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
             color: Colors.black,
           ),
         ),
+        _adminListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
