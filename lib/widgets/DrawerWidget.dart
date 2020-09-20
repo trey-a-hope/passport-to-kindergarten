@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p/AboutPage.dart';
 import 'package:p/SettingsPage.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
@@ -202,6 +203,27 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  ListTile _aboutListTile() {
+    return ListTile(
+      leading: Icon(MdiIcons.information, color: _drawerIconColor),
+      title: Text(
+        'About',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.ABOUT) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => AboutPage(
+            currentUser: currentUser,
+          ),
+        );
+
+        Navigator.push(context, route);
+      },
+    );
+  }
+
   ListTile _settingsListTile() {
     return ListTile(
       leading: Icon(Icons.settings, color: _drawerIconColor),
@@ -255,6 +277,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
           ),
         ),
         _bookOfTheMonthListTile(),
+        _aboutListTile(),
         _settingsListTile(),
         Spacer(),
         _logOutListTile(),
@@ -290,6 +313,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         _myPassportListTile(),
         _readingLogListTile(),
         _visitingLogListTile(),
+        _aboutListTile(),
         _settingsListTile(),
         Spacer(),
         _logOutListTile(),
@@ -320,6 +344,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
             color: Colors.black,
           ),
         ),
+        _aboutListTile(),
         _settingsListTile(),
         Spacer(),
         _logOutListTile(),
