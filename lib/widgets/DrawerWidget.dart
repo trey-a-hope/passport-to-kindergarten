@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/AboutPage.dart';
 import 'package:p/SettingsPage.dart';
@@ -7,6 +12,8 @@ import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/services/StorageService.dart';
+import 'package:p/services/UserService.dart';
 import '../ServiceLocator.dart';
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
@@ -306,6 +313,92 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  showSelectImageDialog() {
+    return Platform.isIOS ? iOSBottomSheet() : androidDialog();
+  }
+
+  iOSBottomSheet() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoActionSheet(
+            title: Text('Add Photo'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                child: Text('Take Photo'),
+                onPressed: () => handleImage(source: ImageSource.camera),
+              ),
+              CupertinoActionSheetAction(
+                child: Text('Choose From Gallery'),
+                onPressed: () => handleImage(source: ImageSource.gallery),
+              )
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          );
+        });
+  }
+
+  androidDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Add Photo'),
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text('Take Photo'),
+                onPressed: () => handleImage(source: ImageSource.camera),
+              ),
+              SimpleDialogOption(
+                child: Text('Choose From Gallery'),
+                onPressed: () => handleImage(source: ImageSource.gallery),
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.redAccent),
+                ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        });
+  }
+
+  handleImage({@required ImageSource source}) async {
+    //Remove previous pop up.
+    Navigator.pop(context);
+
+    //Pick an image.
+    PickedFile file = await ImagePicker().getImage(source: source);
+
+    //Check that user picked an image.
+    if (file == null) return;
+
+    //Crop an image.
+    File image = await ImageCropper.cropImage(sourcePath: file.path);
+
+    //Check that user cropped the image.
+    if (image == null) return;
+
+    //Get image upload url.
+    final String newImgUrl = await locator<StorageService>().uploadImage(
+        file: image, path: 'Images/Users/${currentUser.uid}/Profile');
+
+    //Save image upload url.
+    await locator<UserService>()
+        .updateUser(uid: currentUser.uid, data: {'imgUrl': newImgUrl});
+
+    //Update image url on user.
+    currentUser.imgUrl = newImgUrl;
+  }
+
   Widget _buildTeacherLayout() {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -316,11 +409,12 @@ class DrawerWidgetState extends State<DrawerWidget> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           accountEmail: Text('Teacher'),
-          currentAccountPicture: GestureDetector(
+          currentAccountPicture: InkWell(
             child: CircleAvatar(
                 backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
                 backgroundColor: Colors.transparent,
                 radius: 10.0),
+            onTap: showSelectImageDialog,
           ),
           decoration: BoxDecoration(
             color: Colors.black,
@@ -350,11 +444,12 @@ class DrawerWidgetState extends State<DrawerWidget> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           accountEmail: Text('Student'),
-          currentAccountPicture: GestureDetector(
+          currentAccountPicture: InkWell(
             child: CircleAvatar(
                 backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
                 backgroundColor: Colors.transparent,
                 radius: 10.0),
+            onTap: showSelectImageDialog,
           ),
           decoration: BoxDecoration(
             color: Colors.black,
@@ -387,11 +482,12 @@ class DrawerWidgetState extends State<DrawerWidget> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           accountEmail: Text('Super Admin'),
-          currentAccountPicture: GestureDetector(
+          currentAccountPicture: InkWell(
             child: CircleAvatar(
                 backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
                 backgroundColor: Colors.transparent,
                 radius: 10.0),
+            onTap: showSelectImageDialog,
           ),
           decoration: BoxDecoration(
             color: Colors.black,

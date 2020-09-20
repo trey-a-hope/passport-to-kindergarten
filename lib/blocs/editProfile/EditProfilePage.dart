@@ -1,4 +1,3 @@
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +22,7 @@ class EditProfilePageState extends State<EditProfilePage>
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _schoolController = TextEditingController();
 
   EditProfileBloc _editProfileBloc;
 
@@ -61,10 +61,105 @@ class EditProfilePageState extends State<EditProfilePage>
               page: APP_PAGES.EDIT_PROFILE,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: Center(
-                  child: Text('Edit Profile for Teacher'),
-                )),
+              value: SystemUiOverlayStyle.light,
+              child: SafeArea(
+                child: Form(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TextFormField(
+                                controller: _firstNameController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      // width: 0.0 produces a thin "hairline" border
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(90.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+
+                                      //borderSide: const BorderSide(),
+                                    ),
+                                    hintStyle:
+                                        TextStyle(fontFamily: "WorkSansLight"),
+                                    filled: true,
+                                    hintText: 'Teacher\'s First name'),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TextFormField(
+                                controller: _lastNameController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      // width: 0.0 produces a thin "hairline" border
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(90.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+
+                                      //borderSide: const BorderSide(),
+                                    ),
+                                    hintStyle:
+                                        TextStyle(fontFamily: "WorkSansLight"),
+                                    filled: true,
+                                    hintText: 'Teacher\'s Last name'),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TextFormField(
+                                controller: _schoolController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.school,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      // width: 0.0 produces a thin "hairline" border
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(90.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+
+                                      //borderSide: const BorderSide(),
+                                    ),
+                                    hintStyle:
+                                        TextStyle(fontFamily: "WorkSansLight"),
+                                    filled: true,
+                                    hintText: 'School'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FullWidthButtonWidget(
+                        text: 'Update',
+                        buttonColor: Colors.blue,
+                        onPressed: () {
+                          _editProfileBloc.add(
+                            TeacherSubmitEvent(
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                              school: _schoolController.text,
+                            ),
+                          );
+                        },
+                        textColor: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
@@ -138,25 +233,24 @@ class EditProfilePageState extends State<EditProfilePage>
                               child: TextFormField(
                                 autovalidate: state.autoValidate,
                                 onTap: () async {
-                                  // final DateTime picked = await showDatePicker(
-                                  //   context: context,
-                                  //   initialDate: state.selectedDate,
-                                  //   firstDate: DateTime(2000, 1),
-                                  //   lastDate: DateTime.now(),
-                                  // );
+                                  final DateTime picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: state.user.dob,
+                                    firstDate: DateTime(2000, 1),
+                                    lastDate: DateTime.now(),
+                                  );
 
-                                  // if (picked != null &&
-                                  //     picked != state.selectedDate) {
-                                  //   _signupBloc.add(
-                                  //     SelectDateEvent(selectedDate: picked),
-                                  //   );
-                                  //   print(picked.toString());
+                                  if (picked != null &&
+                                      picked != state.user.dob) {
+                                    _editProfileBloc.add(
+                                      UpdateChildDOBEvent(childDOB: picked),
+                                    );
 
-                                  //   String formattedDate =
-                                  //       DateFormat('MMMM dd, yyyy')
-                                  //           .format(picked);
-                                  //   _dobController.text = formattedDate;
-                                  // }
+                                    String formattedDate =
+                                        DateFormat('MMMM dd, yyyy')
+                                            .format(picked);
+                                    _dobController.text = formattedDate;
+                                  }
                                 },
                                 controller: _dobController,
                                 decoration: InputDecoration(
@@ -185,7 +279,12 @@ class EditProfilePageState extends State<EditProfilePage>
                         text: 'Update',
                         buttonColor: Colors.blue,
                         onPressed: () {
-                          //todo: send update event
+                          _editProfileBloc.add(
+                            ParentSubmitEvent(
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                            ),
+                          );
                         },
                         textColor: Colors.white,
                       )
@@ -208,10 +307,81 @@ class EditProfilePageState extends State<EditProfilePage>
               page: APP_PAGES.EDIT_PROFILE,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: Center(
-                  child: Text('Edit Profile for Super Admin'),
-                )),
+              value: SystemUiOverlayStyle.light,
+              child: SafeArea(
+                child: Form(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TextFormField(
+                                controller: _firstNameController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      // width: 0.0 produces a thin "hairline" border
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(90.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+
+                                      //borderSide: const BorderSide(),
+                                    ),
+                                    hintStyle:
+                                        TextStyle(fontFamily: "WorkSansLight"),
+                                    filled: true,
+                                    hintText: 'First name'),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TextFormField(
+                                controller: _lastNameController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      // width: 0.0 produces a thin "hairline" border
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(90.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+
+                                      //borderSide: const BorderSide(),
+                                    ),
+                                    hintStyle:
+                                        TextStyle(fontFamily: "WorkSansLight"),
+                                    filled: true,
+                                    hintText: 'Last name'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FullWidthButtonWidget(
+                        text: 'Update',
+                        buttonColor: Colors.blue,
+                        onPressed: () {
+                          _editProfileBloc.add(
+                            SuperAdminSubmitEvent(
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                            ),
+                          );
+                        },
+                        textColor: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
@@ -239,10 +409,22 @@ class EditProfilePageState extends State<EditProfilePage>
   }
 
   @override
-  void setTextFields({UserModel user}) {
+  void parentSetTextFields({UserModel user}) {
     _firstNameController.text = user.firstName;
     _lastNameController.text = user.lastName;
-    // _emailController.text = user.email;
-    // _phoneController.text = user.phone;
+    _dobController.text = DateFormat('MMMM dd, yyyy').format(user.dob);
+  }
+
+  @override
+  void superAdminSetTextFields({UserModel user}) {
+    _firstNameController.text = user.firstName;
+    _lastNameController.text = user.lastName;
+  }
+
+  @override
+  void teacherSetTextFields({UserModel user}) {
+    _firstNameController.text = user.firstName;
+    _lastNameController.text = user.lastName;
+    _schoolController.text = user.school;
   }
 }
