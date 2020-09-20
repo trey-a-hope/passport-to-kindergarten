@@ -22,6 +22,8 @@ import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
 import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
 import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
+import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
+    as AWESOME_READING_TIPS_BP;
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -302,6 +304,31 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  ListTile _awesomeReadingTipsListTile() {
+    return ListTile(
+      leading: Icon(Icons.collections_bookmark, color: _drawerIconColor),
+      title: Text(
+        'AWEsome Reading Tips',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.AWESOME_READING_TIPS) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) =>
+                AWESOME_READING_TIPS_BP.AwesomeReadingTipsBloc()
+                  ..add(
+                    AWESOME_READING_TIPS_BP.LoadPageEvent(),
+                  ),
+            child: AWESOME_READING_TIPS_BP.AwesomeReadingTipsPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
   ListTile _logOutListTile() {
     return ListTile(
       leading: Icon(MdiIcons.logout, color: _drawerIconColor),
@@ -423,6 +450,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         _bookOfTheMonthListTile(),
         _adminListTile(),
         _editProfileListTile(),
+        _awesomeReadingTipsListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
@@ -461,6 +489,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         _readingLogListTile(),
         _visitingLogListTile(),
         _editProfileListTile(),
+        _awesomeReadingTipsListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
@@ -495,6 +524,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         ),
         _adminListTile(),
         _editProfileListTile(),
+        _awesomeReadingTipsListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
