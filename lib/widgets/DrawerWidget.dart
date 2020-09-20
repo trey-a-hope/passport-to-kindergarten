@@ -14,6 +14,7 @@ import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
 import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
 import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
+import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -270,6 +271,30 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  ListTile _editProfileListTile() {
+    return ListTile(
+      leading: Icon(Icons.edit, color: _drawerIconColor),
+      title: Text(
+        'Edit Profile',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.EDIT_PROFILE) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => EDIT_PROFILE_BP.EditProfileBloc()
+              ..add(
+                EDIT_PROFILE_BP.LoadPageEvent(),
+              ),
+            child: EDIT_PROFILE_BP.EditProfilePage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
   ListTile _logOutListTile() {
     return ListTile(
       leading: Icon(MdiIcons.logout, color: _drawerIconColor),
@@ -303,6 +328,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         ),
         _bookOfTheMonthListTile(),
         _adminListTile(),
+        _editProfileListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
@@ -339,6 +365,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         _myPassportListTile(),
         _readingLogListTile(),
         _visitingLogListTile(),
+        _editProfileListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
@@ -371,6 +398,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
           ),
         ),
         _adminListTile(),
+        _editProfileListTile(),
         _aboutListTile(),
         _settingsListTile(),
         Spacer(),
