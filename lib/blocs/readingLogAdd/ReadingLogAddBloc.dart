@@ -1,31 +1,29 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/blocs/visitingLogAdd/Bloc.dart';
+import 'package:p/blocs/readingLogAdd/Bloc.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 
-abstract class VisitingLogAddDelegate {
+abstract class ReadingLogAddDelegate {
   void showMessage({@required String message});
   void clearForm();
 }
 
-class VisitingLogAddBloc
-    extends Bloc<VisitingLogAddEvent, VisitingLogAddState> {
-  VisitingLogAddBloc() : super(null);
+class ReadingLogAddBloc extends Bloc<ReadingLogAddEvent, ReadingLogAddState> {
+  ReadingLogAddBloc() : super(null);
 
-  VisitingLogAddDelegate _visitingLogAddDelegate;
+  ReadingLogAddDelegate _readingLogAddDelegate;
   UserModel _currentUser;
 
-  void setDelegate({@required VisitingLogAddDelegate delegate}) {
-    this._visitingLogAddDelegate = delegate;
+  void setDelegate({@required ReadingLogAddDelegate delegate}) {
+    this._readingLogAddDelegate = delegate;
   }
 
   @override
-  Stream<VisitingLogAddState> mapEventToState(
-      VisitingLogAddEvent event) async* {
+  Stream<ReadingLogAddState> mapEventToState(ReadingLogAddEvent event) async* {
     if (event is LoadPageEvent) {
       yield LoadingState();
 
@@ -55,7 +53,7 @@ class VisitingLogAddBloc
             created: DateTime.now(),
           );
 
-          locator<LogService>().createVisitLog(
+          locator<LogService>().createReadLog(
             uid: _currentUser.uid,
             log: visitLog,
           );
@@ -66,10 +64,10 @@ class VisitingLogAddBloc
             formKey: formKey,
           );
 
-          _visitingLogAddDelegate.clearForm();
-          _visitingLogAddDelegate.showMessage(message: 'Visit log added.');
+          _readingLogAddDelegate.clearForm();
+          _readingLogAddDelegate.showMessage(message: 'Read log added.');
         } catch (error) {
-          _visitingLogAddDelegate.showMessage(message: error.toString());
+          _readingLogAddDelegate.showMessage(message: error.toString());
         }
       }
 

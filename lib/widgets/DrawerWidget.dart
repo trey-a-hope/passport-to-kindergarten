@@ -11,6 +11,7 @@ import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
+import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -153,6 +154,30 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  ListTile _readingLogListTile() {
+    return ListTile(
+      leading: Icon(Icons.bookmark, color: _drawerIconColor),
+      title: Text(
+        'Read Log',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: () {
+        if (page == APP_PAGES.READ_LOG) return;
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => READING_LOG_BP.ReadingLogBloc()
+              ..add(
+                READING_LOG_BP.LoadPageEvent(),
+              ),
+            child: READING_LOG_BP.ReadingLogPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
+
   ListTile _visitingLogListTile() {
     return ListTile(
       leading: Icon(Icons.location_on, color: _drawerIconColor),
@@ -161,7 +186,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       onTap: () {
-        if (page == APP_PAGES.VISITING_LOG) return;
+        if (page == APP_PAGES.VISIT_LOG) return;
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
@@ -263,6 +288,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
         _homeListTile(),
         _bookOfTheMonthListTile(),
         _myPassportListTile(),
+        _readingLogListTile(),
         _visitingLogListTile(),
         _settingsListTile(),
         Spacer(),

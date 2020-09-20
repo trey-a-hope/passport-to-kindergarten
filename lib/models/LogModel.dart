@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class VisitingLogModel {
+class LogModel {
   String id;
   DateTime created;
   String description;
 
-  VisitingLogModel({
+  LogModel({
     @required this.id,
     @required this.created,
     @required this.description,
   });
 
-  factory VisitingLogModel.fromDocumentSnapshot(
-      {@required DocumentSnapshot ds}) {
-    return VisitingLogModel(
+  factory LogModel.fromDocumentSnapshot({
+    @required DocumentSnapshot ds,
+  }) {
+    return LogModel(
       id: ds.data['id'],
       created: ds.data['created'].toDate(),
       description: ds.data['description'],

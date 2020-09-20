@@ -9,24 +9,23 @@ import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
-import 'Bloc.dart' as VISITING_LOG_BP;
-import 'package:p/blocs/visitingLogAdd/Bloc.dart' as VISITING_LOG_ADD_BP;
+import 'Bloc.dart' as READING_LOG_BP;
+import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
 
-class VisitingLogPage extends StatefulWidget {
+class ReadingLogPage extends StatefulWidget {
   @override
-  State createState() => VisitingLogPageState();
+  State createState() => ReadingLogPageState();
 }
 
-class VisitingLogPageState extends State<VisitingLogPage>
-    implements VISITING_LOG_BP.VisitingLogDelegate {
+class ReadingLogPageState extends State<ReadingLogPage>
+    implements READING_LOG_BP.ReadingLogDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  VISITING_LOG_BP.VisitingLogBloc _visitingLogBloc;
+  READING_LOG_BP.ReadingLogBloc _readingLogBloc;
 
   @override
   void initState() {
-    _visitingLogBloc =
-        BlocProvider.of<VISITING_LOG_BP.VisitingLogBloc>(context);
-    _visitingLogBloc.setDelegate(delegate: this);
+    _readingLogBloc = BlocProvider.of<READING_LOG_BP.ReadingLogBloc>(context);
+    _readingLogBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -37,30 +36,30 @@ class VisitingLogPageState extends State<VisitingLogPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VISITING_LOG_BP.VisitingLogBloc,
-        VISITING_LOG_BP.VisitingLogState>(
-      builder: (BuildContext context, VISITING_LOG_BP.VisitingLogState state) {
-        if (state is VISITING_LOG_BP.LoadingState) {
+    return BlocBuilder<READING_LOG_BP.ReadingLogBloc,
+        READING_LOG_BP.ReadingLogState>(
+      builder: (BuildContext context, READING_LOG_BP.ReadingLogState state) {
+        if (state is READING_LOG_BP.LoadingState) {
           return Container(
             color: Colors.white,
             child: SpinnerWidget(),
           );
         }
 
-        if (state is VISITING_LOG_BP.LoadedState) {
-          final List<LogModel> visitLogs = state.visitLogs;
+        if (state is READING_LOG_BP.LoadedState) {
+          final List<LogModel> readLogs = state.readLogs;
 
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Visit Logs - ${visitLogs.length}'),
+              title: Text('Read Logs - ${readLogs.length}'),
               actions: [
                 IconButton(
                   icon: Icon(Icons.refresh),
                   onPressed: () {
-                    _visitingLogBloc.add(
-                      VISITING_LOG_BP.LoadPageEvent(),
+                    _readingLogBloc.add(
+                      READING_LOG_BP.LoadPageEvent(),
                     );
                   },
                 ),
@@ -70,11 +69,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                     Route route = MaterialPageRoute(
                       builder: (BuildContext context) => BlocProvider(
                         create: (BuildContext context) =>
-                            VISITING_LOG_ADD_BP.VisitingLogAddBloc()
+                            READING_LOG_ADD_BP.ReadingLogAddBloc()
                               ..add(
-                                VISITING_LOG_ADD_BP.LoadPageEvent(),
+                                READING_LOG_ADD_BP.LoadPageEvent(),
                               ),
-                        child: VISITING_LOG_ADD_BP.VisitingLogAddPage(),
+                        child: READING_LOG_ADD_BP.ReadingLogAddPage(),
                       ),
                     );
                     Navigator.push(context, route);
@@ -84,19 +83,19 @@ class VisitingLogPageState extends State<VisitingLogPage>
             ),
             drawer: DrawerWidget(
               currentUser: state.user,
-              page: APP_PAGES.VISIT_LOG,
+              page: APP_PAGES.READ_LOG,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: ListView.builder(
-                  itemCount: state.visitLogs.length,
+                  itemCount: readLogs.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final LogModel visitLog = visitLogs[index];
+                    final LogModel readLog = readLogs[index];
                     return ListTile(
-                      leading: Icon(Icons.location_on),
-                      title: Text('${visitLog.description}'),
+                      leading: Icon(Icons.bookmark),
+                      title: Text('${readLog.description}'),
                       subtitle: Text(DateFormat('MMMM dd, yyyy').format(
-                        visitLog.created,
+                        readLog.created,
                       )),
                     );
                   }),
@@ -104,7 +103,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
           );
         }
 
-        if (state is VISITING_LOG_BP.ErrorState) {
+        if (state is READING_LOG_BP.ErrorState) {
           return Container(
             child: Center(
               child: Text(

@@ -3,31 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 
-class VisitingLogState extends Equatable {
-  const VisitingLogState();
+class ReadingLogState extends Equatable {
+  const ReadingLogState();
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends VisitingLogState {}
+class LoadingState extends ReadingLogState {}
 
-class LoadedState extends VisitingLogState {
+class LoadedState extends ReadingLogState {
   final UserModel user;
-  final List<LogModel> visitLogs;
+  final List<LogModel> readLogs;
 
   LoadedState({
     @required this.user,
-    @required this.visitLogs,
+    @required this.readLogs,
   });
 
   @override
   List<Object> get props => [
         user,
-        visitLogs,
+        readLogs,
       ];
 }
 
-class ErrorState extends VisitingLogState {
+class ErrorState extends ReadingLogState {
   final dynamic error;
 
   ErrorState({
