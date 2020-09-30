@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -123,6 +124,8 @@ class DrawerWidgetState extends State<DrawerWidget> {
       ),
       onTap: () {
         if (page == APP_PAGES.BOOK_OF_THE_MONTH) return;
+
+        HapticFeedback.vibrate();
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
