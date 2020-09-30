@@ -12,6 +12,8 @@ import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
+import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'
+    as READING_LOG_BOOKS_ADD_BP;
 
 class ReadingLogBooksPage extends StatefulWidget {
   @override
@@ -40,8 +42,8 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
   Widget build(BuildContext context) {
     return BlocBuilder<READING_LOG_BOOKS_BP.ReadingLogBooksBloc,
         READING_LOG_BOOKS_BP.ReadingLogBooksState>(
-      builder:
-          (BuildContext context, READING_LOG_BOOKS_BP.ReadingLogBooksState state) {
+      builder: (BuildContext context,
+          READING_LOG_BOOKS_BP.ReadingLogBooksState state) {
         if (state is READING_LOG_BOOKS_BP.LoadingState) {
           return Container(
             color: Colors.white,
@@ -76,9 +78,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                             leading: Icon(Icons.bookmark),
                             title: Text('${book.title}'),
                             subtitle: Text(
-                              DateFormat('MMMM dd, yyyy').format(
-                                book.created,
-                              ),
+                              'Created ${DateFormat('MMMM dd, yyyy').format(book.created)}',
                             ),
                             onTap: () {
                               // Route route = MaterialPageRoute(
@@ -109,8 +109,22 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                       ),
                     ),
                     FullWidthButtonWidget(
-                      onPressed: () {},
-                      text: 'Create Book For Logging',
+                      onPressed: () {
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                READING_LOG_BOOKS_ADD_BP
+                                    .ReadingLogBooksAddBloc()
+                                  ..add(
+                                    READING_LOG_BOOKS_ADD_BP.LoadPageEvent(),
+                                  ),
+                            child: READING_LOG_BOOKS_ADD_BP
+                                .ReadingLogBooksAddPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                      text: 'Read A New Book?',
                       textColor: Colors.white,
                       buttonColor: Colors.grey,
                     )

@@ -31,25 +31,28 @@ class LogService extends ILogService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
 
-  // @override
-  // void createReadLog({@required String uid, @required LogModel log}) {
-  //   try {
-  //     final DocumentReference userDocRef = _usersColRef.document(uid);
+  @override
+  void createParentLog(
+      {@required String uid,
+      @required String collection,
+      @required ParentLogModel parentLog}) {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
 
-  //     final CollectionReference readLogColRef =
-  //         userDocRef.collection('readLogs');
+      final CollectionReference parentLogColRef =
+          userDocRef.collection(collection);
 
-  //     DocumentReference readLogDocRef = readLogColRef.document();
-  //     log.id = readLogDocRef.documentID;
-  //     readLogDocRef.setData(
-  //       log.toMap(),
-  //     );
-  //   } catch (e) {
-  //     throw Exception(
-  //       e.toString(),
-  //     );
-  //   }
-  // }
+      DocumentReference parentLogDocRef = parentLogColRef.document();
+      parentLog.id = parentLogDocRef.documentID;
+      parentLogDocRef.setData(
+        parentLog.toMap(),
+      );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
 
   // @override
   // void createVisitLog({@required String uid, @required LogModel log}) {

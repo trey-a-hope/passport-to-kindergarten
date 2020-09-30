@@ -53,6 +53,10 @@ class ReadingLogBooksBloc
     if (event is BooksUpdatedEvent) {
       final List<ParentLogModel> books = event.books;
 
+      books.sort(
+        (a, b) => b.created.compareTo(a.created),
+      );
+
       yield LoadedState(
         user: _currentUser,
         books: books,
