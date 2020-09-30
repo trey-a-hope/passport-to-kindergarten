@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/constants.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_LOGS_BP;
-import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
-import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'
-    as READING_LOG_BOOKS_ADD_BP;
+import 'package:p/blocs/readingLogLogsAdd/Bloc.dart' as READING_LOG_LOGS_ADD_BP;
 
 class ReadingLogLogsPage extends StatefulWidget {
   @override
@@ -67,18 +63,27 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
               child: SafeArea(
                 child: Column(
                   children: [
+                    Placeholder(
+                      color: Colors.red,
+                      fallbackHeight: 300,
+                    ),
+                    Text('Calendar Goes Above'),
                     Expanded(
                       child: ListView.builder(
                         itemCount: logs.length,
                         itemBuilder: (BuildContext context, int index) {
                           final ChildLogModel log = logs[index];
                           return ListTile(
-                            leading: Icon(Icons.bookmark),
+                            leading: Icon(MdiIcons.pencil),
                             title: Text('${log.title}'),
                             subtitle: Text(
                               'Created ${DateFormat('MMMM dd, yyyy').format(log.created)}',
                             ),
                             onTap: () {
+                              locator<ModalService>().showAlert(
+                                  context: context,
+                                  title: 'Notes',
+                                  message: '\"${log.notes}\"');
                               // Route route = MaterialPageRoute(
                               //   builder: (BuildContext context) => BlocProvider(
                               //     create: (BuildContext context) =>
@@ -98,19 +103,19 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
                     ),
                     FullWidthButtonWidget(
                       onPressed: () {
-                        // Route route = MaterialPageRoute(
-                        //   builder: (BuildContext context) => BlocProvider(
-                        //     create: (BuildContext context) =>
-                        //         READING_LOG_BOOKS_ADD_BP
-                        //             .ReadingLogBooksAddBloc()
-                        //           ..add(
-                        //             READING_LOG_BOOKS_ADD_BP.LoadPageEvent(),
-                        //           ),
-                        //     child: READING_LOG_BOOKS_ADD_BP
-                        //         .ReadingLogBooksAddPage(),
-                        //   ),
-                        // );
-                        // Navigator.push(context, route);
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddBloc(
+                              book: book,
+                            )..add(
+                                    READING_LOG_LOGS_ADD_BP.LoadPageEvent(),
+                                  ),
+                            child:
+                                READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
                       },
                       text: 'Add a New Log',
                       textColor: Colors.white,

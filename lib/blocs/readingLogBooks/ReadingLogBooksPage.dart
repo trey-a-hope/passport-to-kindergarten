@@ -5,13 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_BP;
-import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
 import 'package:p/blocs/readingLogLogs/Bloc.dart' as READING_LOG_LOGS_BP;
 
 import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'

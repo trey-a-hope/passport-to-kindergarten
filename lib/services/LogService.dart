@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/LogModel.dart';
 
@@ -15,10 +16,13 @@ abstract class ILogService {
   // Future<List<LogModel>> retrieveVisitLogs({
   //   @required String uid,
   // });
-  void createParentLog({
+
+  void createChildLog({
     @required String uid,
     @required String collection,
-    @required ParentLogModel parentLog,
+    @required String documentID,
+    @required String subCollection,
+    @required ChildLogModel childLogModel,
   });
 
   Future<List<ParentLogModel>> retrieveParentLogs({
@@ -59,6 +63,43 @@ class LogService extends ILogService {
       parentLogDocRef.setData(
         parentLog.toMap(),
       );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  void createChildLog(
+      {@required String uid,
+      @required String collection,
+      @required String documentID,
+      @required String subCollection,
+      @required ChildLogModel childLogModel}) {
+    try {
+      final WriteBatch batch = Firestore.instance.batch();
+
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      final DocumentReference parentLogDocRef =
+          userDocRef.collection(collection).document(documentID);
+
+      final DocumentReference childLogDocRef =
+          parentLogDocRef.collection(subCollection).document();
+
+      childLogModel.id = childLogDocRef.documentID;
+
+      batch.setData(
+        childLogDocRef,
+        childLogModel.toMap(),
+      );
+
+      batch.updateData(parentLogDocRef, {
+        'logCount': FieldValue.increment(1),
+      });
+
+      batch.commit();
     } catch (e) {
       throw Exception(
         e.toString(),
