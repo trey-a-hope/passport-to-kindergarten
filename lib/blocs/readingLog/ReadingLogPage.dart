@@ -84,7 +84,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                     final LogModel readLog = readLogs[index];
                     return ListTile(
                       leading: Icon(Icons.bookmark),
-                      title: Text('${readLog.description}'),
+                      title: Text('${readLog.bookTitle}'),
                       subtitle: Text(DateFormat('MMMM dd, yyyy').format(
                         readLog.created,
                       )),

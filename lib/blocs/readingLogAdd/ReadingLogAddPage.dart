@@ -16,7 +16,7 @@ class ReadingLogAddPageState extends State<ReadingLogAddPage>
     implements READING_LOG_ADD_BP.ReadingLogAddDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   READING_LOG_ADD_BP.ReadingLogAddBloc _readingLogAddBloc;
-
+  final TextEditingController _bookController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
@@ -63,6 +63,34 @@ class ReadingLogAddPageState extends State<ReadingLogAddPage>
                           padding: EdgeInsets.all(20),
                           child: TextFormField(
                             autovalidate: state.autoValidate,
+                            controller: _bookController,
+                            style: TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.book,
+                                  color: Colors.grey.shade700,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.grey.shade300,
+                                hintText: 'Title'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: TextFormField(
+                            autovalidate: state.autoValidate,
                             controller: _descriptionController,
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
@@ -100,12 +128,13 @@ class ReadingLogAddPageState extends State<ReadingLogAddPage>
                                     message: 'Are you sure?');
 
                             if (!confirm) return;
-
+                            final String bookTitle = _bookController.text;
                             final String description =
                                 _descriptionController.text;
 
                             _readingLogAddBloc.add(
                               READING_LOG_ADD_BP.SubmitEvent(
+                                bookTitle: bookTitle,
                                 description: description,
                                 formKey: state.formKey,
                               ),

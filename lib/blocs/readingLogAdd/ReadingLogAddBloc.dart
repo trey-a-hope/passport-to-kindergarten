@@ -40,6 +40,7 @@ class ReadingLogAddBloc extends Bloc<ReadingLogAddEvent, ReadingLogAddState> {
     }
 
     if (event is SubmitEvent) {
+      final String bookTitle = event.bookTitle;
       final String description = event.description;
       final GlobalKey<FormState> formKey = event.formKey;
 
@@ -51,7 +52,7 @@ class ReadingLogAddBloc extends Bloc<ReadingLogAddEvent, ReadingLogAddState> {
             id: null,
             description: description,
             created: DateTime.now(),
-            bookTitle: 'Book Title'
+            bookTitle: bookTitle,
           );
 
           locator<LogService>().createReadLog(

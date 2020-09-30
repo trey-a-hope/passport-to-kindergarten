@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/DummyService.dart';
 
 import 'HomeEvent.dart';
 import 'HomeState.dart';
@@ -28,9 +29,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
+
+        // todo: This is here just for testing my guy!
+        // locator<DummyService>()
+        //     .addDefaultReadLogsToStudent(uid: _currentUser.uid);
+
         yield LoadedState(user: _currentUser);
       } catch (error) {
-        
         yield ErrorState(error: error);
       }
     }
