@@ -18,6 +18,10 @@ abstract class ILogService {
   Future<List<LogModel>> retrieveReadLogs({
     @required String uid,
   });
+
+  Future<Stream<QuerySnapshot>> retrieveReadLogsStream({
+    @required String uid,
+  });
 }
 
 class LogService extends ILogService {
@@ -78,6 +82,23 @@ class LogService extends ILogService {
           .toList();
 
       return readLogs;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> retrieveReadLogsStream(
+      {@required String uid}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      final CollectionReference readLogColRef =
+          userDocRef.collection('readLogs');
+
+      return readLogColRef.snapshots();
     } catch (e) {
       throw Exception(
         e.toString(),

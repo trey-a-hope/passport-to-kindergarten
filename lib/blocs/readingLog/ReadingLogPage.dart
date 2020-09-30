@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
@@ -55,14 +54,6 @@ class ReadingLogPageState extends State<ReadingLogPage>
               centerTitle: true,
               title: Text('Read Logs - ${readLogs.length}'),
               actions: [
-                IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    _readingLogBloc.add(
-                      READING_LOG_BP.LoadPageEvent(),
-                    );
-                  },
-                ),
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {

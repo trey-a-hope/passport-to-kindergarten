@@ -51,6 +51,7 @@ class ReadingLogAddBloc extends Bloc<ReadingLogAddEvent, ReadingLogAddState> {
             id: null,
             description: description,
             created: DateTime.now(),
+            bookTitle: 'Book Title'
           );
 
           locator<LogService>().createReadLog(

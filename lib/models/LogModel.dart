@@ -5,20 +5,25 @@ class LogModel {
   String id;
   DateTime created;
   String description;
+  String bookTitle;
 
   LogModel({
     @required this.id,
     @required this.created,
     @required this.description,
+    @required this.bookTitle,
   });
 
   factory LogModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
+    Map<String, dynamic> data = ds.data;
+
     return LogModel(
-      id: ds.data['id'],
-      created: ds.data['created'].toDate(),
-      description: ds.data['description'],
+      id: data['id'],
+      created: data['created'].toDate(),
+      description: data['description'],
+      bookTitle: data['bookTitle'],
     );
   }
 
@@ -27,6 +32,7 @@ class LogModel {
       'id': id,
       'created': created,
       'description': description,
+      'bookTitle': bookTitle,
     };
   }
 }

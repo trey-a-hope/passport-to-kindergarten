@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
@@ -29,17 +30,27 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        List<LogModel> readLogs = await locator<LogService>().retrieveReadLogs(
-          uid: _currentUser.uid,
-        );
+        Stream<QuerySnapshot> readLogsStream = await locator<LogService>()
+            .retrieveReadLogsStream(uid: _currentUser.uid);
 
-        yield LoadedState(
-          user: _currentUser,
-          readLogs: readLogs,
-        );
+        readLogsStream.listen((QuerySnapshot event) {
+          List<LogModel> readLogs = event.documents
+              .map((doc) => LogModel.fromDocumentSnapshot(ds: doc))
+              .toList();
+          add(ReadLogsUpdatedEvent(readLogs: readLogs));
+        });
       } catch (error) {
         yield ErrorState(error: error);
       }
+    }
+
+    if (event is ReadLogsUpdatedEvent) {
+      final List<LogModel> readLogs = event.readLogs;
+
+      yield LoadedState(
+        user: _currentUser,
+        readLogs: readLogs,
+      );
     }
   }
 }

@@ -53,6 +53,7 @@ class VisitingLogAddBloc
             id: null,
             description: description,
             created: DateTime.now(),
+            bookTitle: 'Visit Title'
           );
 
           locator<LogService>().createVisitLog(
