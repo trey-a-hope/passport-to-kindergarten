@@ -56,10 +56,10 @@ class VisitingLogAddBloc
             bookTitle: 'Visit Title'
           );
 
-          locator<LogService>().createVisitLog(
-            uid: _currentUser.uid,
-            log: visitLog,
-          );
+          // locator<LogService>().createVisitLog(
+          //   uid: _currentUser.uid,
+          //   log: visitLog,
+          // );
 
           yield LoadedState(
             user: _currentUser,

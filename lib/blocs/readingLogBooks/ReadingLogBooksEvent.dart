@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/ParentLogModel.dart';
 
-abstract class ReadingLogEvent extends Equatable {
+abstract class ReadingLogBooksEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadPageEvent extends ReadingLogEvent {
+class LoadPageEvent extends ReadingLogBooksEvent {
   LoadPageEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class BooksUpdatedEvent extends ReadingLogEvent {
-  final List<BookModel> books;
+class BooksUpdatedEvent extends ReadingLogBooksEvent {
+  final List<ParentLogModel> books;
 
   BooksUpdatedEvent({
     @required this.books,

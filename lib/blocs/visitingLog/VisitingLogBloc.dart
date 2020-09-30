@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/visitingLog/Bloc.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
@@ -29,9 +30,10 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        List<LogModel> visitLogs =
-            await locator<LogService>().retrieveVisitLogs(
+        List<ParentLogModel> visitLogs =
+            await locator<LogService>().retrieveParentLogs(
           uid: _currentUser.uid,
+          collection: 'visitLogs',
         );
 
         yield LoadedState(

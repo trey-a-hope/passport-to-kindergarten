@@ -6,6 +6,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookOfTheMonthModel.dart';
 import 'package:p/models/LogModel.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -48,7 +49,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
         }
 
         if (state is VISITING_LOG_BP.LoadedState) {
-          final List<LogModel> visitLogs = state.visitLogs;
+          final List<ParentLogModel> visitLogs = state.visitLogs;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -91,10 +92,10 @@ class VisitingLogPageState extends State<VisitingLogPage>
               child: ListView.builder(
                   itemCount: state.visitLogs.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final LogModel visitLog = visitLogs[index];
+                    final ParentLogModel visitLog = visitLogs[index];
                     return ListTile(
                       leading: Icon(Icons.location_on),
-                      title: Text('${visitLog.description}'),
+                      title: Text('${visitLog.title}'),
                       subtitle: Text(DateFormat('MMMM dd, yyyy').format(
                         visitLog.created,
                       )),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 
@@ -21,29 +21,29 @@ class DummyService extends IDummyService {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      List<BookModel> defaultBooks = [
-        BookModel(
+      List<ParentLogModel> defaultBooks = [
+        ParentLogModel(
           id: null,
-          bookTitle: 'Little Red Robin Hood',
+          title: 'Little Red Robin Hood',
           created: DateTime.now(),
           logCount: 0,
         ),
-        BookModel(
+        ParentLogModel(
           id: null,
-          bookTitle: 'Little Blue Robin Hood',
+          title: 'Little Blue Robin Hood',
           created: DateTime.now(),
           logCount: 0,
         ),
-        BookModel(
+        ParentLogModel(
           id: null,
-          bookTitle: 'Little Green Robin Hood',
+          title: 'Little Green Robin Hood',
           created: DateTime.now(),
           logCount: 0,
         ),
       ];
 
       defaultBooks.forEach(
-        (BookModel defaultBook) {
+        (ParentLogModel defaultBook) {
           DocumentReference defaultBookRef =
               userDocRef.collection('books').document();
           defaultBook.id = defaultBookRef.documentID;

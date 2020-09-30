@@ -4,29 +4,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
-import 'Bloc.dart' as READING_LOG_BP;
+import 'Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
 
-class ReadingLogPage extends StatefulWidget {
+class ReadingLogBooksPage extends StatefulWidget {
   @override
-  State createState() => ReadingLogPageState();
+  State createState() => ReadingLogBooksPageState();
 }
 
-class ReadingLogPageState extends State<ReadingLogPage>
-    implements READING_LOG_BP.ReadingLogDelegate {
+class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
+    implements READING_LOG_BOOKS_BP.ReadingLogBooksDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  READING_LOG_BP.ReadingLogBloc _readingLogBloc;
+  READING_LOG_BOOKS_BP.ReadingLogBooksBloc _readLogBooksBloc;
 
   @override
   void initState() {
-    _readingLogBloc = BlocProvider.of<READING_LOG_BP.ReadingLogBloc>(context);
-    _readingLogBloc.setDelegate(delegate: this);
+    _readLogBooksBloc =
+        BlocProvider.of<READING_LOG_BOOKS_BP.ReadingLogBooksBloc>(context);
+    _readLogBooksBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -37,18 +38,19 @@ class ReadingLogPageState extends State<ReadingLogPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<READING_LOG_BP.ReadingLogBloc,
-        READING_LOG_BP.ReadingLogState>(
-      builder: (BuildContext context, READING_LOG_BP.ReadingLogState state) {
-        if (state is READING_LOG_BP.LoadingState) {
+    return BlocBuilder<READING_LOG_BOOKS_BP.ReadingLogBooksBloc,
+        READING_LOG_BOOKS_BP.ReadingLogBooksState>(
+      builder:
+          (BuildContext context, READING_LOG_BOOKS_BP.ReadingLogBooksState state) {
+        if (state is READING_LOG_BOOKS_BP.LoadingState) {
           return Container(
             color: Colors.white,
             child: SpinnerWidget(),
           );
         }
 
-        if (state is READING_LOG_BP.LoadedState) {
-          final List<BookModel> books = state.books;
+        if (state is READING_LOG_BOOKS_BP.LoadedState) {
+          final List<ParentLogModel> books = state.books;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -69,15 +71,29 @@ class ReadingLogPageState extends State<ReadingLogPage>
                       child: ListView.builder(
                         itemCount: books.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final BookModel book = books[index];
+                          final ParentLogModel book = books[index];
                           return ListTile(
                             leading: Icon(Icons.bookmark),
-                            title: Text('${book.bookTitle}'),
+                            title: Text('${book.title}'),
                             subtitle: Text(
                               DateFormat('MMMM dd, yyyy').format(
                                 book.created,
                               ),
                             ),
+                            onTap: () {
+                              // Route route = MaterialPageRoute(
+                              //   builder: (BuildContext context) => BlocProvider(
+                              //     create: (BuildContext context) =>
+                              //         READING_LOG_ADD_BP.ReadingLogAddBloc(
+                              //             book: book)
+                              //           ..add(
+                              //             READING_LOG_ADD_BP.LoadPageEvent(),
+                              //           ),
+                              //     child: READING_LOG_ADD_BP.ReadingLogAddPage(),
+                              //   ),
+                              // );
+                              // Navigator.push(context, route);
+                            },
                             trailing: CircleAvatar(
                               backgroundColor: Colors.orange.shade700,
                               child: Text(
@@ -93,19 +109,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                       ),
                     ),
                     FullWidthButtonWidget(
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                          builder: (BuildContext context) => BlocProvider(
-                            create: (BuildContext context) =>
-                                READING_LOG_ADD_BP.ReadingLogAddBloc()
-                                  ..add(
-                                    READING_LOG_ADD_BP.LoadPageEvent(),
-                                  ),
-                            child: READING_LOG_ADD_BP.ReadingLogAddPage(),
-                          ),
-                        );
-                        Navigator.push(context, route);
-                      },
+                      onPressed: () {},
                       text: 'Create Book For Logging',
                       textColor: Colors.white,
                       buttonColor: Colors.grey,
@@ -117,7 +121,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
           );
         }
 
-        if (state is READING_LOG_BP.ErrorState) {
+        if (state is READING_LOG_BOOKS_BP.ErrorState) {
           return Container(
             child: Center(
               child: Text(

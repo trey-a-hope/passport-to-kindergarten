@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 
@@ -13,7 +14,7 @@ class LoadingState extends VisitingLogState {}
 
 class LoadedState extends VisitingLogState {
   final UserModel user;
-  final List<LogModel> visitLogs;
+  final List<ParentLogModel> visitLogs;
 
   LoadedState({
     @required this.user,

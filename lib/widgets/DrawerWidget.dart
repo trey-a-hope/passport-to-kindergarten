@@ -19,7 +19,7 @@ import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
-import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
+import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
@@ -178,11 +178,12 @@ class DrawerWidgetState extends State<DrawerWidget> {
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
-            create: (BuildContext context) => READING_LOG_BP.ReadingLogBloc()
-              ..add(
-                READING_LOG_BP.LoadPageEvent(),
-              ),
-            child: READING_LOG_BP.ReadingLogPage(),
+            create: (BuildContext context) =>
+                READING_LOG_BOOKS_BP.ReadingLogBooksBloc()
+                  ..add(
+                    READING_LOG_BOOKS_BP.LoadPageEvent(),
+                  ),
+            child: READING_LOG_BOOKS_BP.ReadingLogBooksPage(),
           ),
         );
         Navigator.push(context, route);

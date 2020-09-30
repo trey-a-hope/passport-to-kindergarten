@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 
-class ReadingLogState extends Equatable {
-  const ReadingLogState();
+class ReadingLogBooksState extends Equatable {
+  const ReadingLogBooksState();
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends ReadingLogState {}
+class LoadingState extends ReadingLogBooksState {}
 
-class LoadedState extends ReadingLogState {
+class LoadedState extends ReadingLogBooksState {
   final UserModel user;
-  final List<BookModel> books;
+  final List<ParentLogModel> books;
 
   LoadedState({
     @required this.user,
@@ -28,7 +28,7 @@ class LoadedState extends ReadingLogState {
       ];
 }
 
-class ErrorState extends ReadingLogState {
+class ErrorState extends ReadingLogBooksState {
   final dynamic error;
 
   ErrorState({

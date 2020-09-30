@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class BookModel {
+class ParentLogModel {
   String id;
   DateTime created;
-  String bookTitle;
+  String title;
   int logCount;
 
-  BookModel({
+  ParentLogModel({
     @required this.id,
     @required this.created,
-    @required this.bookTitle,
+    @required this.title,
     @required this.logCount,
   });
 
-  factory BookModel.fromDocumentSnapshot({
+  factory ParentLogModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
     Map<String, dynamic> data = ds.data;
 
-    return BookModel(
+    return ParentLogModel(
       id: data['id'],
       created: data['created'].toDate(),
-      bookTitle: data['bookTitle'],
+      title: data['title'],
       logCount: data['logCount'],
     );
   }
@@ -31,7 +31,7 @@ class BookModel {
     return {
       'id': id,
       'created': created,
-      'bookTitle': bookTitle,
+      'title': title,
       'logCount': logCount,
     };
   }
