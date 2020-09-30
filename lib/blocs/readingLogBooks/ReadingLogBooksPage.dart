@@ -12,6 +12,8 @@ import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
+import 'package:p/blocs/readingLogLogs/Bloc.dart' as READING_LOG_LOGS_BP;
+
 import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'
     as READING_LOG_BOOKS_ADD_BP;
 
@@ -81,18 +83,19 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                               'Created ${DateFormat('MMMM dd, yyyy').format(book.created)}',
                             ),
                             onTap: () {
-                              // Route route = MaterialPageRoute(
-                              //   builder: (BuildContext context) => BlocProvider(
-                              //     create: (BuildContext context) =>
-                              //         READING_LOG_ADD_BP.ReadingLogAddBloc(
-                              //             book: book)
-                              //           ..add(
-                              //             READING_LOG_ADD_BP.LoadPageEvent(),
-                              //           ),
-                              //     child: READING_LOG_ADD_BP.ReadingLogAddPage(),
-                              //   ),
-                              // );
-                              // Navigator.push(context, route);
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) => BlocProvider(
+                                  create: (BuildContext context) =>
+                                      READING_LOG_LOGS_BP.ReadingLogLogsBloc(
+                                          book: book)
+                                        ..add(
+                                          READING_LOG_LOGS_BP.LoadPageEvent(),
+                                        ),
+                                  child:
+                                      READING_LOG_LOGS_BP.ReadingLogLogsPage(),
+                                ),
+                              );
+                              Navigator.push(context, route);
                             },
                             trailing: CircleAvatar(
                               backgroundColor: Colors.orange.shade700,

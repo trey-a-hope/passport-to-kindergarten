@@ -15,6 +15,11 @@ abstract class ILogService {
   // Future<List<LogModel>> retrieveVisitLogs({
   //   @required String uid,
   // });
+  void createParentLog({
+    @required String uid,
+    @required String collection,
+    @required ParentLogModel parentLog,
+  });
 
   Future<List<ParentLogModel>> retrieveParentLogs({
     @required String uid,
@@ -24,6 +29,13 @@ abstract class ILogService {
   Future<Stream<QuerySnapshot>> retrieveParentLogsStream({
     @required String uid,
     @required String collection,
+  });
+
+  Future<Stream<QuerySnapshot>> retrieveChildLogsStream({
+    @required String uid,
+    @required String collection,
+    @required String documentID,
+    @required String subCollection,
   });
 }
 
@@ -131,6 +143,29 @@ class LogService extends ILogService {
           userDocRef.collection(collection);
 
       return parentLogColRef.snapshots();
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> retrieveChildLogsStream({
+    @required String uid,
+    @required String collection,
+    @required String documentID,
+    @required String subCollection,
+  }) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      final CollectionReference childLogColRef = userDocRef
+          .collection(collection)
+          .document(documentID)
+          .collection(subCollection);
+
+      return childLogColRef.snapshots();
     } catch (e) {
       throw Exception(
         e.toString(),
