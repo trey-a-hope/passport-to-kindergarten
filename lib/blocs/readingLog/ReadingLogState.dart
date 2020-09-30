@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 
@@ -13,17 +14,17 @@ class LoadingState extends ReadingLogState {}
 
 class LoadedState extends ReadingLogState {
   final UserModel user;
-  final List<LogModel> readLogs;
+  final List<BookModel> books;
 
   LoadedState({
     @required this.user,
-    @required this.readLogs,
+    @required this.books,
   });
 
   @override
   List<Object> get props => [
         user,
-        readLogs,
+        books,
       ];
 }
 

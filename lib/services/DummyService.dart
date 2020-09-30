@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class IDummyService {
-  Future<void> addDefaultReadLogsToStudent({
+  Future<void> addDefaultBooksToStudent({
     @required String uid,
   });
 }
@@ -14,40 +15,40 @@ class DummyService extends IDummyService {
       Firestore.instance.collection('Users');
 
   @override
-  Future<void> addDefaultReadLogsToStudent({
+  Future<void> addDefaultBooksToStudent({
     @required String uid,
   }) async {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      List<LogModel> defaultReadingLogs = [
-        LogModel(
+      List<BookModel> defaultBooks = [
+        BookModel(
           id: null,
           bookTitle: 'Little Red Robin Hood',
           created: DateTime.now(),
-          description: 'This is the reading log for Little Red Robin Hood',
+          logCount: 0,
         ),
-        LogModel(
+        BookModel(
           id: null,
-          bookTitle: 'Blue Bird in A Big House',
+          bookTitle: 'Little Blue Robin Hood',
           created: DateTime.now(),
-          description: 'This is the reading log for Blue Bird in A Big House',
+          logCount: 0,
         ),
-        LogModel(
+        BookModel(
           id: null,
-          bookTitle: 'Lil Monty',
+          bookTitle: 'Little Green Robin Hood',
           created: DateTime.now(),
-          description: 'This is the reading log for Lil Monty',
-        )
+          logCount: 0,
+        ),
       ];
 
-      defaultReadingLogs.forEach(
-        (LogModel defaultReadingLog) {
-          DocumentReference readLogDocRef =
-              userDocRef.collection('readLogs').document();
-          defaultReadingLog.id = readLogDocRef.documentID;
-          readLogDocRef.setData(
-            defaultReadingLog.toMap(),
+      defaultBooks.forEach(
+        (BookModel defaultBook) {
+          DocumentReference defaultBookRef =
+              userDocRef.collection('books').document();
+          defaultBook.id = defaultBookRef.documentID;
+          defaultBookRef.setData(
+            defaultBook.toMap(),
           );
         },
       );

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/LogModel.dart';
+import 'package:p/models/BookModel.dart';
 
 abstract class ReadingLogEvent extends Equatable {
   @override
@@ -15,15 +15,15 @@ class LoadPageEvent extends ReadingLogEvent {
   List<Object> get props => [];
 }
 
-class ReadLogsUpdatedEvent extends ReadingLogEvent {
-  final List<LogModel> readLogs;
+class BooksUpdatedEvent extends ReadingLogEvent {
+  final List<BookModel> books;
 
-  ReadLogsUpdatedEvent({
-    @required this.readLogs,
+  BooksUpdatedEvent({
+    @required this.books,
   });
 
   @override
   List<Object> get props => [
-        readLogs,
+        books,
       ];
 }

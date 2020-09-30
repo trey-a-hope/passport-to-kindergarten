@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/readingLog/Bloc.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
@@ -30,26 +31,26 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        Stream<QuerySnapshot> readLogsStream = await locator<LogService>()
-            .retrieveReadLogsStream(uid: _currentUser.uid);
+        Stream<QuerySnapshot> booksStream = await locator<LogService>()
+            .retrieveBooksStream(uid: _currentUser.uid);
 
-        readLogsStream.listen((QuerySnapshot event) {
-          List<LogModel> readLogs = event.documents
-              .map((doc) => LogModel.fromDocumentSnapshot(ds: doc))
+        booksStream.listen((QuerySnapshot event) {
+          List<BookModel> books = event.documents
+              .map((doc) => BookModel.fromDocumentSnapshot(ds: doc))
               .toList();
-          add(ReadLogsUpdatedEvent(readLogs: readLogs));
+          add(BooksUpdatedEvent(books: books));
         });
       } catch (error) {
         yield ErrorState(error: error);
       }
     }
 
-    if (event is ReadLogsUpdatedEvent) {
-      final List<LogModel> readLogs = event.readLogs;
+    if (event is BooksUpdatedEvent) {
+      final List<BookModel> books = event.books;
 
       yield LoadedState(
         user: _currentUser,
-        readLogs: readLogs,
+        books: books,
       );
     }
   }

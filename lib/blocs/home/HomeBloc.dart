@@ -32,7 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         // todo: This is here just for testing my guy!
         // locator<DummyService>()
-        //     .addDefaultReadLogsToStudent(uid: _currentUser.uid);
+        //     .addDefaultBooksToStudent(uid: _currentUser.uid);
 
         yield LoadedState(user: _currentUser);
       } catch (error) {

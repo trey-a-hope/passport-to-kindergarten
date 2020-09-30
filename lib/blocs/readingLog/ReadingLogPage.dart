@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
+import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BP;
 import 'package:p/blocs/readingLogAdd/Bloc.dart' as READING_LOG_ADD_BP;
@@ -46,31 +48,13 @@ class ReadingLogPageState extends State<ReadingLogPage>
         }
 
         if (state is READING_LOG_BP.LoadedState) {
-          final List<LogModel> readLogs = state.readLogs;
+          final List<BookModel> books = state.books;
 
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Read Logs - ${readLogs.length}'),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(
-                      builder: (BuildContext context) => BlocProvider(
-                        create: (BuildContext context) =>
-                            READING_LOG_ADD_BP.ReadingLogAddBloc()
-                              ..add(
-                                READING_LOG_ADD_BP.LoadPageEvent(),
-                              ),
-                        child: READING_LOG_ADD_BP.ReadingLogAddPage(),
-                      ),
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-              ],
+              title: Text('Read Log'),
             ),
             drawer: DrawerWidget(
               currentUser: state.user,
@@ -78,18 +62,57 @@ class ReadingLogPageState extends State<ReadingLogPage>
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: ListView.builder(
-                  itemCount: readLogs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final LogModel readLog = readLogs[index];
-                    return ListTile(
-                      leading: Icon(Icons.bookmark),
-                      title: Text('${readLog.bookTitle}'),
-                      subtitle: Text(DateFormat('MMMM dd, yyyy').format(
-                        readLog.created,
-                      )),
-                    );
-                  }),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: books.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final BookModel book = books[index];
+                          return ListTile(
+                            leading: Icon(Icons.bookmark),
+                            title: Text('${book.bookTitle}'),
+                            subtitle: Text(
+                              DateFormat('MMMM dd, yyyy').format(
+                                book.created,
+                              ),
+                            ),
+                            trailing: CircleAvatar(
+                              backgroundColor: Colors.orange.shade700,
+                              child: Text(
+                                '${book.logCount}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    FullWidthButtonWidget(
+                      onPressed: () {
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                READING_LOG_ADD_BP.ReadingLogAddBloc()
+                                  ..add(
+                                    READING_LOG_ADD_BP.LoadPageEvent(),
+                                  ),
+                            child: READING_LOG_ADD_BP.ReadingLogAddPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                      text: 'Create Book For Logging',
+                      textColor: Colors.white,
+                      buttonColor: Colors.grey,
+                    )
+                  ],
+                ),
+              ),
             ),
           );
         }
