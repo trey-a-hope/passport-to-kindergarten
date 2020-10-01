@@ -9,6 +9,8 @@ import 'package:package_info/package_info.dart';
 import 'ServiceLocator.dart';
 import 'blocs/login/Bloc.dart' as LOGIN_BP;
 import 'blocs/home/Bloc.dart' as HOME_BP;
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'constants.dart';
 import 'services/AuthService.dart';
@@ -50,23 +52,29 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
-      home: StreamBuilder(
-        stream: locator<AuthService>().onAuthStateChanged(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          final FirebaseUser firebaseUser = snapshot.data;
+      home: AnimatedSplashScreen(
+        splash: 'assets/images/app_icon.png',
+        splashIconSize: 300,
+        splashTransition: SplashTransition.fadeTransition,
+        pageTransitionType: PageTransitionType.fade,
+        nextScreen: StreamBuilder(
+          stream: locator<AuthService>().onAuthStateChanged(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            final FirebaseUser firebaseUser = snapshot.data;
 
-          return firebaseUser == null
-              ? BlocProvider(
-                  create: (BuildContext context) =>
-                      LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),
-                  child: LOGIN_BP.LoginPage(),
-                )
-              : BlocProvider(
-                  create: (BuildContext context) =>
-                      HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
-                  child: HOME_BP.HomePage(),
-                );
-        },
+            return firebaseUser == null
+                ? BlocProvider(
+                    create: (BuildContext context) =>
+                        LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),
+                    child: LOGIN_BP.LoginPage(),
+                  )
+                : BlocProvider(
+                    create: (BuildContext context) =>
+                        HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
+                    child: HOME_BP.HomePage(),
+                  );
+          },
+        ),
       ),
     );
   }

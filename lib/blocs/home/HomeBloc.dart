@@ -29,39 +29,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   //Request notification permissions and register call backs for receiving push notifications.
   void _setUpFirebaseMessaging() async {
-    //Request permission on iOS device.
     if (Platform.isIOS) {
       _fcm.requestNotificationPermissions(
         IosNotificationSettings(),
       );
     }
 
-    //Update user's fcm token.
     final String fcmToken = await _fcm.getToken();
     if (fcmToken != null) {
       locator<UserService>()
           .updateUser(uid: _currentUser.uid, data: {'fcmToken': fcmToken});
     }
 
-    //Configure notifications for several action types.
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        //todo: Create delegate method for opening modals.
-        // locator<Modal>().showAlert(
-        //     context: context,
-        //     title: message['notification']['title'],
-        //     message: message['notification']['body']);
-        //  _showItemDialog(message);
       },
-      //  onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        //  _navigateToItemDetail(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        //  _navigateToItemDetail(message);
       },
     );
   }

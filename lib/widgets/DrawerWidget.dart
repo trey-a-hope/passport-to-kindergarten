@@ -344,6 +344,29 @@ class DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  UserAccountsDrawerHeader _userAccountsDrawerHeader({
+    @required UserModel user,
+    @required String profileType,
+  }) {
+    return UserAccountsDrawerHeader(
+      accountName: Text(
+        '${user.firstName} ${user.lastName}',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      accountEmail: Text(profileType),
+      currentAccountPicture: InkWell(
+        child: CircleAvatar(
+            backgroundImage: NetworkImage('${user.imgUrl}'),
+            backgroundColor: Colors.transparent,
+            radius: 10.0),
+        onTap: showSelectImageDialog,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black,
+      ),
+    );
+  }
+
   showSelectImageDialog() {
     return Platform.isIOS ? iOSBottomSheet() : androidDialog();
   }
@@ -406,51 +429,40 @@ class DrawerWidgetState extends State<DrawerWidget> {
     //Remove previous pop up.
     Navigator.pop(context);
 
-    //Pick an image.
-    PickedFile file = await ImagePicker().getImage(source: source);
+    try {
+      //Pick an image.
+      PickedFile file = await ImagePicker().getImage(source: source);
 
-    //Check that user picked an image.
-    if (file == null) return;
+      //Check that user picked an image.
+      if (file == null) return;
 
-    //Crop an image.
-    File image = await ImageCropper.cropImage(sourcePath: file.path);
+      //Crop an image.
+      File image = await ImageCropper.cropImage(sourcePath: file.path);
 
-    //Check that user cropped the image.
-    if (image == null) return;
+      //Check that user cropped the image.
+      if (image == null) return;
 
-    //Get image upload url.
-    final String newImgUrl = await locator<StorageService>().uploadImage(
-        file: image, path: 'Images/Users/${currentUser.uid}/Profile');
+      //Get image upload url.
+      final String newImgUrl = await locator<StorageService>().uploadImage(
+          file: image, path: 'Images/Users/${currentUser.uid}/Profile');
 
-    //Save image upload url.
-    await locator<UserService>()
-        .updateUser(uid: currentUser.uid, data: {'imgUrl': newImgUrl});
+      //Save image upload url.
+      await locator<UserService>()
+          .updateUser(uid: currentUser.uid, data: {'imgUrl': newImgUrl});
 
-    //Update image url on user.
-    currentUser.imgUrl = newImgUrl;
+      setState(() {
+        currentUser.imgUrl = newImgUrl;
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 
   Widget _buildTeacherLayout() {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        UserAccountsDrawerHeader(
-          accountName: Text(
-            '${currentUser.firstName} ${currentUser.lastName}',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          accountEmail: Text('Teacher'),
-          currentAccountPicture: InkWell(
-            child: CircleAvatar(
-                backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                backgroundColor: Colors.transparent,
-                radius: 10.0),
-            onTap: showSelectImageDialog,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.black,
-          ),
-        ),
+        _userAccountsDrawerHeader(user: currentUser, profileType: 'Teacher'),
         _bookOfTheMonthListTile(),
         _adminListTile(),
         _editProfileListTile(),
@@ -470,23 +482,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        UserAccountsDrawerHeader(
-          accountName: Text(
-            '${currentUser.firstName} ${currentUser.lastName}',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          accountEmail: Text('Student'),
-          currentAccountPicture: InkWell(
-            child: CircleAvatar(
-                backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                backgroundColor: Colors.transparent,
-                radius: 10.0),
-            onTap: showSelectImageDialog,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.black,
-          ),
-        ),
+        _userAccountsDrawerHeader(user: currentUser, profileType: 'Student'),
         _homeListTile(),
         _bookOfTheMonthListTile(),
         _myPassportListTile(),
@@ -509,23 +505,8 @@ class DrawerWidgetState extends State<DrawerWidget> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        UserAccountsDrawerHeader(
-          accountName: Text(
-            '${currentUser.firstName} ${currentUser.lastName}',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          accountEmail: Text('Super Admin'),
-          currentAccountPicture: InkWell(
-            child: CircleAvatar(
-                backgroundImage: NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                backgroundColor: Colors.transparent,
-                radius: 10.0),
-            onTap: showSelectImageDialog,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.black,
-          ),
-        ),
+        _userAccountsDrawerHeader(
+            user: currentUser, profileType: 'Super Admin'),
         _adminListTile(),
         _editProfileListTile(),
         _awesomeReadingTipsListTile(),
