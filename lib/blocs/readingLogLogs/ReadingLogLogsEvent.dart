@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
 
 abstract class ReadingLogLogsEvent extends Equatable {
   @override
@@ -26,5 +24,18 @@ class LogsUpdatedEvent extends ReadingLogLogsEvent {
   @override
   List<Object> get props => [
         logs,
+      ];
+}
+
+class OnDaySelectedEvent extends ReadingLogLogsEvent {
+  final DateTime selectedDay;
+
+  OnDaySelectedEvent({
+    @required this.selectedDay,
+  });
+
+  @override
+  List<Object> get props => [
+        selectedDay,
       ];
 }

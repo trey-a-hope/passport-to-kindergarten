@@ -7,10 +7,12 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/CalendarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_LOGS_BP;
 import 'package:p/blocs/readingLogLogsAdd/Bloc.dart' as READING_LOG_LOGS_ADD_BP;
+import 'package:table_calendar/table_calendar.dart';
 
 class ReadingLogLogsPage extends StatefulWidget {
   @override
@@ -21,17 +23,20 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
     implements READING_LOG_LOGS_BP.ReadingLogLogsDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   READING_LOG_LOGS_BP.ReadingLogLogsBloc _readingLogLogsBloc;
+  CalendarController _calendarController;
 
   @override
   void initState() {
     _readingLogLogsBloc =
         BlocProvider.of<READING_LOG_LOGS_BP.ReadingLogLogsBloc>(context);
     _readingLogLogsBloc.setDelegate(delegate: this);
+    _calendarController = CalendarController();
     super.initState();
   }
 
   @override
   void dispose() {
+    _calendarController.dispose();
     super.dispose();
   }
 
@@ -49,8 +54,11 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
         }
 
         if (state is READING_LOG_LOGS_BP.LoadedState) {
-          final List<ChildLogModel> logs = state.logs;
+          //final List<ChildLogModel> logs = state.logs;
           final ParentLogModel book = state.book;
+
+          final List<ChildLogModel> logs =
+              state.events[state.dateKey] ?? List<ChildLogModel>();
 
           return Scaffold(
             key: _scaffoldKey,
@@ -63,11 +71,21 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
               child: SafeArea(
                 child: Column(
                   children: [
-                    Placeholder(
-                      color: Colors.red,
-                      fallbackHeight: 300,
+                    CalendarWidget(
+                      calendarController: state.calendarController,
+                      events: state.events,
+                      onDaySelected: (DateTime day, List events) {
+                        _readingLogLogsBloc.add(
+                          READING_LOG_LOGS_BP.OnDaySelectedEvent(
+                              selectedDay: day),
+                        );
+                      },
+                      onVisibleDaysChanged: (DateTime first, DateTime last,
+                          CalendarFormat format) {},
                     ),
-                    Text('Calendar Goes Above'),
+                    Divider(
+                      thickness: 1,
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: logs.length,
@@ -84,22 +102,13 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
                                   context: context,
                                   title: 'Notes',
                                   message: '\"${log.notes}\"');
-                              // Route route = MaterialPageRoute(
-                              //   builder: (BuildContext context) => BlocProvider(
-                              //     create: (BuildContext context) =>
-                              //         READING_LOG_ADD_BP.ReadingLogAddBloc(
-                              //             book: book)
-                              //           ..add(
-                              //             READING_LOG_ADD_BP.LoadPageEvent(),
-                              //           ),
-                              //     child: READING_LOG_ADD_BP.ReadingLogAddPage(),
-                              //   ),
-                              // );
-                              // Navigator.push(context, route);
                             },
                           );
                         },
                       ),
+                    ),
+                    Divider(
+                      thickness: 1,
                     ),
                     FullWidthButtonWidget(
                       onPressed: () {
