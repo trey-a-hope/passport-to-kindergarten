@@ -20,7 +20,7 @@ class FCMNotificationService extends IFCMNotificationService {
   final String _endpoint = 'https://fcm.googleapis.com/fcm/send';
   final String _contentType = 'application/json';
   final String _authorization =
-      'key=AAAAFF2txTo:APA91bHvHUsfU5FUz_e0VHGif98mTquCJVH17lBH6f8X-J5RdNp353lB4yFEPsz7NEK5I-u08SiZBZpzCtOXPTExBBu1etTzpv6I6DWApWJ3c6wARefXksvtTlU83YJx1J3nA7HMyyu3';
+      'key=AAAAmyrN_zY:APA91bHjJistiPfKna3dJ1uZjTv6oqlCt663jXrgT3AKBzedx-BCa5bldfgQYRanUqNtgPZ93fFUUXpV2KQGXTX7tSCEdk67vPL8D7qgaHE0Dkeg6h6lLLO7zWJzCEXCQ4x9-3ItyQyd';
 
   Future<http.Response> _sendNotification(
     String to,

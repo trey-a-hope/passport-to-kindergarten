@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/DummyService.dart';
+import 'package:p/services/UserService.dart';
 
 import 'HomeEvent.dart';
 import 'HomeState.dart';
@@ -15,11 +19,51 @@ abstract class HomeDelegate {
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(null);
 
+  final FirebaseMessaging _fcm = FirebaseMessaging();
   HomeDelegate _homeDelegate;
   UserModel _currentUser;
 
   void setDelegate({@required HomeDelegate delegate}) {
     this._homeDelegate = delegate;
+  }
+
+  //Request notification permissions and register call backs for receiving push notifications.
+  void _setUpFirebaseMessaging() async {
+    //Request permission on iOS device.
+    if (Platform.isIOS) {
+      _fcm.requestNotificationPermissions(
+        IosNotificationSettings(),
+      );
+    }
+
+    //Update user's fcm token.
+    final String fcmToken = await _fcm.getToken();
+    if (fcmToken != null) {
+      locator<UserService>()
+          .updateUser(uid: _currentUser.uid, data: {'fcmToken': fcmToken});
+    }
+
+    //Configure notifications for several action types.
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //todo: Create delegate method for opening modals.
+        // locator<Modal>().showAlert(
+        //     context: context,
+        //     title: message['notification']['title'],
+        //     message: message['notification']['body']);
+        //  _showItemDialog(message);
+      },
+      //  onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //  _navigateToItemDetail(message);
+      },
+    );
   }
 
   @override
@@ -30,9 +74,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        // todo: This is here just for testing my guy!
-        // locator<DummyService>()
-        //     .addDefaultBooksToStudent(uid: _currentUser.uid);
+        _setUpFirebaseMessaging();
 
         yield LoadedState(user: _currentUser);
       } catch (error) {
