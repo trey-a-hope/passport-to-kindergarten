@@ -195,6 +195,7 @@ class MyPassportPageState extends State<MyPassportPage>
 
         if (state is ErrorState) {
           return Container(
+            color: Colors.white,
             child: Center(
               child: Text(
                 state.error.toString(),

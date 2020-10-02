@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/blocs/myPassport/MyPassportEvent.dart';
 import 'package:p/blocs/myPassport/MyPassportState.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/UserService.dart';
@@ -31,8 +32,13 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
 
       try {
         _child = await locator<AuthService>().getCurrentUser();
-        _teacher =
-            await locator<UserService>().retrieveUser(uid: _child.teacherID);
+
+        if (_child.teacherID == '${IDK_TEACHER_MODEL.uid}') {
+          _teacher = IDK_TEACHER_MODEL;
+        } else {
+          _teacher =
+              await locator<UserService>().retrieveUser(uid: _child.teacherID);
+        }
 
         yield LoadedState(childUser: _child, teacherUser: _teacher);
       } catch (error) {

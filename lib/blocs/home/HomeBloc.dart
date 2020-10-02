@@ -60,8 +60,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield LoadingState();
 
       try {
-        locator<DummyService>().addIDKTeacherToUsers();
-
         _currentUser = await locator<AuthService>().getCurrentUser();
 
         _setUpFirebaseMessaging();

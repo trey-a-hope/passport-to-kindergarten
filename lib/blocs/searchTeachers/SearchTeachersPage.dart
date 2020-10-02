@@ -88,26 +88,9 @@ class _SearchBody extends StatelessWidget {
                 text: 'I do not know the teacher.',
                 textColor: Colors.white,
                 onPressed: () {
-                  UserModel idkTeacher = UserModel(
-                    created: DateTime.now(),
-                    imgUrl: DUMMY_PROFILE_PHOTO_URL,
-                    lastName: 'I Do Not Know',
-                    firstName: '',
-                    isAdmin: false,
-                    email: 'johndoe@gmail.com',
-                    teacherID: null,
-                    dob: null,
-                    school: 'IDK School',
-                    fcmToken: null,
-                    parentFirstName: null,
-                    parentLastName: null,
-                    profileType: PROFILE_TYPE.TEACHER.name,
-                    uid: '$IDK_TEACHER_ID',
-                  );
-
                   Navigator.pop(
                     context,
-                    idkTeacher,
+                    IDK_TEACHER_MODEL,
                   );
                 },
               ),

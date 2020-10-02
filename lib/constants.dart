@@ -1,5 +1,7 @@
 import 'package:p/models/BookOfTheMonthModel.dart';
 
+import 'models/UserModel.dart';
+
 const String ASSET_IMAGE_SPLASH_BACKGROUND = "assets/images/splash_bg.png";
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
@@ -16,7 +18,22 @@ String buildNumber;
 const String ALGOLIA_APP_ID = 'UO39GB988T';
 const String ALGOLIA_SEARCH_API_KEY = 'a2688a24cb08d1b78aae5dcde6f1d54f';
 
-const String IDK_TEACHER_ID = 'Bmu4w172HWamn97TRhZr';
+UserModel IDK_TEACHER_MODEL = UserModel(
+  created: DateTime.now(),
+  imgUrl: DUMMY_PROFILE_PHOTO_URL,
+  lastName: 'I Do Not Know The Teacher',
+  firstName: '',
+  isAdmin: false,
+  email: 'johndoe@gmail.com',
+  teacherID: null,
+  dob: null,
+  school: 'IDK School',
+  fcmToken: null,
+  parentFirstName: null,
+  parentLastName: null,
+  profileType: PROFILE_TYPE.TEACHER.name,
+  uid: 'Bmu4w172HWamn97TRhZr',
+);
 
 final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
   BookOfTheMonthModel(

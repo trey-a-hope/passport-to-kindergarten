@@ -728,10 +728,7 @@ class SignupPageState extends State<SignupPage>
 
   @override
   void navigateHome() {
-    Navigator.popUntil(
-      context,
-      ModalRoute.withName(Navigator.defaultRouteName),
-    );
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
