@@ -209,9 +209,6 @@ class LoginPageState extends State<LoginPage>
 
   @override
   void navigateHome() {
-    Navigator.popUntil(
-      context,
-      ModalRoute.withName(Navigator.defaultRouteName),
-    );
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

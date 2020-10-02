@@ -81,11 +81,8 @@ class DrawerWidgetState extends State<DrawerWidget> {
 
     if (!confirm) return;
 
-    Navigator.popUntil(
-      context,
-      ModalRoute.withName(Navigator.defaultRouteName),
-    );
-    locator<AuthService>().signOut();
+    await locator<AuthService>().signOut();
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   ListTile _homeListTile() {
