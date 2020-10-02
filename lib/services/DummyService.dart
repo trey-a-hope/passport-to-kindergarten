@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class IDummyService {
+  Future<void> addIDKTeacherToUsers();
   Future<void> addDefaultBooksToStudent({
     @required String uid,
   });
@@ -13,6 +15,8 @@ abstract class IDummyService {
 class DummyService extends IDummyService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
+  final DocumentReference _tableCountsDocRef =
+      Firestore.instance.collection('Data').document('tableCounts');
 
   @override
   Future<void> addDefaultBooksToStudent({
@@ -52,6 +56,48 @@ class DummyService extends IDummyService {
           );
         },
       );
+
+      return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> addIDKTeacherToUsers() async {
+    try {
+      final WriteBatch batch = Firestore.instance.batch();
+
+      UserModel idkTeacher = UserModel(
+        isAdmin: false,
+        uid: null,
+        created: DateTime.now(),
+        profileType: PROFILE_TYPE.TEACHER.name,
+        fcmToken: null,
+        firstName: null,
+        lastName: null,
+        parentFirstName: null,
+        parentLastName: null,
+        school: null,
+        imgUrl: null,
+        dob: null,
+        teacherID: null,
+        email: null,
+      );
+
+      final DocumentReference userDocRef = _usersColRef.document();
+
+      idkTeacher.uid = userDocRef.documentID;
+
+      batch.setData(userDocRef, idkTeacher.toMap());
+
+      batch.updateData(_tableCountsDocRef, {
+        'users': FieldValue.increment(1),
+      });
+
+      batch.commit();
 
       return;
     } catch (e) {

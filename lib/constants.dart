@@ -16,6 +16,8 @@ String buildNumber;
 const String ALGOLIA_APP_ID = 'UO39GB988T';
 const String ALGOLIA_SEARCH_API_KEY = 'a2688a24cb08d1b78aae5dcde6f1d54f';
 
+const String IDK_TEACHER_ID = 'Bmu4w172HWamn97TRhZr';
+
 final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
   BookOfTheMonthModel(
       title: 'Book 1',

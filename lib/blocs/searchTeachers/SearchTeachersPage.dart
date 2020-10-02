@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
+import 'package:p/services/UserService.dart';
+import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
 
@@ -79,10 +83,33 @@ class _SearchBody extends StatelessWidget {
         if (state is SearchTeachersStateStart) {
           return Expanded(
             child: Center(
-              child: Icon(
-                Icons.book,
-                size: 200,
-                color: Colors.grey.shade300,
+              child: FullWidthButtonWidget(
+                buttonColor: Colors.blue,
+                text: 'I do not know the teacher.',
+                textColor: Colors.white,
+                onPressed: () {
+                  UserModel idkTeacher = UserModel(
+                    created: DateTime.now(),
+                    imgUrl: DUMMY_PROFILE_PHOTO_URL,
+                    lastName: 'I Do Not Know',
+                    firstName: '',
+                    isAdmin: false,
+                    email: 'johndoe@gmail.com',
+                    teacherID: null,
+                    dob: null,
+                    school: 'IDK School',
+                    fcmToken: null,
+                    parentFirstName: null,
+                    parentLastName: null,
+                    profileType: PROFILE_TYPE.TEACHER.name,
+                    uid: '$IDK_TEACHER_ID',
+                  );
+
+                  Navigator.pop(
+                    context,
+                    idkTeacher,
+                  );
+                },
               ),
             ),
           );
