@@ -41,4 +41,20 @@ class ParentState extends SignupState {
       ];
 }
 
+class SuperAdminState extends SignupState {
+  final bool autoValidate;
+  final GlobalKey<FormState> formKey;
+
+  SuperAdminState({
+    @required this.autoValidate,
+    @required this.formKey,
+  });
+
+  @override
+  List<Object> get props => [
+        autoValidate,
+        formKey,
+      ];
+}
+
 class SigningIn extends SignupState {}

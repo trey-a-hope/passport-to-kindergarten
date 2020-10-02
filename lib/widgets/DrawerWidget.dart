@@ -69,7 +69,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       return _buildTeacherLayout();
     else if (currentUser.profileType == PROFILE_TYPE.PARENT.name)
       return _buildParentLayout();
-    else if (currentUser.profileType == PROFILE_TYPE.ADMIN.name)
+    else if (currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name)
       return _buildSuperAdminLayout();
     else
       return Container();

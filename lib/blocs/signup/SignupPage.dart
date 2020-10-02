@@ -28,6 +28,8 @@ class SignupPageState extends State<SignupPage>
   final TextEditingController _schoolController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _teacherController = TextEditingController();
+  final TextEditingController _superAdminSecretKeyController =
+      TextEditingController();
 
   final TextEditingController _parentFirstNameController =
       TextEditingController();
@@ -44,6 +46,73 @@ class SignupPageState extends State<SignupPage>
     _signupBloc = BlocProvider.of<SignupBloc>(context);
     _signupBloc.setDelegate(delegate: this);
     super.initState();
+  }
+
+  Widget _buttonRowWidget({
+    @required PROFILE_TYPE profile_type,
+  }) {
+    bool isTeacher = profile_type.name == PROFILE_TYPE.TEACHER.name;
+    bool isParent = profile_type.name == PROFILE_TYPE.PARENT.name;
+    bool isSuperAdmin = profile_type.name == PROFILE_TYPE.SUPER_ADMIN.name;
+
+    return Column(
+      children: [
+        Text(
+          'I am a...',
+          style: TextStyle(color: Colors.white, fontSize: 21),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: FullWidthButtonWidget(
+                  buttonColor: isTeacher ? Colors.white : Colors.red,
+                  text: 'Teacher',
+                  textColor: isTeacher ? Colors.red : Colors.white,
+                  onPressed: () {
+                    _signupBloc.add(
+                      ToggleProfileTypeEvent(profileType: PROFILE_TYPE.TEACHER),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: FullWidthButtonWidget(
+                  buttonColor: isParent ? Colors.white : Colors.red,
+                  text: 'Parent',
+                  textColor: isParent ? Colors.red : Colors.white,
+                  onPressed: () {
+                    _signupBloc.add(
+                      ToggleProfileTypeEvent(profileType: PROFILE_TYPE.PARENT),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: FullWidthButtonWidget(
+                  buttonColor: isSuperAdmin ? Colors.white : Colors.red,
+                  text: 'Admin',
+                  textColor: isSuperAdmin ? Colors.red : Colors.white,
+                  onPressed: () {
+                    _signupBloc.add(
+                      ToggleProfileTypeEvent(
+                          profileType: PROFILE_TYPE.SUPER_ADMIN),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    );
   }
 
   @override
@@ -82,30 +151,7 @@ class SignupPageState extends State<SignupPage>
                           const SizedBox(
                             height: 50,
                           ),
-                          SwitchListTile(
-                            title: RichText(
-                              text: TextSpan(
-                                style: TextStyle(fontSize: 18),
-                                children: [
-                                  TextSpan(text: 'I am a '),
-                                  TextSpan(
-                                    text: 'teacher.',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            value: true,
-                            onChanged: (bool value) {
-                              _signupBloc.add(ToggleProfileTypeEvent());
-                            },
-                            secondary: const Icon(
-                              Icons.book,
-                              color: Colors.white,
-                            ),
-                          ),
+                          _buttonRowWidget(profile_type: PROFILE_TYPE.TEACHER),
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
@@ -280,6 +326,7 @@ class SignupPageState extends State<SignupPage>
                                   school: school,
                                   parentFirstName: null,
                                   parentLastName: null,
+                                  superAdminSecretKey: null,
                                 ),
                               );
                             },
@@ -331,30 +378,7 @@ class SignupPageState extends State<SignupPage>
                           SizedBox(
                             height: 50,
                           ),
-                          SwitchListTile(
-                            title: RichText(
-                              text: TextSpan(
-                                style: TextStyle(fontSize: 18),
-                                children: [
-                                  TextSpan(text: 'I am a '),
-                                  TextSpan(
-                                    text: 'parent/guardian.',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            value: false,
-                            onChanged: (bool value) {
-                              _signupBloc.add(ToggleProfileTypeEvent());
-                            },
-                            secondary: const Icon(
-                              Icons.book,
-                              color: Colors.white,
-                            ),
-                          ),
+                          _buttonRowWidget(profile_type: PROFILE_TYPE.PARENT),
                           Text(
                             'Child\s Info',
                             style: TextStyle(color: Colors.white),
@@ -688,6 +712,229 @@ class SignupPageState extends State<SignupPage>
                                       _parentFirstNameController.text,
                                   parentLastName:
                                       _parentLastNameController.text,
+                                  superAdminSecretKey: null,
+                                ),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                        text: 'Already have an account?',
+                                        style: TextStyle(color: Colors.grey)),
+                                    TextSpan(text: ' Log in')
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                if (state is SuperAdminState) {
+                  return SingleChildScrollView(
+                    child: Form(
+                      autovalidate: state.autoValidate,
+                      key: state.formKey,
+                      child: Column(
+                        children: [
+                          Image.asset(ASSET_IMAGE_P2K_LOGO),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          _buttonRowWidget(
+                              profile_type: PROFILE_TYPE.SUPER_ADMIN),
+
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _firstNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'First Name'),
+                            ),
+                          ),
+                          //Last Name
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _lastNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Last Name'),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _emailController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.alternate_email,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Email'),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _passwordController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Password'),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              controller: _superAdminSecretKeyController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.security,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Secret Key'),
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.white,
+                            thickness: 1,
+                          ),
+                          FullWidthButtonWidget(
+                            buttonColor: HexColorExtension('ff4880'),
+                            text: 'Sign Up',
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
+
+                              if (!confirm) return;
+
+                              final String email = _emailController.text;
+                              final String password = _passwordController.text;
+                              final String firstName =
+                                  _firstNameController.text;
+                              final String lastName = _lastNameController.text;
+
+                              _signupBloc.add(
+                                Signup(
+                                  email: email,
+                                  password: password,
+                                  firstName: firstName,
+                                  lastName: lastName,
+                                  formKey: state.formKey,
+                                  school: null,
+                                  parentFirstName:
+                                      _parentFirstNameController.text,
+                                  parentLastName:
+                                      _parentLastNameController.text,
+                                  superAdminSecretKey:
+                                      _superAdminSecretKeyController.text,
                                 ),
                               );
                             },

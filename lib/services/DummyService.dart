@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/constants.dart';
 import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/LogModel.dart';
-import 'package:p/models/UserModel.dart';
 
 abstract class IDummyService {
-  Future<void> addIDKTeacherToUsers();
+  // Future<void> addIDKTeacherToUsers();
   Future<void> addDefaultBooksToStudent({
     @required String uid,
   });
@@ -64,49 +61,6 @@ class DummyService extends IDummyService {
       );
     }
   }
-
-  @override
-  Future<void> addIDKTeacherToUsers() async {
-    try {
-      final WriteBatch batch = Firestore.instance.batch();
-
-      UserModel idkTeacher = UserModel(
-        isAdmin: false,
-        uid: null,
-        created: DateTime.now(),
-        profileType: PROFILE_TYPE.TEACHER.name,
-        fcmToken: null,
-        firstName: null,
-        lastName: null,
-        parentFirstName: null,
-        parentLastName: null,
-        school: null,
-        imgUrl: null,
-        dob: null,
-        teacherID: null,
-        email: null,
-      );
-
-      final DocumentReference userDocRef = _usersColRef.document();
-
-      idkTeacher.uid = userDocRef.documentID;
-
-      batch.setData(userDocRef, idkTeacher.toMap());
-
-      batch.updateData(_tableCountsDocRef, {
-        'users': FieldValue.increment(1),
-      });
-
-      batch.commit();
-
-      return;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
 }
-
 // todo: Place this in the HomeBloc
 // locator<DummyService>().addDefaultBooksToStudent(uid: _currentUser.uid);

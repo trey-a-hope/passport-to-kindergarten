@@ -18,12 +18,13 @@ String buildNumber;
 const String ALGOLIA_APP_ID = 'UO39GB988T';
 const String ALGOLIA_SEARCH_API_KEY = 'a2688a24cb08d1b78aae5dcde6f1d54f';
 
+const String SECRET_SUPER_ADMIN_SIGNUP_KEY = 'XXX';
+
 UserModel IDK_TEACHER_MODEL = UserModel(
   created: DateTime.now(),
   imgUrl: DUMMY_PROFILE_PHOTO_URL,
   lastName: 'I Do Not Know The Teacher',
   firstName: '',
-  isAdmin: false,
   email: 'johndoe@gmail.com',
   teacherID: null,
   dob: null,
@@ -89,7 +90,7 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
 enum PROFILE_TYPE {
   TEACHER,
   PARENT,
-  ADMIN,
+  SUPER_ADMIN,
 }
 
 enum APP_PAGES {
@@ -112,8 +113,8 @@ extension PROFILE_TYPE_EXTENSION on PROFILE_TYPE {
         return 'TEACHER';
       case PROFILE_TYPE.PARENT:
         return 'PARENT';
-      case PROFILE_TYPE.ADMIN:
-        return 'ADMIN';
+      case PROFILE_TYPE.SUPER_ADMIN:
+        return 'SUPER_ADMIN';
       default:
         return null;
     }

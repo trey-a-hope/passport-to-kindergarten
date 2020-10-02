@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class SignupEvent extends Equatable {
@@ -14,9 +15,15 @@ class LoadPageEvent extends SignupEvent {
 }
 
 class ToggleProfileTypeEvent extends SignupEvent {
-  ToggleProfileTypeEvent();
+  final PROFILE_TYPE profileType;
 
-  List<Object> get props => [];
+  ToggleProfileTypeEvent({
+    @required this.profileType,
+  });
+
+  List<Object> get props => [
+        profileType,
+      ];
 }
 
 class SelectDateEvent extends SignupEvent {
@@ -52,6 +59,7 @@ class Signup extends SignupEvent {
   final String school;
   final String parentFirstName;
   final String parentLastName;
+  final String superAdminSecretKey;
 
   Signup({
     @required this.email,
@@ -62,6 +70,7 @@ class Signup extends SignupEvent {
     @required this.school,
     @required this.parentFirstName,
     @required this.parentLastName,
+    @required this.superAdminSecretKey,
   });
 
   List<Object> get props => [
@@ -73,5 +82,6 @@ class Signup extends SignupEvent {
         school,
         parentFirstName,
         parentLastName,
+        superAdminSecretKey,
       ];
 }

@@ -35,7 +35,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
         _childDOB = _currentUser.dob;
 
-        if (_currentUser.profileType == PROFILE_TYPE.ADMIN.name) {
+        if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name) {
           add(SuperAdminSetTextFieldsEvent(user: _currentUser));
           yield SuperAdminLoadedState(
             user: _currentUser,

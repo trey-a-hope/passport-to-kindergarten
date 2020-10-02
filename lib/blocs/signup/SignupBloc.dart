@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/UserService.dart';
@@ -19,7 +20,8 @@ abstract class SignupBlocDelegate {
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(null);
   SignupBlocDelegate _signupBlocDelegate;
-  bool _isTeacher = true;
+
+  PROFILE_TYPE _profile_type = PROFILE_TYPE.SUPER_ADMIN;
   DateTime _selectedDate = DateTime.now();
   UserModel _selectedTeacher;
 
@@ -40,18 +42,28 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
     if (event is ToggleProfileTypeEvent) {
       _signupBlocDelegate.clearForm();
-      _isTeacher = !_isTeacher;
-      if (_isTeacher) {
-        yield TeacherState(
-          autoValidate: false,
-          formKey: GlobalKey<FormState>(),
-        );
-      } else {
-        yield ParentState(
-          autoValidate: false,
-          formKey: GlobalKey<FormState>(),
-          selectedDate: _selectedDate,
-        );
+
+      _profile_type = event.profileType;
+
+      switch (_profile_type) {
+        case PROFILE_TYPE.TEACHER:
+          yield TeacherState(
+            autoValidate: false,
+            formKey: GlobalKey<FormState>(),
+          );
+          break;
+        case PROFILE_TYPE.PARENT:
+          yield ParentState(
+            autoValidate: false,
+            formKey: GlobalKey<FormState>(),
+            selectedDate: _selectedDate,
+          );
+          break;
+        case PROFILE_TYPE.SUPER_ADMIN:
+          yield SuperAdminState(
+            autoValidate: false,
+            formKey: GlobalKey<FormState>(),
+          );
       }
     }
 
@@ -71,6 +83,11 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       final String lastName = event.lastName;
       final GlobalKey<FormState> formKey = event.formKey;
 
+      if (event.superAdminSecretKey != SECRET_SUPER_ADMIN_SIGNUP_KEY) {
+        _signupBlocDelegate.showMessage(message: 'Secret Key Incorrect');
+        return;
+      }
+
       if (formKey.currentState.validate()) {
         yield SigningIn();
 
@@ -83,62 +100,91 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
           final FirebaseUser firebaseUser = authResult.user;
 
-          if (_isTeacher) {
-            final String school = event.school;
+          switch (_profile_type) {
+            case PROFILE_TYPE.TEACHER:
+              final String school = event.school;
 
-            user = UserModel(
-              imgUrl: DUMMY_PROFILE_PHOTO_URL,
-              isAdmin: false,
-              email: email,
-              fcmToken: null,
-              created: DateTime.now(),
-              uid: firebaseUser.uid,
-              firstName: firstName,
-              lastName: lastName,
-              profileType: PROFILE_TYPE.TEACHER.name,
-              school: school,
-              teacherID: null,
-              parentFirstName: null,
-              parentLastName: null,
-              dob: _selectedDate,
-            );
-          } else {
-            final String parentFirstName = event.parentFirstName;
-            final String parentLastName = event.parentLastName;
+              user = UserModel(
+                imgUrl: DUMMY_PROFILE_PHOTO_URL,
+                email: email,
+                fcmToken: null,
+                created: DateTime.now(),
+                uid: firebaseUser.uid,
+                firstName: firstName,
+                lastName: lastName,
+                profileType: PROFILE_TYPE.TEACHER.name,
+                school: school,
+                teacherID: null,
+                parentFirstName: null,
+                parentLastName: null,
+                dob: _selectedDate,
+              );
+              break;
+            case PROFILE_TYPE.PARENT:
+              final String parentFirstName = event.parentFirstName;
+              final String parentLastName = event.parentLastName;
 
-            user = UserModel(
-              imgUrl: DUMMY_PROFILE_PHOTO_URL,
-              isAdmin: false,
-              email: email,
-              fcmToken: null,
-              created: DateTime.now(),
-              uid: firebaseUser.uid,
-              firstName: firstName,
-              lastName: lastName,
-              profileType: PROFILE_TYPE.PARENT.name,
-              school: null,
-              teacherID: _selectedTeacher.uid, //use selected teacher
-              parentFirstName: parentFirstName,
-              parentLastName: parentLastName,
-              dob: _selectedDate,
-            );
+              user = UserModel(
+                imgUrl: DUMMY_PROFILE_PHOTO_URL,
+                email: email,
+                fcmToken: null,
+                created: DateTime.now(),
+                uid: firebaseUser.uid,
+                firstName: firstName,
+                lastName: lastName,
+                profileType: PROFILE_TYPE.PARENT.name,
+                school: null,
+                teacherID: _selectedTeacher.uid, //use selected teacher
+                parentFirstName: parentFirstName,
+                parentLastName: parentLastName,
+                dob: _selectedDate,
+              );
+              break;
+            case PROFILE_TYPE.SUPER_ADMIN:
+              user = UserModel(
+                imgUrl: DUMMY_PROFILE_PHOTO_URL,
+                email: email,
+                fcmToken: null,
+                created: DateTime.now(),
+                uid: firebaseUser.uid,
+                firstName: firstName,
+                lastName: lastName,
+                profileType: PROFILE_TYPE.SUPER_ADMIN.name,
+                school: null,
+                teacherID: null,
+                parentFirstName: null,
+                parentLastName: null,
+                dob: _selectedDate,
+              );
+              break;
           }
+
           await locator<UserService>().createUser(user: user);
 
           _signupBlocDelegate.navigateHome();
         } catch (error) {
           _signupBlocDelegate.showMessage(message: error.toString());
 
-          yield _isTeacher
-              ? TeacherState(
-                  autoValidate: true,
-                  formKey: event.formKey,
-                )
-              : ParentState(
-                  autoValidate: true,
-                  formKey: event.formKey,
-                  selectedDate: _selectedDate,
-                );
+          switch (_profile_type) {
+            case PROFILE_TYPE.TEACHER:
+              yield TeacherState(
+                autoValidate: false,
+                formKey: GlobalKey<FormState>(),
+              );
+              break;
+            case PROFILE_TYPE.PARENT:
+              yield ParentState(
+                autoValidate: false,
+                formKey: GlobalKey<FormState>(),
+                selectedDate: _selectedDate,
+              );
+              break;
+            case PROFILE_TYPE.SUPER_ADMIN:
+              yield SuperAdminState(
+                autoValidate: false,
+                formKey: GlobalKey<FormState>(),
+              );
+          }
         }
       }
     }

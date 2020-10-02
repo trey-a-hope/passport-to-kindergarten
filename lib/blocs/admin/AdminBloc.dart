@@ -29,7 +29,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        if (_currentUser.profileType == PROFILE_TYPE.ADMIN.name)
+        if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name)
           yield SuperAdminLoadedState(user: _currentUser);
 
         if (_currentUser.profileType == PROFILE_TYPE.TEACHER.name)
