@@ -27,6 +27,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._homeDelegate = delegate;
   }
 
+  static Future<dynamic> myBackgroundMessageHandler(
+      Map<String, dynamic> message) async {
+    if (message.containsKey('data')) {
+      // Handle data message
+      final dynamic data = message['data'];
+    }
+
+    if (message.containsKey('notification')) {
+      // Handle notification message
+      final dynamic notification = message['notification'];
+    }
+
+    // Or do other work.
+  }
+
   //Request notification permissions and register call backs for receiving push notifications.
   void _setUpFirebaseMessaging() async {
     if (Platform.isIOS) {
@@ -51,6 +66,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
       },
+      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
     );
   }
 
