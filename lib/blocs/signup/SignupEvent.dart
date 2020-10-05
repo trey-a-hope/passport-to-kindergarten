@@ -50,27 +50,19 @@ class SelectTeacherEvent extends SignupEvent {
       ];
 }
 
-class Signup extends SignupEvent {
+class TeacherSignupEvent extends SignupEvent {
   final String email;
   final String password;
   final String firstName;
   final String lastName;
-  final GlobalKey<FormState> formKey;
   final String school;
-  final String parentFirstName;
-  final String parentLastName;
-  final String superAdminSecretKey;
 
-  Signup({
+  TeacherSignupEvent({
     @required this.email,
     @required this.password,
     @required this.firstName,
     @required this.lastName,
-    @required this.formKey,
     @required this.school,
-    @required this.parentFirstName,
-    @required this.parentLastName,
-    @required this.superAdminSecretKey,
   });
 
   List<Object> get props => [
@@ -78,10 +70,63 @@ class Signup extends SignupEvent {
         password,
         firstName,
         lastName,
-        formKey,
         school,
-        parentFirstName,
-        parentLastName,
-        superAdminSecretKey,
+      ];
+}
+
+class ParentSignupEvent extends SignupEvent {
+  final String email;
+  final String password;
+  final String firstName;
+  final String lastName;
+  final String school;
+  final String firstParentFirstName;
+  final String firstParentLastName;
+  final String secondParentFirstName;
+  final String secondParentLastName;
+
+  ParentSignupEvent({
+    @required this.email,
+    @required this.password,
+    @required this.firstName,
+    @required this.lastName,
+    @required this.school,
+    @required this.firstParentFirstName,
+    @required this.firstParentLastName,
+    @required this.secondParentFirstName,
+    @required this.secondParentLastName,
+  });
+
+  List<Object> get props => [
+        email,
+        password,
+        firstName,
+        lastName,
+        school,
+        firstParentFirstName,
+        firstParentLastName,
+        secondParentFirstName,
+        secondParentLastName,
+      ];
+}
+
+class SuperAdminSignupEvent extends SignupEvent {
+  final String email;
+  final String password;
+  final String firstName;
+  final String lastName;
+
+  SuperAdminSignupEvent({
+    @required this.email,
+    @required this.password,
+    @required this.firstName,
+    @required this.lastName,
+  });
+
+  List<Object> get props => [
+        email,
+        password,
+        firstName,
+        lastName,
       ];
 }

@@ -118,29 +118,7 @@ class LoginPageState extends State<LoginPage>
                               hintText: 'Password'),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(27),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              child: Text(
-                                'Forget Password?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onTap: () {
-                                locator<ModalService>().showAlert(
-                                    context: context,
-                                    title: 'To Do',
-                                    message: 'Create Forgot Password Page.');
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+
                       Spacer(),
                       FullWidthButtonWidget(
                         buttonColor: HexColorExtension('ff4880'),

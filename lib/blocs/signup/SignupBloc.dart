@@ -22,7 +22,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBlocDelegate _signupBlocDelegate;
 
   PROFILE_TYPE _profile_type = PROFILE_TYPE.SUPER_ADMIN;
-  DateTime _selectedDate = DateTime.now();
+  static DateTime now = DateTime.now();
+  DateTime _selectedDate = DateTime(now.year - 2);
   UserModel _selectedTeacher;
 
   void setDelegate({
@@ -34,10 +35,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
     if (event is LoadPageEvent) {
-      yield TeacherState(
-        autoValidate: false,
-        formKey: GlobalKey<FormState>(),
-      );
+      yield TeacherState();
     }
 
     if (event is ToggleProfileTypeEvent) {
@@ -47,23 +45,15 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
       switch (_profile_type) {
         case PROFILE_TYPE.TEACHER:
-          yield TeacherState(
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
-          );
+          yield TeacherState();
           break;
         case PROFILE_TYPE.PARENT:
           yield ParentState(
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
             selectedDate: _selectedDate,
           );
           break;
         case PROFILE_TYPE.SUPER_ADMIN:
-          yield SuperAdminState(
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
-          );
+          yield SuperAdminState();
       }
     }
 
@@ -75,117 +65,139 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       this._selectedTeacher = event.selectedTeacher;
     }
 
-    if (event is Signup) {
-      UserModel user;
+    if (event is TeacherSignupEvent) {
+      UserModel newTeacher;
+
       final String email = event.email;
       final String password = event.password;
       final String firstName = event.firstName;
       final String lastName = event.lastName;
-      final GlobalKey<FormState> formKey = event.formKey;
+      final String school = event.school;
 
-      if (event.superAdminSecretKey != SECRET_SUPER_ADMIN_SIGNUP_KEY) {
-        _signupBlocDelegate.showMessage(message: 'Secret Key Incorrect');
-        return;
-      }
-
-      if (formKey.currentState.validate()) {
+      try {
         yield SigningIn();
 
-        try {
-          AuthResult authResult =
-              await locator<AuthService>().createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
+        AuthResult authResult =
+            await locator<AuthService>().createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-          final FirebaseUser firebaseUser = authResult.user;
+        final FirebaseUser firebaseUser = authResult.user;
 
-          switch (_profile_type) {
-            case PROFILE_TYPE.TEACHER:
-              final String school = event.school;
+        newTeacher = UserModel(
+          imgUrl: DUMMY_PROFILE_PHOTO_URL,
+          email: email,
+          fcmToken: null,
+          created: DateTime.now(),
+          uid: firebaseUser.uid,
+          firstName: firstName,
+          lastName: lastName,
+          profileType: PROFILE_TYPE.TEACHER.name,
+          school: school,
+          teacherID: null,
+          dob: _selectedDate,
+        );
 
-              user = UserModel(
-                imgUrl: DUMMY_PROFILE_PHOTO_URL,
-                email: email,
-                fcmToken: null,
-                created: DateTime.now(),
-                uid: firebaseUser.uid,
-                firstName: firstName,
-                lastName: lastName,
-                profileType: PROFILE_TYPE.TEACHER.name,
-                school: school,
-                teacherID: null,
-                parentFirstName: null,
-                parentLastName: null,
-                dob: _selectedDate,
-              );
-              break;
-            case PROFILE_TYPE.PARENT:
-              final String parentFirstName = event.parentFirstName;
-              final String parentLastName = event.parentLastName;
+        await locator<UserService>().createUser(user: newTeacher);
 
-              user = UserModel(
-                imgUrl: DUMMY_PROFILE_PHOTO_URL,
-                email: email,
-                fcmToken: null,
-                created: DateTime.now(),
-                uid: firebaseUser.uid,
-                firstName: firstName,
-                lastName: lastName,
-                profileType: PROFILE_TYPE.PARENT.name,
-                school: null,
-                teacherID: _selectedTeacher.uid, //use selected teacher
-                parentFirstName: parentFirstName,
-                parentLastName: parentLastName,
-                dob: _selectedDate,
-              );
-              break;
-            case PROFILE_TYPE.SUPER_ADMIN:
-              user = UserModel(
-                imgUrl: DUMMY_PROFILE_PHOTO_URL,
-                email: email,
-                fcmToken: null,
-                created: DateTime.now(),
-                uid: firebaseUser.uid,
-                firstName: firstName,
-                lastName: lastName,
-                profileType: PROFILE_TYPE.SUPER_ADMIN.name,
-                school: null,
-                teacherID: null,
-                parentFirstName: null,
-                parentLastName: null,
-                dob: _selectedDate,
-              );
-              break;
-          }
+        _signupBlocDelegate.navigateHome();
+      } catch (error) {
+        _signupBlocDelegate.showMessage(message: error.toString());
+      }
+    }
 
-          await locator<UserService>().createUser(user: user);
+    if (event is ParentSignupEvent) {
+      UserModel newParent;
 
-          _signupBlocDelegate.navigateHome();
-        } catch (error) {
-          _signupBlocDelegate.showMessage(message: error.toString());
+      final String email = event.email;
+      final String password = event.password;
+      final String firstName = event.firstName;
+      final String lastName = event.lastName;
+      final String school = event.school;
+      final String firstParentFirstName = event.firstParentFirstName;
+      final String firstParentLastName = event.firstParentLastName;
+      final String secondParentFirstName = event.secondParentFirstName;
+      final String secondParentLastName = event.secondParentLastName;
 
-          switch (_profile_type) {
-            case PROFILE_TYPE.TEACHER:
-              yield TeacherState(
-                autoValidate: false,
-                formKey: GlobalKey<FormState>(),
-              );
-              break;
-            case PROFILE_TYPE.PARENT:
-              yield ParentState(
-                autoValidate: false,
-                formKey: GlobalKey<FormState>(),
-                selectedDate: _selectedDate,
-              );
-              break;
-            case PROFILE_TYPE.SUPER_ADMIN:
-              yield SuperAdminState(
-                autoValidate: false,
-                formKey: GlobalKey<FormState>(),
-              );
-          }
-        }
+      try {
+        yield SigningIn();
+
+        AuthResult authResult =
+            await locator<AuthService>().createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        final FirebaseUser firebaseUser = authResult.user;
+
+        newParent = UserModel(
+          imgUrl: DUMMY_PROFILE_PHOTO_URL,
+          email: email,
+          fcmToken: null,
+          created: DateTime.now(),
+          uid: firebaseUser.uid,
+          firstName: firstName,
+          lastName: lastName,
+          profileType: PROFILE_TYPE.PARENT.name,
+          school: school,
+          teacherID: null,
+          dob: _selectedDate,
+        );
+
+        await locator<UserService>().createUser(user: newParent);
+        locator<UserService>().createParentInfo(
+          uid: newParent.uid,
+          firstParentFirstName: firstParentFirstName,
+          firstParentLastName: firstParentLastName,
+          secondParentFirstName: secondParentFirstName,
+          secondParentLastName: secondParentLastName,
+        );
+
+        _signupBlocDelegate.navigateHome();
+      } catch (error) {
+        _signupBlocDelegate.showMessage(message: error.toString());
+      }
+    }
+
+    if (event is SuperAdminSignupEvent) {
+      UserModel newSuperAdmin;
+
+      final String email = event.email;
+      final String password = event.password;
+      final String firstName = event.firstName;
+      final String lastName = event.lastName;
+
+      try {
+        yield SigningIn();
+
+        AuthResult authResult =
+            await locator<AuthService>().createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        final FirebaseUser firebaseUser = authResult.user;
+
+        newSuperAdmin = UserModel(
+          imgUrl: DUMMY_PROFILE_PHOTO_URL,
+          email: email,
+          fcmToken: null,
+          created: DateTime.now(),
+          uid: firebaseUser.uid,
+          firstName: firstName,
+          lastName: lastName,
+          profileType: PROFILE_TYPE.SUPER_ADMIN.name,
+          school: null,
+          teacherID: null,
+          dob: _selectedDate,
+        );
+
+        await locator<UserService>().createUser(user: newSuperAdmin);
+
+        _signupBlocDelegate.navigateHome();
+      } catch (error) {
+        _signupBlocDelegate.showMessage(message: error.toString());
       }
     }
   }

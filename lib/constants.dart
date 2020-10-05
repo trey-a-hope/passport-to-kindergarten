@@ -30,8 +30,6 @@ UserModel IDK_TEACHER_MODEL = UserModel(
   dob: null,
   school: 'IDK School',
   fcmToken: null,
-  parentFirstName: null,
-  parentLastName: null,
   profileType: PROFILE_TYPE.TEACHER.name,
   uid: 'Bmu4w172HWamn97TRhZr',
 );

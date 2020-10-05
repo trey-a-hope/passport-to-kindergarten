@@ -13,8 +13,6 @@ class UserModel {
   String profileType;
   String school;
   String teacherID;
-  String parentFirstName;
-  String parentLastName;
   DateTime dob;
 
   UserModel({
@@ -28,8 +26,6 @@ class UserModel {
     @required this.profileType,
     @required this.school,
     @required this.teacherID,
-    @required this.parentFirstName,
-    @required this.parentLastName,
     @required this.dob,
   });
 
@@ -45,8 +41,6 @@ class UserModel {
       profileType: ds.data['profileType'],
       school: ds.data['school'],
       teacherID: ds.data['teacherID'],
-      parentFirstName: ds.data['parentFirstName'],
-      parentLastName: ds.data['parentLastName'],
       dob: ds.data['dob'].toDate(),
     );
   }
@@ -65,8 +59,6 @@ class UserModel {
         profileType: data['profileType'],
         school: data['school'],
         teacherID: data['teacherID'],
-        parentFirstName: data['parentFirstName'],
-        parentLastName: data['parentLastName'],
         dob: DateTime.now() //todo: Set accurate dob.
         );
   }
@@ -83,8 +75,6 @@ class UserModel {
       'profileType': profileType,
       'school': school,
       'teacherID': teacherID,
-      'parentFirstName': parentFirstName,
-      'parentLastName': parentLastName,
       'dob': dob,
     };
   }

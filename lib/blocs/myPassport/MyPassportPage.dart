@@ -105,7 +105,7 @@ class MyPassportPageState extends State<MyPassportPage>
                             children: [
                               Text('Parent Name'),
                               Text(
-                                '${child.parentFirstName} ${child.parentLastName}',
+                                'JOHN DOE',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               ),

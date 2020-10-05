@@ -6,6 +6,7 @@ import 'package:p/constants.dart';
 import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/services/ValidatorService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
@@ -31,13 +32,21 @@ class SignupPageState extends State<SignupPage>
   final TextEditingController _superAdminSecretKeyController =
       TextEditingController();
 
-  final TextEditingController _parentFirstNameController =
+  final TextEditingController _firstParentFirstNameController =
       TextEditingController();
 
-  final TextEditingController _parentLastNameController =
+  final TextEditingController _firstParentLastNameController =
+      TextEditingController();
+
+  final TextEditingController _secondParentFirstNameController =
+      TextEditingController();
+
+  final TextEditingController _secondParentLastNameController =
       TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
 
   SignupBloc _signupBloc;
 
@@ -143,8 +152,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is TeacherState) {
                   return SingleChildScrollView(
                     child: Form(
-                      autovalidate: state.autoValidate,
-                      key: state.formKey,
+                      key: _formKey,
                       child: Column(
                         children: [
                           Image.asset(ASSET_IMAGE_P2K_LOGO),
@@ -155,9 +163,15 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
                               controller: _firstNameController,
                               style: TextStyle(color: Colors.white),
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.person,
@@ -183,7 +197,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _lastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -211,7 +231,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _schoolController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -239,7 +265,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().email,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -267,7 +299,14 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              obscureText: true,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().password,
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -309,24 +348,13 @@ class SignupPageState extends State<SignupPage>
 
                               if (!confirm) return;
 
-                              final String email = _emailController.text;
-                              final String password = _passwordController.text;
-                              final String firstName =
-                                  _firstNameController.text;
-                              final String lastName = _lastNameController.text;
-                              final String school = _schoolController.text;
-
                               _signupBloc.add(
-                                Signup(
-                                  email: email,
-                                  password: password,
-                                  firstName: firstName,
-                                  lastName: lastName,
-                                  formKey: state.formKey,
-                                  school: school,
-                                  parentFirstName: null,
-                                  parentLastName: null,
-                                  superAdminSecretKey: null,
+                                TeacherSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  school: _schoolController.text,
                                 ),
                               );
                             },
@@ -370,8 +398,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is ParentState) {
                   return SingleChildScrollView(
                     child: Form(
-                      autovalidate: state.autoValidate,
-                      key: state.formKey,
+                      key: _formKey,
                       child: Column(
                         children: [
                           Image.asset(ASSET_IMAGE_P2K_LOGO),
@@ -386,7 +413,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _firstNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -415,7 +448,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _lastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -443,13 +482,21 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               onTap: () async {
+                                final DateTime now = DateTime.now();
+
                                 final DateTime picked = await showDatePicker(
                                   context: context,
                                   initialDate: state.selectedDate,
-                                  firstDate: DateTime(2000, 1),
-                                  lastDate: DateTime.now(),
+                                  firstDate: DateTime(now.year - 5),
+                                  lastDate: DateTime(now.year - 2),
                                 );
 
                                 if (picked != null &&
@@ -497,8 +544,14 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
-                              controller: _parentFirstNameController,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
+                              controller: _firstParentFirstNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -519,15 +572,20 @@ class SignupPageState extends State<SignupPage>
                                       fontFamily: "WorkSansLight"),
                                   filled: true,
                                   fillColor: Colors.white24,
-                                  hintText: 'Parent/Guardian First Name'),
+                                  hintText: 'Primary Parent First Name'),
                             ),
                           ),
-
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
-                              controller: _parentLastNameController,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
+                              controller: _firstParentLastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -548,14 +606,87 @@ class SignupPageState extends State<SignupPage>
                                       fontFamily: "WorkSansLight"),
                                   filled: true,
                                   fillColor: Colors.white24,
-                                  hintText: 'Parent/Guardian Last Name'),
+                                  hintText: 'Primary Parent Last Name'),
                             ),
                           ),
-
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
+                              controller: _secondParentFirstNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Secondary Parent First Name'),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
+                              controller: _secondParentLastNameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // width: 0.0 produces a thin "hairline" border
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(90.0),
+                                    ),
+                                    borderSide: BorderSide.none,
+
+                                    //borderSide: const BorderSide(),
+                                  ),
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "WorkSansLight"),
+                                  filled: true,
+                                  fillColor: Colors.white24,
+                                  hintText: 'Secondary Parent Last Name'),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextFormField(
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().email,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -583,7 +714,14 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              obscureText: true,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().password,
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -615,7 +753,7 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
                               onTap: () async {
                                 final SEARCH_TEACHERS_BP
                                         .SearchTeachersRepository
@@ -694,25 +832,21 @@ class SignupPageState extends State<SignupPage>
 
                               if (!confirm) return;
 
-                              final String email = _emailController.text;
-                              final String password = _passwordController.text;
-                              final String firstName =
-                                  _firstNameController.text;
-                              final String lastName = _lastNameController.text;
-
                               _signupBloc.add(
-                                Signup(
-                                  email: email,
-                                  password: password,
-                                  firstName: firstName,
-                                  lastName: lastName,
-                                  formKey: state.formKey,
+                                ParentSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
                                   school: null,
-                                  parentFirstName:
-                                      _parentFirstNameController.text,
-                                  parentLastName:
-                                      _parentLastNameController.text,
-                                  superAdminSecretKey: null,
+                                  firstParentFirstName:
+                                      _firstParentFirstNameController.text,
+                                  firstParentLastName:
+                                      _firstParentLastNameController.text,
+                                  secondParentFirstName:
+                                      _secondParentFirstNameController.text,
+                                  secondParentLastName:
+                                      _secondParentLastNameController.text,
                                 ),
                               );
                             },
@@ -745,8 +879,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is SuperAdminState) {
                   return SingleChildScrollView(
                     child: Form(
-                      autovalidate: state.autoValidate,
-                      key: state.formKey,
+                      key: _formKey,
                       child: Column(
                         children: [
                           Image.asset(ASSET_IMAGE_P2K_LOGO),
@@ -759,7 +892,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _firstNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -788,7 +927,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _lastNameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -817,7 +962,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().email,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -845,7 +996,14 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              obscureText: true,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().password,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -873,7 +1031,13 @@ class SignupPageState extends State<SignupPage>
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: TextFormField(
-                              autovalidate: state.autoValidate,
+                              autovalidate: _autoValidate,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
+                              },
                               controller: _superAdminSecretKeyController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -907,6 +1071,15 @@ class SignupPageState extends State<SignupPage>
                             text: 'Sign Up',
                             textColor: Colors.white,
                             onPressed: () async {
+                              if (_superAdminSecretKeyController.text !=
+                                  SECRET_SUPER_ADMIN_SIGNUP_KEY) {
+                                locator<ModalService>().showAlert(
+                                    context: context,
+                                    title: 'Error',
+                                    message: 'Secret Key Incorrect');
+                                return;
+                              }
+
                               bool confirm = await locator<ModalService>()
                                   .showConfirmation(
                                       context: context,
@@ -915,26 +1088,12 @@ class SignupPageState extends State<SignupPage>
 
                               if (!confirm) return;
 
-                              final String email = _emailController.text;
-                              final String password = _passwordController.text;
-                              final String firstName =
-                                  _firstNameController.text;
-                              final String lastName = _lastNameController.text;
-
                               _signupBloc.add(
-                                Signup(
-                                  email: email,
-                                  password: password,
-                                  firstName: firstName,
-                                  lastName: lastName,
-                                  formKey: state.formKey,
-                                  school: null,
-                                  parentFirstName:
-                                      _parentFirstNameController.text,
-                                  parentLastName:
-                                      _parentLastNameController.text,
-                                  superAdminSecretKey:
-                                      _superAdminSecretKeyController.text,
+                                SuperAdminSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
                                 ),
                               );
                             },

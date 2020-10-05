@@ -7,54 +7,30 @@ abstract class SignupState extends Equatable {
 }
 
 class TeacherState extends SignupState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
-
-  TeacherState({
-    @required this.autoValidate,
-    @required this.formKey,
-  });
+  TeacherState();
 
   @override
-  List<Object> get props => [
-        autoValidate,
-        formKey,
-      ];
+  List<Object> get props => [];
 }
 
 class ParentState extends SignupState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
   final DateTime selectedDate;
 
   ParentState({
-    @required this.autoValidate,
-    @required this.formKey,
     @required this.selectedDate,
   });
 
   @override
   List<Object> get props => [
-        autoValidate,
-        formKey,
         selectedDate,
       ];
 }
 
 class SuperAdminState extends SignupState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
-
-  SuperAdminState({
-    @required this.autoValidate,
-    @required this.formKey,
-  });
+  SuperAdminState();
 
   @override
-  List<Object> get props => [
-        autoValidate,
-        formKey,
-      ];
+  List<Object> get props => [];
 }
 
 class SigningIn extends SignupState {}
