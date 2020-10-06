@@ -1,8 +1,22 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/constants.dart';
+import 'package:p/models/UserModel.dart';
 import '../ServiceLocator.dart';
 import 'ValidatorService.dart';
+import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
+import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
+import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
+import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
+import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
+import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
+import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
+import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
+import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
+    as AWESOME_READING_TIPS_BP;
 
 abstract class IModalService {
   void showInSnackBar(
@@ -32,7 +46,6 @@ abstract class IModalService {
 }
 
 class ModalService extends IModalService {
-
   @override
   void showInSnackBar(
       {@required GlobalKey<ScaffoldState> scaffoldKey,
@@ -353,5 +366,134 @@ class ModalService extends IModalService {
         },
       );
     }
+  }
+
+  void showMenu({
+    @required BuildContext context,
+    @required UserModel user,
+  }) async {
+    return await showModalBottomSheet<dynamic>(
+      isDismissible: false,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext bc) {
+        final double screenWidth = MediaQuery.of(context).size.width;
+        final double screenHeight = MediaQuery.of(context).size.height;
+
+        final DateTime now = DateTime.now();
+
+        String greetingMessage;
+        if (now.hour < 12) {
+          greetingMessage = 'Morning';
+        } else if (now.hour < 17) {
+          greetingMessage = 'Afternoon';
+        } else {
+          greetingMessage = 'Evening';
+        }
+
+        return Wrap(
+          children: <Widget>[
+            Container(
+              child: Container(
+                height: screenHeight * 0.8,
+                decoration: BoxDecoration(
+                    color: COLOR_NAVY,
+                    borderRadius: new BorderRadius.only(
+                        topLeft: const Radius.circular(25.0),
+                        topRight: const Radius.circular(25.0))),
+                child: ListView(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          user.imgUrl,
+                        ),
+                      ),
+                      title: Text(
+                        'Good $greetingMessage',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${user.firstName} ${user.lastName}',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.book,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Book of The Month',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                BOOK_OF_THE_MONTH_BP.BookOfTheMonthBloc()
+                                  ..add(
+                                    BOOK_OF_THE_MONTH_BP.LoadPageEvent(),
+                                  ),
+                            child: BOOK_OF_THE_MONTH_BP.BookOfTheMonthPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'My Passport',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      onTap: () async {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                MY_PASSPORT_BP.MyPassportBloc()
+                                  ..add(
+                                    MY_PASSPORT_BP.LoadPageEvent(),
+                                  ),
+                            child: MY_PASSPORT_BP.MyPassportPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }

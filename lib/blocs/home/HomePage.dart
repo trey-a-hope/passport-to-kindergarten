@@ -2,7 +2,9 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
+import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -35,6 +37,9 @@ class HomePageState extends State<HomePage> implements HomeDelegate {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (BuildContext context, HomeState state) {
         if (state is LoadingState) {
@@ -56,49 +61,18 @@ class HomePageState extends State<HomePage> implements HomeDelegate {
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: ConfettiWidget(
-                      numberOfParticles: 10,
-                      confettiController: _confettiController,
-                      blastDirectionality: BlastDirectionality
-                          .explosive, // don't specify a direction, blast randomly
-                      shouldLoop:
-                          true, // start again as soon as the animation is finished
-                      colors: const [
-                        Colors.green,
-                        Colors.blue,
-                        Colors.pink,
-                        Colors.orange,
-                        Colors.purple
-                      ], // manually specify the colors to be used
-                    ),
-                  ),
-                  Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RaisedButton(
-                        child: Text('Start Confetti'),
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          _confettiController.play();
-                        },
-                      ),
-                      RaisedButton(
-                        child: Text('Stop Confetti'),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          _confettiController.stop();
-                        },
-                      )
-                    ],
-                  )),
-                ],
+              child: Center(
+                child: RaisedButton(
+                  child: Text('Open Menu'),
+                  onPressed: () {
+                    locator<ModalService>().showMenu(
+                      context: context,
+                      user: state.user,
+                    );
+                  },
+                  color: Colors.red,
+                  textColor: Colors.white,
+                ),
               ),
             ),
           );

@@ -69,10 +69,10 @@ class MyApp extends StatelessWidget {
                     child: LOGIN_BP.LoginPage(),
                   )
                 : BlocProvider(
-                    create: (BuildContext context) =>
-                        HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
-                    child: HOME_BP.HomePage(),
-                  );
+                        create: (BuildContext context) =>
+                            HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
+                        child: HOME_BP.HomePage(),
+                      );
           },
         ),
       ),

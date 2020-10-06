@@ -1,12 +1,17 @@
+import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/BookOfTheMonthModel.dart';
 
 import 'models/UserModel.dart';
 
+const String ASSET_IMAGE_MENU_BACKGROUND = "assets/images/maxresdefault.jpg";
 const String ASSET_IMAGE_SPLASH_BACKGROUND = "assets/images/splash_bg.png";
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';
 const String ASSET_IMAGE_OR = 'assets/images/or_logo.png';
+
+final HexColorExtension COLOR_CREAM = HexColorExtension('#fff8ec');
+final HexColorExtension COLOR_NAVY = HexColorExtension('#09487e');
 
 const String DUMMY_PROFILE_PHOTO_URL =
     'https://firebasestorage.googleapis.com/v0/b/hidden-gems-e481d.appspot.com/o/Images%2FUsers%2FDummy%2FProfile.jpg?alt=media&token=99cd4cbd-7df9-4005-adef-b27b3996a6cc';

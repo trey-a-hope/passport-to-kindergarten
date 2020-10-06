@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
+import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -45,6 +46,9 @@ class MyPassportPageState extends State<MyPassportPage>
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocBuilder<MyPassportBloc, MyPassportState>(
       builder: (BuildContext context, MyPassportState state) {
         if (state is LoadingState) {
@@ -60,134 +64,197 @@ class MyPassportPageState extends State<MyPassportPage>
 
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text('My Passport'),
-            ),
             drawer: DrawerWidget(
               currentUser: child,
               page: APP_PAGES.MY_PASSPORT,
             ),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.menu),
+              backgroundColor: Colors.deepOrange,
+              onPressed: () {
+                locator<ModalService>().showMenu(context: context, user: child);
+              },
+            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Type: Preschool',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Passport Number: 2019-2020',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(child.imgUrl),
-                          radius: 75,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Parent Name'),
-                              Text(
-                                'JOHN DOE',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              Divider(),
-                              Text('Child Name'),
-                              Text(
-                                '${child.firstName} ${child.lastName}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              Divider(),
-                              Text('Child DOB'),
-                              Text(
-                                DateFormat('MMMM dd, yyyy').format(child.dob),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              )
-                            ],
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: Colors.deepOrange,
+                        child: Center(
+                          child: Text(
+                            'My Passport',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Divider(),
-                        Text('Teacher Name'),
-                        Text(
-                          '${teacher.firstName} ${teacher.lastName}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        Divider(),
-                        Text('School'),
-                        Text(
-                          '${teacher.school}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Type: Preschool',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            ),
+                            Text(
+                              'Passport Number: 2019-2020',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            )
+                          ],
                         ),
-                        Divider(),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    'Stamps',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Divider();
-                      },
-                      itemCount: stamps.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final StampModel stamp = stamps[index];
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(child.imgUrl),
+                              radius: 75,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Parent Name',
+                                    style: TextStyle(color: COLOR_NAVY),
+                                  ),
+                                  Text(
+                                    'JOHN DOE',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: COLOR_NAVY,
+                                        fontSize: 18),
+                                  ),
+                                  Divider(),
+                                  Text(
+                                    'Child Name',
+                                    style: TextStyle(color: COLOR_NAVY),
+                                  ),
+                                  Text(
+                                    '${child.firstName} ${child.lastName}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: COLOR_NAVY,
+                                        fontSize: 18),
+                                  ),
+                                  Divider(),
+                                  Text(
+                                    'Child DOB',
+                                    style: TextStyle(color: COLOR_NAVY),
+                                  ),
+                                  Text(
+                                    DateFormat('MMMM dd, yyyy')
+                                        .format(child.dob),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: COLOR_NAVY,
+                                        fontSize: 18),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Divider(),
+                            Text(
+                              'Teacher Name',
+                              style: TextStyle(color: COLOR_NAVY),
+                            ),
+                            Text(
+                              '${teacher.firstName} ${teacher.lastName}',
+                              style: TextStyle(
+                                color: COLOR_NAVY,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Divider(),
+                            Text(
+                              'School',
+                              style: TextStyle(color: COLOR_NAVY),
+                            ),
+                            Text(
+                              '${teacher.school}',
+                              style: TextStyle(
+                                color: COLOR_NAVY,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        'Stamps',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: COLOR_NAVY,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView(children: [
+                          
+                        ],)
+                        
+                        // ListView.separated(
+                        //   separatorBuilder: (BuildContext context, int index) {
+                        //     return Divider();
+                        //   },
+                        //   itemCount: stamps.length,
+                        //   itemBuilder: (BuildContext context, int index) {
+                        //     final StampModel stamp = stamps[index];
 
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                          ),
-                          title: Text(stamp.name),
-                          subtitle: Text(
-                              'Received: ${DateFormat('MMMM dd, yyyy').format(child.dob)}'),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: () {
-                            locator<ModalService>().showAlert(
-                              context: context,
-                              title: 'Stamp Clicked',
-                              message: 'Open ${stamp.name}',
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  )
-                ],
+                        //     return ListTile(
+                        //       leading: CircleAvatar(
+                        //         backgroundImage:
+                        //             NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                        //       ),
+                        //       title: Text(stamp.name),
+                        //       subtitle: Text(
+                        //           'Received: ${DateFormat('MMMM dd, yyyy').format(child.dob)}'),
+                        //       trailing: Icon(Icons.chevron_right),
+                        //       onTap: () {
+                        //         locator<ModalService>().showAlert(
+                        //           context: context,
+                        //           title: 'Stamp Clicked',
+                        //           message: 'Open ${stamp.name}',
+                        //         );
+                        //       },
+                        //     );
+                        //   },
+                        // ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           );
