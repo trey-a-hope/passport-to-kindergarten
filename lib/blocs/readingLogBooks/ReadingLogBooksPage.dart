@@ -55,81 +55,111 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
           final List<ParentLogModel> books = state.books;
 
           return Scaffold(
-            key: _scaffoldKey,
             appBar: AppBar(
-              centerTitle: true,
-              title: Text('Read Log'),
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
-            drawer: DrawerWidget(
-              currentUser: state.user,
-              page: APP_PAGES.READ_LOG,
-            ),
+            key: _scaffoldKey,
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: books.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final ParentLogModel book = books[index];
-                          return ListTile(
-                            leading: Icon(Icons.bookmark),
-                            title: Text('${book.title}'),
-                            subtitle: Text(
-                              'Created ${DateFormat('MMMM dd, yyyy').format(book.created)}',
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: Colors.deepOrange,
+                        child: Center(
+                          child: Text(
+                            'Reading Log',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
                             ),
-                            onTap: () {
-                              Route route = MaterialPageRoute(
-                                builder: (BuildContext context) => BlocProvider(
-                                  create: (BuildContext context) =>
-                                      READING_LOG_LOGS_BP.ReadingLogLogsBloc(
-                                          book: book)
-                                        ..add(
-                                          READING_LOG_LOGS_BP.LoadPageEvent(),
-                                        ),
-                                  child:
-                                      READING_LOG_LOGS_BP.ReadingLogLogsPage(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: books.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final ParentLogModel book = books[index];
+
+                            //todo: check here if any of the books have the same title as any of the books of the month.
+                            //todo: this way, you can just use the image url here instead of the DUMMY one.
+
+                            return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  child: Text(
+                                    '${book.logCount}',
+                                    style: TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                              );
-                              Navigator.push(context, route);
-                            },
-                            trailing: CircleAvatar(
-                              backgroundColor: Colors.orange.shade700,
-                              child: Text(
-                                '${book.logCount}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                title: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text('${book.title}')
+                                  ],
                                 ),
-                              ),
+                                onTap: () {
+                                  Route route = MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        BlocProvider(
+                                      create: (BuildContext context) =>
+                                          READING_LOG_LOGS_BP
+                                              .ReadingLogLogsBloc(book: book)
+                                            ..add(
+                                              READING_LOG_LOGS_BP
+                                                  .LoadPageEvent(),
+                                            ),
+                                      child: READING_LOG_LOGS_BP
+                                          .ReadingLogLogsPage(),
+                                    ),
+                                  );
+                                  Navigator.push(context, route);
+                                },
+                                trailing: Icon(Icons.chevron_right));
+                          },
+                        ),
+                      ),
+                      FullWidthButtonWidget(
+                        onPressed: () {
+                          Route route = MaterialPageRoute(
+                            builder: (BuildContext context) => BlocProvider(
+                              create: (BuildContext context) =>
+                                  READING_LOG_BOOKS_ADD_BP
+                                      .ReadingLogBooksAddBloc()
+                                    ..add(
+                                      READING_LOG_BOOKS_ADD_BP.LoadPageEvent(),
+                                    ),
+                              child: READING_LOG_BOOKS_ADD_BP
+                                  .ReadingLogBooksAddPage(),
                             ),
                           );
+                          Navigator.push(context, route);
                         },
-                      ),
-                    ),
-                    FullWidthButtonWidget(
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                          builder: (BuildContext context) => BlocProvider(
-                            create: (BuildContext context) =>
-                                READING_LOG_BOOKS_ADD_BP
-                                    .ReadingLogBooksAddBloc()
-                                  ..add(
-                                    READING_LOG_BOOKS_ADD_BP.LoadPageEvent(),
-                                  ),
-                            child: READING_LOG_BOOKS_ADD_BP
-                                .ReadingLogBooksAddPage(),
-                          ),
-                        );
-                        Navigator.push(context, route);
-                      },
-                      text: 'Read A New Book?',
-                      textColor: Colors.white,
-                      buttonColor: Colors.grey,
-                    )
-                  ],
+                        text: 'Read A New Book?',
+                        textColor: Colors.white,
+                        buttonColor: COLOR_NAVY,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
