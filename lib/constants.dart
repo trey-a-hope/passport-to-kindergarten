@@ -19,6 +19,8 @@ const String DUMMY_PROFILE_PHOTO_URL =
 
 String version;
 String buildNumber;
+double screenWidth;
+double screenHeight;
 
 const String ALGOLIA_APP_ID = 'UO39GB988T';
 const String ALGOLIA_SEARCH_API_KEY = 'a2688a24cb08d1b78aae5dcde6f1d54f';

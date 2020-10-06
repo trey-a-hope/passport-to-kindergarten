@@ -378,9 +378,6 @@ class ModalService extends IModalService {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext bc) {
-        final double screenWidth = MediaQuery.of(context).size.width;
-        final double screenHeight = MediaQuery.of(context).size.height;
-
         final DateTime now = DateTime.now();
 
         String greetingMessage;
@@ -404,32 +401,36 @@ class ModalService extends IModalService {
                         topRight: const Radius.circular(25.0))),
                 child: ListView(
                   children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          user.imgUrl,
+                    Container(
+                      color: Colors.deepOrange,
+                      height: 80,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user.imgUrl,
+                          ),
                         ),
-                      ),
-                      title: Text(
-                        'Good $greetingMessage',
-                        style: TextStyle(
-                          color: Colors.white,
+                        title: Text(
+                          'Good $greetingMessage',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        '${user.firstName} ${user.lastName}',
-                        style: TextStyle(
-                          color: Colors.white,
+                        subtitle: Text(
+                          '${user.firstName} ${user.lastName}',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.cancel,
-                          color: Colors.white,
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
                       ),
                     ),
                     SizedBox(

@@ -62,6 +62,9 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             final FirebaseUser firebaseUser = snapshot.data;
 
+            screenWidth = MediaQuery.of(context).size.width;
+            screenHeight = MediaQuery.of(context).size.height;
+
             return firebaseUser == null
                 ? BlocProvider(
                     create: (BuildContext context) =>
@@ -69,10 +72,10 @@ class MyApp extends StatelessWidget {
                     child: LOGIN_BP.LoginPage(),
                   )
                 : BlocProvider(
-                        create: (BuildContext context) =>
-                            HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
-                        child: HOME_BP.HomePage(),
-                      );
+                    create: (BuildContext context) =>
+                        HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
+                    child: HOME_BP.HomePage(),
+                  );
           },
         ),
       ),
