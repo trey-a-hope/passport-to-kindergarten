@@ -24,6 +24,11 @@ class LoginPageState extends State<LoginPage>
 
   LoginBloc _loginBloc;
 
+  void fillFormsWithDummyData() {
+    this._emailController.text = 'trey.a.hope@gmail.com';
+    this._passwordController.text = 'Peachy33';
+  }
+
   @override
   void initState() {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
@@ -61,7 +66,12 @@ class LoginPageState extends State<LoginPage>
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Image.asset(ASSET_IMAGE_P2K_LOGO),
+                        child: InkWell(
+                          child: Image.asset(ASSET_IMAGE_P2K_LOGO),
+                          onTap: () {
+                            fillFormsWithDummyData();
+                          },
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(20),
@@ -118,7 +128,6 @@ class LoginPageState extends State<LoginPage>
                               hintText: 'Password'),
                         ),
                       ),
-
                       Spacer(),
                       FullWidthButtonWidget(
                         buttonColor: HexColorExtension('ff4880'),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +17,17 @@ class TeacherState extends SignupState {
 
 class ParentState extends SignupState {
   final DateTime selectedDate;
+  final File image;
 
   ParentState({
     @required this.selectedDate,
+    @required this.image,
   });
 
   @override
   List<Object> get props => [
         selectedDate,
+        image,
       ];
 }
 

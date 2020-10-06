@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'dart:async';
 import '../../ServiceLocator.dart';
@@ -24,6 +27,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   PROFILE_TYPE _profile_type = PROFILE_TYPE.SUPER_ADMIN;
   static DateTime now = DateTime.now();
   DateTime _selectedDate = DateTime(now.year - 2);
+  File image;
   UserModel _selectedTeacher;
 
   void setDelegate({
@@ -50,6 +54,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         case PROFILE_TYPE.PARENT:
           yield ParentState(
             selectedDate: _selectedDate,
+            image: image,
           );
           break;
         case PROFILE_TYPE.SUPER_ADMIN:
@@ -104,6 +109,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         _signupBlocDelegate.navigateHome();
       } catch (error) {
         _signupBlocDelegate.showMessage(message: error.toString());
+
+        yield TeacherState();
       }
     }
 
@@ -129,14 +136,17 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           password: password,
         );
 
-        final FirebaseUser firebaseUser = authResult.user;
+        final String firebaseUserUID = authResult.user.uid;
+
+        final String imgUrl = await locator<StorageService>().uploadImage(
+            file: image, path: 'Images/Users/$firebaseUserUID/Profile');
 
         newParent = UserModel(
           imgUrl: DUMMY_PROFILE_PHOTO_URL,
           email: email,
           fcmToken: null,
           created: DateTime.now(),
-          uid: firebaseUser.uid,
+          uid: firebaseUserUID,
           firstName: firstName,
           lastName: lastName,
           profileType: PROFILE_TYPE.PARENT.name,
@@ -157,6 +167,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         _signupBlocDelegate.navigateHome();
       } catch (error) {
         _signupBlocDelegate.showMessage(message: error.toString());
+        yield ParentState(
+          selectedDate: _selectedDate,
+          image: image,
+        );
       }
     }
 
@@ -177,14 +191,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           password: password,
         );
 
-        final FirebaseUser firebaseUser = authResult.user;
+        final String firebaseUserUID = authResult.user.uid;
 
         newSuperAdmin = UserModel(
           imgUrl: DUMMY_PROFILE_PHOTO_URL,
           email: email,
           fcmToken: null,
           created: DateTime.now(),
-          uid: firebaseUser.uid,
+          uid: firebaseUserUID,
           firstName: firstName,
           lastName: lastName,
           profileType: PROFILE_TYPE.SUPER_ADMIN.name,
@@ -198,7 +212,17 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         _signupBlocDelegate.navigateHome();
       } catch (error) {
         _signupBlocDelegate.showMessage(message: error.toString());
+        yield SuperAdminState();
       }
+    }
+
+    if (event is UploadPictureEvent) {
+      image = event.image;
+
+      yield ParentState(
+        selectedDate: _selectedDate,
+        image: image,
+      );
     }
   }
 }

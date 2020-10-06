@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/constants.dart';
@@ -128,5 +130,17 @@ class SuperAdminSignupEvent extends SignupEvent {
         password,
         firstName,
         lastName,
+      ];
+}
+
+class UploadPictureEvent extends SignupEvent {
+  final File image;
+
+  UploadPictureEvent({
+    @required this.image,
+  });
+
+  List<Object> get props => [
+        image,
       ];
 }
