@@ -233,13 +233,13 @@ class DrawerWidgetState extends State<DrawerWidget> {
 
         HapticFeedback.vibrate();
 
-        Route route = MaterialPageRoute(
-          builder: (BuildContext context) => AboutPage(
-            currentUser: currentUser,
-          ),
-        );
+        // Route route = MaterialPageRoute(
+        //   builder: (BuildContext context) => AboutPage(
+        //     currentUser: currentUser,
+        //   ),
+        // );
 
-        Navigator.push(context, route);
+        // Navigator.push(context, route);
       },
     );
   }
@@ -256,13 +256,13 @@ class DrawerWidgetState extends State<DrawerWidget> {
 
         HapticFeedback.vibrate();
 
-        Route route = MaterialPageRoute(
-          builder: (BuildContext context) => SettingsPage(
-            currentUser: currentUser,
-          ),
-        );
+        // Route route = MaterialPageRoute(
+        //   builder: (BuildContext context) => SettingsPage(
+        //     currentUser: currentUser,
+        //   ),
+        // );
 
-        Navigator.push(context, route);
+        // Navigator.push(context, route);
       },
     );
   }

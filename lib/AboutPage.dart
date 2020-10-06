@@ -8,8 +8,7 @@ import 'ServiceLocator.dart';
 import 'constants.dart';
 
 class AboutPage extends StatelessWidget {
-  AboutPage({Key key, @required this.currentUser}) : super(key: key);
-  final UserModel currentUser;
+  AboutPage({Key key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final Color _iconChevronColor = Colors.grey;
 
@@ -17,10 +16,6 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: DrawerWidget(
-        currentUser: currentUser,
-        page: APP_PAGES.ABOUT,
-      ),
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: Text(

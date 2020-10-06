@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info/package_info.dart';
 import 'ServiceLocator.dart';
 import 'blocs/login/Bloc.dart' as LOGIN_BP;
-import 'blocs/home/Bloc.dart' as HOME_BP;
+import 'blocs/menu/Bloc.dart' as MENU_BP;
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -72,9 +72,11 @@ class MyApp extends StatelessWidget {
                     child: LOGIN_BP.LoginPage(),
                   )
                 : BlocProvider(
-                    create: (BuildContext context) =>
-                        HOME_BP.HomeBloc()..add(HOME_BP.LoadPageEvent()),
-                    child: HOME_BP.HomePage(),
+                    create: (BuildContext context) => MENU_BP.MenuBloc()
+                      ..add(
+                        MENU_BP.LoadPageEvent(),
+                      ),
+                    child: MENU_BP.MenuPage(),
                   );
           },
         ),

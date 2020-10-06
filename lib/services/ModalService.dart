@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p/AboutPage.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import '../ServiceLocator.dart';
+import '../SettingsPage.dart';
 import 'ValidatorService.dart';
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
@@ -395,14 +398,22 @@ class ModalService extends IModalService {
               child: Container(
                 height: screenHeight * 0.8,
                 decoration: BoxDecoration(
-                    color: COLOR_NAVY,
-                    borderRadius: new BorderRadius.only(
-                        topLeft: const Radius.circular(25.0),
-                        topRight: const Radius.circular(25.0))),
+                  color: COLOR_NAVY,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(25.0),
+                    topRight: const Radius.circular(25.0),
+                  ),
+                ),
                 child: ListView(
                   children: [
                     Container(
-                      color: Colors.deepOrange,
+                      decoration: BoxDecoration(
+                        color: Colors.deepOrange,
+                        borderRadius: new BorderRadius.only(
+                          topLeft: const Radius.circular(25.0),
+                          topRight: const Radius.circular(25.0),
+                        ),
+                      ),
                       height: 80,
                       child: ListTile(
                         leading: CircleAvatar(
@@ -438,13 +449,81 @@ class ModalService extends IModalService {
                     ),
                     ListTile(
                       leading: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'My Passport',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () async {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                MY_PASSPORT_BP.MyPassportBloc()
+                                  ..add(
+                                    MY_PASSPORT_BP.LoadPageEvent(),
+                                  ),
+                            child: MY_PASSPORT_BP.MyPassportPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.bookmark, color: Colors.white),
+                      title: Text(
+                        'Reading Log',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                READING_LOG_BOOKS_BP.ReadingLogBooksBloc()
+                                  ..add(
+                                    READING_LOG_BOOKS_BP.LoadPageEvent(),
+                                  ),
+                            child: READING_LOG_BOOKS_BP.ReadingLogBooksPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.location_on, color: Colors.white),
+                      title: Text(
+                        'Visit Log',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                VISITING_LOG_BP.VisitingLogBloc()
+                                  ..add(
+                                    VISITING_LOG_BP.LoadPageEvent(),
+                                  ),
+                            child: VISITING_LOG_BP.VisitingLogPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
                         Icons.book,
                         color: Colors.white,
                       ),
                       title: Text(
                         'Book of The Month',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onTap: () {
                         HapticFeedback.vibrate();
@@ -463,31 +542,105 @@ class ModalService extends IModalService {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
+                      leading:
+                          Icon(Icons.collections_bookmark, color: Colors.white),
                       title: Text(
-                        'My Passport',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                        'AWEsome Reading Tips',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      onTap: () async {
+                      onTap: () {
                         HapticFeedback.vibrate();
 
                         Route route = MaterialPageRoute(
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) =>
-                                MY_PASSPORT_BP.MyPassportBloc()
+                                AWESOME_READING_TIPS_BP.AwesomeReadingTipsBloc()
                                   ..add(
-                                    MY_PASSPORT_BP.LoadPageEvent(),
+                                    AWESOME_READING_TIPS_BP.LoadPageEvent(),
                                   ),
-                            child: MY_PASSPORT_BP.MyPassportPage(),
+                            child: AWESOME_READING_TIPS_BP
+                                .AwesomeReadingTipsPage(),
                           ),
                         );
                         Navigator.push(context, route);
                       },
                     ),
+                    ListTile(
+                      leading: Icon(Icons.edit, color: Colors.white),
+                      title: Text(
+                        'Edit Profile',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                EDIT_PROFILE_BP.EditProfileBloc()
+                                  ..add(
+                                    EDIT_PROFILE_BP.LoadPageEvent(),
+                                  ),
+                            child: EDIT_PROFILE_BP.EditProfilePage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(MdiIcons.security, color: Colors.white),
+                      title: Text(
+                        'Admin',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => BlocProvider(
+                            create: (BuildContext context) =>
+                                ADMIN_LOG_BP.AdminBloc()
+                                  ..add(
+                                    ADMIN_LOG_BP.LoadPageEvent(),
+                                  ),
+                            child: ADMIN_LOG_BP.AdminPage(),
+                          ),
+                        );
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(MdiIcons.information, color: Colors.white),
+                      title: Text(
+                        'About',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => AboutPage(),
+                        );
+
+                        Navigator.push(context, route);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.settings, color: Colors.white),
+                      title: Text(
+                        'Settings',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        HapticFeedback.vibrate();
+
+                        Route route = MaterialPageRoute(
+                          builder: (BuildContext context) => SettingsPage(),
+                        );
+
+                        Navigator.push(context, route);
+                      },
+                    )
                   ],
                 ),
               ),
