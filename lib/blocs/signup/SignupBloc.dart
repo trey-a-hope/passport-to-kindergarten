@@ -121,7 +121,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       final String password = event.password;
       final String firstName = event.firstName;
       final String lastName = event.lastName;
-      final String school = event.school;
       final String firstParentFirstName = event.firstParentFirstName;
       final String firstParentLastName = event.firstParentLastName;
       final String secondParentFirstName = event.secondParentFirstName;
@@ -142,7 +141,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             file: image, path: 'Images/Users/$firebaseUserUID/Profile');
 
         newParent = UserModel(
-          imgUrl: DUMMY_PROFILE_PHOTO_URL,
+          imgUrl: imgUrl,
           email: email,
           fcmToken: null,
           created: DateTime.now(),
@@ -150,8 +149,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           firstName: firstName,
           lastName: lastName,
           profileType: PROFILE_TYPE.PARENT.name,
-          school: school,
-          teacherID: null,
+          school: null,
+          teacherID: '${IDK_TEACHER_MODEL.uid}',
           dob: _selectedDate,
         );
 

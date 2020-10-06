@@ -962,7 +962,6 @@ class SignupPageState extends State<SignupPage>
                                 password: _passwordController.text,
                                 firstName: _firstNameController.text,
                                 lastName: _lastNameController.text,
-                                school: null,
                                 firstParentFirstName:
                                     _firstParentFirstNameController.text,
                                 firstParentLastName:

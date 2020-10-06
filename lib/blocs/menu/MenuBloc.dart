@@ -90,8 +90,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           greetingMessage = 'Evening';
         }
 
-
-
         if (_currentUser.profileType == PROFILE_TYPE.PARENT.name)
           yield ParentState(
               user: _currentUser, greetingMessage: greetingMessage);

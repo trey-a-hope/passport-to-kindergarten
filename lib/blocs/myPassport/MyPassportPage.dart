@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
 import 'package:p/extensions/HexColorExtension.dart';
+import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -46,7 +48,6 @@ class MyPassportPageState extends State<MyPassportPage>
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<MyPassportBloc, MyPassportState>(
       builder: (BuildContext context, MyPassportState state) {
         if (state is LoadingState) {
@@ -59,22 +60,16 @@ class MyPassportPageState extends State<MyPassportPage>
         if (state is LoadedState) {
           final UserModel child = state.childUser;
           final UserModel teacher = state.teacherUser;
+          final ParentsModel parents = state.parents;
 
           return Scaffold(
             key: _scaffoldKey,
-            drawer: DrawerWidget(
-              currentUser: child,
-              page: APP_PAGES.MY_PASSPORT,
-            ),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.menu),
-              backgroundColor: Colors.deepOrange,
-              onPressed: () {
-                locator<ModalService>().showMenu(context: context, user: child);
-              },
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle.light,
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.red),
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
@@ -98,7 +93,7 @@ class MyPassportPageState extends State<MyPassportPage>
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -122,23 +117,36 @@ class MyPassportPageState extends State<MyPassportPage>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
+                            GFAvatar(
                               backgroundImage: NetworkImage(child.imgUrl),
-                              radius: 75,
+                              shape: GFAvatarShape.standard,
+                              size: 100,
                             ),
                             SizedBox(
-                              width: 20,
+                              width: 10,
                             ),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Parent Name',
+                                    'Primary Parent Name',
                                     style: TextStyle(color: COLOR_NAVY),
                                   ),
                                   Text(
-                                    'JOHN DOE',
+                                    '${parents.firstParentFirstName} ${parents.firstParentLastName}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: COLOR_NAVY,
+                                        fontSize: 18),
+                                  ),
+                                  Divider(),
+                                  Text(
+                                    'Secondary Parent Name',
+                                    style: TextStyle(color: COLOR_NAVY),
+                                  ),
+                                  Text(
+                                    '${parents.secondParentFirstName} ${parents.secondParentLastName}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: COLOR_NAVY,
@@ -178,7 +186,7 @@ class MyPassportPageState extends State<MyPassportPage>
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Divider(),
                             Text(
@@ -218,38 +226,38 @@ class MyPassportPageState extends State<MyPassportPage>
                         ),
                       ),
                       Expanded(
-                        child: ListView(children: [
-                          
-                        ],)
-                        
-                        // ListView.separated(
-                        //   separatorBuilder: (BuildContext context, int index) {
-                        //     return Divider();
-                        //   },
-                        //   itemCount: stamps.length,
-                        //   itemBuilder: (BuildContext context, int index) {
-                        //     final StampModel stamp = stamps[index];
-
-                        //     return ListTile(
-                        //       leading: CircleAvatar(
-                        //         backgroundImage:
-                        //             NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                        //       ),
-                        //       title: Text(stamp.name),
-                        //       subtitle: Text(
-                        //           'Received: ${DateFormat('MMMM dd, yyyy').format(child.dob)}'),
-                        //       trailing: Icon(Icons.chevron_right),
-                        //       onTap: () {
-                        //         locator<ModalService>().showAlert(
-                        //           context: context,
-                        //           title: 'Stamp Clicked',
-                        //           message: 'Open ${stamp.name}',
-                        //         );
-                        //       },
-                        //     );
-                        //   },
-                        // ),
+                          child: ListView(
+                        children: [],
                       )
+
+                          // ListView.separated(
+                          //   separatorBuilder: (BuildContext context, int index) {
+                          //     return Divider();
+                          //   },
+                          //   itemCount: stamps.length,
+                          //   itemBuilder: (BuildContext context, int index) {
+                          //     final StampModel stamp = stamps[index];
+
+                          //     return ListTile(
+                          //       leading: CircleAvatar(
+                          //         backgroundImage:
+                          //             NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                          //       ),
+                          //       title: Text(stamp.name),
+                          //       subtitle: Text(
+                          //           'Received: ${DateFormat('MMMM dd, yyyy').format(child.dob)}'),
+                          //       trailing: Icon(Icons.chevron_right),
+                          //       onTap: () {
+                          //         locator<ModalService>().showAlert(
+                          //           context: context,
+                          //           title: 'Stamp Clicked',
+                          //           message: 'Open ${stamp.name}',
+                          //         );
+                          //       },
+                          //     );
+                          //   },
+                          // ),
+                          )
                     ],
                   ),
                 ),

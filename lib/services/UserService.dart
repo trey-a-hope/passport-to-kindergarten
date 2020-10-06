@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class IUserService {
@@ -16,6 +17,9 @@ abstract class IUserService {
     @required String firstParentLastName,
     @required String secondParentFirstName,
     @required String secondParentLastName,
+  });
+  Future<ParentsModel> retrieveParentInfo({
+    @required String uid,
   });
 }
 
@@ -40,7 +44,7 @@ class UserService extends IUserService {
         'users': FieldValue.increment(1),
       });
 
-      batch.commit();
+      await batch.commit();
 
       return;
     } catch (e) {
@@ -130,6 +134,22 @@ class UserService extends IUserService {
           'lastName': secondParentLastName
         },
       });
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<ParentsModel> retrieveParentInfo({
+    @required String uid,
+  }) async {
+    try {
+      final DocumentSnapshot parentDocSnap =
+          await _parentsColRef.document(uid).get();
+
+      return ParentsModel.fromDocumentSnapshot(ds: parentDocSnap);
     } catch (e) {
       throw Exception(
         e.toString(),

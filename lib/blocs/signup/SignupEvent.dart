@@ -81,7 +81,6 @@ class ParentSignupEvent extends SignupEvent {
   final String password;
   final String firstName;
   final String lastName;
-  final String school;
   final String firstParentFirstName;
   final String firstParentLastName;
   final String secondParentFirstName;
@@ -92,7 +91,6 @@ class ParentSignupEvent extends SignupEvent {
     @required this.password,
     @required this.firstName,
     @required this.lastName,
-    @required this.school,
     @required this.firstParentFirstName,
     @required this.firstParentLastName,
     @required this.secondParentFirstName,
@@ -104,7 +102,6 @@ class ParentSignupEvent extends SignupEvent {
         password,
         firstName,
         lastName,
-        school,
         firstParentFirstName,
         firstParentLastName,
         secondParentFirstName,

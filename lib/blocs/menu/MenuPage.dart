@@ -457,10 +457,25 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         }
 
         if (state is ErrorState) {
-          return Container(
-            child: Center(
-              child: Text(
-                state.error.toString(),
+          return Scaffold(
+            backgroundColor: COLOR_CREAM,
+            body: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.error.toString()),
+                  RaisedButton(
+                    color: Colors.deepOrange,
+                    textColor: Colors.white,
+                    child: Text('Refresh Page'),
+                    onPressed: () {
+                      _menuBloc.add(
+                        LoadPageEvent(),
+                      );
+                    },
+                  )
+                ],
               ),
             ),
           );
