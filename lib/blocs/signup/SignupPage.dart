@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -95,49 +96,64 @@ class SignupPageState extends State<SignupPage>
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: FullWidthButtonWidget(
-                  buttonColor: isTeacher ? Colors.white : Colors.red,
-                  text: 'Teacher',
-                  textColor: isTeacher ? Colors.red : Colors.white,
+                child: GFButton(
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textColor: Colors.white,
+                  color: COLOR_ORANGE,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(profileType: PROFILE_TYPE.TEACHER),
                     );
                   },
+                  text: "Teacher",
+                  shape: GFButtonShape.pills,
+                  type: isTeacher ? null : GFButtonType.outline2x,
                 ),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: FullWidthButtonWidget(
-                  buttonColor: isParent ? Colors.white : Colors.red,
-                  text: 'Parent',
-                  textColor: isParent ? Colors.red : Colors.white,
+                child: GFButton(
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textColor: Colors.white,
+                  color: COLOR_ORANGE,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(profileType: PROFILE_TYPE.PARENT),
                     );
                   },
+                  text: "Parent",
+                  shape: GFButtonShape.pills,
+                  type: isParent ? null : GFButtonType.outline2x,
                 ),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: FullWidthButtonWidget(
-                  buttonColor: isSuperAdmin ? Colors.white : Colors.red,
-                  text: 'Admin',
-                  textColor: isSuperAdmin ? Colors.red : Colors.white,
+                child: GFButton(
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textColor: Colors.white,
+                  color: COLOR_ORANGE,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(
                           profileType: PROFILE_TYPE.SUPER_ADMIN),
                     );
                   },
+                  text: "Admin",
+                  shape: GFButtonShape.pills,
+                  type: isSuperAdmin ? null : GFButtonType.outline2x,
                 ),
               ),
-            )
+            ),
           ],
         )
       ],
@@ -146,7 +162,6 @@ class SignupPageState extends State<SignupPage>
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -386,7 +401,7 @@ class SignupPageState extends State<SignupPage>
                           ),
                         ),
                         FullWidthButtonWidget(
-                          buttonColor: HexColorExtension('ff4880'),
+                          buttonColor: COLOR_ORANGE,
                           text: 'Sign Up',
                           textColor: Colors.white,
                           onPressed: () async {
@@ -944,7 +959,7 @@ class SignupPageState extends State<SignupPage>
                           ),
                         ),
                         FullWidthButtonWidget(
-                          buttonColor: HexColorExtension('ff4880'),
+                          buttonColor: COLOR_ORANGE,
                           text: 'Sign Up',
                           textColor: Colors.white,
                           onPressed: () async {
@@ -1218,7 +1233,7 @@ class SignupPageState extends State<SignupPage>
                           ),
                         ),
                         FullWidthButtonWidget(
-                          buttonColor: HexColorExtension('ff4880'),
+                          buttonColor: COLOR_ORANGE,
                           text: 'Sign Up',
                           textColor: Colors.white,
                           onPressed: () async {

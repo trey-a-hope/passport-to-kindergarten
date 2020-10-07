@@ -38,7 +38,6 @@ class LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -128,7 +127,7 @@ class LoginPageState extends State<LoginPage>
                       ),
                       Spacer(),
                       FullWidthButtonWidget(
-                        buttonColor: HexColorExtension('ff4880'),
+                        buttonColor: COLOR_ORANGE,
                         text: 'Login',
                         textColor: Colors.white,
                         onPressed: () {
