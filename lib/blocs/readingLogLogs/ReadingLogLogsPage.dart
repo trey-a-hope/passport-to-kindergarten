@@ -7,7 +7,6 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/CalendarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_LOGS_BP;
@@ -59,6 +58,7 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
 
           final List<ChildLogModel> logs =
               state.events[state.dateKey] ?? List<ChildLogModel>();
+          final DateTime initialSelectedDay = state.initialSelectedDay;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -71,9 +71,25 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
               child: SafeArea(
                 child: Column(
                   children: [
-                    CalendarWidget(
-                      calendarController: state.calendarController,
+                    TableCalendar(
+                      calendarController: _calendarController,
                       events: state.events,
+                      startingDayOfWeek: StartingDayOfWeek.sunday,
+                      initialSelectedDay: initialSelectedDay,
+                      calendarStyle: CalendarStyle(
+                        selectedColor: Colors.red[400],
+                        todayColor: Colors.red[200],
+                        markersColor: Colors.black,
+                        outsideDaysVisible: false,
+                      ),
+                      headerStyle: HeaderStyle(
+                        formatButtonTextStyle: TextStyle()
+                            .copyWith(color: Colors.white, fontSize: 15.0),
+                        formatButtonDecoration: BoxDecoration(
+                          color: Colors.red[400],
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                       onDaySelected: (DateTime day, List events) {
                         _readingLogLogsBloc.add(
                           READING_LOG_LOGS_BP.OnDaySelectedEvent(

@@ -3,12 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/constants.dart';
-import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_LOGS_ADD_BP;
@@ -84,6 +80,8 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
                           ),
                         ),
                       ),
+                      Text(
+                          'For today, ${DateFormat('MMMM dd, yyyy').format(DateTime.now())}.'),
                       Spacer(),
                       FullWidthButtonWidget(
                         onPressed: () async {

@@ -39,6 +39,25 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
     super.dispose();
   }
 
+  void _goToLogsForThisBook({
+    @required ParentLogModel book,
+    @required DateTime initialSelectedDay,
+  }) {
+    Route route = MaterialPageRoute(
+      builder: (BuildContext context) => BlocProvider(
+        create: (BuildContext context) =>
+            READING_LOG_LOGS_BP.ReadingLogLogsBloc(
+          book: book,
+          initialSelectedDay: initialSelectedDay,
+        )..add(
+                READING_LOG_LOGS_BP.LoadPageEvent(),
+              ),
+        child: READING_LOG_LOGS_BP.ReadingLogLogsPage(),
+      ),
+    );
+    Navigator.push(context, route);
+  }
+
   Widget _buildSortButtons({
     @required String sortBy,
   }) {
@@ -289,6 +308,234 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                                     ),
                                   ),
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 1),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'January',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 2),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'February',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 3),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'March',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 4),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'April',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 5),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'May',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 6),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'June',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 7),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'July',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 8),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'August',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 9),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'September',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 10),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'October',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 11),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'November',
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: FullWidthButtonWidget(
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            _goToLogsForThisBook(
+                                              book: book,
+                                              initialSelectedDay:
+                                                  DateTime(2020, 12),
+                                            );
+                                          },
+                                          buttonColor: COLOR_NAVY,
+                                          text: 'December',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
                               ],
                             );
                             // return ListTile(

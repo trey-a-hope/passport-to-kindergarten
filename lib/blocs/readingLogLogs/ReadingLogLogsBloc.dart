@@ -8,7 +8,6 @@ import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 abstract class ReadingLogLogsDelegate {
   void showMessage({@required String message});
@@ -18,12 +17,13 @@ class ReadingLogLogsBloc
     extends Bloc<ReadingLogLogsEvent, ReadingLogLogsState> {
   ReadingLogLogsBloc({
     @required this.book,
+    @required this.initialSelectedDay,
   }) : super(null);
 
   ReadingLogLogsDelegate _readingLogLogsDelegate;
   UserModel _currentUser;
-  ParentLogModel book;
-  final CalendarController _calendarController = CalendarController();
+  final DateTime initialSelectedDay;
+  final ParentLogModel book;
   Map<DateTime, List<ChildLogModel>> _events =
       Map<DateTime, List<ChildLogModel>>();
 
@@ -81,22 +81,17 @@ class ReadingLogLogsBloc
         },
       );
 
-      // logs.sort(
-      //   (a, b) => b.created.compareTo(a.created),
-      // );
-
-      final DateTime today = DateTime.now();
+      final DateTime today = DateTime.now().add(Duration(days: 17));
 
       yield LoadedState(
-        user: _currentUser,
         book: book,
-        calendarController: _calendarController,
         events: _events,
         dateKey: DateTime(
           today.year,
           today.month,
           today.day,
         ),
+        initialSelectedDay: initialSelectedDay,
       );
     }
 
@@ -104,15 +99,14 @@ class ReadingLogLogsBloc
       final DateTime selectedDay = event.selectedDay;
 
       yield LoadedState(
-        user: _currentUser,
         book: book,
-        calendarController: _calendarController,
         events: _events,
         dateKey: DateTime(
           selectedDay.year,
           selectedDay.month,
           selectedDay.day,
         ),
+        initialSelectedDay: selectedDay,
       );
     }
   }

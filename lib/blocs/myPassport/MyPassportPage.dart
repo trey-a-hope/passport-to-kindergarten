@@ -4,12 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
-import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
 import 'Bloc.dart';
@@ -188,7 +186,7 @@ class MyPassportPageState extends State<MyPassportPage>
                         child: Column(
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Divider(),
+                            Divider(), 
                             Text(
                               'Teacher Name',
                               style: TextStyle(color: COLOR_NAVY),
