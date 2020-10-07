@@ -27,18 +27,21 @@ class DummyService extends IDummyService {
           id: null,
           title: 'Little Red Robin Hood',
           created: DateTime.now(),
+          modified: DateTime.now(),
           logCount: 0,
         ),
         ParentLogModel(
           id: null,
           title: 'Little Blue Robin Hood',
           created: DateTime.now(),
+          modified: DateTime.now(),
           logCount: 0,
         ),
         ParentLogModel(
           id: null,
           title: 'Little Green Robin Hood',
           created: DateTime.now(),
+          modified: DateTime.now(),
           logCount: 0,
         ),
       ];

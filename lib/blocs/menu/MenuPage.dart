@@ -306,7 +306,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: COLOR_ORANGE
                         ),
                         height: 80,
                         child: ListTile(
@@ -360,7 +360,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: COLOR_ORANGE,
                         ),
                         height: 80,
                         child: ListTile(
@@ -417,7 +417,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: COLOR_ORANGE
                         ),
                         height: 80,
                         child: ListTile(
@@ -466,7 +466,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                 children: [
                   Text(state.error.toString()),
                   RaisedButton(
-                    color: Colors.deepOrange,
+                    color: COLOR_ORANGE,
                     textColor: Colors.white,
                     child: Text('Refresh Page'),
                     onPressed: () {

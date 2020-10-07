@@ -55,6 +55,7 @@ class ReadingLogBooksAddBloc
           ParentLogModel book = ParentLogModel(
             id: null,
             created: DateTime.now(),
+            modified: DateTime.now(),
             title: bookTitle,
             logCount: 0,
           );

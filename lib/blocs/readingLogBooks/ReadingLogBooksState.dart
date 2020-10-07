@@ -13,18 +13,21 @@ class ReadingLogBooksState extends Equatable {
 class LoadingState extends ReadingLogBooksState {}
 
 class LoadedState extends ReadingLogBooksState {
-  final UserModel user;
+  //final UserModel user;
   final List<ParentLogModel> books;
+  final String sortBy;
 
   LoadedState({
-    @required this.user,
+    //@required this.user,
     @required this.books,
+    @required this.sortBy,
   });
 
   @override
   List<Object> get props => [
-        user,
+        //user,
         books,
+        sortBy,
       ];
 }
 

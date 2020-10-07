@@ -27,3 +27,16 @@ class BooksUpdatedEvent extends ReadingLogBooksEvent {
         books,
       ];
 }
+
+class UpdateSortEvent extends ReadingLogBooksEvent {
+  final String sortBy;
+
+  UpdateSortEvent({
+    @required this.sortBy,
+  });
+
+  @override
+  List<Object> get props => [
+        sortBy,
+      ];
+}

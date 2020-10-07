@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/readingLogLogs/Bloc.dart' as READING_LOG_LOGS_BP;
-
 import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'
     as READING_LOG_BOOKS_ADD_BP;
+import 'package:percent_indicator/percent_indicator.dart';
 
 class ReadingLogBooksPage extends StatefulWidget {
   @override
@@ -23,6 +22,8 @@ class ReadingLogBooksPage extends StatefulWidget {
 class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
     implements READING_LOG_BOOKS_BP.ReadingLogBooksDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final int _totalBookProgressAmount = 15;
+
   READING_LOG_BOOKS_BP.ReadingLogBooksBloc _readLogBooksBloc;
 
   @override
@@ -36,6 +37,69 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Widget _buildSortButtons({
+    @required String sortBy,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: GFButton(
+              color: COLOR_NAVY,
+              onPressed: () {
+                _readLogBooksBloc.add(
+                  READING_LOG_BOOKS_BP.UpdateSortEvent(
+                    sortBy: 'recent',
+                  ),
+                );
+              },
+              text: "Recent",
+              shape: GFButtonShape.pills,
+              type: sortBy == 'recent' ? null : GFButtonType.outline2x,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: GFButton(
+              color: COLOR_NAVY,
+              onPressed: () {
+                _readLogBooksBloc.add(
+                  READING_LOG_BOOKS_BP.UpdateSortEvent(
+                    sortBy: 'mostRead',
+                  ),
+                );
+              },
+              text: "Most Read",
+              shape: GFButtonShape.pills,
+              type: sortBy == 'mostRead' ? null : GFButtonType.outline2x,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: GFButton(
+              color: COLOR_NAVY,
+              onPressed: () {
+                _readLogBooksBloc.add(
+                  READING_LOG_BOOKS_BP.UpdateSortEvent(
+                    sortBy: 'leastRead',
+                  ),
+                );
+              },
+              text: "Least Read",
+              shape: GFButtonShape.pills,
+              type: sortBy == 'leastRead' ? null : GFButtonType.outline2x,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -53,6 +117,17 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
 
         if (state is READING_LOG_BOOKS_BP.LoadedState) {
           final List<ParentLogModel> books = state.books;
+
+          int totalLogCount = 0;
+          books.forEach((book) {
+            totalLogCount += book.logCount;
+          });
+
+          final int remainingLogCount =
+              totalLogCount % _totalBookProgressAmount;
+
+          final int numberOf15BooksRead =
+              totalLogCount ~/ _totalBookProgressAmount;
 
           return Scaffold(
             appBar: AppBar(
@@ -72,7 +147,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                       Container(
                         width: screenWidth,
                         height: 80,
-                        color: Colors.deepOrange,
+                        color: COLOR_ORANGE,
                         child: Center(
                           child: Text(
                             'Reading Log',
@@ -84,6 +159,57 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'x$numberOf15BooksRead',
+                              style: TextStyle(
+                                color: COLOR_ORANGE,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Image.asset(ASSET_IMAGE_P2K_LOGO),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                      'Your progress to $_totalBookProgressAmount MORE books read!'),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  LinearPercentIndicator(
+                                    center: Text(
+                                      '$remainingLogCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                    lineHeight: 30.0,
+                                    percent: remainingLogCount /
+                                        _totalBookProgressAmount,
+                                    backgroundColor: Colors.grey,
+                                    progressColor: COLOR_ORANGE,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text(
+                        'Sort Books By...',
+                        style: TextStyle(
+                          color: COLOR_NAVY,
+                        ),
+                      ),
+                      _buildSortButtons(
+                        sortBy: state.sortBy,
+                      ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: books.length,
@@ -94,47 +220,56 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                             //todo: this way, you can just use the image url here instead of the DUMMY one.
 
                             return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  child: Text(
-                                    '${book.logCount}',
-                                    style: TextStyle(
-                                      color: Colors.deepOrange,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                child: Text(
+                                  '${book.logCount}',
+                                  style: TextStyle(
+                                    color: COLOR_ORANGE,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
                                   ),
                                 ),
-                                title: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                              ),
+                              title: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    '${book.title}',
+                                    style: TextStyle(
+                                      color: COLOR_NAVY,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text('${book.title}')
-                                  ],
-                                ),
-                                onTap: () {
-                                  Route route = MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        BlocProvider(
-                                      create: (BuildContext context) =>
-                                          READING_LOG_LOGS_BP
-                                              .ReadingLogLogsBloc(book: book)
-                                            ..add(
-                                              READING_LOG_LOGS_BP
-                                                  .LoadPageEvent(),
-                                            ),
-                                      child: READING_LOG_LOGS_BP
-                                          .ReadingLogLogsPage(),
-                                    ),
-                                  );
-                                  Navigator.push(context, route);
-                                },
-                                trailing: Icon(Icons.chevron_right));
+                                  )
+                                ],
+                              ),
+                              onTap: () {
+                                Route route = MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      BlocProvider(
+                                    create: (BuildContext context) =>
+                                        READING_LOG_LOGS_BP.ReadingLogLogsBloc(
+                                            book: book)
+                                          ..add(
+                                            READING_LOG_LOGS_BP.LoadPageEvent(),
+                                          ),
+                                    child: READING_LOG_LOGS_BP
+                                        .ReadingLogLogsPage(),
+                                  ),
+                                );
+                                Navigator.push(context, route);
+                              },
+                              trailing: Icon(
+                                Icons.chevron_right,
+                                color: COLOR_ORANGE,
+                              ),
+                            );
                           },
                         ),
                       ),

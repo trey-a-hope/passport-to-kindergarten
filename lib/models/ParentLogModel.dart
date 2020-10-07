@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class ParentLogModel {
   String id;
   DateTime created;
+  DateTime modified;
   String title;
   int logCount;
 
   ParentLogModel({
     @required this.id,
     @required this.created,
+    @required this.modified,
     @required this.title,
     @required this.logCount,
   });
@@ -22,6 +24,7 @@ class ParentLogModel {
     return ParentLogModel(
       id: data['id'],
       created: data['created'].toDate(),
+      modified: data['modified'].toDate(),
       title: data['title'],
       logCount: data['logCount'],
     );
@@ -31,6 +34,7 @@ class ParentLogModel {
     return {
       'id': id,
       'created': created,
+      'modified': modified,
       'title': title,
       'logCount': logCount,
     };

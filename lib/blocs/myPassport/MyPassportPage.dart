@@ -80,7 +80,7 @@ class MyPassportPageState extends State<MyPassportPage>
                       Container(
                         width: screenWidth,
                         height: 80,
-                        color: Colors.deepOrange,
+                        color: COLOR_ORANGE,
                         child: Center(
                           child: Text(
                             'My Passport',

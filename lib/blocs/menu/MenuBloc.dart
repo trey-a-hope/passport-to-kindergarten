@@ -75,6 +75,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       yield LoadingState();
 
       try {
+
         _currentUser = await locator<AuthService>().getCurrentUser();
 
         _setUpFirebaseMessaging();

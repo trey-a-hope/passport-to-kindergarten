@@ -17,6 +17,11 @@ abstract class ILogService {
   //   @required String uid,
   // });
 
+  void createParentLog(
+      {@required String uid,
+      @required String collection,
+      @required ParentLogModel parentLog});
+
   void createChildLog({
     @required String uid,
     @required String collection,
@@ -95,9 +100,13 @@ class LogService extends ILogService {
         childLogModel.toMap(),
       );
 
-      batch.updateData(parentLogDocRef, {
-        'logCount': FieldValue.increment(1),
-      });
+      batch.updateData(
+        parentLogDocRef,
+        {
+          'logCount': FieldValue.increment(1),
+          'modified': DateTime.now(),
+        },
+      );
 
       batch.commit();
     } catch (e) {

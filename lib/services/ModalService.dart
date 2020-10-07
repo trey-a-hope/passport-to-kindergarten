@@ -408,7 +408,7 @@ class ModalService extends IModalService {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color: COLOR_ORANGE,
                         borderRadius: new BorderRadius.only(
                           topLeft: const Radius.circular(25.0),
                           topRight: const Radius.circular(25.0),

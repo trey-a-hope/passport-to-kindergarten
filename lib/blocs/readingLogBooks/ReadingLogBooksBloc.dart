@@ -5,7 +5,6 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/readingLogBooks/Bloc.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 
@@ -19,6 +18,7 @@ class ReadingLogBooksBloc
 
   ReadingLogBooksDelegate _readingLogBooksDelegate;
   UserModel _currentUser;
+  String _sortBy = 'recent';
 
   void setDelegate({@required ReadingLogBooksDelegate delegate}) {
     this._readingLogBooksDelegate = delegate;
@@ -39,12 +39,18 @@ class ReadingLogBooksBloc
           collection: 'books',
         );
 
-        booksStream.listen((QuerySnapshot event) {
-          List<ParentLogModel> books = event.documents
-              .map((doc) => ParentLogModel.fromDocumentSnapshot(ds: doc))
-              .toList();
-          add(BooksUpdatedEvent(books: books));
-        });
+        booksStream.listen(
+          (QuerySnapshot event) {
+            List<ParentLogModel> books = event.documents
+                .map(
+                  (doc) => ParentLogModel.fromDocumentSnapshot(ds: doc),
+                )
+                .toList();
+            add(
+              BooksUpdatedEvent(books: books),
+            );
+          },
+        );
       } catch (error) {
         yield ErrorState(error: error);
       }
@@ -53,13 +59,37 @@ class ReadingLogBooksBloc
     if (event is BooksUpdatedEvent) {
       final List<ParentLogModel> books = event.books;
 
-      books.sort(
-        (a, b) => b.created.compareTo(a.created),
-      );
+      switch (_sortBy) {
+        case 'recent':
+          books.sort(
+            (a, b) => b.modified.compareTo(a.modified),
+          );
+          break;
+        case 'mostRead':
+          books.sort(
+            (a, b) => b.logCount.compareTo(a.logCount),
+          );
+          break;
+        case 'leastRead':
+          books.sort(
+            (a, b) => a.logCount.compareTo(b.logCount),
+          );
+          break;
+        default:
+          break;
+      }
 
       yield LoadedState(
-        user: _currentUser,
+        //user: _currentUser,
         books: books,
+        sortBy: _sortBy,
+      );
+    }
+
+    if (event is UpdateSortEvent) {
+      _sortBy = event.sortBy;
+      add(
+        LoadPageEvent(),
       );
     }
   }
