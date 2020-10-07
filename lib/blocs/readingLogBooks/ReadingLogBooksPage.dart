@@ -178,7 +178,11 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                               child: Column(
                                 children: [
                                   Text(
-                                      'Your progress to $_totalBookProgressAmount MORE books read!'),
+                                    'Your progress to $_totalBookProgressAmount MORE books read!',
+                                    style: TextStyle(
+                                      color: COLOR_NAVY,
+                                    ),
+                                  ),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -218,58 +222,126 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
 
                             //todo: check here if any of the books have the same title as any of the books of the month.
                             //todo: this way, you can just use the image url here instead of the DUMMY one.
-
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: Text(
-                                  '${book.logCount}',
-                                  style: TextStyle(
-                                    color: COLOR_ORANGE,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                            return ExpansionTile(
+                              title: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  child: Text(
+                                    '${book.logCount}',
+                                    style: TextStyle(
+                                      color: COLOR_ORANGE,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              title: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    '${book.title}',
-                                    style: TextStyle(
-                                      color: COLOR_NAVY,
-                                      fontWeight: FontWeight.bold,
+                                title: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(DUMMY_PROFILE_PHOTO_URL),
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      '${book.title}',
+                                      style: TextStyle(
+                                        color: COLOR_NAVY,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  // Route route = MaterialPageRoute(
+                                  //   builder: (BuildContext context) =>
+                                  //       BlocProvider(
+                                  //     create: (BuildContext context) =>
+                                  //         READING_LOG_LOGS_BP
+                                  //             .ReadingLogLogsBloc(book: book)
+                                  //           ..add(
+                                  //             READING_LOG_LOGS_BP
+                                  //                 .LoadPageEvent(),
+                                  //           ),
+                                  //     child: READING_LOG_LOGS_BP
+                                  //         .ReadingLogLogsPage(),
+                                  //   ),
+                                  // );
+                                  // Navigator.push(context, route);
+                                },
+                                // trailing: Icon(
+                                //   Icons.chevron_right,
+                                //   color: COLOR_ORANGE,
+                                // ),
                               ),
-                              onTap: () {
-                                Route route = MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      BlocProvider(
-                                    create: (BuildContext context) =>
-                                        READING_LOG_LOGS_BP.ReadingLogLogsBloc(
-                                            book: book)
-                                          ..add(
-                                            READING_LOG_LOGS_BP.LoadPageEvent(),
-                                          ),
-                                    child: READING_LOG_LOGS_BP
-                                        .ReadingLogLogsPage(),
+                              children: [
+                                Container(
+                                  height: 50,
+                                  color: COLOR_YELLOW,
+                                  child: Center(
+                                    child: Text(
+                                      'Wow! You have read this book ${book.logCount} times!',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-                                );
-                                Navigator.push(context, route);
-                              },
-                              trailing: Icon(
-                                Icons.chevron_right,
-                                color: COLOR_ORANGE,
-                              ),
+                                ),
+                              ],
                             );
+                            // return ListTile(
+                            //   leading: CircleAvatar(
+                            //     backgroundColor: Colors.transparent,
+                            //     child: Text(
+                            //       '${book.logCount}',
+                            //       style: TextStyle(
+                            //         color: COLOR_ORANGE,
+                            //         fontWeight: FontWeight.bold,
+                            //         fontSize: 20,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   title: Row(
+                            //     children: [
+                            //       CircleAvatar(
+                            //         backgroundImage:
+                            //             NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                            //       ),
+                            //       SizedBox(
+                            //         width: 15,
+                            //       ),
+                            //       Text(
+                            //         '${book.title}',
+                            //         style: TextStyle(
+                            //           color: COLOR_NAVY,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            //   onTap: () {
+                            //     Route route = MaterialPageRoute(
+                            //       builder: (BuildContext context) =>
+                            //           BlocProvider(
+                            //         create: (BuildContext context) =>
+                            //             READING_LOG_LOGS_BP.ReadingLogLogsBloc(
+                            //                 book: book)
+                            //               ..add(
+                            //                 READING_LOG_LOGS_BP.LoadPageEvent(),
+                            //               ),
+                            //         child: READING_LOG_LOGS_BP
+                            //             .ReadingLogLogsPage(),
+                            //       ),
+                            //     );
+                            //     Navigator.push(context, route);
+                            //   },
+                            //   trailing: Icon(
+                            //     Icons.chevron_right,
+                            //     color: COLOR_ORANGE,
+                            //   ),
+                            // );
                           },
                         ),
                       ),

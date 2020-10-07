@@ -17,6 +17,7 @@ final HexColorExtension COLOR_CREAM = HexColorExtension('#fff8ec');
 final HexColorExtension COLOR_DARK_CREAM = HexColorExtension('#ffe3b9');
 final HexColorExtension COLOR_ORANGE = HexColorExtension('#f4692f');
 final HexColorExtension COLOR_NAVY = HexColorExtension('#09487e');
+final HexColorExtension COLOR_YELLOW = HexColorExtension('#ffb653');
 
 //KEYS
 const String ALGOLIA_APP_ID = 'UO39GB988T';
