@@ -387,7 +387,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
-                      adminListTile(),
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),

@@ -16,35 +16,62 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text(
-          'Settings',
-        ),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: COLOR_CREAM,
       ),
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            title: 'Personal',
-            tiles: [
-              SettingsTile(
-                title: 'Notifications',
-                leading: Icon(Icons.person),
-                onTap: () {
-                  locator<ModalService>().showAlert(
-                    context: context,
-                    title: 'Notifications Clicked',
-                    message: 'Coming soon...',
-                  );
-                },
-                trailing: Icon(
-                  Icons.chevron_right,
-                  color: _iconChevronColor,
+      body: Container(
+        width: screenWidth,
+        height: screenHeight,
+        color: COLOR_CREAM,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                width: screenWidth,
+                height: 80,
+                color: COLOR_ORANGE,
+                child: Center(
+                  child: Text(
+                    'Settings',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
+              Expanded(
+                child: SettingsList(
+                  backgroundColor: COLOR_CREAM,
+                  sections: [
+                    SettingsSection(
+                      title: 'Personal',
+                      tiles: [
+                        SettingsTile(
+                          title: 'Notifications',
+                          leading: Icon(Icons.person),
+                          onTap: () {
+                            locator<ModalService>().showAlert(
+                              context: context,
+                              title: 'Notifications Clicked',
+                              message: 'Coming soon...',
+                            );
+                          },
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            color: _iconChevronColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-        ],
+        ),
       ),
     );
   }
