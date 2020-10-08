@@ -182,12 +182,14 @@ class MyPassportPageState extends State<MyPassportPage>
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Divider(),
                             Text(
                               'Teacher Name',
                               style: TextStyle(color: COLOR_NAVY),
+                              textAlign: TextAlign.start,
                             ),
                             Text(
                               '${teacher.firstName} ${teacher.lastName}',
