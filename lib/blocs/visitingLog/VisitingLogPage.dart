@@ -54,53 +54,47 @@ class VisitingLogPageState extends State<VisitingLogPage>
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              centerTitle: true,
-              title: Text('Visit Logs - ${visitLogs.length}'),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    _visitingLogBloc.add(
-                      VISITING_LOG_BP.LoadPageEvent(),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(
-                      builder: (BuildContext context) => BlocProvider(
-                        create: (BuildContext context) =>
-                            VISITING_LOG_ADD_BP.VisitingLogAddBloc()
-                              ..add(
-                                VISITING_LOG_ADD_BP.LoadPageEvent(),
-                              ),
-                        child: VISITING_LOG_ADD_BP.VisitingLogAddPage(),
-                      ),
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-              ],
-            ),
-            drawer: DrawerWidget(
-              currentUser: state.user,
-              page: APP_PAGES.VISIT_LOG,
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: ListView.builder(
-                  itemCount: state.visitLogs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final ParentLogModel visitLog = visitLogs[index];
-                    return ListTile(
-                      leading: Icon(Icons.location_on),
-                      title: Text('${visitLog.title}'),
-                      subtitle: Text(DateFormat('MMMM dd, yyyy').format(
-                        visitLog.created,
-                      )),
-                    );
-                  }),
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'Visit Log',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Still Needs Work...',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
           );
         }
