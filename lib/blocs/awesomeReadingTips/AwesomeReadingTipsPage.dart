@@ -47,16 +47,46 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Awesome Reading Tips'),
-            ),
-            drawer: DrawerWidget(
-              currentUser: state.user,
-              page: APP_PAGES.AWESOME_READING_TIPS,
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: Center(
-                child: Text('Awesome Reading Tips'),
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'AWEsome Reading Tips',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Still Needs Work...',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           );

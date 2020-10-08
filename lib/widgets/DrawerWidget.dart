@@ -17,7 +17,6 @@ import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import '../ServiceLocator.dart';
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
-import 'package:p/blocs/home/Bloc.dart' as HOME_BP;
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
 import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
@@ -96,18 +95,18 @@ class DrawerWidgetState extends State<DrawerWidget> {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       onTap: () async {
-        if (page == APP_PAGES.HOME) return;
+        // if (page == APP_PAGES.HOME) return;
 
-        Route route = MaterialPageRoute(
-          builder: (BuildContext context) => BlocProvider(
-            create: (BuildContext context) => HOME_BP.HomeBloc()
-              ..add(
-                HOME_BP.LoadPageEvent(),
-              ),
-            child: HOME_BP.HomePage(),
-          ),
-        );
-        Navigator.push(context, route);
+        // Route route = MaterialPageRoute(
+        //   builder: (BuildContext context) => BlocProvider(
+        //     create: (BuildContext context) => HOME_BP.HomeBloc()
+        //       ..add(
+        //         HOME_BP.LoadPageEvent(),
+        //       ),
+        //     child: HOME_BP.HomePage(),
+        //   ),
+        // );
+        // Navigator.push(context, route);
       },
     );
   }
