@@ -56,63 +56,136 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              centerTitle: true,
-              title: Text('Create Book For Logging'),
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle.light,
-              child: SafeArea(
-                child: Form(
-                  key: state.formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                        child: TextFormField(
-                          autovalidate: state.autoValidate,
-                          cursorColor: Colors.black,
-                          validator: locator<ValidatorService>().isEmpty,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.done,
-                          controller: _bookTitleController,
-                          style: TextStyle(
-                              color: Colors.black, fontFamily: 'SFUIDisplay'),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Book Title',
-                            prefixIcon: Icon(Icons.person),
-                            labelStyle: TextStyle(fontSize: 15),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      FullWidthButtonWidget(
-                        onPressed: () async {
-                          final bool confirm =
-                              await locator<ModalService>().showConfirmation(
-                            context: context,
-                            title: 'Submit Book',
-                            message: 'Are you sure?',
-                          );
-
-                          if (!confirm) return;
-
-                          _readLogBooksBloc.add(
-                            READING_LOG_BOOKS_ADD_BP.SubmitEvent(
-                              bookTitle: _bookTitleController.text,
-                              formKey: state.formKey,
+                value: SystemUiOverlayStyle.light,
+                child: Container(
+                  width: screenWidth,
+                  height: screenHeight,
+                  color: COLOR_CREAM,
+                  child: SafeArea(
+                    child: Form(
+                      key: state.formKey,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: screenWidth,
+                            height: 80,
+                            color: COLOR_ORANGE,
+                            child: Center(
+                              child: Text(
+                                'Add Book',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        text: 'Submit',
-                        textColor: Colors.white,
-                        buttonColor: Colors.grey,
-                      )
-                    ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+                            child: TextFormField(
+                              autovalidate: state.autoValidate,
+                              cursorColor: Colors.black,
+                              validator: locator<ValidatorService>().isEmpty,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              controller: _bookTitleController,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'SFUIDisplay'),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Book Title',
+                                prefixIcon: Icon(Icons.person),
+                                labelStyle: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          FullWidthButtonWidget(
+                            onPressed: () async {
+                              final bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                context: context,
+                                title: 'Submit Book',
+                                message: 'Are you sure?',
+                              );
+
+                              if (!confirm) return;
+
+                              _readLogBooksBloc.add(
+                                READING_LOG_BOOKS_ADD_BP.SubmitEvent(
+                                  bookTitle: _bookTitleController.text,
+                                  formKey: state.formKey,
+                                ),
+                              );
+                            },
+                            text: 'Submit',
+                            textColor: Colors.white,
+                            buttonColor: COLOR_NAVY,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
+                )
+
+                // SafeArea(
+                //   child: Form(
+                //     key: state.formKey,
+                //     child: Column(
+                //       children: [
+                //         Padding(
+                //           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+                //           child: TextFormField(
+                //             autovalidate: state.autoValidate,
+                //             cursorColor: Colors.black,
+                //             validator: locator<ValidatorService>().isEmpty,
+                //             keyboardType: TextInputType.text,
+                //             textInputAction: TextInputAction.done,
+                //             controller: _bookTitleController,
+                //             style: TextStyle(
+                //                 color: Colors.black, fontFamily: 'SFUIDisplay'),
+                //             decoration: InputDecoration(
+                //               border: OutlineInputBorder(),
+                //               labelText: 'Book Title',
+                //               prefixIcon: Icon(Icons.person),
+                //               labelStyle: TextStyle(fontSize: 15),
+                //             ),
+                //           ),
+                //         ),
+                //         Spacer(),
+                //         FullWidthButtonWidget(
+                //           onPressed: () async {
+                //             final bool confirm =
+                //                 await locator<ModalService>().showConfirmation(
+                //               context: context,
+                //               title: 'Submit Book',
+                //               message: 'Are you sure?',
+                //             );
+
+                //             if (!confirm) return;
+
+                //             _readLogBooksBloc.add(
+                //               READING_LOG_BOOKS_ADD_BP.SubmitEvent(
+                //                 bookTitle: _bookTitleController.text,
+                //                 formKey: state.formKey,
+                //               ),
+                //             );
+                //           },
+                //           text: 'Submit',
+                //           textColor: Colors.white,
+                //           buttonColor: Colors.grey,
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 ),
-              ),
-            ),
           );
         }
 
