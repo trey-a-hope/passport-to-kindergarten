@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -44,13 +45,48 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Book of The Month Details'),
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: Center(
-                  child: Text('book 1'),
-                )),
+              value: SystemUiOverlayStyle.light,
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'Book of the Month',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Still Needs Work...',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
