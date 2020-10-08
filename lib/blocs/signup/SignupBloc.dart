@@ -102,6 +102,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           school: school,
           teacherID: null,
           dob: _selectedDate,
+          primaryParentFirstName: null,
+          primaryParentLastName: null,
+          secondaryParentFirstName: null,
+          secondaryParentLastName: null,
         );
 
         await locator<UserService>().createUser(user: newTeacher);
@@ -152,16 +156,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           school: null,
           teacherID: '${IDK_TEACHER_MODEL.uid}',
           dob: _selectedDate,
+          primaryParentFirstName: firstParentFirstName,
+          primaryParentLastName: firstParentLastName,
+          secondaryParentFirstName: secondParentFirstName,
+          secondaryParentLastName: secondParentLastName,
         );
 
         await locator<UserService>().createUser(user: newParent);
-        locator<UserService>().createParentInfo(
-          uid: newParent.uid,
-          firstParentFirstName: firstParentFirstName,
-          firstParentLastName: firstParentLastName,
-          secondParentFirstName: secondParentFirstName,
-          secondParentLastName: secondParentLastName,
-        );
 
         _signupBlocDelegate.navigateHome();
       } catch (error) {
@@ -204,6 +205,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           school: null,
           teacherID: null,
           dob: _selectedDate,
+          primaryParentFirstName: null,
+          primaryParentLastName: null,
+          secondaryParentFirstName: null,
+          secondaryParentLastName: null,
         );
 
         await locator<UserService>().createUser(user: newSuperAdmin);

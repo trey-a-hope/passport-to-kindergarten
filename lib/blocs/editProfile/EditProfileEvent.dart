@@ -45,25 +45,41 @@ class TeacherSubmitEvent extends EditProfileEvent {
 class ParentSetTextFieldsEvent extends EditProfileEvent {
   final UserModel user;
 
-  ParentSetTextFieldsEvent({@required this.user});
+  ParentSetTextFieldsEvent({
+    @required this.user,
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        user,
+      ];
 }
 
 class ParentSubmitEvent extends EditProfileEvent {
   final String firstName;
   final String lastName;
+  final String primaryParentFirstName;
+  final String primaryParentLastName;
+  final String secondaryParentFirstName;
+  final String secondaryParentLastName;
 
   ParentSubmitEvent({
     @required this.firstName,
     @required this.lastName,
+    @required this.primaryParentFirstName,
+    @required this.primaryParentLastName,
+    @required this.secondaryParentFirstName,
+    @required this.secondaryParentLastName,
   });
 
   @override
   List<Object> get props => [
         firstName,
         lastName,
+        primaryParentFirstName,
+        primaryParentLastName,
+        secondaryParentFirstName,
+        secondaryParentLastName,
       ];
 }
 

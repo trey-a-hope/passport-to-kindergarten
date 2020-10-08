@@ -10,6 +10,10 @@ class UserModel {
   String uid;
   String firstName;
   String lastName;
+  String primaryParentFirstName;
+  String primaryParentLastName;
+  String secondaryParentFirstName;
+  String secondaryParentLastName;
   String profileType;
   String school;
   String teacherID;
@@ -23,6 +27,10 @@ class UserModel {
     @required this.uid,
     @required this.firstName,
     @required this.lastName,
+    @required this.primaryParentFirstName,
+    @required this.primaryParentLastName,
+    @required this.secondaryParentFirstName,
+    @required this.secondaryParentLastName,
     @required this.profileType,
     @required this.school,
     @required this.teacherID,
@@ -38,6 +46,10 @@ class UserModel {
       uid: ds.data['uid'],
       firstName: ds.data['firstName'],
       lastName: ds.data['lastName'],
+      primaryParentFirstName: ds.data['primaryParentFirstName'],
+      primaryParentLastName: ds.data['primaryParentLastName'],
+      secondaryParentFirstName: ds.data['secondaryParentFirstName'],
+      secondaryParentLastName: ds.data['secondaryParentLastName'],
       profileType: ds.data['profileType'],
       school: ds.data['school'],
       teacherID: ds.data['teacherID'],
@@ -49,18 +61,22 @@ class UserModel {
       {@required AlgoliaObjectSnapshot aob}) {
     Map<String, dynamic> data = aob.data;
     return UserModel(
-        email: data['email'],
-        imgUrl: data['imgUrl'],
-        fcmToken: data['fcmToken'],
-        created: DateTime.now(),
-        uid: data['uid'],
-        firstName: data['firstName'],
-        lastName: data['lastName'],
-        profileType: data['profileType'],
-        school: data['school'],
-        teacherID: data['teacherID'],
-        dob: DateTime.now() //todo: Set accurate dob.
-        );
+      email: data['email'],
+      imgUrl: data['imgUrl'],
+      fcmToken: data['fcmToken'],
+      created: DateTime.now(),
+      uid: data['uid'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      primaryParentFirstName: data['primaryParentFirstName'],
+      primaryParentLastName: data['primaryParentLastName'],
+      secondaryParentFirstName: data['secondaryParentFirstName'],
+      secondaryParentLastName: data['secondaryParentLastName'],
+      profileType: data['profileType'],
+      school: data['school'],
+      teacherID: data['teacherID'],
+      dob: DateTime.now(), //todo: Set accurate dob.
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -72,6 +88,10 @@ class UserModel {
       'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
+      'primaryParentFirstName': primaryParentFirstName,
+      'primaryParentLastName': primaryParentLastName,
+      'secondaryParentFirstName': secondaryParentFirstName,
+      'secondaryParentLastName': secondaryParentLastName,
       'profileType': profileType,
       'school': school,
       'teacherID': teacherID,

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -58,7 +57,6 @@ class MyPassportPageState extends State<MyPassportPage>
         if (state is LoadedState) {
           final UserModel child = state.childUser;
           final UserModel teacher = state.teacherUser;
-          final ParentsModel parents = state.parents;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -132,7 +130,7 @@ class MyPassportPageState extends State<MyPassportPage>
                                     style: TextStyle(color: COLOR_NAVY),
                                   ),
                                   Text(
-                                    '${parents.firstParentFirstName} ${parents.firstParentLastName}',
+                                    '${child.primaryParentFirstName} ${child.primaryParentLastName}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: COLOR_NAVY,
@@ -144,7 +142,7 @@ class MyPassportPageState extends State<MyPassportPage>
                                     style: TextStyle(color: COLOR_NAVY),
                                   ),
                                   Text(
-                                    '${parents.secondParentFirstName} ${parents.secondParentLastName}',
+                                    '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: COLOR_NAVY,
@@ -186,7 +184,7 @@ class MyPassportPageState extends State<MyPassportPage>
                         child: Column(
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Divider(), 
+                            Divider(),
                             Text(
                               'Teacher Name',
                               style: TextStyle(color: COLOR_NAVY),

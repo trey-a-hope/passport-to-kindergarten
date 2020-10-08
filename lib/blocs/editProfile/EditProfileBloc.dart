@@ -33,8 +33,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        _childDOB = _currentUser.dob;
-
         if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name) {
           add(SuperAdminSetTextFieldsEvent(user: _currentUser));
           yield SuperAdminLoadedState(
@@ -54,7 +52,14 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         }
 
         if (_currentUser.profileType == PROFILE_TYPE.PARENT.name) {
-          add(ParentSetTextFieldsEvent(user: _currentUser));
+          _childDOB = _currentUser.dob;
+
+          add(
+            ParentSetTextFieldsEvent(
+              user: _currentUser,
+            ),
+          );
+
           yield ParentLoadedState(
             user: _currentUser,
             autoValidate: false,
@@ -100,12 +105,23 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       try {
         final String firstName = event.firstName;
         final String lastName = event.lastName;
+        final String primaryParentFirstName = event.primaryParentFirstName;
+        final String primaryParentLastName = event.primaryParentLastName;
+        final String secondaryParentFirstName = event.secondaryParentFirstName;
+        final String secondaryParentLastName = event.secondaryParentLastName;
 
-        await locator<UserService>().updateUser(uid: _currentUser.uid, data: {
-          'firstName': firstName,
-          'lastName': lastName,
-          'dob': _childDOB
-        });
+        await locator<UserService>().updateUser(
+          uid: _currentUser.uid,
+          data: {
+            'firstName': firstName,
+            'lastName': lastName,
+            'dob': _childDOB,
+            'primaryParentFirstName': primaryParentFirstName,
+            'primaryParentLastName': primaryParentLastName,
+            'secondaryParentFirstName': secondaryParentFirstName,
+            'secondaryParentLastName': secondaryParentLastName,
+          },
+        );
 
         add(
           LoadPageEvent(),
@@ -139,6 +155,11 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       } catch (error) {
         yield ErrorState(error: error);
       }
+    }
+
+    if (event is UpdateChildDOBEvent) {
+      final DateTime dob = event.childDOB;
+      _childDOB = dob;
     }
   }
 }

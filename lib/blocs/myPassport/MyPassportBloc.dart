@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/blocs/myPassport/MyPassportEvent.dart';
 import 'package:p/blocs/myPassport/MyPassportState.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/UserService.dart';
@@ -19,7 +18,6 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
   MyPassportBlocDelegate _myPassportBlocDelegate;
   UserModel _child;
   UserModel _teacher;
-  ParentsModel _parents;
 
   void setDelegate({
     @required MyPassportBlocDelegate delegate,
@@ -35,8 +33,6 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
       try {
         _child = await locator<AuthService>().getCurrentUser();
 
-        _parents = await locator<UserService>().retrieveParentInfo(uid: _child.uid);
-
         if (_child.teacherID == '${IDK_TEACHER_MODEL.uid}') {
           _teacher = IDK_TEACHER_MODEL;
         } else {
@@ -44,7 +40,7 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
               await locator<UserService>().retrieveUser(uid: _child.teacherID);
         }
 
-        yield LoadedState(childUser: _child, teacherUser: _teacher, parents: _parents);
+        yield LoadedState(childUser: _child, teacherUser: _teacher);
       } catch (error) {
         yield ErrorState(error: error);
       }

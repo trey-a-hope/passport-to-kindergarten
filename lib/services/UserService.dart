@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentsModel.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class IUserService {
@@ -10,24 +9,11 @@ abstract class IUserService {
       {bool isAdmin, int limit, String orderBy});
   Future<void> updateUser(
       {@required String uid, @required Map<String, dynamic> data});
-
-  void createParentInfo({
-    @required String uid,
-    @required String firstParentFirstName,
-    @required String firstParentLastName,
-    @required String secondParentFirstName,
-    @required String secondParentLastName,
-  });
-  Future<ParentsModel> retrieveParentInfo({
-    @required String uid,
-  });
 }
 
 class UserService extends IUserService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
-  final CollectionReference _parentsColRef =
-      Firestore.instance.collection('Parents');
   final DocumentReference _tableCountsDocRef =
       Firestore.instance.collection('Data').document('tableCounts');
 
@@ -110,50 +96,6 @@ class UserService extends IUserService {
       return users;
     } catch (e) {
       throw Exception(e.toString());
-    }
-  }
-
-  @override
-  void createParentInfo({
-    @required String uid,
-    @required String firstParentFirstName,
-    @required String firstParentLastName,
-    @required String secondParentFirstName,
-    @required String secondParentLastName,
-  }) {
-    try {
-      final DocumentReference parentDocRef = _parentsColRef.document(uid);
-
-      parentDocRef.setData({
-        'firstParent': {
-          'firstName': firstParentFirstName,
-          'lastName': firstParentLastName
-        },
-        'secondParent': {
-          'firstName': secondParentFirstName,
-          'lastName': secondParentLastName
-        },
-      });
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<ParentsModel> retrieveParentInfo({
-    @required String uid,
-  }) async {
-    try {
-      final DocumentSnapshot parentDocSnap =
-          await _parentsColRef.document(uid).get();
-
-      return ParentsModel.fromDocumentSnapshot(ds: parentDocSnap);
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
     }
   }
 }

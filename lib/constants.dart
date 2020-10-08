@@ -62,6 +62,10 @@ UserModel IDK_TEACHER_MODEL = UserModel(
   fcmToken: null,
   profileType: PROFILE_TYPE.TEACHER.name,
   uid: 'Bmu4w172HWamn97TRhZr',
+  primaryParentFirstName: null,
+  primaryParentLastName: null,
+  secondaryParentFirstName: null,
+  secondaryParentLastName: null,
 );
 
 final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
