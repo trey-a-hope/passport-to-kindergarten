@@ -46,17 +46,48 @@ class AdminPageState extends State<AdminPage> implements AdminBlocDelegate {
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Admin'),
-            ),
-            drawer: DrawerWidget(
-              currentUser: state.user,
-              page: APP_PAGES.ADMIN,
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: Center(
-                  child: Text('Admin for Teacher'),
-                )),
+              value: SystemUiOverlayStyle.light,
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'Teacher Admin',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Still Needs Work...',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
@@ -64,17 +95,48 @@ class AdminPageState extends State<AdminPage> implements AdminBlocDelegate {
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Admin'),
-            ),
-            drawer: DrawerWidget(
-              currentUser: state.user,
-              page: APP_PAGES.ADMIN,
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: Center(
-                  child: Text('Admin for Super Admin'),
-                )),
+              value: SystemUiOverlayStyle.light,
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'Super Admin',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Still Needs Work...',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         }
 
