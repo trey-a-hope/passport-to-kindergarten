@@ -141,8 +141,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
         final String firebaseUserUID = authResult.user.uid;
 
-        final String imgUrl = await locator<StorageService>().uploadImage(
-            file: image, path: 'Images/Users/$firebaseUserUID/Profile');
+        String imgUrl;
+        if (image == null) {
+          imgUrl = DUMMY_PROFILE_PHOTO_URL;
+        } else {
+          imgUrl = await locator<StorageService>().uploadImage(
+              file: image, path: 'Images/Users/$firebaseUserUID/Profile');
+        }
 
         newParent = UserModel(
           imgUrl: imgUrl,
@@ -163,6 +168,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         );
 
         await locator<UserService>().createUser(user: newParent);
+
+        await Future.delayed(
+          const Duration(
+            seconds: 3,
+          ),
+        );
 
         _signupBlocDelegate.navigateHome();
       } catch (error) {
