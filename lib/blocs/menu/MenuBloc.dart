@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'MenuEvent.dart';
 import 'MenuState.dart';
@@ -75,7 +75,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       yield LoadingState();
 
       try {
-
         _currentUser = await locator<AuthService>().getCurrentUser();
 
         _setUpFirebaseMessaging();
@@ -104,6 +103,28 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           yield ErrorState(error: 'Should not see this...');
       } catch (error) {
         yield ErrorState(error: error);
+      }
+    }
+
+    if (event is UploadPictureEvent) {
+      final File image = event.image;
+
+      try {
+        final String imgUrl = await locator<StorageService>().uploadImage(
+            file: image, path: 'Images/Users/${_currentUser.uid}/Profile');
+
+        await locator<UserService>().updateUser(
+          uid: _currentUser.uid,
+          data: {
+            'imgUrl': imgUrl,
+          },
+        );
+
+        add(LoadPageEvent());
+      } catch (error) {
+        _menuBlocDelegate.showMessage(
+          message: error.toString(),
+        );
       }
     }
   }

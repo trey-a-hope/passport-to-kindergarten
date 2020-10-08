@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/AboutPage.dart';
 import 'package:p/ServiceLocator.dart';
@@ -302,14 +307,17 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: COLOR_ORANGE
-                        ),
+                        decoration: BoxDecoration(color: COLOR_ORANGE),
                         height: 80,
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              user.imgUrl,
+                          leading: InkWell(
+                            onTap: () {
+                              showSelectImageDialog();
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
+                              ),
                             ),
                           ),
                           title: Text(
@@ -361,9 +369,14 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                         ),
                         height: 80,
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              user.imgUrl,
+                          leading: InkWell(
+                            onTap: () {
+                              showSelectImageDialog();
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
+                              ),
                             ),
                           ),
                           title: Text(
@@ -412,14 +425,17 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: COLOR_ORANGE
-                        ),
+                        decoration: BoxDecoration(color: COLOR_ORANGE),
                         height: 80,
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              user.imgUrl,
+                          leading: InkWell(
+                            onTap: () {
+                              showSelectImageDialog();
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
+                              ),
                             ),
                           ),
                           title: Text(
@@ -480,6 +496,84 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         return Container();
       },
     );
+  }
+
+  showSelectImageDialog() {
+    return Platform.isIOS ? iOSBottomSheet() : androidDialog();
+  }
+
+  iOSBottomSheet() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoActionSheet(
+            title: Text('Add Photo'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                child: Text('Take Photo'),
+                onPressed: () => handleImage(source: ImageSource.camera),
+              ),
+              CupertinoActionSheetAction(
+                child: Text('Choose From Gallery'),
+                onPressed: () => handleImage(source: ImageSource.gallery),
+              )
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          );
+        });
+  }
+
+  androidDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Add Photo'),
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text('Take Photo'),
+                onPressed: () => handleImage(source: ImageSource.camera),
+              ),
+              SimpleDialogOption(
+                child: Text('Choose From Gallery'),
+                onPressed: () => handleImage(source: ImageSource.gallery),
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.redAccent),
+                ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        });
+  }
+
+  handleImage({@required ImageSource source}) async {
+    Navigator.pop(context);
+
+    try {
+      final PickedFile file = await ImagePicker().getImage(source: source);
+
+      if (file == null) return;
+
+      File image = await ImageCropper.cropImage(sourcePath: file.path);
+
+      if (image == null) return;
+
+      _menuBloc.add(
+        UploadPictureEvent(image: image),
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
