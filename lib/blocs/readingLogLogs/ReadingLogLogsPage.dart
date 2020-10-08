@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -63,90 +64,121 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              centerTitle: true,
-              title: Text('${book.title}'),
+              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: COLOR_CREAM,
             ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    TableCalendar(
-                      calendarController: _calendarController,
-                      events: state.events,
-                      startingDayOfWeek: StartingDayOfWeek.sunday,
-                      initialSelectedDay: initialSelectedDay,
-                      calendarStyle: CalendarStyle(
-                        selectedColor: Colors.red[400],
-                        todayColor: Colors.red[200],
-                        markersColor: Colors.black,
-                        outsideDaysVisible: false,
-                      ),
-                      headerStyle: HeaderStyle(
-                        formatButtonTextStyle: TextStyle()
-                            .copyWith(color: Colors.white, fontSize: 15.0),
-                        formatButtonDecoration: BoxDecoration(
-                          color: Colors.red[400],
-                          borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: 80,
+                        color: COLOR_ORANGE,
+                        child: Center(
+                          child: Text(
+                            'Logs for ${book.title}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
-                      onDaySelected: (DateTime day, List events) {
-                        _readingLogLogsBloc.add(
-                          READING_LOG_LOGS_BP.OnDaySelectedEvent(
-                              selectedDay: day),
-                        );
-                      },
-                      onVisibleDaysChanged: (DateTime first, DateTime last,
-                          CalendarFormat format) {},
-                    ),
-                    Divider(
-                      thickness: 1,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: logs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final ChildLogModel log = logs[index];
-                          return ListTile(
-                            leading: Icon(MdiIcons.pencil),
-                            title: Text('${log.title}'),
-                            subtitle: Text(
-                              'Created ${DateFormat('MMMM dd, yyyy').format(log.created)}',
-                            ),
-                            onTap: () {
-                              locator<ModalService>().showAlert(
-                                  context: context,
-                                  title: 'Notes',
-                                  message: '\"${log.notes}\"');
-                            },
+                      TableCalendar(
+                        calendarController: _calendarController,
+                        events: state.events,
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        initialSelectedDay: initialSelectedDay,
+                        calendarStyle: CalendarStyle(
+                          selectedColor: Colors.deepOrange[400],
+                          todayColor: Colors.deepOrange[200],
+                          markersColor: Colors.black,
+                          outsideDaysVisible: false,
+                        ),
+                        headerStyle: HeaderStyle(
+                          formatButtonTextStyle: TextStyle()
+                              .copyWith(color: Colors.white, fontSize: 15.0),
+                          formatButtonDecoration: BoxDecoration(
+                            color: Colors.deepOrange[400],
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        onDaySelected: (DateTime day, List events) {
+                          _readingLogLogsBloc.add(
+                            READING_LOG_LOGS_BP.OnDaySelectedEvent(
+                                selectedDay: day),
                           );
                         },
+                        onVisibleDaysChanged: (DateTime first, DateTime last,
+                            CalendarFormat format) {},
                       ),
-                    ),
-                    Divider(
-                      thickness: 1,
-                    ),
-                    FullWidthButtonWidget(
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                          builder: (BuildContext context) => BlocProvider(
-                            create: (BuildContext context) =>
-                                READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddBloc(
-                              book: book,
-                            )..add(
-                                    READING_LOG_LOGS_ADD_BP.LoadPageEvent(),
-                                  ),
-                            child:
-                                READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddPage(),
-                          ),
-                        );
-                        Navigator.push(context, route);
-                      },
-                      text: 'Add a New Log',
-                      textColor: Colors.white,
-                      buttonColor: Colors.grey,
-                    )
-                  ],
+                      Divider(
+                        thickness: 1,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: logs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final ChildLogModel log = logs[index];
+                            return ListTile(
+                              leading: Icon(
+                                MdiIcons.book,
+                                color: COLOR_NAVY,
+                              ),
+                              title: Text(
+                                '\"${log.notes}\"',
+                                style: TextStyle(
+                                  color: COLOR_NAVY,
+                                ),
+                              ),
+                              subtitle: Text(
+                                '${DateFormat('MMMM dd, yyyy').format(log.created)}',
+                                style: TextStyle(
+                                  color: COLOR_NAVY,
+                                ),
+                              ),
+                              onTap: () {
+                                // locator<ModalService>().showAlert(
+                                //     context: context,
+                                //     title: 'Notes',
+                                //     message: '\"${log.notes}\"');
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                      ),
+                      FullWidthButtonWidget(
+                        onPressed: () {
+                          Route route = MaterialPageRoute(
+                            builder: (BuildContext context) => BlocProvider(
+                              create: (BuildContext context) =>
+                                  READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddBloc(
+                                book: book,
+                              )..add(
+                                      READING_LOG_LOGS_ADD_BP.LoadPageEvent(),
+                                    ),
+                              child: READING_LOG_LOGS_ADD_BP
+                                  .ReadingLogLogsAddPage(),
+                            ),
+                          );
+                          Navigator.push(context, route);
+                        },
+                        text: 'Add a New Log',
+                        textColor: Colors.white,
+                        buttonColor: COLOR_NAVY,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
