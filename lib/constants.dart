@@ -3,11 +3,24 @@ import 'package:p/models/BookOfTheMonthModel.dart';
 import 'models/UserModel.dart';
 
 //IMAGES
-//const String ASSET_IMAGE_MENU_BACKGROUND = "assets/images/maxresdefault.jpg";
-const String ASSET_p2k20_app_opening_photo = 'assets/images/p2k20_app_opening_photo.png';
-const String ASSET_p2k20_app_white_logo = 'assets/images/p2k20_app_white_logo.png';
-const String ASSET_p2k20_app_blue_background = 'assets/images/p2k20_app_blue_background.png';
-const String ASSET_IMAGE_SPLASH_BACKGROUND = "assets/images/splash_bg.png";
+const String ASSET_p2k20_app_opening_photo =
+    'assets/images/p2k20_app_opening_photo.png';
+const String ASSET_p2k20_app_white_logo =
+    'assets/images/p2k20_app_white_logo.png';
+const String ASSET_p2k20_app_blue_background =
+    'assets/images/p2k20_app_blue_background.png';
+const String ASSET_p2k20_app_header_bar =
+    'assets/images/p2k20_app_header_bar.png';
+const String ASSET_icon_my_passport = 'assets/images/icon_my_passport.png';
+const String ASSET_icon_reading_log = 'assets/images/icon_reading_log.png';
+const String ASSET_icon_visit_log = 'assets/images/icon_visit_log.png';
+const String ASSET_icon_book_of_the_month =
+    'assets/images/icon_book_of_the_month.png';
+const String ASSET_icon_awesome_reading_tips =
+    'assets/images/icon_awesome_reading_tips.png';
+const String ASSET_icon_edit_profile = 'assets/images/icon_edit_profile.png';
+const String ASSET_icon_about = 'assets/images/icon_about.png';
+const String ASSET_icon_settings = 'assets/images/icon_settings.png';
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';

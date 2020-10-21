@@ -48,9 +48,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile myPassportListTile() {
     return ListTile(
-      leading: Icon(
-        Icons.person,
-        color: Colors.white,
+      leading: Image.asset(
+        ASSET_icon_my_passport,
+        width: 20,
       ),
       title: Text(
         'My Passport',
@@ -75,7 +75,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile readingLogListTile() {
     return ListTile(
-      leading: Icon(Icons.bookmark, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_reading_log,
+        width: 20,
+      ),
       title: Text(
         'Reading Log',
         style: TextStyle(color: Colors.white),
@@ -100,7 +103,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile visitLogListTile() {
     return ListTile(
-      leading: Icon(Icons.location_on, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_visit_log,
+        width: 20,
+      ),
       title: Text(
         'Visit Log',
         style: TextStyle(color: Colors.white),
@@ -124,9 +130,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile bookOfTheMonthListTile() {
     return ListTile(
-      leading: Icon(
-        Icons.book,
-        color: Colors.white,
+      leading: Image.asset(
+        ASSET_icon_book_of_the_month,
+        height: 20,
       ),
       title: Text(
         'Book of The Month',
@@ -152,7 +158,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile awesomeReadingTipsListTile() {
     return ListTile(
-      leading: Icon(Icons.collections_bookmark, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_awesome_reading_tips,
+        width: 20,
+      ),
       title: Text(
         'AWEsome Reading Tips',
         style: TextStyle(color: Colors.white),
@@ -177,7 +186,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile editProfileListTile() {
     return ListTile(
-      leading: Icon(Icons.edit, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_edit_profile,
+        width: 20,
+      ),
       title: Text(
         'Edit Profile',
         style: TextStyle(color: Colors.white),
@@ -225,7 +237,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile aboutListTile() {
     return ListTile(
-      leading: Icon(MdiIcons.information, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_about,
+        width: 20,
+      ),
       title: Text(
         'About',
         style: TextStyle(color: Colors.white),
@@ -244,7 +259,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   ListTile settingsListTile() {
     return ListTile(
-      leading: Icon(Icons.settings, color: Colors.white),
+      leading: Image.asset(
+        ASSET_icon_settings,
+        width: 20,
+      ),
       title: Text(
         'Settings',
         style: TextStyle(color: Colors.white),
@@ -284,6 +302,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return BlocBuilder<MenuBloc, MenuState>(
       builder: (BuildContext context, MenuState state) {
         if (state is LoadingState) {
@@ -302,37 +322,58 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
-                color: COLOR_NAVY,
+                width: screenWidth,
+                height: screenHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(ASSET_p2k20_app_blue_background),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(color: COLOR_ORANGE),
-                        height: 80,
-                        child: ListTile(
-                          leading: InkWell(
-                            onTap: () {
-                              showSelectImageDialog();
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                user.imgUrl,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned(
+                            child: InkWell(
+                              onTap: () {
+                                showSelectImageDialog();
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                  user.imgUrl,
+                                ),
                               ),
                             ),
+                            left: 20,
+                            top: 10,
                           ),
-                          title: Text(
-                            'Good $greetingMessage',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              'Good $greetingMessage',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
+                            left: 100,
+                            top: 20,
                           ),
-                          subtitle: Text(
-                            '${user.firstName} ${user.lastName}',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              '${user.firstName} ${user.lastName}',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             ),
-                          ),
-                        ),
+                            left: 100,
+                            top: 40,
+                          )
+                        ],
                       ),
                       Spacer(),
                       bookOfTheMonthListTile(),
@@ -359,39 +400,58 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
-                color: COLOR_NAVY,
+                width: screenWidth,
+                height: screenHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(ASSET_p2k20_app_blue_background),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: COLOR_ORANGE,
-                        ),
-                        height: 80,
-                        child: ListTile(
-                          leading: InkWell(
-                            onTap: () {
-                              showSelectImageDialog();
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                user.imgUrl,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned(
+                            child: InkWell(
+                              onTap: () {
+                                showSelectImageDialog();
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                  user.imgUrl,
+                                ),
                               ),
                             ),
+                            left: 20,
+                            top: 10,
                           ),
-                          title: Text(
-                            'Good $greetingMessage',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              'Good $greetingMessage',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
+                            left: 100,
+                            top: 20,
                           ),
-                          subtitle: Text(
-                            '${user.firstName} ${user.lastName}',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              '${user.firstName} ${user.lastName}',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             ),
-                          ),
-                        ),
+                            left: 100,
+                            top: 40,
+                          )
+                        ],
                       ),
                       Spacer(),
                       myPassportListTile(),
@@ -420,37 +480,58 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
-                color: COLOR_NAVY,
+                width: screenWidth,
+                height: screenHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(ASSET_p2k20_app_blue_background),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(color: COLOR_ORANGE),
-                        height: 80,
-                        child: ListTile(
-                          leading: InkWell(
-                            onTap: () {
-                              showSelectImageDialog();
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                user.imgUrl,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned(
+                            child: InkWell(
+                              onTap: () {
+                                showSelectImageDialog();
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                  user.imgUrl,
+                                ),
                               ),
                             ),
+                            left: 20,
+                            top: 10,
                           ),
-                          title: Text(
-                            'Good $greetingMessage',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              'Good $greetingMessage',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
+                            left: 100,
+                            top: 20,
                           ),
-                          subtitle: Text(
-                            '${user.firstName} ${user.lastName}',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Positioned(
+                            child: Text(
+                              '${user.firstName} ${user.lastName}',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             ),
-                          ),
-                        ),
+                            left: 100,
+                            top: 40,
+                          )
+                        ],
                       ),
                       Spacer(),
                       bookOfTheMonthListTile(),
