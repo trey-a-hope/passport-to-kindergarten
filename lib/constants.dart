@@ -3,7 +3,10 @@ import 'package:p/models/BookOfTheMonthModel.dart';
 import 'models/UserModel.dart';
 
 //IMAGES
-const String ASSET_IMAGE_MENU_BACKGROUND = "assets/images/maxresdefault.jpg";
+//const String ASSET_IMAGE_MENU_BACKGROUND = "assets/images/maxresdefault.jpg";
+const String ASSET_p2k20_app_opening_photo = 'assets/images/p2k20_app_opening_photo.png';
+const String ASSET_p2k20_app_white_logo = 'assets/images/p2k20_app_white_logo.png';
+const String ASSET_p2k20_app_blue_background = 'assets/images/p2k20_app_blue_background.png';
 const String ASSET_IMAGE_SPLASH_BACKGROUND = "assets/images/splash_bg.png";
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';

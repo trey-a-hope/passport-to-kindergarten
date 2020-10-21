@@ -9,10 +9,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
-import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/services/StorageService.dart';
 import 'package:p/services/ValidatorService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -171,7 +169,7 @@ class SignupPageState extends State<SignupPage>
           height: screenHeight,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(ASSET_IMAGE_SPLASH_BACKGROUND),
+              image: AssetImage(ASSET_p2k20_app_blue_background),
               fit: BoxFit.cover,
             ),
           ),
@@ -193,7 +191,10 @@ class SignupPageState extends State<SignupPage>
                           },
                           child: Column(
                             children: [
-                              Image.asset(ASSET_IMAGE_P2K_LOGO),
+                              Image.asset(
+                                ASSET_p2k20_app_white_logo,
+                                width: 200,
+                              ),
                               const SizedBox(
                                 height: 50,
                               ),
@@ -469,7 +470,10 @@ class SignupPageState extends State<SignupPage>
                           },
                           child: Column(
                             children: [
-                              Image.asset(ASSET_IMAGE_P2K_LOGO),
+                              Image.asset(
+                                ASSET_p2k20_app_white_logo,
+                                width: 200,
+                              ),
                               const SizedBox(
                                 height: 50,
                               ),
@@ -941,7 +945,7 @@ class SignupPageState extends State<SignupPage>
                                     width: 10,
                                   ),
                                   RaisedButton(
-                                    color: Colors.teal,
+                                    color: COLOR_ORANGE,
                                     onPressed: () {
                                       showSelectImageDialog();
                                     },
@@ -1024,7 +1028,10 @@ class SignupPageState extends State<SignupPage>
                           },
                           child: Column(
                             children: [
-                              Image.asset(ASSET_IMAGE_P2K_LOGO),
+                              Image.asset(
+                                ASSET_p2k20_app_white_logo,
+                                width: 200,
+                              ),
                               const SizedBox(
                                 height: 50,
                               ),
