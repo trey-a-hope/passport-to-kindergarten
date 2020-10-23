@@ -13,6 +13,7 @@ import 'package:p/blocs/readingLogLogs/Bloc.dart' as READING_LOG_LOGS_BP;
 import 'package:p/blocs/readingLogBooksAdd/Bloc.dart'
     as READING_LOG_BOOKS_ADD_BP;
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReadingLogBooksPage extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
     implements READING_LOG_BOOKS_BP.ReadingLogBooksDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final int _totalBookProgressAmount = 15;
-
+  SharedPreferences _sharedPreferences;
   READING_LOG_BOOKS_BP.ReadingLogBooksBloc _readLogBooksBloc;
 
   @override
@@ -31,7 +32,12 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
     _readLogBooksBloc =
         BlocProvider.of<READING_LOG_BOOKS_BP.ReadingLogBooksBloc>(context);
     _readLogBooksBloc.setDelegate(delegate: this);
+    _loadSharedPref();
     super.initState();
+  }
+
+  _loadSharedPref() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
   }
 
   @override
@@ -141,6 +147,8 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
           books.forEach((book) {
             totalLogCount += book.logCount;
           });
+
+          _sharedPreferences.setInt('totalLogCount', totalLogCount);
 
           final int remainingLogCount =
               totalLogCount % _totalBookProgressAmount;

@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/SuccessMessagePage.dart';
 import 'package:p/constants.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Bloc.dart' as READING_LOG_LOGS_ADD_BP;
 
 class ReadingLogLogsAddPage extends StatefulWidget {
@@ -19,15 +21,23 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
     implements READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddBloc _readLogLogsBloc;
-
   final TextEditingController _notesController = TextEditingController();
+  SharedPreferences _sharedPreferences;
+  int _totalLogCount;
 
   @override
   void initState() {
     _readLogLogsBloc =
         BlocProvider.of<READING_LOG_LOGS_ADD_BP.ReadingLogLogsAddBloc>(context);
     _readLogLogsBloc.setDelegate(delegate: this);
+    _loadSharedPref();
     super.initState();
+  }
+
+  _loadSharedPref() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _totalLogCount = _sharedPreferences.getInt('totalLogCount');
+    print('Total Log Count: $_totalLogCount');
   }
 
   @override
@@ -62,41 +72,41 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            ASSET_p2k20_app_header_bar,
-                            width: screenWidth,
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
+                        Stack(
+                          children: [
+                            Image.asset(
+                              ASSET_p2k20_app_header_bar,
+                              width: screenWidth,
                             ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Add new log',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.chevron_left,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
                                 ),
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Add new log',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
                           child: TextFormField(
@@ -143,6 +153,17 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
                                 notes: _notesController.text,
                               ),
                             );
+
+                            _totalLogCount++;
+
+                            if (_totalLogCount % 15 == 0) {
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SuccessMessagePage(),
+                              );
+
+                              Navigator.push(context, route);
+                            }
                           },
                           text: 'Submit',
                           textColor: Colors.white,
@@ -153,60 +174,6 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
                   ),
                 ),
               ),
-
-              // SafeArea(
-              //   child: Form(
-              //     key: state.formKey,
-              //     child: Column(
-              //       children: [
-              //         Padding(
-              //           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
-              //           child: TextFormField(
-              //             autovalidate: state.autoValidate,
-              //             cursorColor: Colors.black,
-              //             validator: locator<ValidatorService>().isEmpty,
-              //             keyboardType: TextInputType.text,
-              //             textInputAction: TextInputAction.done,
-              //             controller: _notesController,
-              //             style: TextStyle(
-              //                 color: Colors.black, fontFamily: 'SFUIDisplay'),
-              //             decoration: InputDecoration(
-              //               border: OutlineInputBorder(),
-              //               labelText: 'Notes',
-              //               prefixIcon: Icon(Icons.speaker_notes),
-              //               labelStyle: TextStyle(fontSize: 15),
-              //             ),
-              //           ),
-              //         ),
-              //         Text(
-              //             'For today, ${DateFormat('MMMM dd, yyyy').format(DateTime.now())}.'),
-              //         Spacer(),
-              //         FullWidthButtonWidget(
-              //           onPressed: () async {
-              //             final bool confirm =
-              //                 await locator<ModalService>().showConfirmation(
-              //               context: context,
-              //               title: 'Submit Log for ${state.book.title}',
-              //               message: 'Are you sure?',
-              //             );
-
-              //             if (!confirm) return;
-
-              //             _readLogLogsBloc.add(
-              //               READING_LOG_LOGS_ADD_BP.SubmitEvent(
-              //                 formKey: state.formKey,
-              //                 notes: _notesController.text,
-              //               ),
-              //             );
-              //           },
-              //           text: 'Submit',
-              //           textColor: Colors.white,
-              //           buttonColor: Colors.grey,
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ),
           );
         }

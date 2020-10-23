@@ -23,6 +23,7 @@ const String ASSET_icon_about = 'assets/images/icon_about.png';
 const String ASSET_icon_settings = 'assets/images/icon_settings.png';
 const String ASSET_p2k20_app_dotted_line =
     'assets/images/p2k20_app_dotted_line.png';
+const String ASSET_success_message_background = 'assets/images/success_message_background.png';
 
 const String ASSET_p2k20_app_stamp_15_books_read =
     'assets/images/stamp_15_books_read.png';
