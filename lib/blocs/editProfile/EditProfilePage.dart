@@ -3,12 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/blocs/signup/Bloc.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -63,10 +61,6 @@ class EditProfilePageState extends State<EditProfilePage>
         if (state is TeacherLoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -78,20 +72,40 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Container(
-                          width: screenWidth,
-                          height: 80,
-                          color: COLOR_ORANGE,
-                          child: Center(
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
+                        Stack(
+                          children: [
+                            Image.asset(
+                              ASSET_p2k20_app_header_bar,
+                              width: screenWidth,
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.chevron_left,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                             ),
-                          ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Expanded(
                           child: ListView(
@@ -196,10 +210,6 @@ class EditProfilePageState extends State<EditProfilePage>
         if (state is ParentLoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -211,20 +221,40 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Container(
-                          width: screenWidth,
-                          height: 80,
-                          color: COLOR_ORANGE,
-                          child: Center(
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
+                        Stack(
+                          children: [
+                            Image.asset(
+                              ASSET_p2k20_app_header_bar,
+                              width: screenWidth,
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.chevron_left,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                             ),
-                          ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Expanded(
                           child: ListView(
@@ -459,10 +489,6 @@ class EditProfilePageState extends State<EditProfilePage>
         if (state is SuperAdminLoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -474,20 +500,40 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Container(
-                          width: screenWidth,
-                          height: 80,
-                          color: COLOR_ORANGE,
-                          child: Center(
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
+                        Stack(
+                          children: [
+                            Image.asset(
+                              ASSET_p2k20_app_header_bar,
+                              width: screenWidth,
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.chevron_left,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                             ),
-                          ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Expanded(
                           child: ListView(
