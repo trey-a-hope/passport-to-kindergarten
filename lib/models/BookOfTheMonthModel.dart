@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class BookOfTheMonthModel {
   String title;
-  String imgUrl;
+  String assetImagePath;
 
   BookOfTheMonthModel({
     @required this.title,
-    @required this.imgUrl,
+    @required this.assetImagePath,
   });
 }

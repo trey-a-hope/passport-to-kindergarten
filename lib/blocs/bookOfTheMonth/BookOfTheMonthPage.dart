@@ -52,10 +52,6 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
         if (state is BOOK_OF_THE_MONTH_BP.LoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -65,18 +61,50 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: 80,
-                        color: COLOR_ORANGE,
-                        child: Center(
-                          child: Text(
-                            'Book of The Month',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
                             ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Book of The Month',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Tap each icon for a video and reading tips!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: COLOR_NAVY,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 21,
                           ),
                         ),
                       ),
@@ -96,27 +124,28 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.black.withOpacity(0.3),
-                                          BlendMode.darken),
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          'https://picsum.photos/200'),
+                                      // colorFilter: ColorFilter.mode(
+                                      //     Colors.black.withOpacity(0.3),
+                                      //     BlendMode.darken),
+                                      fit: BoxFit.fill,
+                                      image: Image.asset(
+                                              bookOfTheMonth.assetImagePath)
+                                          .image,
                                     ),
                                     color: Colors.green,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(20),
                                     ),
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      '${bookOfTheMonth.title}',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
+                                  // child: Center(
+                                  //   child: Text(
+                                  //     '${bookOfTheMonth.title}',
+                                  //     style: TextStyle(
+                                  //         color: Colors.white,
+                                  //         fontWeight: FontWeight.bold),
+                                  //     textAlign: TextAlign.center,
+                                  //   ),
+                                  // ),
                                 ),
                                 onTap: () {
                                   Route route = MaterialPageRoute(

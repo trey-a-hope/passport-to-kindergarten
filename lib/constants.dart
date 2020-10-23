@@ -53,6 +53,19 @@ const String ASSET_five_rivers_metroparks_logo =
 const String ASSET_dayton_art_institute_logo =
     'assets/images/dayton_art_institute_logo.png';
 
+const String ASSET_book_1 = 'assets/images/bom/bear_says_thanks_november.jpg';
+const String ASSET_book_2 = 'assets/images/bom/Bear-Snores-On_january.jpg';
+const String ASSET_book_3 = 'assets/images/bom/gingerbread_man_december.jpg';
+const String ASSET_book_4 = 'assets/images/bom/i_aint_gonna_paint_no_more_march.jpg';
+const String ASSET_book_5 = 'assets/images/bom/i_want_to_be_a_doctor_july.jpg';
+const String ASSET_book_6 = 'assets/images/bom/Lola_Goes_to_School_september.jpg';
+const String ASSET_book_7 = 'assets/images/bom/my_friend_is_sad_cover_august.jpg';
+const String ASSET_book_8 = 'assets/images/bom/my_truck_is_stuck_april.png';
+const String ASSET_book_9 = 'assets/images/bom/the_old_lady_who_was_not_afraid_of_anything_october.jpg';
+const String ASSET_book_10 = 'assets/images/bom/Three_Little_Pigs_june.jpg';
+const String ASSET_book_11 = 'assets/images/bom/tracks_in_the_snow_february.jpg';
+const String ASSET_book_12 = 'assets/images/bom/where_the_wild_things are_may.jpg';
+
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';
@@ -117,54 +130,20 @@ UserModel IDK_TEACHER_MODEL = UserModel(
 );
 
 final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
-  BookOfTheMonthModel(
-      title: 'Book 1',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 2',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 3',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 4',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 5',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 6',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 7',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 8',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 9',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 10',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 11',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
-  BookOfTheMonthModel(
-      title: 'Book 12',
-      imgUrl:
-          'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_1),
+    BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_2),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_3),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_4),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_5),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_6),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_7),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_8),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_9),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_10),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_11),
+  BookOfTheMonthModel(title: 'Bear Says Thanks', assetImagePath: ASSET_book_12),
+
+  
 ];
 
 extension PROFILE_TYPE_EXTENSION on PROFILE_TYPE {
