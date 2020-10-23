@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/StampModel.dart';
@@ -23,17 +23,27 @@ class MyPassportPageState extends State<MyPassportPage>
 
   MyPassportBloc _myPassportBloc;
 
-  final List<StampModel> stamps = [
-    StampModel(
-        id: 'aaa',
-        name: 'Visited Dayton Metro Library',
-        created: DateTime.now().toString()),
-    StampModel(
-        id: 'aaa', name: 'Read 15 Books', created: DateTime.now().toString()),
-    StampModel(
-        id: 'aaa',
-        name: 'Visited Boonshoft Museum',
-        created: DateTime.now().toString()),
+  final List<Image> stamps = [
+    Image.asset(
+      ASSET_p2k20_app_stamp_15_books_read,
+      height: 100,
+    ),
+    Image.asset(
+      ASSET_stamp_boonshoft,
+      height: 100,
+    ),
+    Image.asset(
+      ASSET_stamp_dayton_art_institute,
+      height: 100,
+    ),
+    Image.asset(
+      ASSET_stamp_dayton_metro_library,
+      height: 100,
+    ),
+    Image.asset(
+      ASSET_stamp_five_rivers_metro_park,
+      height: 100,
+    ),
   ];
 
   @override
@@ -60,10 +70,6 @@ class MyPassportPageState extends State<MyPassportPage>
 
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(statusBarColor: Colors.red),
               child: Container(
@@ -73,20 +79,40 @@ class MyPassportPageState extends State<MyPassportPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: 80,
-                        color: COLOR_ORANGE,
-                        child: Center(
-                          child: Text(
-                            'My Passport',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'My Passport',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
@@ -113,10 +139,19 @@ class MyPassportPageState extends State<MyPassportPage>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GFAvatar(
-                              backgroundImage: NetworkImage(child.imgUrl),
-                              shape: GFAvatarShape.standard,
-                              size: 100,
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: COLOR_ORANGE,
+                                  width: 5,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Image.network(
+                                DUMMY_PROFILE_PHOTO_URL,
+                              ),
                             ),
                             SizedBox(
                               width: 10,
@@ -216,46 +251,47 @@ class MyPassportPageState extends State<MyPassportPage>
                           ],
                         ),
                       ),
-                      Text(
-                        'Stamps',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: COLOR_NAVY,
+                      Image.asset(
+                        ASSET_p2k20_app_dotted_line,
+                        width: screenWidth,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Stamps',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY,
+                                  fontSize: 21),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
-                          child: ListView(
-                        children: [],
+                        child: StaggeredGridView.countBuilder(
+                          crossAxisCount: 4,
+                          itemCount: stamps.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return stamps[index];
+
+                            // return Container(
+                            //   color: Colors.green,
+                            //   child: Center(
+                            //     child: CircleAvatar(
+                            //       backgroundColor: Colors.white,
+                            //       child: Text('$index'),
+                            //     ),
+                            //   ),
+                            // );
+                          },
+                          staggeredTileBuilder: (int index) =>
+                              StaggeredTile.count(2, index.isEven ? 2 : 1),
+                          mainAxisSpacing: 4.0,
+                          crossAxisSpacing: 4.0,
+                        ),
                       )
-
-                          // ListView.separated(
-                          //   separatorBuilder: (BuildContext context, int index) {
-                          //     return Divider();
-                          //   },
-                          //   itemCount: stamps.length,
-                          //   itemBuilder: (BuildContext context, int index) {
-                          //     final StampModel stamp = stamps[index];
-
-                          //     return ListTile(
-                          //       leading: CircleAvatar(
-                          //         backgroundImage:
-                          //             NetworkImage(DUMMY_PROFILE_PHOTO_URL),
-                          //       ),
-                          //       title: Text(stamp.name),
-                          //       subtitle: Text(
-                          //           'Received: ${DateFormat('MMMM dd, yyyy').format(child.dob)}'),
-                          //       trailing: Icon(Icons.chevron_right),
-                          //       onTap: () {
-                          //         locator<ModalService>().showAlert(
-                          //           context: context,
-                          //           title: 'Stamp Clicked',
-                          //           message: 'Open ${stamp.name}',
-                          //         );
-                          //       },
-                          //     );
-                          //   },
-                          // ),
-                          )
                     ],
                   ),
                 ),
