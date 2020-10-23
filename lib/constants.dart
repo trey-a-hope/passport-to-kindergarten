@@ -40,6 +40,19 @@ const String ASSET_pp_text_logo = 'assets/images/pp_text_logo.png';
 
 const String ASSET_about_page_logos = 'assets/images/about_page_logos.png';
 
+const String ASSET_boonshoft_logo = 'assets/images/boonshoft_logo.png';
+const String ASSET_directions_icon = 'assets/images/directions_icon.png';
+const String ASSET_site_login_icon = 'assets/images/site_login_icon.png';
+const String ASSET_website_icon = 'assets/images/website_icon.png';
+
+const String ASSET_dayton_metro_library_logo =
+    'assets/images/dayton_metro_library_logo.png';
+const String ASSET_five_rivers_metroparks_logo =
+    'assets/images/five_rivers_metroparks_logo.png';
+
+const String ASSET_dayton_art_institute_logo =
+    'assets/images/dayton_art_institute_logo.png';
+
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';
