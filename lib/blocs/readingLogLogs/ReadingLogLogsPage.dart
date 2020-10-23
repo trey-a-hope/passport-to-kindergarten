@@ -63,10 +63,6 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
 
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -76,20 +72,40 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: 80,
-                        color: COLOR_ORANGE,
-                        child: Center(
-                          child: Text(
-                            'Logs for ${book.title}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Logs for ${book.title}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       TableCalendar(
                         calendarController: _calendarController,
@@ -173,7 +189,7 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
                           );
                           Navigator.push(context, route);
                         },
-                        text: 'Add a New Log',
+                        text: 'Add a new log',
                         textColor: Colors.white,
                         buttonColor: COLOR_NAVY,
                       )

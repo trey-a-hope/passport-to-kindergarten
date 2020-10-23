@@ -51,10 +51,6 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
         if (state is READING_LOG_LOGS_ADD_BP.LoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -66,21 +62,41 @@ class ReadingLogLogsAddPageState extends State<ReadingLogLogsAddPage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Container(
-                          width: screenWidth,
-                          height: 80,
-                          color: COLOR_ORANGE,
-                          child: Center(
-                            child: Text(
-                              'Add Reading Log',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
                             ),
                           ),
-                        ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Add new log',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
                           child: TextFormField(

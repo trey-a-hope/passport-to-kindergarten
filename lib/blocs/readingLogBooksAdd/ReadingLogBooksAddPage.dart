@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_ADD_BP;
@@ -55,10 +51,6 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
         if (state is READING_LOG_BOOKS_ADD_BP.LoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -70,20 +62,40 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Container(
-                          width: screenWidth,
-                          height: 80,
-                          color: COLOR_ORANGE,
-                          child: Center(
-                            child: Text(
-                              'Add Book',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
+                        Stack(
+                          children: [
+                            Image.asset(
+                              ASSET_p2k20_app_header_bar,
+                              width: screenWidth,
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.chevron_left,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                             ),
-                          ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Add a new title',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
@@ -98,7 +110,7 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                                 color: Colors.black, fontFamily: 'SFUIDisplay'),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Book Title',
+                              labelText: 'Title',
                               prefixIcon: Icon(Icons.person),
                               labelStyle: TextStyle(fontSize: 15),
                             ),
@@ -123,7 +135,7 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                               ),
                             );
                           },
-                          text: 'Submit',
+                          text: 'Add',
                           textColor: Colors.white,
                           buttonColor: COLOR_NAVY,
                         )

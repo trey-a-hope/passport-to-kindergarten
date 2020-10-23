@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -275,16 +274,6 @@ class MyPassportPageState extends State<MyPassportPage>
                           itemCount: stamps.length,
                           itemBuilder: (BuildContext context, int index) {
                             return stamps[index];
-
-                            // return Container(
-                            //   color: Colors.green,
-                            //   child: Center(
-                            //     child: CircleAvatar(
-                            //       backgroundColor: Colors.white,
-                            //       child: Text('$index'),
-                            //     ),
-                            //   ),
-                            // );
                           },
                           staggeredTileBuilder: (int index) =>
                               StaggeredTile.count(2, index.isEven ? 2 : 1),

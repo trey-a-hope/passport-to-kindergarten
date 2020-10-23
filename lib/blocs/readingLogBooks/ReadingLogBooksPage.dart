@@ -149,10 +149,6 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
               totalLogCount ~/ _totalBookProgressAmount;
 
           return Scaffold(
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             key: _scaffoldKey,
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
@@ -163,20 +159,40 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: 80,
-                        color: COLOR_ORANGE,
-                        child: Center(
-                          child: Text(
-                            'Reading Log',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Reading Log',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.all(20),
@@ -191,7 +207,8 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                               ),
                             ),
                             SizedBox(width: 10),
-                            Image.asset(ASSET_IMAGE_P2K_LOGO),
+                            Image.asset(ASSET_p2k20_app_stamp_15_books_read,
+                                width: 100),
                             SizedBox(width: 10),
                             Expanded(
                               child: Column(
@@ -223,6 +240,23 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                             )
                           ],
                         ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        color: COLOR_DARK_CREAM,
+                        child: Center(
+                          child: Text(
+                            'Tap on  a title below to log another reading.',
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Text(
                         'Sort Books By...',
@@ -272,8 +306,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                                     )
                                   ],
                                 ),
-                                onTap: () {
-                                },
+                                onTap: () {},
                               ),
                               children: [
                                 Container(
@@ -538,7 +571,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                           );
                           Navigator.push(context, route);
                         },
-                        text: 'Read A New Book?',
+                        text: 'Add a new title',
                         textColor: Colors.white,
                         buttonColor: COLOR_NAVY,
                       )
