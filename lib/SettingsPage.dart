@@ -16,35 +16,50 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: COLOR_CREAM,
-      ),
       body: Container(
         width: screenWidth,
         height: screenHeight,
-        color: COLOR_CREAM,
+        color: Colors.grey.shade200,
         child: SafeArea(
           child: Column(
             children: [
-              Container(
-                width: screenWidth,
-                height: 80,
-                color: COLOR_ORANGE,
-                child: Center(
-                  child: Text(
-                    'Settings',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
+              Stack(
+                children: [
+                  Image.asset(
+                    ASSET_p2k20_app_header_bar,
+                    width: screenWidth,
+                  ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
                   ),
-                ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Settings',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               Expanded(
                 child: SettingsList(
-                  backgroundColor: COLOR_CREAM,
                   sections: [
                     SettingsSection(
                       title: 'Personal',

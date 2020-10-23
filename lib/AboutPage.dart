@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
+import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'ServiceLocator.dart';
@@ -14,10 +15,6 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: COLOR_CREAM,
-      ),
       body: Container(
         width: screenWidth,
         height: screenHeight,
@@ -25,20 +22,40 @@ class AboutPage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              Container(
-                width: screenWidth,
-                height: 80,
-                color: COLOR_ORANGE,
-                child: Center(
-                  child: Text(
-                    'About',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
+              Stack(
+                children: [
+                  Image.asset(
+                    ASSET_p2k20_app_header_bar,
+                    width: screenWidth,
+                  ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
                   ),
-                ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'About',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               Expanded(
                 child: ListView(
@@ -56,12 +73,12 @@ class AboutPage extends StatelessWidget {
                       ),
                     ),
                     Image.asset(
-                      ASSET_IMAGE_P2K_LOGO,
-                      height: 100,
+                      ASSET_about_page_logos,
+                      height: 150,
                     ),
                     Divider(),
                     Padding(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(30),
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(
@@ -70,17 +87,42 @@ class AboutPage extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                                text:
-                                    'Passport to Kindergarten is a program funded by PNC to help Dayton area preschoolers prepare for kindergarten. The program partners with schools, care centers, community organization, and families to create'),
-                            TextSpan(
-                              text: ' AWEsome Moments',
+                              text: 'Passport to Kindergarten ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                                text:
-                                    '. AWEsome moments will provide your child with rich experiences to build vocabulary and language skills critical to reading success.')
+                              text:
+                                  'is an initiative of Dayton-Montgomery County Preschool Promise and is funded by PNC Grow Up Great. It helps Preschoolers get ready for Kindergarten and start school on track.',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: COLOR_NAVY,
+                            fontSize: 18,
+                          ),
+                          children: [
+                            TextSpan(
+                              text:
+                                  'We partner with schools, child care centers, community organizations and families to create ',
+                            ),
+                            TextSpan(
+                              text: 'AWEsome Moments ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  'that build vocabulary and language skills that are critical to becoming a great reader.',
+                            ),
                           ],
                         ),
                       ),
@@ -91,7 +133,7 @@ class AboutPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'There are three key parts of Passort to Kindergarten:',
+                            'Passport to Kindergarten supports children and families by:',
                             style: TextStyle(
                               fontSize: 18,
                               color: COLOR_NAVY,
@@ -116,11 +158,28 @@ class AboutPage extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 9,
-                                child: Text(
-                                  'Reading aloud at home-monthly books you can share with your child at home and suggestions for questions to ask as you talk with your child.',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: COLOR_NAVY,
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      color: COLOR_NAVY,
+                                      fontSize: 18,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            'Encouraging families to read aloud every day with their child. You\'ll receive ',
+                                      ),
+                                      TextSpan(
+                                        text: 'FREE books ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            'each month and suggested questions to ask your child as you read together.',
+                                      ),
+                                    ],
                                   ),
                                 ),
                               )
@@ -144,11 +203,27 @@ class AboutPage extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 9,
-                                child: Text(
-                                  'Preschool-activities during the school day that your child\'s teacher will provide.',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: COLOR_NAVY,
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      color: COLOR_NAVY,
+                                      fontSize: 18,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'Providing ',
+                                      ),
+                                      TextSpan(
+                                        text: 'FREE activities ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            'to your child\'s Preschool for use in the classroom.',
+                                      ),
+                                    ],
                                   ),
                                 ),
                               )
@@ -172,11 +247,23 @@ class AboutPage extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 9,
-                                child: Text(
-                                  'Family Events-free special events for you to attend with your child throughout the year.',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: COLOR_NAVY,
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      color: COLOR_NAVY,
+                                      fontSize: 18,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'Hosting ',
+                                      ),
+                                      TextSpan(
+                                        text: 'FREE and fun family events.',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               )
@@ -184,6 +271,34 @@ class AboutPage extends StatelessWidget {
                           )
                         ],
                       ),
+                    ),
+                    Divider(),
+                    Text(
+                      'Passport to Kindergarten\nis a program managed by',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: COLOR_NAVY,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Image.asset(
+                        ASSET_pp_text_logo,
+                        height: 100,
+                      ),
+                    ),
+                    FullWidthButtonWidget(
+                      buttonColor: COLOR_NAVY,
+                      textColor: Colors.white,
+                      text: 'Learn More',
+                      onPressed: () {
+                        locator<ModalService>().showAlert(
+                            context: context,
+                            title: 'To Do',
+                            message: 'Proceed to website.');
+                      },
                     ),
                   ],
                 ),

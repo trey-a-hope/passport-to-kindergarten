@@ -23,7 +23,8 @@ const String ASSET_icon_about = 'assets/images/icon_about.png';
 const String ASSET_icon_settings = 'assets/images/icon_settings.png';
 const String ASSET_p2k20_app_dotted_line =
     'assets/images/p2k20_app_dotted_line.png';
-const String ASSET_success_message_background = 'assets/images/success_message_background.png';
+const String ASSET_success_message_background =
+    'assets/images/success_message_background.png';
 
 const String ASSET_p2k20_app_stamp_15_books_read =
     'assets/images/stamp_15_books_read.png';
@@ -34,6 +35,10 @@ const String ASSET_stamp_dayton_metro_library =
     'assets/images/stamp_dayton_metro_library.png';
 const String ASSET_stamp_five_rivers_metro_park =
     'assets/images/stamp_five_rivers_metro_park.png';
+
+const String ASSET_pp_text_logo = 'assets/images/pp_text_logo.png';
+
+const String ASSET_about_page_logos = 'assets/images/about_page_logos.png';
 
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
 const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
