@@ -1,31 +1,38 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/blocs/visitingLogAdd/Bloc.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 
-abstract class VisitingLogAddDelegate {
+import 'Bloc.dart';
+
+abstract class VisitingLogLogsDelegate {
   void showMessage({@required String message});
   void clearForm();
 }
 
-class VisitingLogAddBloc
-    extends Bloc<VisitingLogAddEvent, VisitingLogAddState> {
-  VisitingLogAddBloc() : super(null);
+class VisitingLogLogsBloc
+    extends Bloc<VisitingLogLogsEvent, VisitingLogLogState> {
+  VisitingLogLogsBloc({
+    @required this.title,
+    @required this.initialSelectedDay,
+  }) : super(null);
 
-  VisitingLogAddDelegate _visitingLogAddDelegate;
+  final String title;
+  final DateTime initialSelectedDay;
+
+  VisitingLogLogsDelegate _visitingLogLogsDelegate;
   UserModel _currentUser;
 
-  void setDelegate({@required VisitingLogAddDelegate delegate}) {
-    this._visitingLogAddDelegate = delegate;
+  void setDelegate({@required VisitingLogLogsDelegate delegate}) {
+    this._visitingLogLogsDelegate = delegate;
   }
 
   @override
-  Stream<VisitingLogAddState> mapEventToState(
-      VisitingLogAddEvent event) async* {
+  Stream<VisitingLogLogState> mapEventToState(
+      VisitingLogLogsEvent event) async* {
     if (event is LoadPageEvent) {
       yield LoadingState();
 
@@ -50,11 +57,10 @@ class VisitingLogAddBloc
 
         try {
           LogModel visitLog = LogModel(
-            id: null,
-            description: description,
-            created: DateTime.now(),
-            bookTitle: 'Visit Title'
-          );
+              id: null,
+              description: description,
+              created: DateTime.now(),
+              bookTitle: 'Visit Title');
 
           // locator<LogService>().createVisitLog(
           //   uid: _currentUser.uid,
@@ -67,10 +73,10 @@ class VisitingLogAddBloc
             formKey: formKey,
           );
 
-          _visitingLogAddDelegate.clearForm();
-          _visitingLogAddDelegate.showMessage(message: 'Visit log added.');
+          _visitingLogLogsDelegate.clearForm();
+          _visitingLogLogsDelegate.showMessage(message: 'Visit log added.');
         } catch (error) {
-          _visitingLogAddDelegate.showMessage(message: error.toString());
+          _visitingLogLogsDelegate.showMessage(message: error.toString());
         }
       }
 

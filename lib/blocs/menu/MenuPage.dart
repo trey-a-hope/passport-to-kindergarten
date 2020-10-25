@@ -18,7 +18,7 @@ import '../../SettingsPage.dart';
 import 'Bloc.dart';
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
-import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
+import 'package:p/blocs/visitingLogVisits/Bloc.dart' as VISITING_LOG_VISITS_BP;
 import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
 import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
@@ -116,11 +116,12 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
-            create: (BuildContext context) => VISITING_LOG_BP.VisitingLogBloc()
-              ..add(
-                VISITING_LOG_BP.LoadPageEvent(),
-              ),
-            child: VISITING_LOG_BP.VisitingLogPage(),
+            create: (BuildContext context) =>
+                VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc()
+                  ..add(
+                    VISITING_LOG_VISITS_BP.LoadPageEvent(),
+                  ),
+            child: VISITING_LOG_VISITS_BP.VisitingLogVisitsPage(),
           ),
         );
         Navigator.push(context, route);

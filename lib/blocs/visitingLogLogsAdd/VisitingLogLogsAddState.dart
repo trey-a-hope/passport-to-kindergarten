@@ -1,34 +1,35 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/models/LogModel.dart';
 
-class VisitingLogState extends Equatable {
-  const VisitingLogState();
+class VisitingLogLogsAddState extends Equatable {
+  const VisitingLogLogsAddState();
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends VisitingLogState {}
+class LoadingState extends VisitingLogLogsAddState {}
 
-class LoadedState extends VisitingLogState {
+class LoadedState extends VisitingLogLogsAddState {
+  final bool autoValidate;
+  final GlobalKey<FormState> formKey;
   final UserModel user;
-  final List<ParentLogModel> visitLogs;
 
   LoadedState({
     @required this.user,
-    @required this.visitLogs,
+    @required this.autoValidate,
+    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
         user,
-        visitLogs,
+        autoValidate,
+        formKey,
       ];
 }
 
-class ErrorState extends VisitingLogState {
+class ErrorState extends VisitingLogLogsAddState {
   final dynamic error;
 
   ErrorState({

@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-abstract class VisitingLogAddEvent extends Equatable {
+abstract class VisitingLogLogsAddEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadPageEvent extends VisitingLogAddEvent {
+class LoadPageEvent extends VisitingLogLogsAddEvent {
   LoadPageEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class SubmitEvent extends VisitingLogAddEvent {
+class SubmitEvent extends VisitingLogLogsAddEvent {
   final String description;
   final GlobalKey<FormState> formKey;
 

@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-abstract class VisitingLogEvent extends Equatable {
+abstract class VisitingLogVisitsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadPageEvent extends VisitingLogEvent {
+class LoadPageEvent extends VisitingLogVisitsEvent {
   LoadPageEvent();
 
   @override

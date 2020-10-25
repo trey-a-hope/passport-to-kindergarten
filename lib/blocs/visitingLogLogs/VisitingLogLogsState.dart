@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/UserModel.dart';
 
-class VisitingLogAddState extends Equatable {
-  const VisitingLogAddState();
+class VisitingLogLogState extends Equatable {
+  const VisitingLogLogState();
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends VisitingLogAddState {}
+class LoadingState extends VisitingLogLogState {}
 
-class LoadedState extends VisitingLogAddState {
+class LoadedState extends VisitingLogLogState {
   final bool autoValidate;
   final GlobalKey<FormState> formKey;
   final UserModel user;
@@ -29,7 +29,7 @@ class LoadedState extends VisitingLogAddState {
       ];
 }
 
-class ErrorState extends VisitingLogAddState {
+class ErrorState extends VisitingLogLogState {
   final dynamic error;
 
   ErrorState({

@@ -5,25 +5,26 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
-import 'Bloc.dart' as VISITING_LOG_ADD_BP;
+import 'Bloc.dart' as VISITING_LOG_LOGS_ADD_BP;
 
-class VisitingLogAddPage extends StatefulWidget {
+class VisitingLogLogsAddPage extends StatefulWidget {
   @override
-  State createState() => VisitingLogAddPageState();
+  State createState() => VisitingLogLogsAddPageState();
 }
 
-class VisitingLogAddPageState extends State<VisitingLogAddPage>
-    implements VISITING_LOG_ADD_BP.VisitingLogAddDelegate {
+class VisitingLogLogsAddPageState extends State<VisitingLogLogsAddPage>
+    implements VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  VISITING_LOG_ADD_BP.VisitingLogAddBloc _visitingLogAddBloc;
+  VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddBloc _visitingLogLogsAddBloc;
 
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
-    _visitingLogAddBloc =
-        BlocProvider.of<VISITING_LOG_ADD_BP.VisitingLogAddBloc>(context);
-    _visitingLogAddBloc.setDelegate(delegate: this);
+    _visitingLogLogsAddBloc =
+        BlocProvider.of<VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddBloc>(
+            context);
+    _visitingLogLogsAddBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -34,18 +35,18 @@ class VisitingLogAddPageState extends State<VisitingLogAddPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VISITING_LOG_ADD_BP.VisitingLogAddBloc,
-        VISITING_LOG_ADD_BP.VisitingLogAddState>(
+    return BlocBuilder<VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddBloc,
+        VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddState>(
       builder: (BuildContext context,
-          VISITING_LOG_ADD_BP.VisitingLogAddState state) {
-        if (state is VISITING_LOG_ADD_BP.LoadingState) {
+          VISITING_LOG_LOGS_ADD_BP.VisitingLogLogsAddState state) {
+        if (state is VISITING_LOG_LOGS_ADD_BP.LoadingState) {
           return Container(
             color: Colors.white,
             child: SpinnerWidget(),
           );
         }
 
-        if (state is VISITING_LOG_ADD_BP.LoadedState) {
+        if (state is VISITING_LOG_LOGS_ADD_BP.LoadedState) {
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
@@ -104,8 +105,8 @@ class VisitingLogAddPageState extends State<VisitingLogAddPage>
                             final String description =
                                 _descriptionController.text;
 
-                            _visitingLogAddBloc.add(
-                              VISITING_LOG_ADD_BP.SubmitEvent(
+                            _visitingLogLogsAddBloc.add(
+                              VISITING_LOG_LOGS_ADD_BP.SubmitEvent(
                                 description: description,
                                 formKey: state.formKey,
                               ),
@@ -119,7 +120,7 @@ class VisitingLogAddPageState extends State<VisitingLogAddPage>
           );
         }
 
-        if (state is VISITING_LOG_ADD_BP.ErrorState) {
+        if (state is VISITING_LOG_LOGS_ADD_BP.ErrorState) {
           return Container(
             child: Center(
               child: Text(

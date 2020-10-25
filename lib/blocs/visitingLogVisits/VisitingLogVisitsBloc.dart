@@ -1,29 +1,28 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/blocs/visitingLog/Bloc.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
+import 'Bloc.dart';
 
-abstract class VisitingLogDelegate {
+abstract class VisitingLogVisitsDelegate {
   void showMessage({@required String message});
 }
 
-class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
-  VisitingLogBloc() : super(null);
+class VisitingLogVisitsBloc extends Bloc<VisitingLogVisitsEvent, VisitingLogVisitsState> {
+  VisitingLogVisitsBloc() : super(null);
 
-  VisitingLogDelegate _visitingLogDelegate;
+  VisitingLogVisitsDelegate _visitingLogVisitsDelegate;
   UserModel _currentUser;
 
-  void setDelegate({@required VisitingLogDelegate delegate}) {
-    this._visitingLogDelegate = delegate;
+  void setDelegate({@required VisitingLogVisitsDelegate delegate}) {
+    this._visitingLogVisitsDelegate = delegate;
   }
 
   @override
-  Stream<VisitingLogState> mapEventToState(VisitingLogEvent event) async* {
+  Stream<VisitingLogVisitsState> mapEventToState(VisitingLogVisitsEvent event) async* {
     if (event is LoadPageEvent) {
       yield LoadingState();
 

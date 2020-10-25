@@ -11,24 +11,26 @@ import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
-import 'Bloc.dart' as VISITING_LOG_BP;
-import 'package:p/blocs/visitingLogAdd/Bloc.dart' as VISITING_LOG_ADD_BP;
+import 'Bloc.dart' as VISITING_LOG_VISITS_BP;
+import 'package:p/blocs/visitingLogLogsAdd/Bloc.dart'
+    as VISITING_LOG_LOGS_ADD_BP;
+import 'package:p/blocs/visitingLogLogs/Bloc.dart' as VISITING_LOG_LOGS_BP;
 
-class VisitingLogPage extends StatefulWidget {
+class VisitingLogVisitsPage extends StatefulWidget {
   @override
-  State createState() => VisitingLogPageState();
+  State createState() => VisitingLogVisitsPageState();
 }
 
-class VisitingLogPageState extends State<VisitingLogPage>
-    implements VISITING_LOG_BP.VisitingLogDelegate {
+class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
+    implements VISITING_LOG_VISITS_BP.VisitingLogVisitsDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  VISITING_LOG_BP.VisitingLogBloc _visitingLogBloc;
+  VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc _visitingLogVisitsBloc;
 
   @override
   void initState() {
-    _visitingLogBloc =
-        BlocProvider.of<VISITING_LOG_BP.VisitingLogBloc>(context);
-    _visitingLogBloc.setDelegate(delegate: this);
+    _visitingLogVisitsBloc =
+        BlocProvider.of<VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc>(context);
+    _visitingLogVisitsBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -37,19 +39,39 @@ class VisitingLogPageState extends State<VisitingLogPage>
     super.dispose();
   }
 
+  void _goToLogsForThisVisit({
+    @required String title,
+    @required DateTime initialSelectedDay,
+  }) {
+    Route route = MaterialPageRoute(
+      builder: (BuildContext context) => BlocProvider(
+        create: (BuildContext context) =>
+            VISITING_LOG_LOGS_BP.VisitingLogLogsBloc(
+          title: title,
+          initialSelectedDay: initialSelectedDay,
+        )..add(
+                VISITING_LOG_LOGS_BP.LoadPageEvent(),
+              ),
+        child: VISITING_LOG_LOGS_BP.VisitingLogLogsPage(),
+      ),
+    );
+    Navigator.push(context, route);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VISITING_LOG_BP.VisitingLogBloc,
-        VISITING_LOG_BP.VisitingLogState>(
-      builder: (BuildContext context, VISITING_LOG_BP.VisitingLogState state) {
-        if (state is VISITING_LOG_BP.LoadingState) {
+    return BlocBuilder<VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc,
+        VISITING_LOG_VISITS_BP.VisitingLogVisitsState>(
+      builder: (BuildContext context,
+          VISITING_LOG_VISITS_BP.VisitingLogVisitsState state) {
+        if (state is VISITING_LOG_VISITS_BP.LoadingState) {
           return Container(
             color: Colors.white,
             child: SpinnerWidget(),
           );
         }
 
-        if (state is VISITING_LOG_BP.LoadedState) {
+        if (state is VISITING_LOG_VISITS_BP.LoadedState) {
           final List<ParentLogModel> visitLogs = state.visitLogs;
 
           return Scaffold(
@@ -214,11 +236,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 1),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 1),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'January',
@@ -231,11 +254,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 2),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 2),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'February',
@@ -252,11 +276,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 3),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 3),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'March',
@@ -269,11 +294,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 4),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 4),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'April',
@@ -290,11 +316,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 5),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 5),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'May',
@@ -307,11 +334,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 6),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 6),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'June',
@@ -328,11 +356,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 7),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 7),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'July',
@@ -345,11 +374,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 8),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 8),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'August',
@@ -366,11 +396,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 9),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 9),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'September',
@@ -383,7 +414,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 10),
+                                              ); // _goToLogsForThisBook(
                                               //   book: book,
                                               //   initialSelectedDay:
                                               //       DateTime(2020, 10),
@@ -404,11 +440,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 11),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 11),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'November',
@@ -421,11 +458,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 12),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Boonshoft Museam of Discovery',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  12,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'December',
@@ -538,11 +578,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 1),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 1),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'January',
@@ -555,11 +595,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 2),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 1),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'February',
@@ -576,11 +616,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 3),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 3),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'March',
@@ -593,11 +633,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 4),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 4),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'April',
@@ -614,11 +654,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 5),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 5),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'May',
@@ -631,11 +671,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 6),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 6),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'June',
@@ -652,11 +692,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 7),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 7),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'July',
@@ -669,11 +709,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 8),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 8),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'August',
@@ -690,11 +730,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 9),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 9),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'September',
@@ -707,11 +747,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 10),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 10),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'October',
@@ -728,11 +768,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 11),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 11),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'November',
@@ -745,11 +785,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 12),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Metro Library',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 12),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'December',
@@ -862,11 +902,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 1),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  1,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'January',
@@ -879,11 +922,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 2),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  2,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'February',
@@ -900,11 +946,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 3),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  3,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'March',
@@ -917,11 +966,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 4),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  4,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'April',
@@ -938,11 +990,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 5),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  5,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'May',
@@ -955,11 +1010,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 6),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  6,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'June',
@@ -976,11 +1034,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 7),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay:
+                                                    DateTime(2020, 7),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'July',
@@ -993,11 +1052,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 8),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  8,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'August',
@@ -1014,11 +1076,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 9),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  9,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'September',
@@ -1031,11 +1096,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 10),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  10,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'October',
@@ -1052,11 +1120,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 11),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  11,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'November',
@@ -1069,11 +1140,14 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 12),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title:
+                                                    'Fiver Rivers Metro Park',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  12,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'December',
@@ -1186,11 +1260,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 1),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  1,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'January',
@@ -1203,11 +1279,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 2),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  2,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'February',
@@ -1224,11 +1302,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 3),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  3,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'March',
@@ -1241,11 +1321,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 4),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  4,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'April',
@@ -1262,11 +1344,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 5),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  5,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'May',
@@ -1279,11 +1363,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 6),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  6,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'June',
@@ -1300,11 +1386,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 7),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  7,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'July',
@@ -1317,11 +1405,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 8),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  8,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'August',
@@ -1338,11 +1428,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 9),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  9,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'September',
@@ -1355,11 +1447,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 10),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  10,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'October',
@@ -1376,11 +1470,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 11),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  11,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'November',
@@ -1393,11 +1489,13 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                           child: FullWidthButtonWidget(
                                             textColor: Colors.white,
                                             onPressed: () {
-                                              // _goToLogsForThisBook(
-                                              //   book: book,
-                                              //   initialSelectedDay:
-                                              //       DateTime(2020, 12),
-                                              // );
+                                              _goToLogsForThisVisit(
+                                                title: 'Dayton Art Institute',
+                                                initialSelectedDay: DateTime(
+                                                  2020,
+                                                  12,
+                                                ),
+                                              );
                                             },
                                             buttonColor: COLOR_NAVY,
                                             text: 'December',
@@ -1420,7 +1518,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
           );
         }
 
-        if (state is VISITING_LOG_BP.ErrorState) {
+        if (state is VISITING_LOG_VISITS_BP.ErrorState) {
           return Container(
             child: Center(
               child: Text(
