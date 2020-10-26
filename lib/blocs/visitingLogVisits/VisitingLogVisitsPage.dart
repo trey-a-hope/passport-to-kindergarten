@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
-import 'package:p/models/LogModel.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as VISITING_LOG_VISITS_BP;
-import 'package:p/blocs/visitingLogLogsAdd/Bloc.dart'
-    as VISITING_LOG_LOGS_ADD_BP;
 import 'package:p/blocs/visitingLogLogs/Bloc.dart' as VISITING_LOG_LOGS_BP;
 
 class VisitingLogVisitsPage extends StatefulWidget {
@@ -72,7 +67,28 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
         }
 
         if (state is VISITING_LOG_VISITS_BP.LoadedState) {
-          final List<ParentLogModel> visitLogs = state.visitLogs;
+          final List<ChildLogModel> visitLogs = state.logs;
+
+          final int boonshoftMuseamCount = visitLogs
+              .where((visitLog) =>
+                  visitLog.title == 'Boonshoft Museam of Discovery')
+              .toList()
+              .length;
+
+          final int daytonMetroCount = visitLogs
+              .where((visitLog) => visitLog.title == 'Dayton Metro Library')
+              .toList()
+              .length;
+
+          final int fiveRiversCount = visitLogs
+              .where((visitLog) => visitLog.title == 'Five Rivers Metro Park')
+              .toList()
+              .length;
+
+          final int daytonArtCount = visitLogs
+              .where((visitLog) => visitLog.title == 'Dayton Art Institute')
+              .toList()
+              .length;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -141,7 +157,8 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                 leading: Image.asset(
                                   ASSET_boonshoft_logo,
                                 ),
-                                title: Text('Boonshoft Museam of Discovery'),
+                                title: Text(
+                                    'Boonshoft Museam of Discovery ($boonshoftMuseamCount)'),
                                 children: [
                                   Row(
                                     children: [
@@ -483,7 +500,8 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                 leading: Image.asset(
                                   ASSET_dayton_metro_library_logo,
                                 ),
-                                title: Text('Dayton Metro Library'),
+                                title: Text(
+                                    'Dayton Metro Library ($daytonMetroCount)'),
                                 children: [
                                   Row(
                                     children: [
@@ -807,7 +825,8 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                 leading: Image.asset(
                                   ASSET_five_rivers_metroparks_logo,
                                 ),
-                                title: Text('Five Rivers Metro Park'),
+                                title: Text(
+                                    'Five Rivers Metro Park ($fiveRiversCount)'),
                                 children: [
                                   Row(
                                     children: [
@@ -1165,7 +1184,8 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                 leading: Image.asset(
                                   ASSET_dayton_art_institute_logo,
                                 ),
-                                title: Text('Dayton Art Institute'),
+                                title: Text(
+                                    'Dayton Art Institute ($daytonArtCount)'),
                                 children: [
                                   Row(
                                     children: [

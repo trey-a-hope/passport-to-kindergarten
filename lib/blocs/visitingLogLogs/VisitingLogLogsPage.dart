@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'Bloc.dart' as VISITING_LOG_LOGS_BP;
+import 'package:p/blocs/visitingLogLogsAdd/Bloc.dart'
+    as VISITING_LOG_LOGS_ADD_BP;
 
 class VisitingLogLogsPage extends StatefulWidget {
   @override
@@ -18,12 +25,14 @@ class VisitingLogLogsPageState extends State<VisitingLogLogsPage>
   VISITING_LOG_LOGS_BP.VisitingLogLogsBloc _visitingLogLogsBloc;
 
   final TextEditingController _descriptionController = TextEditingController();
+  CalendarController _calendarController;
 
   @override
   void initState() {
     _visitingLogLogsBloc =
         BlocProvider.of<VISITING_LOG_LOGS_BP.VisitingLogLogsBloc>(context);
     _visitingLogLogsBloc.setDelegate(delegate: this);
+    _calendarController = CalendarController();
     super.initState();
   }
 
@@ -46,76 +55,153 @@ class VisitingLogLogsPageState extends State<VisitingLogLogsPage>
         }
 
         if (state is VISITING_LOG_LOGS_BP.LoadedState) {
+          //final List<ChildLogModel> logs = state.logs;
+          // final ParentLogModel book = state.book;
+          final String title = state.title;
+
+          final List<ChildLogModel> logs =
+              state.events[state.dateKey] ?? List<ChildLogModel>();
+          final DateTime initialSelectedDay = state.initialSelectedDay;
+
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text('Create Visit Log'),
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
+              value: SystemUiOverlayStyle.light,
+              child: Container(
+                width: screenWidth,
+                height: screenHeight,
+                color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Form(
-                    key: state.formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: TextFormField(
-                            autovalidate: state.autoValidate,
-                            controller: _descriptionController,
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.description,
-                                  color: Colors.grey.shade700,
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Image.asset(
+                            ASSET_p2k20_app_header_bar,
+                            width: screenWidth,
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.white,
                                 ),
-                                border: OutlineInputBorder(
-                                  // width: 0.0 produces a thin "hairline" border
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(90.0),
-                                  ),
-                                  borderSide: BorderSide.none,
-
-                                  //borderSide: const BorderSide(),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Logs for $title',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontFamily: "WorkSansLight"),
-                                filled: true,
-                                fillColor: Colors.grey.shade300,
-                                hintText: 'Description'),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      TableCalendar(
+                        calendarController: _calendarController,
+                        events: state.events,
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        initialSelectedDay: initialSelectedDay,
+                        calendarStyle: CalendarStyle(
+                          selectedColor: Colors.deepOrange[400],
+                          todayColor: Colors.deepOrange[200],
+                          markersColor: Colors.black,
+                          outsideDaysVisible: false,
+                        ),
+                        headerStyle: HeaderStyle(
+                          formatButtonTextStyle: TextStyle()
+                              .copyWith(color: Colors.white, fontSize: 15.0),
+                          formatButtonDecoration: BoxDecoration(
+                            color: Colors.deepOrange[400],
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        Spacer(),
-                        FullWidthButtonWidget(
-                          buttonColor: Colors.blue,
-                          text: 'Submit Visit Log',
-                          textColor: Colors.white,
-                          onPressed: () async {
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
-
-                            if (!confirm) return;
-
-                            final String description =
-                                _descriptionController.text;
-
-                            _visitingLogLogsBloc.add(
-                              VISITING_LOG_LOGS_BP.SubmitEvent(
-                                description: description,
-                                formKey: state.formKey,
+                        onDaySelected: (DateTime day, List events) {
+                          _visitingLogLogsBloc.add(
+                            VISITING_LOG_LOGS_BP.OnDaySelectedEvent(
+                              selectedDay: day,
+                            ),
+                          );
+                        },
+                        onVisibleDaysChanged: (DateTime first, DateTime last,
+                            CalendarFormat format) {},
+                      ),
+                      Divider(
+                        thickness: 1,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: logs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final ChildLogModel log = logs[index];
+                            return ListTile(
+                              leading: Icon(
+                                MdiIcons.book,
+                                color: COLOR_NAVY,
                               ),
+                              title: Text(
+                                '\"${log.notes}\"',
+                                style: TextStyle(
+                                  color: COLOR_NAVY,
+                                ),
+                              ),
+                              subtitle: Text(
+                                '${DateFormat('MMMM dd, yyyy').format(log.created)}',
+                                style: TextStyle(
+                                  color: COLOR_NAVY,
+                                ),
+                              ),
+                              onTap: () {
+                                // locator<ModalService>().showAlert(
+                                //     context: context,
+                                //     title: 'Notes',
+                                //     message: '\"${log.notes}\"');
+                              },
                             );
                           },
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                      ),
+                      FullWidthButtonWidget(
+                        onPressed: () {
+                          Route route = MaterialPageRoute(
+                            builder: (BuildContext context) => BlocProvider(
+                              create: (BuildContext context) =>
+                                  VISITING_LOG_LOGS_ADD_BP
+                                      .VisitingLogLogsAddBloc(
+                                title: title,
+                              )..add(
+                                      VISITING_LOG_LOGS_ADD_BP.LoadPageEvent(),
+                                    ),
+                              child: VISITING_LOG_LOGS_ADD_BP
+                                  .VisitingLogLogsAddPage(),
+                            ),
+                          );
+                          Navigator.push(context, route);
+                        },
+                        text: 'Add a new log',
+                        textColor: Colors.white,
+                        buttonColor: COLOR_NAVY,
+                      )
+                    ],
                   ),
-                )),
+                ),
+              ),
+            ),
           );
         }
 

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 class VisitingLogLogState extends Equatable {
@@ -11,21 +12,27 @@ class VisitingLogLogState extends Equatable {
 class LoadingState extends VisitingLogLogState {}
 
 class LoadedState extends VisitingLogLogState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
+  final String title;
   final UserModel user;
+  final Map<DateTime, List<ChildLogModel>> events;
+  final DateTime dateKey;
+  final DateTime initialSelectedDay;
 
   LoadedState({
+    @required this.title,
     @required this.user,
-    @required this.autoValidate,
-    @required this.formKey,
+    @required this.events,
+    @required this.dateKey,
+    @required this.initialSelectedDay,
   });
 
   @override
   List<Object> get props => [
+        title,
         user,
-        autoValidate,
-        formKey,
+        events,
+        dateKey,
+        initialSelectedDay,
       ];
 }
 

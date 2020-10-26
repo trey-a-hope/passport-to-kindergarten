@@ -11,21 +11,18 @@ class VisitingLogLogsAddState extends Equatable {
 class LoadingState extends VisitingLogLogsAddState {}
 
 class LoadedState extends VisitingLogLogsAddState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
+  final String title;
   final UserModel user;
 
   LoadedState({
+    @required this.title,
     @required this.user,
-    @required this.autoValidate,
-    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
+        title,
         user,
-        autoValidate,
-        formKey,
       ];
 }
 

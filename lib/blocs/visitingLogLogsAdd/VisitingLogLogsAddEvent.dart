@@ -15,16 +15,13 @@ class LoadPageEvent extends VisitingLogLogsAddEvent {
 
 class SubmitEvent extends VisitingLogLogsAddEvent {
   final String description;
-  final GlobalKey<FormState> formKey;
 
   SubmitEvent({
     @required this.description,
-    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
         description,
-        formKey,
       ];
 }

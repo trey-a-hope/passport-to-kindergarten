@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/models/LogModel.dart';
 
 class VisitingLogVisitsState extends Equatable {
   const VisitingLogVisitsState();
@@ -14,17 +13,17 @@ class LoadingState extends VisitingLogVisitsState {}
 
 class LoadedState extends VisitingLogVisitsState {
   final UserModel user;
-  final List<ParentLogModel> visitLogs;
+  final List<ChildLogModel> logs;
 
   LoadedState({
     @required this.user,
-    @required this.visitLogs,
+    @required this.logs,
   });
 
   @override
   List<Object> get props => [
         user,
-        visitLogs,
+        logs,
       ];
 }
 

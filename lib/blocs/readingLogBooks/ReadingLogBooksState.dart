@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/ParentLogModel.dart';
-import 'package:p/models/UserModel.dart';
-import 'package:p/models/LogModel.dart';
 
 class ReadingLogBooksState extends Equatable {
   const ReadingLogBooksState();
