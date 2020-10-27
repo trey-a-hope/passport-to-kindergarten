@@ -1,13 +1,10 @@
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookOfTheMonthModel.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/bookOfTheMonthDetails/Bloc.dart'
@@ -124,9 +121,6 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      // colorFilter: ColorFilter.mode(
-                                      //     Colors.black.withOpacity(0.3),
-                                      //     BlendMode.darken),
                                       fit: BoxFit.fill,
                                       image: Image.asset(
                                               bookOfTheMonth.assetImagePath)
@@ -137,15 +131,6 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                                       Radius.circular(20),
                                     ),
                                   ),
-                                  // child: Center(
-                                  //   child: Text(
-                                  //     '${bookOfTheMonth.title}',
-                                  //     style: TextStyle(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold),
-                                  //     textAlign: TextAlign.center,
-                                  //   ),
-                                  // ),
                                 ),
                                 onTap: () {
                                   Route route = MaterialPageRoute(
@@ -153,8 +138,9 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                                         BlocProvider(
                                       create: (BuildContext context) =>
                                           BOOK_OF_THE_MONTH_DETAILS_BP
-                                              .BookOfTheMonthDetailsBloc()
-                                            ..add(
+                                              .BookOfTheMonthDetailsBloc(
+                                        bookOfTheMonth: bookOfTheMonth,
+                                      )..add(
                                               BOOK_OF_THE_MONTH_DETAILS_BP
                                                   .LoadPageEvent(),
                                             ),
