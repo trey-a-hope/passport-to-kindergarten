@@ -9,6 +9,9 @@ abstract class IUserService {
       {bool isAdmin, int limit, String orderBy});
   Future<void> updateUser(
       {@required String uid, @required Map<String, dynamic> data});
+  Future<List<UserModel>> retrieveStudentsForTeacher({
+    @required String uid,
+  });
 }
 
 class UserService extends IUserService {
@@ -94,6 +97,26 @@ class UserService extends IUserService {
       }
 
       return users;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<List<UserModel>> retrieveStudentsForTeacher(
+      {@required String uid}) async {
+    try {
+      List<UserModel> students = (await _usersColRef
+              .orderBy('lastName')
+              .where('teacherID', isEqualTo: uid)
+              .getDocuments())
+          .documents
+          .map(
+            (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
+          )
+          .toList();
+
+      return students;
     } catch (e) {
       throw Exception(e.toString());
     }

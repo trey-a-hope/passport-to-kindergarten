@@ -46,6 +46,7 @@ class MyClassPageState extends State<MyClassPage>
 
         if (state is LoadedState) {
           final UserModel currentUser = state.user;
+          final List<UserModel> students = state.students;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -82,7 +83,7 @@ class MyClassPageState extends State<MyClassPage>
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                'My Profile',
+                                'My Class',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 21,
@@ -93,8 +94,90 @@ class MyClassPageState extends State<MyClassPage>
                           )
                         ],
                       ),
-                      Spacer(),
-                      Text('Work'),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Tap a student\'s  name to see a list of their Passport stamps and to log reading or partner visits.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: COLOR_NAVY,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 21,
+                          ),
+                        ),
+                      ),
+                      Image.asset(
+                        ASSET_p2k20_app_dotted_line,
+                        width: screenWidth,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Type: Preschool',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            ),
+                            Text(
+                              'Passport Number: 2020-2021',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${currentUser.firstName} ${currentUser.lastName}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'ABC Child Development Center',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: COLOR_NAVY),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: students.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final UserModel student = students[index];
+
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  '${student.imgUrl}',
+                                ),
+                              ),
+                              title: Text(
+                                '${student.firstName} ${student.lastName}',
+                              ),
+                              trailing: Icon(Icons.chevron_right),
+                            );
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),

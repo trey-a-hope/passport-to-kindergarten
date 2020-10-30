@@ -12,12 +12,17 @@ class LoadingState extends MyClassState {}
 
 class LoadedState extends MyClassState {
   final UserModel user;
+  final List<UserModel> students;
 
-  LoadedState({@required this.user});
+  LoadedState({
+    @required this.user,
+    @required this.students,
+  });
 
   @override
   List<Object> get props => [
         user,
+        students,
       ];
 }
 
