@@ -69,9 +69,9 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
         if (state is VISITING_LOG_VISITS_BP.LoadedState) {
           final List<ChildLogModel> visitLogs = state.logs;
 
-          final int boonshoftMuseamCount = visitLogs
+          final int boonshoftMuseumCount = visitLogs
               .where((visitLog) =>
-                  visitLog.title == 'Boonshoft Museam of Discovery')
+                  visitLog.title == 'Boonshoft Museaum of Discovery')
               .toList()
               .length;
 
@@ -158,7 +158,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                   ASSET_boonshoft_logo,
                                 ),
                                 title: Text(
-                                    'Boonshoft Museam of Discovery ($boonshoftMuseamCount)'),
+                                    'Boonshoft Museum of Discovery ($boonshoftMuseumCount)'),
                                 children: [
                                   Row(
                                     children: [
@@ -255,7 +255,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 1),
                                               );
@@ -273,7 +273,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 2),
                                               );
@@ -295,7 +295,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 3),
                                               );
@@ -313,7 +313,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 4),
                                               );
@@ -335,7 +335,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 5),
                                               );
@@ -353,7 +353,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 6),
                                               );
@@ -375,7 +375,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 7),
                                               );
@@ -393,7 +393,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 8),
                                               );
@@ -415,7 +415,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 9),
                                               );
@@ -433,7 +433,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 10),
                                               ); // _goToLogsForThisBook(
@@ -459,7 +459,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay:
                                                     DateTime(2020, 11),
                                               );
@@ -477,7 +477,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                             onPressed: () {
                                               _goToLogsForThisVisit(
                                                 title:
-                                                    'Boonshoft Museam of Discovery',
+                                                    'Boonshoft Museum of Discovery',
                                                 initialSelectedDay: DateTime(
                                                   2020,
                                                   12,

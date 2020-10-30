@@ -384,6 +384,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),
+                      SizedBox(
+                        height: 100,
+                      ),
                     ],
                   ),
                 ),

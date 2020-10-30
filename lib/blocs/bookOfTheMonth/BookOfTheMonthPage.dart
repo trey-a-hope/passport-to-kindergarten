@@ -119,16 +119,18 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                               padding: EdgeInsets.all(10),
                               child: InkWell(
                                 child: Container(
+                                  foregroundDecoration: BoxDecoration(
+                                    color: bookOfTheMonth.given
+                                        ? Colors.transparent
+                                        : Colors.grey,
+                                    backgroundBlendMode: BlendMode.saturation,
+                                  ),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image: Image.asset(
                                               bookOfTheMonth.assetImagePath)
                                           .image,
-                                    ),
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20),
                                     ),
                                   ),
                                 ),
