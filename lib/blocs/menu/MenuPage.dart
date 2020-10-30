@@ -24,6 +24,7 @@ import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
     as AWESOME_READING_TIPS_BP;
+import 'package:p/blocs/myClass/Bloc.dart' as MY_CLASS_BP;
 
 class MenuPage extends StatefulWidget {
   @override
@@ -44,6 +45,33 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  ListTile myClassListTile() {
+    return ListTile(
+      leading: Image.asset(
+        ASSET_icon_my_passport,
+        width: 20,
+      ),
+      title: Text(
+        'My Class',
+        style: TextStyle(color: Colors.white),
+      ),
+      onTap: () async {
+        HapticFeedback.vibrate();
+
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => MY_CLASS_BP.MyClassBloc()
+              ..add(
+                MY_CLASS_BP.LoadPageEvent(),
+              ),
+            child: MY_CLASS_BP.MyClassPage(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
   }
 
   ListTile myPassportListTile() {
@@ -212,29 +240,29 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     );
   }
 
-  ListTile adminListTile() {
-    return ListTile(
-      leading: Icon(MdiIcons.security, color: Colors.white),
-      title: Text(
-        'Admin',
-        style: TextStyle(color: Colors.white),
-      ),
-      onTap: () {
-        HapticFeedback.vibrate();
+  // ListTile adminListTile() {
+  //   return ListTile(
+  //     leading: Icon(MdiIcons.security, color: Colors.white),
+  //     title: Text(
+  //       'Admin',
+  //       style: TextStyle(color: Colors.white),
+  //     ),
+  //     onTap: () {
+  //       HapticFeedback.vibrate();
 
-        Route route = MaterialPageRoute(
-          builder: (BuildContext context) => BlocProvider(
-            create: (BuildContext context) => ADMIN_LOG_BP.AdminBloc()
-              ..add(
-                ADMIN_LOG_BP.LoadPageEvent(),
-              ),
-            child: ADMIN_LOG_BP.AdminPage(),
-          ),
-        );
-        Navigator.push(context, route);
-      },
-    );
-  }
+  //       Route route = MaterialPageRoute(
+  //         builder: (BuildContext context) => BlocProvider(
+  //           create: (BuildContext context) => ADMIN_LOG_BP.AdminBloc()
+  //             ..add(
+  //               ADMIN_LOG_BP.LoadPageEvent(),
+  //             ),
+  //           child: ADMIN_LOG_BP.AdminPage(),
+  //         ),
+  //       );
+  //       Navigator.push(context, route);
+  //     },
+  //   );
+  // }
 
   ListTile aboutListTile() {
     return ListTile(
@@ -377,10 +405,11 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                         ],
                       ),
                       Spacer(),
+                      myClassListTile(),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
-                      adminListTile(),
+                      // adminListTile(),
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),
@@ -541,7 +570,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
-                      adminListTile(),
+                      // adminListTile(),
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),
