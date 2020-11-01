@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/models/BookOfTheMonthModel.dart';
 import 'models/UserModel.dart';
@@ -66,6 +67,31 @@ const String ASSET_stamp_dayton_metro_library =
     'assets/images/stamp_dayton_metro_library.png';
 const String ASSET_stamp_five_rivers_metro_park =
     'assets/images/stamp_five_rivers_metro_park.png';
+
+//Stamps
+
+final List<Image> stamps = [
+  Image.asset(
+    ASSET_p2k20_app_stamp_15_books_read,
+    height: 100,
+  ),
+  Image.asset(
+    ASSET_stamp_boonshoft,
+    height: 100,
+  ),
+  Image.asset(
+    ASSET_stamp_dayton_art_institute,
+    height: 100,
+  ),
+  Image.asset(
+    ASSET_stamp_dayton_metro_library,
+    height: 100,
+  ),
+  Image.asset(
+    ASSET_stamp_five_rivers_metro_park,
+    height: 100,
+  ),
+];
 
 //Vist Log
 const String ASSET_dayton_metro_library_logo =

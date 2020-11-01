@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
@@ -164,7 +165,8 @@ class MyClassPageState extends State<MyClassPage>
                           itemBuilder: (BuildContext context, int index) {
                             final UserModel student = students[index];
 
-                            return ListTile(
+                            return ExpansionTile(
+                              backgroundColor: COLOR_NAVY,
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
                                   '${student.imgUrl}',
@@ -174,6 +176,59 @@ class MyClassPageState extends State<MyClassPage>
                                 '${student.firstName} ${student.lastName}',
                               ),
                               trailing: Icon(Icons.chevron_right),
+                              children: [
+                                ExpansionTile(
+                                  backgroundColor: Colors.white,
+                                  title: Text(
+                                    'List of passport stamps',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  children: [
+                                    Container(
+                                      height: 300,
+                                      child: StaggeredGridView.countBuilder(
+                                        crossAxisCount: 4,
+                                        itemCount: stamps.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return stamps[index];
+                                        },
+                                        staggeredTileBuilder: (int index) =>
+                                            StaggeredTile.count(
+                                                2, index.isEven ? 2 : 1),
+                                        mainAxisSpacing: 4.0,
+                                        crossAxisSpacing: 4.0,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                ExpansionTile(
+                                  title: Text(
+                                    'Add a new title',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                ExpansionTile(
+                                  title: Text(
+                                    'Log a reading',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                ExpansionTile(
+                                  title: Text(
+                                    'Log a visit',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         ),
