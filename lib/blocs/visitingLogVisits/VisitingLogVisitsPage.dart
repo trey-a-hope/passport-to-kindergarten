@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Bloc.dart' as VISITING_LOG_VISITS_BP;
 import 'package:p/blocs/visitingLogLogs/Bloc.dart' as VISITING_LOG_LOGS_BP;
 
@@ -168,13 +169,20 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message: 'Go to website.',
-                                                  );
+                                                onTap: () async {
+                                                  const url =
+                                                      'https://www.boonshoftmuseum.org/';
+                                                  if (await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Error',
+                                                            message:
+                                                                'Could not open url.');
+                                                    //throw 'Could not launch $url';
+                                                  }
                                                 },
                                                 child: Image.asset(
                                                   ASSET_website_icon,
@@ -198,14 +206,9 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message:
-                                                        'Go to directions.',
-                                                  );
+                                                onTap: () async {
+                                                  await MapsLauncher.launchQuery(
+                                                      '2600 DeWeese Pkwy, Dayton, OH 45414, USA');
                                                 },
                                                 child: Image.asset(
                                                   ASSET_directions_icon,
@@ -511,13 +514,20 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message: 'Go to website.',
-                                                  );
+                                                onTap: () async {
+                                                  const url =
+                                                      'http://www.daytonmetrolibrary.org/';
+                                                  if (await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Error',
+                                                            message:
+                                                                'Could not open url.');
+                                                    //throw 'Could not launch $url';
+                                                  }
                                                 },
                                                 child: Image.asset(
                                                   ASSET_website_icon,
@@ -541,14 +551,9 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message:
-                                                        'Go to directions.',
-                                                  );
+                                                onTap: () async {
+                                                  await MapsLauncher.launchQuery(
+                                                      '215 E. Third St., Dayton, OH 45402, USA');
                                                 },
                                                 child: Image.asset(
                                                   ASSET_directions_icon,
@@ -836,13 +841,20 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message: 'Go to website.',
-                                                  );
+                                                onTap: () async {
+                                                  const url =
+                                                      'https://www.metroparks.org/contact/';
+                                                  if (await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Error',
+                                                            message:
+                                                                'Could not open url.');
+                                                    //throw 'Could not launch $url';
+                                                  }
                                                 },
                                                 child: Image.asset(
                                                   ASSET_website_icon,
@@ -866,14 +878,9 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message:
-                                                        'Go to directions.',
-                                                  );
+                                                onTap: () async {
+                                                  await MapsLauncher.launchQuery(
+                                                      '409 E. Monument Ave., Dayton, OH 45402, USA');
                                                 },
                                                 child: Image.asset(
                                                   ASSET_directions_icon,
@@ -1195,13 +1202,20 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message: 'Go to website.',
-                                                  );
+                                                onTap: () async {
+                                                  const url =
+                                                      'https://www.daytonartinstitute.org/';
+                                                  if (await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Error',
+                                                            message:
+                                                                'Could not open url.');
+                                                    //throw 'Could not launch $url';
+                                                  }
                                                 },
                                                 child: Image.asset(
                                                   ASSET_website_icon,
@@ -1225,14 +1239,9 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                           child: Column(
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  locator<ModalService>()
-                                                      .showAlert(
-                                                    context: context,
-                                                    title: 'To Do',
-                                                    message:
-                                                        'Go to directions.',
-                                                  );
+                                                onTap: () async {
+                                                  await MapsLauncher.launchQuery(
+                                                      '456 Belmonte Park N, Dayton, OH 45405, USA');
                                                 },
                                                 child: Image.asset(
                                                   ASSET_directions_icon,
