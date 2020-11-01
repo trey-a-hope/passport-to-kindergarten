@@ -46,6 +46,36 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
         if (state is LoadedState) {
           final UserModel currentUser = state.user;
           final BookOfTheMonthModel bookOfTheMonth = state.bookOfTheMonth;
+          List<Widget> conversationStarters = List<Widget>();
+
+          bookOfTheMonth.conversationStarters.forEach(
+            (String conversationStarter) {
+              conversationStarters.add(
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          String.fromCharCode(0x2022),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 12,
+                        child: Text(
+                          '$conversationStarter',
+                          style: TextStyle(
+                            color: COLOR_NAVY,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
 
           return Scaffold(
             key: _scaffoldKey,
@@ -157,6 +187,21 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                         textAlign: TextAlign.center,
                       ),
                       Divider(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Text(
+                          '${bookOfTheMonth.summary}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: COLOR_NAVY,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Divider(),
                       Align(
                         alignment: Alignment.center,
                         child: Container(
@@ -208,10 +253,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                       ),
                       Divider(),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 20,
-                          top: 20,
-                        ),
+                        padding: EdgeInsets.all(20),
                         child: Text(
                           'Conversation Starters:',
                           style: TextStyle(
@@ -220,138 +262,9 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'Why is starting school a big important day?',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                      Column(
+                        children: conversationStarters,
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'Sometimes people are excited about going to school. Why do you think they might feel that way?',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'Some children are afraid of going to school for the first time. Why do you think that may be?',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'Share a time when you both felt excited or fearful about doing something new.',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'What can you do when you feel nervous or upset to help yourself feel better?',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                String.fromCharCode(0x2022),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: Text(
-                                'How does a person look when they feel worried or afraid.',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
