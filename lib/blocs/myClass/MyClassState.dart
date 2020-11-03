@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 class MyClassState extends Equatable {
@@ -13,16 +15,28 @@ class LoadingState extends MyClassState {}
 class LoadedState extends MyClassState {
   final UserModel user;
   final List<UserModel> students;
+  final List<BookModel> books;
+  final DateTime selectedDateForBookLogs;
+  final Map<DateTime, List<ChildLogModel>> events;
+  final bool studentSelected;
 
   LoadedState({
     @required this.user,
     @required this.students,
+    @required this.books,
+    @required this.selectedDateForBookLogs,
+    @required this.events,
+    @required this.studentSelected,
   });
 
   @override
   List<Object> get props => [
         user,
         students,
+        books,
+        selectedDateForBookLogs,
+        events,
+        studentSelected,
       ];
 }
 

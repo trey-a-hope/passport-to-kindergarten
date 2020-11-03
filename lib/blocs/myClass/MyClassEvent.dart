@@ -30,3 +30,77 @@ class CreateBookForStudentEvent extends MyClassEvent {
         author,
       ];
 }
+
+class CreateLogForStudentEvent extends MyClassEvent {
+  final String studentUID;
+  final String bookID;
+
+  CreateLogForStudentEvent({
+    @required this.studentUID,
+    @required this.bookID,
+  });
+
+  @override
+  List<Object> get props => [
+        studentUID,
+        bookID,
+      ];
+}
+
+class GetBooksForStudentEvent extends MyClassEvent {
+  final String studentUID;
+
+  GetBooksForStudentEvent({
+    @required this.studentUID,
+  });
+
+  @override
+  List<Object> get props => [
+        studentUID,
+      ];
+}
+
+class SelectDateForBookEvent extends MyClassEvent {
+  final String studentUID;
+  final String bookID;
+  final DateTime selectedDate;
+
+  SelectDateForBookEvent({
+    @required this.studentUID,
+    @required this.bookID,
+    @required this.selectedDate,
+  });
+
+  @override
+  List<Object> get props => [
+        studentUID,
+        bookID,
+        selectedDate,
+      ];
+}
+
+class ChangeDateForBookEvent extends MyClassEvent {
+  final bool increase;
+
+  ChangeDateForBookEvent({
+    @required this.increase,
+  });
+
+  @override
+  List<Object> get props => [
+        increase,
+      ];
+}
+
+class StudentSelectedEvent extends MyClassEvent {
+  final bool studentSelected;
+
+  StudentSelectedEvent({
+    @required this.studentSelected,
+  });
+
+  @override
+  List<Object> get props => [
+        studentSelected,
+      ];
+}

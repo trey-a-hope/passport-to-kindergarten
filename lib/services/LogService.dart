@@ -10,6 +10,17 @@ abstract class ILogService {
     @required BookModel book,
   });
 
+  Future<List<BookModel>> getBooksForUser({
+    @required String uid,
+  });
+
+  Future<List<ChildLogModel>> getLogsForBookForUser({
+    @required String uid,
+    @required String bookID,
+  });
+
+  //RECATOR EVERYTHING BELOW!
+
   void createParentLog(
       {@required String uid,
       @required String collection,
@@ -247,6 +258,57 @@ class LogService extends ILogService {
       bookDocRef.setData(
         book.toMap(),
       );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<BookModel>> getBooksForUser({
+    @required String uid,
+  }) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      List<DocumentSnapshot> bookDocSnaps =
+          (await userDocRef.collection('books').getDocuments()).documents;
+
+      List<BookModel> books = bookDocSnaps
+          .map(
+            (bookDocSnap) => BookModel.fromDocumentSnapshot(ds: bookDocSnap),
+          )
+          .toList();
+
+      return books;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<ChildLogModel>> getLogsForBookForUser({
+    @required String uid,
+    @required String bookID,
+  }) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      List<DocumentSnapshot> logDocs = (await userDocRef
+              .collection('books')
+              .document(bookID)
+              .collection('logs')
+              .getDocuments())
+          .documents;
+
+      List<ChildLogModel> logs = logDocs
+          .map((logDoc) => ChildLogModel.fromDocumentSnapshot(ds: logDoc))
+          .toList();
+
+      return logs;
     } catch (e) {
       throw Exception(
         e.toString(),
