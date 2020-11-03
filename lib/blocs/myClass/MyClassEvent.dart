@@ -79,19 +79,6 @@ class SelectDateForBookEvent extends MyClassEvent {
       ];
 }
 
-class ChangeDateForBookEvent extends MyClassEvent {
-  final bool increase;
-
-  ChangeDateForBookEvent({
-    @required this.increase,
-  });
-
-  @override
-  List<Object> get props => [
-        increase,
-      ];
-}
-
 class StudentSelectedEvent extends MyClassEvent {
   final bool studentSelected;
 

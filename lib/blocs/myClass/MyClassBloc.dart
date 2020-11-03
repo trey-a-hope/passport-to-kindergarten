@@ -4,6 +4,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/UserModel.dart';
+import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/UserService.dart';
@@ -21,7 +22,9 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
   MyClassBlocDelegate _myClassBlocDelegate;
   UserModel _currentUser;
   List<UserModel> _students;
-  List<BookModel> books = List<BookModel>();
+  List<BookModel> _selectedStudentBooks = List<BookModel>();
+  List<VisitModel> _selectedStudentVisits = List<VisitModel>();
+
   DateTime selectedDateForBookLogs;
   Map<DateTime, List<ChildLogModel>> _events =
       Map<DateTime, List<ChildLogModel>>();
@@ -45,7 +48,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         yield LoadedState(
           user: _currentUser,
           students: _students,
-          books: books,
+          books: _selectedStudentBooks,
+          selectedStudentVisits: _selectedStudentVisits,
           selectedDateForBookLogs: selectedDateForBookLogs,
           events: _events,
           studentSelected: studentSelected,
@@ -112,12 +116,14 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     if (event is GetBooksForStudentEvent) {
       final String studentUID = event.studentUID;
       try {
-        books = await locator<LogService>().getBooksForUser(uid: studentUID);
+        _selectedStudentBooks =
+            await locator<LogService>().getBooksForUser(uid: studentUID);
 
         yield LoadedState(
           user: _currentUser,
           students: _students,
-          books: books,
+          books: _selectedStudentBooks,
+          selectedStudentVisits: _selectedStudentVisits,
           selectedDateForBookLogs: selectedDateForBookLogs,
           events: _events,
           studentSelected: studentSelected,
@@ -161,30 +167,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       yield LoadedState(
         user: _currentUser,
         students: _students,
-        books: books,
-        selectedDateForBookLogs: selectedDateForBookLogs,
-        events: _events,
-        studentSelected: studentSelected,
-      );
-    }
-
-    if (event is ChangeDateForBookEvent) {
-      final bool increase = event.increase;
-
-      if (increase) {
-        if (selectedDateForBookLogs.month == 12) return;
-        selectedDateForBookLogs =
-            DateTime(2020, selectedDateForBookLogs.month + 1);
-      } else {
-        if (selectedDateForBookLogs.month == 1) return;
-        selectedDateForBookLogs =
-            DateTime(2020, selectedDateForBookLogs.month - 1);
-      }
-
-      yield LoadedState(
-        user: _currentUser,
-        students: _students,
-        books: books,
+        books: _selectedStudentBooks,
+        selectedStudentVisits: _selectedStudentVisits,
         selectedDateForBookLogs: selectedDateForBookLogs,
         events: _events,
         studentSelected: studentSelected,
@@ -197,7 +181,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       yield LoadedState(
         user: _currentUser,
         students: _students,
-        books: books,
+        books: _selectedStudentBooks,
+        selectedStudentVisits: _selectedStudentVisits,
         selectedDateForBookLogs: selectedDateForBookLogs,
         events: _events,
         studentSelected: studentSelected,
