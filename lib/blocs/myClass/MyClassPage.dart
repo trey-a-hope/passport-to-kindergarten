@@ -7,6 +7,8 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/services/ValidatorService.dart';
+import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
 
@@ -19,6 +21,8 @@ class MyClassPageState extends State<MyClassPage>
     implements MyClassBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   MyClassBloc _myClassBloc;
+  final TextEditingController _titleConController = TextEditingController();
+  final TextEditingController _authorConController = TextEditingController();
 
   @override
   void initState() {
@@ -205,12 +209,114 @@ class MyClassPageState extends State<MyClassPage>
                                   ],
                                 ),
                                 ExpansionTile(
+                                  backgroundColor: COLOR_YELLOW,
                                   title: Text(
                                     'Add a new title',
                                     style: TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
+                                  children: [
+                                    Container(
+                                      height: 360,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Add a new book that your student hasn\'t already logged here.',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: COLOR_NAVY,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 30, 20, 0),
+                                            child: TextFormField(
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              cursorColor: Colors.black,
+                                              validator:
+                                                  locator<ValidatorService>()
+                                                      .isEmpty,
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              controller: _titleConController,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: 'SFUIDisplay'),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText: 'Title',
+                                                prefixIcon:
+                                                    Icon(Icons.speaker_notes),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 15),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 30, 20, 0),
+                                            child: TextFormField(
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              cursorColor: Colors.black,
+                                              validator:
+                                                  locator<ValidatorService>()
+                                                      .isEmpty,
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              controller: _authorConController,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: 'SFUIDisplay'),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText: 'Author',
+                                                prefixIcon:
+                                                    Icon(Icons.speaker_notes),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 15),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          FullWidthButtonWidget(
+                                            buttonColor: COLOR_NAVY,
+                                            text: 'Add',
+                                            textColor: Colors.white,
+                                            onPressed: () async {
+                                              final bool confirm =
+                                                  await locator<ModalService>()
+                                                      .showConfirmation(
+                                                          context: context,
+                                                          title: 'Add Book',
+                                                          message:
+                                                              'Are you sure?');
+
+                                              if (!confirm) return;
+
+                                              _myClassBloc.add(
+                                                CreateBookForStudentEvent(
+                                                  studentUID: student.uid,
+                                                  title:
+                                                      _titleConController.text,
+                                                  author:
+                                                      _authorConController.text,
+                                                ),
+                                              );
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 ExpansionTile(
                                   title: Text(
@@ -263,5 +369,11 @@ class MyClassPageState extends State<MyClassPage>
   void showMessage({String message}) {
     locator<ModalService>()
         .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+  }
+
+  @override
+  void clearAddTitleForm() {
+    _titleConController.clear();
+    _authorConController.clear();
   }
 }

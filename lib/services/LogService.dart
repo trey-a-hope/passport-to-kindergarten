@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:p/models/ParentLogModel.dart';
 
 abstract class ILogService {
+  void createBookForUser({
+    @required String uid,
+    @required BookModel book,
+  });
+
   void createParentLog(
       {@required String uid,
       @required String collection,
@@ -218,6 +224,28 @@ class LogService extends ILogService {
       log.id = childLogDocRef.documentID;
       childLogDocRef.setData(
         log.toMap(),
+      );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> createBookForUser({
+    @required String uid,
+    @required BookModel book,
+  }) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      final CollectionReference booksColRef = userDocRef.collection('books');
+
+      DocumentReference bookDocRef = booksColRef.document();
+      book.id = bookDocRef.documentID;
+      bookDocRef.setData(
+        book.toMap(),
       );
     } catch (e) {
       throw Exception(
