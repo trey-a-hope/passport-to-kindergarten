@@ -9,11 +9,11 @@ abstract class IAuthService {
   Stream<FirebaseUser> onAuthStateChanged();
   Future<AuthResult> signInWithEmailAndPassword(
       {@required String email, @required String password});
-
   Future<AuthResult> createUserWithEmailAndPassword(
       {@required String email, @required String password});
   Future<void> updatePassword({@required String password});
   Future<void> deleteUser({@required String userID});
+  Future<void> resetPassword({@required String email});
 }
 
 class AuthService extends IAuthService {
@@ -78,6 +78,17 @@ class AuthService extends IAuthService {
       await firebaseUser.delete();
       await _usersDB.document(userID).delete();
       return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> resetPassword({@required String email}) async {
+    try {
+      return await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       throw Exception(
         e.toString(),

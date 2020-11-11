@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/constants.dart';
-import 'package:p/extensions/HexColorExtension.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../ServiceLocator.dart';
 import 'Bloc.dart';
 import 'package:p/blocs/signup/Bloc.dart' as SIGNUP_BP;
+import 'package:p/blocs/forgotPassword/Bloc.dart' as FORGOT_PASSWORD_BP;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -141,6 +141,34 @@ class LoginPageState extends State<LoginPage>
                                 filled: true,
                                 fillColor: Colors.white24,
                                 hintText: 'Password'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Center(
+                          child: InkWell(
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            onTap: () {
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) => BlocProvider(
+                                  create: (BuildContext context) =>
+                                      FORGOT_PASSWORD_BP.ForgotPasswordBloc()
+                                        ..add(
+                                          FORGOT_PASSWORD_BP.LoadPageEvent(),
+                                        ),
+                                  child:
+                                      FORGOT_PASSWORD_BP.ForgotPasswordPage(),
+                                ),
+                              );
+                              Navigator.push(context, route);
+                            },
                           ),
                         ),
                         Spacer(),
