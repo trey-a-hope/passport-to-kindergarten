@@ -31,6 +31,7 @@ class EditProfilePageState extends State<EditProfilePage>
       TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   EditProfileBloc _editProfileBloc;
 
@@ -69,7 +70,7 @@ class EditProfilePageState extends State<EditProfilePage>
                 color: COLOR_CREAM,
                 child: SafeArea(
                   child: Form(
-                    key: state.formKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         Stack(
@@ -121,7 +122,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -142,7 +146,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -154,7 +161,7 @@ class EditProfilePageState extends State<EditProfilePage>
                                       fontFamily: 'SFUIDisplay'),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Teacher First Last',
+                                    labelText: 'Teacher Last Name',
                                     prefixIcon: Icon(Icons.person),
                                     labelStyle: TextStyle(fontSize: 15),
                                   ),
@@ -163,7 +170,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -187,7 +197,17 @@ class EditProfilePageState extends State<EditProfilePage>
                         FullWidthButtonWidget(
                           text: 'Update',
                           buttonColor: COLOR_NAVY,
-                          onPressed: () {
+                          onPressed: () async {
+                            if (!_formKey.currentState.validate()) return;
+
+                            bool confirm = await locator<ModalService>()
+                                .showConfirmation(
+                                    context: context,
+                                    title: 'Submit',
+                                    message: 'Are you sure?');
+
+                            if (!confirm) return;
+
                             _editProfileBloc.add(
                               TeacherSubmitEvent(
                                 firstName: _firstNameController.text,
@@ -270,7 +290,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -291,7 +314,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -312,7 +338,6 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
                                   onTap: () async {
                                     final DateTime picked =
                                         await showDatePicker(
@@ -362,7 +387,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -383,7 +411,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -412,10 +443,11 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
-                                  validator:
-                                      locator<ValidatorService>().isEmpty,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   controller:
@@ -434,10 +466,11 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
-                                  validator:
-                                      locator<ValidatorService>().isEmpty,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   controller:
@@ -459,7 +492,16 @@ class EditProfilePageState extends State<EditProfilePage>
                         FullWidthButtonWidget(
                           text: 'Update',
                           buttonColor: COLOR_NAVY,
-                          onPressed: () {
+                          onPressed: () async {
+                            if (!_formKey.currentState.validate()) return;
+
+                            bool confirm = await locator<ModalService>()
+                                .showConfirmation(
+                                    context: context,
+                                    title: 'Submit',
+                                    message: 'Are you sure?');
+
+                            if (!confirm) return;
                             _editProfileBloc.add(
                               ParentSubmitEvent(
                                 firstName: _firstNameController.text,
@@ -549,7 +591,10 @@ class EditProfilePageState extends State<EditProfilePage>
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: TextFormField(
-                                  autovalidate: state.autoValidate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: Colors.black,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
@@ -582,7 +627,7 @@ class EditProfilePageState extends State<EditProfilePage>
                                       fontFamily: 'SFUIDisplay'),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Super Admin First Last',
+                                    labelText: 'Super Admin Last Name',
                                     prefixIcon: Icon(Icons.person),
                                     labelStyle: TextStyle(fontSize: 15),
                                   ),
@@ -594,7 +639,16 @@ class EditProfilePageState extends State<EditProfilePage>
                         FullWidthButtonWidget(
                           text: 'Update',
                           buttonColor: COLOR_NAVY,
-                          onPressed: () {
+                          onPressed: () async {
+                            if (!_formKey.currentState.validate()) return;
+
+                            bool confirm = await locator<ModalService>()
+                                .showConfirmation(
+                                    context: context,
+                                    title: 'Submit',
+                                    message: 'Are you sure?');
+
+                            if (!confirm) return;
                             _editProfileBloc.add(
                               SuperAdminSubmitEvent(
                                 firstName: _firstNameController.text,
