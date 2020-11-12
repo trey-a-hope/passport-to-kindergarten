@@ -159,6 +159,7 @@ class SignupPageState extends State<SignupPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -181,7 +182,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is TeacherState) {
                   return Form(
                     key: _formKey,
-                    child: Column(
+                    child: ListView(
                       children: [
                         InkWell(
                           onTap: () {
@@ -200,91 +201,15 @@ class SignupPageState extends State<SignupPage>
                           ),
                         ),
                         _buttonRowWidget(profile_type: PROFILE_TYPE.TEACHER),
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              Text(
-                                'Teacher Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _firstNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'First Name'),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _lastNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'Last Name'),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
+                        Text(
+                          'Teacher Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
                                   textCapitalization:
@@ -295,11 +220,11 @@ class SignupPageState extends State<SignupPage>
                                       locator<ValidatorService>().isEmpty,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  controller: _schoolController,
+                                  controller: _firstNameController,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.school,
+                                        Icons.person,
                                         color: Colors.white,
                                       ),
                                       border: OutlineInputBorder(
@@ -308,69 +233,33 @@ class SignupPageState extends State<SignupPage>
                                           Radius.circular(90.0),
                                         ),
                                         borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
                                       ),
                                       hintStyle: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "WorkSansLight"),
                                       filled: true,
                                       fillColor: Colors.white24,
-                                      hintText: 'School'),
+                                      hintText: 'First Name'),
                                 ),
                               ),
-                              Text(
-                                'Basic Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Padding(
+                            ),
+                            Expanded(
+                              child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: locator<ValidatorService>().email,
-                                  keyboardType: TextInputType.emailAddress,
-                                  textInputAction: TextInputAction.done,
-                                  controller: _emailController,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.alternate_email,
-                                        color: Colors.white,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        // width: 0.0 produces a thin "hairline" border
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(90.0),
-                                        ),
-                                        borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
-                                      ),
-                                      hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSansLight"),
-                                      filled: true,
-                                      fillColor: Colors.white24,
-                                      hintText: 'Email'),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  obscureText: true,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator:
-                                      locator<ValidatorService>().password,
-                                  keyboardType: TextInputType.visiblePassword,
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  controller: _passwordController,
+                                  controller: _lastNameController,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.lock,
+                                        Icons.person,
                                         color: Colors.white,
                                       ),
                                       border: OutlineInputBorder(
@@ -387,10 +276,113 @@ class SignupPageState extends State<SignupPage>
                                           fontFamily: "WorkSansLight"),
                                       filled: true,
                                       fillColor: Colors.white24,
-                                      hintText: 'Password'),
+                                      hintText: 'Last Name'),
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _schoolController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.school,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'School'),
+                          ),
+                        ),
+                        Text(
+                          'Basic Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().email,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.done,
+                            controller: _emailController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.alternate_email,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Email'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            obscureText: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().password,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            controller: _passwordController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Password'),
                           ),
                         ),
                         FullWidthButtonWidget(
@@ -435,15 +427,17 @@ class SignupPageState extends State<SignupPage>
                               );
                               Navigator.pushReplacement(context, route);
                             },
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                      text: 'Already have an account?',
-                                      style: TextStyle(color: Colors.grey)),
-                                  TextSpan(text: ' Log in')
-                                ],
+                            child: Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                        text: 'Already have an account?',
+                                        style: TextStyle(color: Colors.grey)),
+                                    TextSpan(text: ' Log in')
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -456,7 +450,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is ParentState) {
                   return Form(
                     key: _formKey,
-                    child: Column(
+                    child: ListView(
                       children: [
                         InkWell(
                           onTap: () {
@@ -475,365 +469,31 @@ class SignupPageState extends State<SignupPage>
                           ),
                         ),
                         _buttonRowWidget(profile_type: PROFILE_TYPE.PARENT),
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              Text(
-                                'Child Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              //CHILD FIRST AND LAST NAME
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _firstNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'First Name'),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _lastNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'Last Name'),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              //Last Name
-                              Padding(
+                        Text(
+                          'Child Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        //CHILD FIRST AND LAST NAME
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  onTap: () async {
-                                    final DateTime now = DateTime.now();
-
-                                    final DateTime picked =
-                                        await showDatePicker(
-                                      context: context,
-                                      initialDate: state.selectedDate,
-                                      firstDate: DateTime(now.year - 5),
-                                      lastDate: DateTime(now.year - 2),
-                                    );
-
-                                    if (picked != null &&
-                                        picked != state.selectedDate) {
-                                      _signupBloc.add(
-                                        SelectDateEvent(selectedDate: picked),
-                                      );
-                                      print(picked.toString());
-
-                                      String formattedDate =
-                                          DateFormat('MMMM dd, yyyy')
-                                              .format(picked);
-                                      _dobController.text = formattedDate;
-                                    }
-                                  },
-                                  controller: _dobController,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.calendar_today,
-                                        color: Colors.white,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        // width: 0.0 produces a thin "hairline" border
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(90.0),
-                                        ),
-                                        borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
-                                      ),
-                                      hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSansLight"),
-                                      filled: true,
-                                      fillColor: Colors.white24,
-                                      hintText: 'Child\'s DOB'),
-                                ),
-                              ),
-                              Text(
-                                'Primary Parent Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller:
-                                            _firstParentFirstNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'First Name'),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller:
-                                            _firstParentLastNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'Last Name'),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Secondary Parent Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller:
-                                            _secondParentFirstNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'First Name'),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller:
-                                            _secondParentLastNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'Last Name'),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Basic Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: locator<ValidatorService>().email,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  controller: _emailController,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.alternate_email,
-                                        color: Colors.white,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        // width: 0.0 produces a thin "hairline" border
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(90.0),
-                                        ),
-                                        borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
-                                      ),
-                                      hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSansLight"),
-                                      filled: true,
-                                      fillColor: Colors.white24,
-                                      hintText: 'Email'),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  obscureText: true,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator:
-                                      locator<ValidatorService>().password,
-                                  keyboardType: TextInputType.visiblePassword,
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  controller: _passwordController,
+                                  controller: _firstNameController,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.lock,
+                                        Icons.person,
                                         color: Colors.white,
                                       ),
                                       border: OutlineInputBorder(
@@ -850,57 +510,27 @@ class SignupPageState extends State<SignupPage>
                                           fontFamily: "WorkSansLight"),
                                       filled: true,
                                       fillColor: Colors.white24,
-                                      hintText: 'Password'),
+                                      hintText: 'First Name'),
                                 ),
                               ),
-
-                              Padding(
+                            ),
+                            Expanded(
+                              child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
-                                  onTap: () async {
-                                    final SEARCH_TEACHERS_BP
-                                            .SearchTeachersRepository
-                                        _searchTeachersRepository =
-                                        SEARCH_TEACHERS_BP
-                                            .SearchTeachersRepository(
-                                      cache: SEARCH_TEACHERS_BP
-                                          .SearchTeachersCache(),
-                                    );
-
-                                    Route route = MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          BlocProvider(
-                                        create: (BuildContext context) =>
-                                            SEARCH_TEACHERS_BP.SearchTeachersBloc(
-                                                searchTeachersRepository:
-                                                    _searchTeachersRepository)
-                                              ..add(
-                                                SEARCH_TEACHERS_BP
-                                                    .LoadPageEvent(),
-                                              ),
-                                        child: SEARCH_TEACHERS_BP
-                                            .SearchTeachersPage(),
-                                      ),
-                                    );
-
-                                    final result =
-                                        await Navigator.push(context, route);
-
-                                    final selectedTeacher = result as UserModel;
-
-                                    _signupBloc.add(
-                                      SelectTeacherEvent(
-                                          selectedTeacher: selectedTeacher),
-                                    );
-
-                                    _teacherController.text =
-                                        '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
-                                  },
-                                  controller: _teacherController,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator:
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _lastNameController,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.book,
+                                        Icons.person,
                                         color: Colors.white,
                                       ),
                                       border: OutlineInputBorder(
@@ -917,38 +547,384 @@ class SignupPageState extends State<SignupPage>
                                           fontFamily: "WorkSansLight"),
                                       filled: true,
                                       fillColor: Colors.white24,
-                                      hintText: 'Teacher'),
+                                      hintText: 'Last Name'),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 40,
-                                    backgroundImage: _image == null
-                                        ? NetworkImage(DUMMY_PROFILE_PHOTO_URL)
-                                        : Image.file(_image).image,
+                            )
+                          ],
+                        ),
+                        //Last Name
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            onTap: () async {
+                              final DateTime now = DateTime.now();
+
+                              final DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: state.selectedDate,
+                                firstDate: DateTime(now.year - 5),
+                                lastDate: DateTime(now.year - 2),
+                              );
+
+                              if (picked != null &&
+                                  picked != state.selectedDate) {
+                                _signupBloc.add(
+                                  SelectDateEvent(selectedDate: picked),
+                                );
+                                print(picked.toString());
+
+                                String formattedDate =
+                                    DateFormat('MMMM dd, yyyy').format(picked);
+                                _dobController.text = formattedDate;
+                              }
+                            },
+                            controller: _dobController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  RaisedButton(
-                                    color: COLOR_ORANGE,
-                                    onPressed: () {
-                                      showSelectImageDialog();
-                                    },
-                                    child: Text(
-                                      'Upload Photo of Child',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Child\'s DOB'),
                           ),
+                        ),
+                        Text(
+                          'Primary Parent Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator:
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _firstParentFirstNameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(90.0),
+                                        ),
+                                        borderSide: BorderSide.none,
+
+                                        //borderSide: const BorderSide(),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "WorkSansLight"),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      hintText: 'First Name'),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator:
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _firstParentLastNameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(90.0),
+                                        ),
+                                        borderSide: BorderSide.none,
+
+                                        //borderSide: const BorderSide(),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "WorkSansLight"),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      hintText: 'Last Name'),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Text(
+                          'Secondary Parent Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _secondParentFirstNameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(90.0),
+                                        ),
+                                        borderSide: BorderSide.none,
+
+                                        //borderSide: const BorderSide(),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "WorkSansLight"),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      hintText: 'First Name'),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _secondParentLastNameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(90.0),
+                                        ),
+                                        borderSide: BorderSide.none,
+
+                                        //borderSide: const BorderSide(),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "WorkSansLight"),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      hintText: 'Last Name'),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Text(
+                          'Basic Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().email,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _emailController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.alternate_email,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Email'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            obscureText: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().password,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            controller: _passwordController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Password'),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            onTap: () async {
+                              final SEARCH_TEACHERS_BP.SearchTeachersRepository
+                                  _searchTeachersRepository =
+                                  SEARCH_TEACHERS_BP.SearchTeachersRepository(
+                                cache: SEARCH_TEACHERS_BP.SearchTeachersCache(),
+                              );
+
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) => BlocProvider(
+                                  create: (BuildContext context) =>
+                                      SEARCH_TEACHERS_BP.SearchTeachersBloc(
+                                          searchTeachersRepository:
+                                              _searchTeachersRepository)
+                                        ..add(
+                                          SEARCH_TEACHERS_BP.LoadPageEvent(),
+                                        ),
+                                  child:
+                                      SEARCH_TEACHERS_BP.SearchTeachersPage(),
+                                ),
+                              );
+
+                              final result =
+                                  await Navigator.push(context, route);
+
+                              final selectedTeacher = result as UserModel;
+
+                              _signupBloc.add(
+                                SelectTeacherEvent(
+                                    selectedTeacher: selectedTeacher),
+                              );
+
+                              _teacherController.text =
+                                  '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
+                            },
+                            controller: _teacherController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.book,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Teacher'),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundImage: _image == null
+                                  ? NetworkImage(DUMMY_PROFILE_PHOTO_URL)
+                                  : Image.file(_image).image,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RaisedButton(
+                              color: COLOR_ORANGE,
+                              onPressed: () {
+                                showSelectImageDialog();
+                              },
+                              child: Text(
+                                'Upload Photo of Child',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                         FullWidthButtonWidget(
                           buttonColor: COLOR_ORANGE,
@@ -989,15 +965,17 @@ class SignupPageState extends State<SignupPage>
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                      text: 'Already have an account?',
-                                      style: TextStyle(color: Colors.grey)),
-                                  TextSpan(text: ' Log in')
-                                ],
+                            child: Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                        text: 'Already have an account?',
+                                        style: TextStyle(color: Colors.grey)),
+                                    TextSpan(text: ' Log in')
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -1010,7 +988,7 @@ class SignupPageState extends State<SignupPage>
                 if (state is SuperAdminState) {
                   return Form(
                     key: _formKey,
-                    child: Column(
+                    child: ListView(
                       children: [
                         InkWell(
                           onTap: () {
@@ -1030,179 +1008,30 @@ class SignupPageState extends State<SignupPage>
                         ),
                         _buttonRowWidget(
                             profile_type: PROFILE_TYPE.SUPER_ADMIN),
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              Text(
-                                'Super Admin Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _firstNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'First Name'),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: TextFormField(
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator:
-                                            locator<ValidatorService>().isEmpty,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        controller: _lastNameController,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              // width: 0.0 produces a thin "hairline" border
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(90.0),
-                                              ),
-                                              borderSide: BorderSide.none,
-
-                                              //borderSide: const BorderSide(),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "WorkSansLight"),
-                                            filled: true,
-                                            fillColor: Colors.white24,
-                                            hintText: 'Last Name'),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'Basic Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Padding(
+                        Text(
+                          'Super Admin Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: locator<ValidatorService>().email,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  controller: _emailController,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.alternate_email,
-                                        color: Colors.white,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        // width: 0.0 produces a thin "hairline" border
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(90.0),
-                                        ),
-                                        borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
-                                      ),
-                                      hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSansLight"),
-                                      filled: true,
-                                      fillColor: Colors.white24,
-                                      hintText: 'Email'),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  obscureText: true,
                                   textCapitalization:
                                       TextCapitalization.sentences,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator:
-                                      locator<ValidatorService>().password,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  controller: _passwordController,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        // width: 0.0 produces a thin "hairline" border
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(90.0),
-                                        ),
-                                        borderSide: BorderSide.none,
-
-                                        //borderSide: const BorderSide(),
-                                      ),
-                                      hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSansLight"),
-                                      filled: true,
-                                      fillColor: Colors.white24,
-                                      hintText: 'Password'),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: TextFormField(
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator:
                                       locator<ValidatorService>().isEmpty,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  controller: _superAdminSecretKeyController,
+                                  controller: _firstNameController,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.security,
+                                        Icons.person,
                                         color: Colors.white,
                                       ),
                                       border: OutlineInputBorder(
@@ -1219,10 +1048,150 @@ class SignupPageState extends State<SignupPage>
                                           fontFamily: "WorkSansLight"),
                                       filled: true,
                                       fillColor: Colors.white24,
-                                      hintText: 'Secret Key'),
+                                      hintText: 'First Name'),
                                 ),
                               ),
-                            ],
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator:
+                                      locator<ValidatorService>().isEmpty,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _lastNameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        // width: 0.0 produces a thin "hairline" border
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(90.0),
+                                        ),
+                                        borderSide: BorderSide.none,
+
+                                        //borderSide: const BorderSide(),
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "WorkSansLight"),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      hintText: 'Last Name'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Basic Info',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().email,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _emailController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.alternate_email,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Email'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            obscureText: true,
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().password,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _passwordController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Password'),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _superAdminSecretKeyController,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.security,
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(90.0),
+                                  ),
+                                  borderSide: BorderSide.none,
+
+                                  //borderSide: const BorderSide(),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSansLight"),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Secret Key'),
                           ),
                         ),
                         FullWidthButtonWidget(
@@ -1265,15 +1234,17 @@ class SignupPageState extends State<SignupPage>
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                      text: 'Already have an account?',
-                                      style: TextStyle(color: Colors.grey)),
-                                  TextSpan(text: ' Log in')
-                                ],
+                            child: Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                        text: 'Already have an account?',
+                                        style: TextStyle(color: Colors.grey)),
+                                    TextSpan(text: ' Log in')
+                                  ],
+                                ),
                               ),
                             ),
                           ),
