@@ -5,6 +5,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookOfTheMonthModel.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/bookOfTheMonthDetails/Bloc.dart'
@@ -58,41 +59,7 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            ASSET_p2k20_app_header_bar,
-                            width: screenWidth,
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Book of The Month',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                      AppBarWidget(title: 'Book of The Month'),
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(

@@ -6,6 +6,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/ParentLogModel.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as READING_LOG_BOOKS_BP;
@@ -167,41 +168,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            ASSET_p2k20_app_header_bar,
-                            width: screenWidth,
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Reading Log',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                      AppBarWidget(title: 'Reading Log'),
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Row(

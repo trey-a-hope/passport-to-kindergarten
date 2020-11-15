@@ -5,6 +5,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -59,41 +60,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            ASSET_p2k20_app_header_bar,
-                            width: screenWidth,
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Forgot Password',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                      AppBarWidget(title: 'Forgot Password'),
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(

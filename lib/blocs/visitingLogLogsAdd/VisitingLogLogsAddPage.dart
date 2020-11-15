@@ -6,6 +6,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart' as VISITING_LOG_LOGS_ADD_BP;
@@ -64,41 +65,7 @@ class VisitingLogLogsAddPageState extends State<VisitingLogLogsAddPage>
                     key: _formKey,
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              ASSET_p2k20_app_header_bar,
-                              width: screenWidth,
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Add new log',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        AppBarWidget(title: 'Add New Log'),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
                           child: TextFormField(

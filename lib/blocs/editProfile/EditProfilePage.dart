@@ -7,6 +7,7 @@ import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/services/ValidatorService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -73,41 +74,7 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: _formKey,
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              ASSET_p2k20_app_header_bar,
-                              width: screenWidth,
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Edit Profile',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        AppBarWidget(title: 'Edit Profile'),
                         Expanded(
                           child: ListView(
                             children: [
@@ -241,41 +208,7 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              ASSET_p2k20_app_header_bar,
-                              width: screenWidth,
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Edit Profile',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        AppBarWidget(title: 'Edit Profile'),
                         Expanded(
                           child: ListView(
                             children: [
@@ -542,41 +475,7 @@ class EditProfilePageState extends State<EditProfilePage>
                     key: state.formKey,
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              ASSET_p2k20_app_header_bar,
-                              width: screenWidth,
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Edit Profile',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        AppBarWidget(title: 'Edit Profile'),
                         Expanded(
                           child: ListView(
                             children: [

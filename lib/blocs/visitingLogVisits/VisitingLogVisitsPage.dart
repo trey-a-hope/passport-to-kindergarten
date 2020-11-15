@@ -6,6 +6,7 @@ import 'package:p/constants.dart';
 import 'package:p/models/ChildLogModel.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -102,41 +103,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            ASSET_p2k20_app_header_bar,
-                            width: screenWidth,
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Visit Log',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                      AppBarWidget(title: 'Visit Log'),
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(

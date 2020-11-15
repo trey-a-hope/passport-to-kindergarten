@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/DrawerWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
@@ -59,21 +60,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                 child: SafeArea(
                   child: Column(
                     children: [
-                      Container(
-                        width: screenWidth,
-                        height: 80,
-                        color: COLOR_ORANGE,
-                        child: Center(
-                          child: Text(
-                            'AWEsome Reading Tips',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      AppBarWidget(title: 'AWEsome Reading Tips'),
                       Expanded(
                         child: Center(
                           child: Text(
