@@ -13,6 +13,7 @@ import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/widgets/ImageUploadWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
@@ -33,6 +34,7 @@ class MenuPage extends StatefulWidget {
 
 class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final double _menuBottomPadding = 50;
   MenuBloc _menuBloc;
 
   @override
@@ -360,7 +362,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -369,16 +371,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                showSelectImageDialog();
-                              },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  user.imgUrl,
-                                ),
-                              ),
+                            child: ImageUploadWidget(
+                              imgUrl: user.imgUrl,
+                              showSelectImageDialog: showSelectImageDialog,
                             ),
                             left: 20,
                             top: 10,
@@ -404,7 +399,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       myClassListTile(),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
@@ -414,7 +411,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),
@@ -442,7 +439,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -451,15 +448,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                showSelectImageDialog();
-                              },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  user.imgUrl,
-                                ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
                               ),
                             ),
                             left: 20,
@@ -486,7 +478,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       myPassportListTile(),
                       readingLogListTile(),
                       visitLogListTile(),
@@ -497,7 +491,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),
@@ -525,7 +519,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -569,7 +563,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
@@ -578,7 +574,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
@@ -5,6 +7,7 @@ import 'package:p/blocs/editProfile/Bloc.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 
 abstract class EditProfileBlocDelegate {
@@ -37,8 +40,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           add(SuperAdminSetTextFieldsEvent(user: _currentUser));
           yield SuperAdminLoadedState(
             user: _currentUser,
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
           );
         }
 
@@ -46,8 +47,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           add(TeacherSetTextFieldsEvent(user: _currentUser));
           yield TeacherLoadedState(
             user: _currentUser,
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
           );
         }
 
@@ -62,8 +61,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
           yield ParentLoadedState(
             user: _currentUser,
-            autoValidate: false,
-            formKey: GlobalKey<FormState>(),
           );
         }
       } catch (error) {
@@ -160,6 +157,28 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     if (event is UpdateChildDOBEvent) {
       final DateTime dob = event.childDOB;
       _childDOB = dob;
+    }
+
+    if (event is UploadPictureEvent) {
+      final File image = event.image;
+
+      try {
+        final String imgUrl = await locator<StorageService>().uploadImage(
+            file: image, path: 'Images/Users/${_currentUser.uid}/Profile');
+
+        await locator<UserService>().updateUser(
+          uid: _currentUser.uid,
+          data: {
+            'imgUrl': imgUrl,
+          },
+        );
+
+        add(LoadPageEvent());
+      } catch (error) {
+        _editProfileBlocDelegate.showMessage(
+          message: error.toString(),
+        );
+      }
     }
   }
 }

@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
