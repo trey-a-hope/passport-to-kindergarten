@@ -33,7 +33,6 @@ const String ASSET_pp_text_logo = 'assets/images/pp_text_logo.png';
 const String ASSET_play_button = 'assets/images/play_button.png';
 const String ASSET_about_page_logos = 'assets/images/about_page_logos.png';
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
-const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';
 const String ASSET_IMAGE_OR = 'assets/images/or_logo.png';
 const String ASSET_p2k20_app_opening_photo =
