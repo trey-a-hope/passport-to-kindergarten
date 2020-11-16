@@ -427,12 +427,14 @@ class MyClassPageState extends State<MyClassPage>
                                                   SizedBox(
                                                     width: 15,
                                                   ),
-                                                  Text(
-                                                    '${book.title}',
-                                                    style: TextStyle(
-                                                      color: COLOR_NAVY,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                  Flexible(
+                                                    child: Text(
+                                                      '${book.title}',
+                                                      style: TextStyle(
+                                                        color: COLOR_NAVY,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   )
                                                 ],

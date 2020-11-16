@@ -47,10 +47,6 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
         if (state is LoadedState) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: COLOR_CREAM,
-            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -58,19 +54,185 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       AppBarWidget(title: 'AWEsome Reading Tips'),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Still Needs Work...',
+                      Padding(
+                        padding: EdgeInsets.all(30),
+                        child: RichText(
+                          text: TextSpan(
                             style: TextStyle(
                               color: COLOR_NAVY,
+                              fontSize: 18,
                             ),
+                            children: [
+                              TextSpan(
+                                text:
+                                    'To make the most of the time you spend sharing books with your child, pause in your reading to have AWEsome conversations.  Use the acronym ',
+                              ),
+                              TextSpan(
+                                text: 'A.W.E. ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(text: 'to build your child\'s skills:')
+                            ],
                           ),
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '-',
+                                    style: TextStyle(
+                                      color: COLOR_ORANGE,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 9,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: COLOR_NAVY,
+                                        fontSize: 18,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: 'A',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              'sk questions to get your child thinking and talking.',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '-',
+                                    style: TextStyle(
+                                      color: COLOR_ORANGE,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 9,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: COLOR_NAVY,
+                                        fontSize: 18,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: 'W',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              'ait at least 5 seconds to give your child time to respond.',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '-',
+                                    style: TextStyle(
+                                      color: COLOR_ORANGE,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 9,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: COLOR_NAVY,
+                                        fontSize: 18,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: 'E',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              'xpand on your child\'s response by repeating what they said and adding a bit more to it.',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(30),
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: COLOR_NAVY,
+                              fontSize: 18,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'AWE',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                  text:
+                                      'some moments can happen at any time: when you share a book, take a trip to the Boonshoft Museum of Discovery, play at the park or talk about their day at school.')
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
