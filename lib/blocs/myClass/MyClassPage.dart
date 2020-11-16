@@ -9,6 +9,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/LogModel.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -73,27 +74,6 @@ class MyClassPageState extends State<MyClassPage>
           final List<VisitModel> selectedStudentVisits =
               state.selectedStudentVisits;
 
-          final int boonshoftMuseumCount = selectedStudentVisits
-              .where((visitLog) =>
-                  visitLog.title == 'Boonshoft Museaum of Discovery')
-              .toList()
-              .length;
-
-          final int daytonMetroCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Dayton Metro Library')
-              .toList()
-              .length;
-
-          final int fiveRiversCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Five Rivers Metro Park')
-              .toList()
-              .length;
-
-          final int daytonArtCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Dayton Art Institute')
-              .toList()
-              .length;
-
           int totalLogCount = 0;
           books.forEach((book) {
             totalLogCount += book.logCount;
@@ -142,27 +122,6 @@ class MyClassPageState extends State<MyClassPage>
                                 Padding(
                                   padding: EdgeInsets.all(10),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Type: Preschool',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: COLOR_NAVY),
-                                      ),
-                                      Text(
-                                        'Passport Number: 2020-2021',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: COLOR_NAVY),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
@@ -195,6 +154,7 @@ class MyClassPageState extends State<MyClassPage>
                           itemCount: students.length,
                           itemBuilder: (BuildContext context, int index) {
                             final UserModel student = students[index];
+                            final List<StampModel> stamps = state.stamps;
 
                             return ExpansionTile(
                               onExpansionChanged: (bool open) {
@@ -225,11 +185,17 @@ class MyClassPageState extends State<MyClassPage>
                                     Container(
                                       height: 300,
                                       child: StaggeredGridView.countBuilder(
+                                        shrinkWrap: true,
                                         crossAxisCount: 4,
                                         itemCount: stamps.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return stamps[index];
+                                          final StampModel stamp =
+                                              stamps[index];
+                                          return Image.asset(
+                                            stamp.assetImagePath,
+                                            height: 100,
+                                          );
                                         },
                                         staggeredTileBuilder: (int index) =>
                                             StaggeredTile.count(
@@ -1003,7 +969,7 @@ class MyClassPageState extends State<MyClassPage>
                                           ASSET_boonshoft_logo,
                                         ),
                                         title: Text(
-                                            'Boonshoft Museum of Discovery ($boonshoftMuseumCount)'),
+                                            'Boonshoft Museum of Discovery (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -1362,8 +1328,7 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_dayton_metro_library_logo,
                                         ),
-                                        title: Text(
-                                            'Dayton Metro Library ($daytonMetroCount)'),
+                                        title: Text('Dayton Metro Library (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -1720,8 +1685,8 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_five_rivers_metroparks_logo,
                                         ),
-                                        title: Text(
-                                            'Five Rivers Metro Park ($fiveRiversCount)'),
+                                        title:
+                                            Text('Five Rivers Metro Park (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -2100,8 +2065,7 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_dayton_art_institute_logo,
                                         ),
-                                        title: Text(
-                                            'Dayton Art Institute ($daytonArtCount)'),
+                                        title: Text('Dayton Art Institute (?)'),
                                         children: [
                                           Row(
                                             children: [

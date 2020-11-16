@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
@@ -44,6 +45,7 @@ class MyPassportPageState extends State<MyPassportPage>
         if (state is LoadedState) {
           final UserModel child = state.childUser;
           final UserModel teacher = state.teacherUser;
+          final List<StampModel> stamps = state.stamps;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -194,7 +196,11 @@ class MyPassportPageState extends State<MyPassportPage>
                             crossAxisCount: 4,
                             itemCount: stamps.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return stamps[index];
+                              final StampModel stamp = stamps[index];
+                              return Image.asset(
+                                stamp.assetImagePath,
+                                height: 100,
+                              );
                             },
                             staggeredTileBuilder: (int index) =>
                                 StaggeredTile.count(2, index.isEven ? 2 : 1),

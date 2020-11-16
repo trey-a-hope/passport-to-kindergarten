@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/LogModel.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
@@ -24,6 +25,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
   List<UserModel> _students;
   List<BookModel> _selectedStudentBooks = List<BookModel>();
   List<VisitModel> _selectedStudentVisits = List<VisitModel>();
+  List<StampModel> _selectedStudentStamps = List<StampModel>();
 
   DateTime selectedDateForBookLogs;
   Map<DateTime, List<LogModel>> _events = Map<DateTime, List<LogModel>>();
@@ -52,6 +54,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           selectedDateForBookLogs: selectedDateForBookLogs,
           events: _events,
           studentSelected: studentSelected,
+          stamps: _selectedStudentStamps,
         );
       } catch (error) {
         yield ErrorState(error: error);
@@ -127,6 +130,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           selectedDateForBookLogs: selectedDateForBookLogs,
           events: _events,
           studentSelected: studentSelected,
+          stamps: _selectedStudentStamps,
         );
       } catch (error) {
         yield ErrorState(error: error);
@@ -165,14 +169,14 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       );
 
       yield LoadedState(
-        user: _currentUser,
-        students: _students,
-        books: _selectedStudentBooks,
-        selectedStudentVisits: _selectedStudentVisits,
-        selectedDateForBookLogs: selectedDateForBookLogs,
-        events: _events,
-        studentSelected: studentSelected,
-      );
+          user: _currentUser,
+          students: _students,
+          books: _selectedStudentBooks,
+          selectedStudentVisits: _selectedStudentVisits,
+          selectedDateForBookLogs: selectedDateForBookLogs,
+          events: _events,
+          studentSelected: studentSelected,
+          stamps: _selectedStudentStamps);
     }
 
     if (event is StudentSelectedEvent) {
@@ -186,6 +190,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         selectedDateForBookLogs: selectedDateForBookLogs,
         events: _events,
         studentSelected: studentSelected,
+        stamps: _selectedStudentStamps,
       );
     }
   }
