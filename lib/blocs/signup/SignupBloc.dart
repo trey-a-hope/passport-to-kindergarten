@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/DummyService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'dart:async';
@@ -168,6 +169,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         );
 
         await locator<UserService>().createUser(user: newParent);
+
+        await locator<DummyService>()
+            .addDefaultBooksToStudent(uid: newParent.uid);
+
+        await locator<DummyService>()
+            .addDefaultVisitsToStudent(uid: newParent.uid);
 
         await Future.delayed(
           const Duration(

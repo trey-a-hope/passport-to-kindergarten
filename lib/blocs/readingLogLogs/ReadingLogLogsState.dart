@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/LogModel.dart';
 
 class ReadingLogLogsState extends Equatable {
   const ReadingLogLogsState();
@@ -12,8 +12,8 @@ class ReadingLogLogsState extends Equatable {
 class LoadingState extends ReadingLogLogsState {}
 
 class LoadedState extends ReadingLogLogsState {
-  final ParentLogModel book;
-  final Map<DateTime, List<ChildLogModel>> events;
+  final BookModel book;
+  final Map<DateTime, List<LogModel>> events;
   final DateTime dateKey;
   final DateTime initialSelectedDay;
 

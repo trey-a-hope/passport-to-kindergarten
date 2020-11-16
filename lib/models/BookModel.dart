@@ -8,6 +8,10 @@ class BookModel {
   String title;
   String author;
   int logCount;
+  String assetImagePath;
+  bool given;
+  String summary;
+  List<String> conversationStarters;
 
   BookModel({
     @required this.id,
@@ -16,6 +20,10 @@ class BookModel {
     @required this.title,
     @required this.author,
     @required this.logCount,
+    this.assetImagePath,
+    this.given,
+    this.summary,
+    this.conversationStarters,
   });
 
   factory BookModel.fromDocumentSnapshot({
@@ -30,6 +38,10 @@ class BookModel {
       title: data['title'],
       author: data['author'],
       logCount: data['logCount'],
+      assetImagePath: data['assetImagePath'],
+      // given: data['given'],
+      // summary: data['summary'],
+      // conversationStarters: data['conversationStarters'],
     );
   }
 
@@ -41,6 +53,10 @@ class BookModel {
       'title': title,
       'author': author,
       'logCount': logCount,
+      'assetImagePath': assetImagePath,
+      'given': given,
+      'summary': summary,
+      'conversationStarters': conversationStarters,
     };
   }
 }

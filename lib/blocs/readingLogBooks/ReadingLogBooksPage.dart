@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
@@ -47,7 +47,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
   }
 
   void _goToLogsForThisBook({
-    @required ParentLogModel book,
+    @required BookModel book,
     @required DateTime initialSelectedDay,
   }) {
     Route route = MaterialPageRoute(
@@ -142,7 +142,7 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
         }
 
         if (state is READING_LOG_BOOKS_BP.LoadedState) {
-          final List<ParentLogModel> books = state.books;
+          final List<BookModel> books = state.books;
 
           int totalLogCount = 0;
           books.forEach((book) {
@@ -246,10 +246,10 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                         child: ListView.builder(
                           itemCount: books.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final ParentLogModel book = books[index];
+                            final BookModel book = books[index];
 
-                            //todo: check here if any of the books have the same title as any of the books of the month.
-                            //todo: this way, you can just use the image url here instead of the DUMMY one.
+                            //TODO: check here if any of the books have the same title as any of the books of the month.
+                            //TODO: this way, you can just use the image url here instead of the DUMMY one.
                             return ExpansionTile(
                               title: ListTile(
                                 leading: CircleAvatar(
@@ -267,16 +267,21 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                                   children: [
                                     CircleAvatar(
                                       backgroundImage:
-                                          NetworkImage(DUMMY_PROFILE_PHOTO_URL),
+                                          book.assetImagePath == null
+                                              ? NetworkImage(
+                                                  DUMMY_PROFILE_PHOTO_URL)
+                                              : AssetImage(book.assetImagePath),
                                     ),
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(
-                                      '${book.title}',
-                                      style: TextStyle(
-                                        color: COLOR_NAVY,
-                                        fontWeight: FontWeight.bold,
+                                    Flexible(
+                                      child: Text(
+                                        '${book.title}',
+                                        style: TextStyle(
+                                          color: COLOR_NAVY,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     )
                                   ],

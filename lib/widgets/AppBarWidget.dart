@@ -3,6 +3,7 @@ import 'package:p/constants.dart';
 
 class AppBarWidget extends StatelessWidget {
   final String title;
+  final int _titleCharLimit = 20;
 
   AppBarWidget({
     Key key,
@@ -35,7 +36,9 @@ class AppBarWidget extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              title,
+              title.length > _titleCharLimit
+                  ? '${title.substring(0, _titleCharLimit)}...'
+                  : title,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 21,

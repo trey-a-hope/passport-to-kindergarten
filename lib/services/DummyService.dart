@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/constants.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/VisitModel.dart';
 
 abstract class IDummyService {
   // Future<void> addIDKTeacherToUsers();
   Future<void> addDefaultBooksToStudent({
+    @required String uid,
+  });
+  Future<void> addDefaultVisitsToStudent({
     @required String uid,
   });
 }
@@ -22,40 +27,38 @@ class DummyService extends IDummyService {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      List<ParentLogModel> defaultBooks = [
-        ParentLogModel(
-          id: null,
-          title: 'Little Red Robin Hood',
-          created: DateTime.now(),
-          modified: DateTime.now(),
-          logCount: 0,
-        ),
-        ParentLogModel(
-          id: null,
-          title: 'Little Blue Robin Hood',
-          created: DateTime.now(),
-          modified: DateTime.now(),
-          logCount: 0,
-        ),
-        ParentLogModel(
-          id: null,
-          title: 'Little Green Robin Hood',
-          created: DateTime.now(),
-          modified: DateTime.now(),
-          logCount: 0,
-        ),
-      ];
+      for (int i = 0; i < DEFAULT_BOOKS.length; i++) {
+        final BookModel defaultBook = DEFAULT_BOOKS[i];
+        DocumentReference defaultBookRef =
+            userDocRef.collection('books').document();
+        defaultBook.id = defaultBookRef.documentID;
+        defaultBookRef.setData(
+          defaultBook.toMap(),
+        );
+      }
 
-      defaultBooks.forEach(
-        (ParentLogModel defaultBook) {
-          DocumentReference defaultBookRef =
-              userDocRef.collection('books').document();
-          defaultBook.id = defaultBookRef.documentID;
-          defaultBookRef.setData(
-            defaultBook.toMap(),
-          );
-        },
+      return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
       );
+    }
+  }
+
+  @override
+  Future<void> addDefaultVisitsToStudent({@required String uid}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      for (int i = 0; i < DEFAULT_VISITS.length; i++) {
+        final VisitModel defaultVisit = DEFAULT_VISITS[i];
+        DocumentReference defaultVisitRef =
+            userDocRef.collection('visits').document();
+        defaultVisit.id = defaultVisitRef.documentID;
+        defaultVisitRef.setData(
+          defaultVisit.toMap(),
+        );
+      }
 
       return;
     } catch (e) {
@@ -65,5 +68,3 @@ class DummyService extends IDummyService {
     }
   }
 }
-// todo: Place this in the HomeBloc
-// locator<DummyService>().addDefaultBooksToStudent(uid: _currentUser.uid);

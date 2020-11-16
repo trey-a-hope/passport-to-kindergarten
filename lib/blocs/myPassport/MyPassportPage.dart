@@ -54,7 +54,7 @@ class MyPassportPageState extends State<MyPassportPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       AppBarWidget(title: 'My Passport'),
                       Padding(
@@ -72,68 +72,62 @@ class MyPassportPageState extends State<MyPassportPage>
                                 ),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: Image.network(
-                                DUMMY_PROFILE_PHOTO_URL,
-                              ),
+                              child: Image.network(child.imgUrl),
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Primary Parent Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.primaryParentFirstName} ${child.primaryParentLastName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Secondary Parent Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Child Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.firstName} ${child.lastName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Child DOB',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    DateFormat('MMMM dd, yyyy')
-                                        .format(child.dob),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              ),
-                            )
+                            Column(
+                              children: [
+                                Text(
+                                  'Primary Parent Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.primaryParentFirstName} ${child.primaryParentLastName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Secondary Parent Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Child Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.firstName} ${child.lastName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Child DOB',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  DateFormat('MMMM dd, yyyy').format(child.dob),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -192,17 +186,21 @@ class MyPassportPageState extends State<MyPassportPage>
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          crossAxisCount: 4,
-                          itemCount: stamps.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return stamps[index];
-                          },
-                          staggeredTileBuilder: (int index) =>
-                              StaggeredTile.count(2, index.isEven ? 2 : 1),
-                          mainAxisSpacing: 4.0,
-                          crossAxisSpacing: 4.0,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Expanded(
+                          child: StaggeredGridView.countBuilder(
+                            shrinkWrap: true,
+                            crossAxisCount: 4,
+                            itemCount: stamps.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return stamps[index];
+                            },
+                            staggeredTileBuilder: (int index) =>
+                                StaggeredTile.count(2, index.isEven ? 2 : 1),
+                            mainAxisSpacing: 4.0,
+                            crossAxisSpacing: 4.0,
+                          ),
                         ),
                       )
                     ],

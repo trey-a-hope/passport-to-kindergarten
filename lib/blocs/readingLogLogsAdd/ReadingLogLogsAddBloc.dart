@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -22,7 +22,7 @@ class ReadingLogLogsAddBloc
 
   ReadingLogLogsAddDelegate _readingLogLogsAddDelegate;
   UserModel _currentUser;
-  final ParentLogModel book;
+  final BookModel book;
   void setDelegate({@required ReadingLogLogsAddDelegate delegate}) {
     this._readingLogLogsAddDelegate = delegate;
   }
@@ -49,25 +49,21 @@ class ReadingLogLogsAddBloc
     if (event is SubmitEvent) {
       //final String bookTitle = event.bookTitle;
       final GlobalKey<FormState> formKey = event.formKey;
-      final String notes = event.notes;
 
       if (formKey.currentState.validate()) {
         yield LoadingState();
 
         try {
-          ChildLogModel log = ChildLogModel(
+          LogModel log = LogModel(
             id: null,
             created: DateTime.now(),
-            title: 'Test title here.',
-            notes: notes,
           );
 
-          locator<LogService>().createChildLog(
+          locator<LogService>().createLog(
             uid: _currentUser.uid,
             collection: 'books',
             documentID: book.id,
-            subCollection: 'logs',
-            childLogModel: log,
+            log: log,
           );
 
           yield LoadedState(

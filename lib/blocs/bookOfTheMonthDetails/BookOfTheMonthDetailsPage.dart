@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
@@ -46,7 +46,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
 
         if (state is LoadedState) {
           final UserModel currentUser = state.user;
-          final BookOfTheMonthModel bookOfTheMonth = state.bookOfTheMonth;
+          final BookModel bookOfTheMonth = state.bookOfTheMonth;
           List<Widget> conversationStarters = List<Widget>();
 
           bookOfTheMonth.conversationStarters.forEach(

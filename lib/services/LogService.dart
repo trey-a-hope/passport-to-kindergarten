@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/LogModel.dart';
+import 'package:p/models/VisitModel.dart';
 
 abstract class ILogService {
   void createBookForUser({
@@ -10,238 +10,50 @@ abstract class ILogService {
     @required BookModel book,
   });
 
+  void createVisitForUser({
+    @required String uid,
+    @required VisitModel visit,
+  });
+
   Future<List<BookModel>> getBooksForUser({
     @required String uid,
   });
 
-  Future<List<ChildLogModel>> getLogsForBookForUser({
+  Future<Stream<QuerySnapshot>> streamBooksForUser({
     @required String uid,
-    @required String bookID,
   });
 
-  //RECATOR EVERYTHING BELOW!
+  Future<Stream<QuerySnapshot>> streamVisitsForUser({
+    @required String uid,
+  });
 
-  void createParentLog(
-      {@required String uid,
-      @required String collection,
-      @required ParentLogModel parentLog});
+  Future<List<VisitModel>> getVisitsForUser({
+    @required String uid,
+  });
 
-  void createChildLog({
+  Future<List<LogModel>> getLogs({
     @required String uid,
     @required String collection,
     @required String documentID,
-    @required String subCollection,
-    @required ChildLogModel childLogModel,
   });
 
-  Future<List<ParentLogModel>> retrieveParentLogs({
-    @required String uid,
-    @required String collection,
-  });
-
-  Future<Stream<QuerySnapshot>> retrieveParentLogsStream({
-    @required String uid,
-    @required String collection,
-  });
-
-  Future<Stream<QuerySnapshot>> retrieveChildLogsStream({
+  Future<Stream<QuerySnapshot>> streamLogs({
     @required String uid,
     @required String collection,
     @required String documentID,
-    @required String subCollection,
   });
 
-  Future<Stream<QuerySnapshot>> streamVisitLogs({
+  Future<void> createLog({
     @required String uid,
-    String title,
-  });
-
-  Future<void> createVisitLog({
-    @required String uid,
-    ChildLogModel log,
+    @required String collection,
+    @required String documentID,
+    @required LogModel log,
   });
 }
 
 class LogService extends ILogService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
-
-  @override
-  void createParentLog(
-      {@required String uid,
-      @required String collection,
-      @required ParentLogModel parentLog}) {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference parentLogColRef =
-          userDocRef.collection(collection);
-
-      DocumentReference parentLogDocRef = parentLogColRef.document();
-      parentLog.id = parentLogDocRef.documentID;
-      parentLogDocRef.setData(
-        parentLog.toMap(),
-      );
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  void createChildLog(
-      {@required String uid,
-      @required String collection,
-      @required String documentID,
-      @required String subCollection,
-      @required ChildLogModel childLogModel}) {
-    try {
-      final WriteBatch batch = Firestore.instance.batch();
-
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final DocumentReference parentLogDocRef =
-          userDocRef.collection(collection).document(documentID);
-
-      final DocumentReference childLogDocRef =
-          parentLogDocRef.collection(subCollection).document();
-
-      childLogModel.id = childLogDocRef.documentID;
-
-      batch.setData(
-        childLogDocRef,
-        childLogModel.toMap(),
-      );
-
-      batch.updateData(
-        parentLogDocRef,
-        {
-          'logCount': FieldValue.increment(1),
-          'modified': DateTime.now(),
-        },
-      );
-
-      batch.commit();
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<List<ParentLogModel>> retrieveParentLogs({
-    @required String uid,
-    @required String collection,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference parentLogColRef =
-          userDocRef.collection(collection);
-
-      List<ParentLogModel> visitLogs = (await parentLogColRef.getDocuments())
-          .documents
-          .map((doc) => ParentLogModel.fromDocumentSnapshot(ds: doc))
-          .toList();
-
-      return visitLogs;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<Stream<QuerySnapshot>> retrieveParentLogsStream({
-    @required String uid,
-    @required String collection,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference parentLogColRef =
-          userDocRef.collection(collection);
-
-      return parentLogColRef.snapshots();
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<Stream<QuerySnapshot>> retrieveChildLogsStream({
-    @required String uid,
-    @required String collection,
-    @required String documentID,
-    @required String subCollection,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference childLogColRef = userDocRef
-          .collection(collection)
-          .document(documentID)
-          .collection(subCollection);
-
-      return childLogColRef.snapshots();
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<Stream<QuerySnapshot>> streamVisitLogs({
-    @required String uid,
-    String title,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      Query query = userDocRef.collection('visitLogs');
-
-      if (title != null) {
-        query = query.where('title', isEqualTo: title);
-      }
-
-      Stream<QuerySnapshot> visitLogQueryStream = query.snapshots();
-
-      return visitLogQueryStream;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<void> createVisitLog({
-    @required String uid,
-    @required ChildLogModel log,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference parentLogColRef =
-          userDocRef.collection('visitLogs');
-
-      DocumentReference childLogDocRef = parentLogColRef.document();
-      log.id = childLogDocRef.documentID;
-      childLogDocRef.setData(
-        log.toMap(),
-      );
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
 
   @override
   Future<void> createBookForUser({
@@ -290,28 +102,151 @@ class LogService extends ILogService {
   }
 
   @override
-  Future<List<ChildLogModel>> getLogsForBookForUser({
-    @required String uid,
-    @required String bookID,
-  }) async {
+  void createVisitForUser(
+      {@required String uid, @required VisitModel visit}) async {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      List<DocumentSnapshot> logDocs = (await userDocRef
-              .collection('books')
-              .document(bookID)
+      final CollectionReference visitsColRef = userDocRef.collection('visits');
+
+      DocumentReference visitDocRef = visitsColRef.document();
+      visit.id = visitDocRef.documentID;
+      visitDocRef.setData(
+        visit.toMap(),
+      );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<VisitModel>> getVisitsForUser({@required String uid}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      List<DocumentSnapshot> visitDocSnaps =
+          (await userDocRef.collection('visits').getDocuments()).documents;
+
+      List<VisitModel> visits = visitDocSnaps
+          .map(
+            (visitDocSnap) => VisitModel.fromDocumentSnapshot(ds: visitDocSnap),
+          )
+          .toList();
+
+      return visits;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> createLog(
+      {@required String uid,
+      @required String collection,
+      @required String documentID,
+      @required LogModel log}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      final DocumentReference logDocRef = userDocRef
+          .collection('books')
+          .document(documentID)
+          .collection('logs')
+          .document();
+
+      log.id = logDocRef.documentID;
+      logDocRef.setData(
+        log.toMap(),
+      );
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<LogModel>> getLogs(
+      {@required String uid,
+      @required String collection,
+      @required String documentID}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      List<DocumentSnapshot> logDocSnaps = (await userDocRef
+              .collection(collection)
+              .document(documentID)
               .collection('logs')
               .getDocuments())
           .documents;
 
-      List<ChildLogModel> logs = logDocs
-          .map((logDoc) => ChildLogModel.fromDocumentSnapshot(ds: logDoc))
+      return logDocSnaps
+          .map((logDocSnap) => LogModel.fromDocumentSnapshot(ds: logDocSnap))
           .toList();
-
-      return logs;
     } catch (e) {
       throw Exception(
         e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> streamLogs({
+    @required String uid,
+    @required String collection,
+    @required String documentID,
+  }) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      Stream<QuerySnapshot> logQueryStream = userDocRef
+          .collection(collection)
+          .document(documentID)
+          .collection('logs')
+          .snapshots();
+
+      return logQueryStream;
+    } catch (error) {
+      throw Exception(
+        error.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> streamBooksForUser(
+      {@required String uid}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      Stream<QuerySnapshot> booksQueryStream =
+          userDocRef.collection('books').snapshots();
+
+      return booksQueryStream;
+    } catch (error) {
+      throw Exception(
+        error.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> streamVisitsForUser(
+      {@required String uid}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      Stream<QuerySnapshot> visitsQueryStream =
+          userDocRef.collection('visits').snapshots();
+
+      return visitsQueryStream;
+    } catch (error) {
+      throw Exception(
+        error.toString(),
       );
     }
   }

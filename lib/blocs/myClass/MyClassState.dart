@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 
@@ -19,7 +19,7 @@ class LoadedState extends MyClassState {
   final List<BookModel> books;
   final List<VisitModel> selectedStudentVisits;
   final DateTime selectedDateForBookLogs;
-  final Map<DateTime, List<ChildLogModel>> events;
+  final Map<DateTime, List<LogModel>> events;
   final bool studentSelected;
 
   LoadedState({

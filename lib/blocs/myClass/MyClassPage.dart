@@ -8,7 +8,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -105,7 +105,7 @@ class MyClassPageState extends State<MyClassPage>
           final int numberOf15BooksRead =
               totalLogCount ~/ _totalBookProgressAmount;
 
-          Map<DateTime, List<ChildLogModel>> events = state.events;
+          Map<DateTime, List<LogModel>> events = state.events;
 
           return Scaffold(
             key: _scaffoldKey,

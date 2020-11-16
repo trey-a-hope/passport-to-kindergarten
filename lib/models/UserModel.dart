@@ -75,7 +75,7 @@ class UserModel {
       profileType: data['profileType'],
       school: data['school'],
       teacherID: data['teacherID'],
-      dob: DateTime.now(), //todo: Set accurate dob.
+      dob: DateTime.now(), //tTODOodo: Set accurate dob.
     );
   }
 

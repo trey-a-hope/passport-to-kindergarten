@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/readingLogLogs/Bloc.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -23,9 +23,8 @@ class ReadingLogLogsBloc
   ReadingLogLogsDelegate _readingLogLogsDelegate;
   UserModel _currentUser;
   final DateTime initialSelectedDay;
-  final ParentLogModel book;
-  Map<DateTime, List<ChildLogModel>> _events =
-      Map<DateTime, List<ChildLogModel>>();
+  final BookModel book;
+  Map<DateTime, List<LogModel>> _events = Map<DateTime, List<LogModel>>();
 
   void setDelegate({@required ReadingLogLogsDelegate delegate}) {
     this._readingLogLogsDelegate = delegate;
@@ -40,16 +39,16 @@ class ReadingLogLogsBloc
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        Stream<QuerySnapshot> logsStream = await locator<LogService>()
-            .retrieveChildLogsStream(
-                uid: _currentUser.uid,
-                collection: 'books',
-                documentID: book.id,
-                subCollection: 'logs');
+        Stream<QuerySnapshot> logsStream =
+            await locator<LogService>().streamLogs(
+          uid: _currentUser.uid,
+          collection: 'books',
+          documentID: book.id,
+        );
 
         logsStream.listen((QuerySnapshot event) {
-          List<ChildLogModel> logs = event.documents
-              .map((doc) => ChildLogModel.fromDocumentSnapshot(ds: doc))
+          List<LogModel> logs = event.documents
+              .map((doc) => LogModel.fromDocumentSnapshot(ds: doc))
               .toList();
           add(LogsUpdatedEvent(logs: logs));
         });
@@ -59,12 +58,12 @@ class ReadingLogLogsBloc
     }
 
     if (event is LogsUpdatedEvent) {
-      final List<ChildLogModel> logs = event.logs;
+      final List<LogModel> logs = event.logs;
 
       _events.clear();
 
       logs.forEach(
-        (ChildLogModel log) {
+        (LogModel log) {
           DateTime dayKey = DateTime(
             log.created.year,
             log.created.month,

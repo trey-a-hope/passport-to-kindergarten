@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
 
 abstract class ReadingLogLogsAddEvent extends Equatable {
   @override

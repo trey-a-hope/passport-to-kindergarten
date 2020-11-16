@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
@@ -26,8 +26,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
   List<VisitModel> _selectedStudentVisits = List<VisitModel>();
 
   DateTime selectedDateForBookLogs;
-  Map<DateTime, List<ChildLogModel>> _events =
-      Map<DateTime, List<ChildLogModel>>();
+  Map<DateTime, List<LogModel>> _events = Map<DateTime, List<LogModel>>();
   bool studentSelected = false;
 
   void setDelegate({@required MyClassBlocDelegate delegate}) {
@@ -75,6 +74,10 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
             created: now,
             modified: now,
             id: null,
+            given: true,
+            summary: null,
+            conversationStarters: null,
+            assetImagePath: null,
           ),
         );
 
@@ -92,15 +95,12 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       final DateTime now = DateTime.now();
 
       try {
-        locator<LogService>().createChildLog(
+        locator<LogService>().createLog(
           uid: studentUID,
-          subCollection: 'logs',
           collection: 'books',
           documentID: bookID,
-          childLogModel: ChildLogModel(
-            title: 'Log for book - $bookID',
+          log: LogModel(
             created: now,
-            notes: 'Notes for blah blah blah',
             id: null,
           ),
         );
@@ -138,16 +138,16 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       final String bookID = event.bookID;
       selectedDateForBookLogs = event.selectedDate;
 
-      final List<ChildLogModel> logs =
-          await locator<LogService>().getLogsForBookForUser(
+      final List<LogModel> logs = await locator<LogService>().getLogs(
         uid: studentUID,
-        bookID: bookID,
+        collection: 'books',
+        documentID: bookID,
       );
 
       _events.clear();
 
       logs.forEach(
-        (ChildLogModel log) {
+        (LogModel log) {
           DateTime dayKey = DateTime(
             log.created.year,
             log.created.month,

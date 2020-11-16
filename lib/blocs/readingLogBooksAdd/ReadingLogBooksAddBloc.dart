@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -33,47 +33,43 @@ class ReadingLogBooksAddBloc
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        yield LoadedState(
-          autoValidate: false,
-          formKey: GlobalKey<FormState>(),
-        );
+        yield LoadedState();
       } catch (error) {
         yield ErrorState(error: error);
       }
     }
 
     if (event is SubmitEvent) {
+      final String author = event.author;
       final String bookTitle = event.bookTitle;
-      final GlobalKey<FormState> formKey = event.formKey;
 
-      if (formKey.currentState.validate()) {
-        yield LoadingState();
+      yield LoadingState();
 
-        try {
-          ParentLogModel book = ParentLogModel(
-            id: null,
-            created: DateTime.now(),
-            modified: DateTime.now(),
-            title: bookTitle,
-            logCount: 0,
-          );
+      try {
+        BookModel book = BookModel(
+          id: null,
+          created: DateTime.now(),
+          modified: DateTime.now(),
+          title: bookTitle,
+          logCount: 0,
+          summary: null,
+          given: true,
+          author: author,
+          conversationStarters: null,
+          assetImagePath: null,
+        );
 
-          locator<LogService>().createParentLog(
-            uid: _currentUser.uid,
-            collection: 'books',
-            parentLog: book,
-          );
+        locator<LogService>().createBookForUser(
+          book: book,
+          uid: _currentUser.uid,
+        );
 
-          yield LoadedState(
-            autoValidate: false,
-            formKey: formKey,
-          );
+        yield LoadedState();
 
-          _readingLogBooksAddDelegate.clearForm();
-          _readingLogBooksAddDelegate.showMessage(message: 'Book added.');
-        } catch (error) {
-          _readingLogBooksAddDelegate.showMessage(message: error.toString());
-        }
+        _readingLogBooksAddDelegate.clearForm();
+        _readingLogBooksAddDelegate.showMessage(message: 'Book added.');
+      } catch (error) {
+        _readingLogBooksAddDelegate.showMessage(message: error.toString());
       }
     }
   }

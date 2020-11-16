@@ -7,6 +7,9 @@ class VisitModel {
   DateTime modified;
   String title;
   int logCount;
+  String assetImagePath;
+  String website;
+  String address;
 
   VisitModel({
     @required this.id,
@@ -14,6 +17,9 @@ class VisitModel {
     @required this.modified,
     @required this.title,
     @required this.logCount,
+    @required this.assetImagePath,
+    @required this.website,
+    @required this.address,
   });
 
   factory VisitModel.fromDocumentSnapshot({
@@ -27,6 +33,9 @@ class VisitModel {
       modified: data['modified'].toDate(),
       title: data['title'],
       logCount: data['logCount'],
+      assetImagePath: data['assetImagePath'],
+      website: data['website'],
+      address: data['address'],
     );
   }
 
@@ -37,6 +46,9 @@ class VisitModel {
       'modified': modified,
       'title': title,
       'logCount': logCount,
+      'assetImagePath': assetImagePath,
+      'website': website,
+      'address': address,
     };
   }
 }

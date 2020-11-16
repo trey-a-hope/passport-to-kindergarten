@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
 
 class ReadingLogBooksState extends Equatable {
   const ReadingLogBooksState();
@@ -11,8 +11,7 @@ class ReadingLogBooksState extends Equatable {
 class LoadingState extends ReadingLogBooksState {}
 
 class LoadedState extends ReadingLogBooksState {
-  //final UserModel user;
-  final List<ParentLogModel> books;
+  final List<BookModel> books;
   final String sortBy;
 
   LoadedState({

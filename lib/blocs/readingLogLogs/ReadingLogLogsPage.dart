@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
@@ -56,10 +56,10 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
 
         if (state is READING_LOG_LOGS_BP.LoadedState) {
           //final List<ChildLogModel> logs = state.logs;
-          final ParentLogModel book = state.book;
+          final BookModel book = state.book;
 
-          final List<ChildLogModel> logs =
-              state.events[state.dateKey] ?? List<ChildLogModel>();
+          final List<LogModel> logs =
+              state.events[state.dateKey] ?? List<LogModel>();
           final DateTime initialSelectedDay = state.initialSelectedDay;
 
           return Scaffold(
@@ -109,14 +109,14 @@ class ReadingLogLogsPageSate extends State<ReadingLogLogsPage>
                         child: ListView.builder(
                           itemCount: logs.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final ChildLogModel log = logs[index];
+                            final LogModel log = logs[index];
                             return ListTile(
                               leading: Icon(
                                 MdiIcons.book,
                                 color: COLOR_NAVY,
                               ),
                               title: Text(
-                                '\"${log.notes}\"',
+                                'Blah blah blah',
                                 style: TextStyle(
                                   color: COLOR_NAVY,
                                 ),

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 
@@ -17,7 +17,7 @@ class BookOfTheMonthDetailsBloc
     @required this.bookOfTheMonth,
   }) : super(null);
 
-  final BookOfTheMonthModel bookOfTheMonth;
+  final BookModel bookOfTheMonth;
   BookOfTheMonthDetailsDelegate _bookOfTheMonthDetailsDelegate;
   UserModel _currentUser;
 

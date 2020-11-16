@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 class VisitingLogVisitsState extends Equatable {
@@ -13,7 +13,7 @@ class LoadingState extends VisitingLogVisitsState {}
 
 class LoadedState extends VisitingLogVisitsState {
   final UserModel user;
-  final List<ChildLogModel> logs;
+  final List<LogModel> logs;
 
   LoadedState({
     @required this.user,

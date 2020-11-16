@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
 
 class ReadingLogLogsAddState extends Equatable {
   const ReadingLogLogsAddState();
@@ -13,7 +13,7 @@ class LoadingState extends ReadingLogLogsAddState {}
 class LoadedState extends ReadingLogLogsAddState {
   final bool autoValidate;
   final GlobalKey<FormState> formKey;
-  final ParentLogModel book;
+  final BookModel book;
 
   LoadedState({
     @required this.autoValidate,
