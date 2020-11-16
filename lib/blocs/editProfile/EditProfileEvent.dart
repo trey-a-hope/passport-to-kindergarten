@@ -46,14 +46,17 @@ class TeacherSubmitEvent extends EditProfileEvent {
 
 class ParentSetTextFieldsEvent extends EditProfileEvent {
   final UserModel user;
+  final UserModel teacher;
 
   ParentSetTextFieldsEvent({
     @required this.user,
+    @required this.teacher,
   });
 
   @override
   List<Object> get props => [
         user,
+        teacher,
       ];
 }
 
@@ -128,5 +131,17 @@ class UploadPictureEvent extends EditProfileEvent {
 
   List<Object> get props => [
         image,
+      ];
+}
+
+class SelectTeacherEvent extends EditProfileEvent {
+  final UserModel selectedTeacher;
+
+  SelectTeacherEvent({
+    @required this.selectedTeacher,
+  });
+
+  List<Object> get props => [
+        selectedTeacher,
       ];
 }

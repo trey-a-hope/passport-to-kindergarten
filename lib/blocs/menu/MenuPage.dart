@@ -371,9 +371,11 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: ImageUploadWidget(
-                              imgUrl: user.imgUrl,
-                              showSelectImageDialog: showSelectImageDialog,
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
+                              ),
                             ),
                             left: 20,
                             top: 10,

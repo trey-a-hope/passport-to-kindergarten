@@ -13,7 +13,8 @@ import 'package:p/services/UserService.dart';
 abstract class EditProfileBlocDelegate {
   void showMessage({@required String message});
   void teacherSetTextFields({@required UserModel user});
-  void parentSetTextFields({@required UserModel user});
+  void parentSetTextFields(
+      {@required UserModel student, @required UserModel teacher});
   void superAdminSetTextFields({@required UserModel user});
 }
 
@@ -23,6 +24,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   EditProfileBlocDelegate _editProfileBlocDelegate;
   UserModel _currentUser;
   DateTime _childDOB;
+  UserModel _teacher;
 
   void setDelegate({@required EditProfileBlocDelegate delegate}) {
     this._editProfileBlocDelegate = delegate;
@@ -52,11 +54,13 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
         if (_currentUser.profileType == PROFILE_TYPE.PARENT.name) {
           _childDOB = _currentUser.dob;
+          _teacher = _currentUser.teacherID == IDK_TEACHER_MODEL.uid
+              ? IDK_TEACHER_MODEL
+              : await locator<UserService>()
+                  .retrieveUser(uid: _currentUser.teacherID);
 
           add(
-            ParentSetTextFieldsEvent(
-              user: _currentUser,
-            ),
+            ParentSetTextFieldsEvent(user: _currentUser, teacher: _teacher),
           );
 
           yield ParentLoadedState(
@@ -93,7 +97,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
 
     if (event is ParentSetTextFieldsEvent) {
-      _editProfileBlocDelegate.parentSetTextFields(user: event.user);
+      _editProfileBlocDelegate.parentSetTextFields(
+          student: event.user, teacher: event.teacher);
     }
 
     if (event is ParentSubmitEvent) {
@@ -117,6 +122,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
             'primaryParentLastName': primaryParentLastName,
             'secondaryParentFirstName': secondaryParentFirstName,
             'secondaryParentLastName': secondaryParentLastName,
+            'teacherID': _teacher.uid,
           },
         );
 
@@ -179,6 +185,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           message: error.toString(),
         );
       }
+    }
+
+    if (event is SelectTeacherEvent) {
+      this._teacher = event.selectedTeacher;
     }
   }
 }

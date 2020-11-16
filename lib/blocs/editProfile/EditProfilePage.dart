@@ -17,6 +17,7 @@ import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/ImageUploadWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
+import 'package:p/blocs/searchTeachers/Bloc.dart' as SEARCH_TEACHERS_BP;
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class EditProfilePageState extends State<EditProfilePage>
       TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _schoolController = TextEditingController();
+  final TextEditingController _teacherController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   EditProfileBloc _editProfileBloc;
@@ -424,6 +426,68 @@ class EditProfilePageState extends State<EditProfilePage>
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'Teacher',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: COLOR_NAVY),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: TextFormField(
+                                onTap: () async {
+                                  final SEARCH_TEACHERS_BP
+                                          .SearchTeachersRepository
+                                      _searchTeachersRepository =
+                                      SEARCH_TEACHERS_BP
+                                          .SearchTeachersRepository(
+                                    cache: SEARCH_TEACHERS_BP
+                                        .SearchTeachersCache(),
+                                  );
+
+                                  Route route = MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        BlocProvider(
+                                      create: (BuildContext context) =>
+                                          SEARCH_TEACHERS_BP.SearchTeachersBloc(
+                                              searchTeachersRepository:
+                                                  _searchTeachersRepository)
+                                            ..add(
+                                              SEARCH_TEACHERS_BP
+                                                  .LoadPageEvent(),
+                                            ),
+                                      child: SEARCH_TEACHERS_BP
+                                          .SearchTeachersPage(),
+                                    ),
+                                  );
+
+                                  final result =
+                                      await Navigator.push(context, route);
+
+                                  final selectedTeacher = result as UserModel;
+
+                                  _editProfileBloc.add(
+                                    SelectTeacherEvent(
+                                        selectedTeacher: selectedTeacher),
+                                  );
+
+                                  _teacherController.text =
+                                      '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
+                                },
+                                controller: _teacherController,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay'),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Teacher',
+                                  prefixIcon: Icon(Icons.person),
+                                  labelStyle: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            ),
                             SizedBox(
                               height: 20,
                             ),
@@ -672,15 +736,17 @@ class EditProfilePageState extends State<EditProfilePage>
 
   @override
   void parentSetTextFields({
-    UserModel user,
+    UserModel student,
+    UserModel teacher,
   }) {
-    _firstNameController.text = user.firstName;
-    _lastNameController.text = user.lastName;
-    _dobController.text = DateFormat('MMMM dd, yyyy').format(user.dob);
-    _primaryParentFirstNameController.text = user.primaryParentFirstName;
-    _primaryParentLastNameController.text = user.primaryParentLastName;
-    _secondaryParentFirstNameController.text = user.secondaryParentFirstName;
-    _secondaryParentLastNameController.text = user.secondaryParentLastName;
+    _firstNameController.text = student.firstName;
+    _lastNameController.text = student.lastName;
+    _dobController.text = DateFormat('MMMM dd, yyyy').format(student.dob);
+    _primaryParentFirstNameController.text = student.primaryParentFirstName;
+    _primaryParentLastNameController.text = student.primaryParentLastName;
+    _secondaryParentFirstNameController.text = student.secondaryParentFirstName;
+    _secondaryParentLastNameController.text = student.secondaryParentLastName;
+    _teacherController.text = '${teacher.firstName} ${teacher.lastName}';
   }
 
   @override
