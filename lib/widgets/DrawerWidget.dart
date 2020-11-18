@@ -121,8 +121,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       onTap: () {
         if (page == APP_PAGES.BOOK_OF_THE_MONTH) return;
 
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -151,8 +149,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       onTap: () async {
         if (page == APP_PAGES.MY_PASSPORT) return;
 
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => MY_PASSPORT_BP.MyPassportBloc()
@@ -176,8 +172,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       ),
       onTap: () {
         if (page == APP_PAGES.READ_LOG) return;
-
-        HapticFeedback.vibrate();
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
@@ -204,14 +198,13 @@ class DrawerWidgetState extends State<DrawerWidget> {
       onTap: () {
         if (page == APP_PAGES.VISIT_LOG) return;
 
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
-            create: (BuildContext context) => VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc()
-              ..add(
-                VISITING_LOG_VISITS_BP.LoadPageEvent(),
-              ),
+            create: (BuildContext context) =>
+                VISITING_LOG_VISITS_BP.VisitingLogVisitsBloc()
+                  ..add(
+                    VISITING_LOG_VISITS_BP.LoadPageEvent(),
+                  ),
             child: VISITING_LOG_VISITS_BP.VisitingLogVisitsPage(),
           ),
         );
@@ -229,8 +222,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       ),
       onTap: () {
         if (page == APP_PAGES.ABOUT) return;
-
-        HapticFeedback.vibrate();
 
         // Route route = MaterialPageRoute(
         //   builder: (BuildContext context) => AboutPage(
@@ -253,8 +244,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       onTap: () {
         if (page == APP_PAGES.SETTINGS) return;
 
-        HapticFeedback.vibrate();
-
         // Route route = MaterialPageRoute(
         //   builder: (BuildContext context) => SettingsPage(
         //     currentUser: currentUser,
@@ -275,8 +264,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       ),
       onTap: () {
         if (page == APP_PAGES.ADMIN) return;
-
-        HapticFeedback.vibrate();
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
@@ -302,8 +289,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       onTap: () {
         if (page == APP_PAGES.EDIT_PROFILE) return;
 
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => EDIT_PROFILE_BP.EditProfileBloc()
@@ -327,8 +312,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
       ),
       onTap: () {
         if (page == APP_PAGES.AWESOME_READING_TIPS) return;
-
-        HapticFeedback.vibrate();
 
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(

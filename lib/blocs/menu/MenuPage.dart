@@ -60,8 +60,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () async {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => MY_CLASS_BP.MyClassBloc()
@@ -87,8 +85,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () async {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => MY_PASSPORT_BP.MyPassportBloc()
@@ -114,8 +110,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -142,8 +136,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -170,8 +162,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -198,8 +188,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -226,8 +214,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => EDIT_PROFILE_BP.EditProfileBloc()
@@ -250,7 +236,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   //       style: TextStyle(color: Colors.white),
   //     ),
   //     onTap: () {
-  //       HapticFeedback.vibrate();
+  //
 
   //       Route route = MaterialPageRoute(
   //         builder: (BuildContext context) => BlocProvider(
@@ -277,8 +263,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => AboutPage(),
         );
@@ -299,8 +283,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => SettingsPage(),
         );
