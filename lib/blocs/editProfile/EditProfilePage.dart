@@ -80,124 +80,117 @@ class EditProfilePageState extends State<EditProfilePage>
                 color: COLOR_CREAM,
                 child: SafeArea(
                   child: Form(
-                      key: _formKey,
-                      child: Expanded(
-                        child: ListView(
-                          children: [
-                            AppBarWidget(title: 'Edit Profile'),
-                            Center(
-                              child: ImageUploadWidget(
-                                imgUrl: currentUser.imgUrl,
-                                showSelectImageDialog: showSelectImageDialog,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Teacher Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: COLOR_NAVY),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _firstNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Teacher First Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _lastNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Teacher Last Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _schoolController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'School',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FullWidthButtonWidget(
-                              text: 'Update',
-                              buttonColor: COLOR_NAVY,
-                              onPressed: () async {
-                                if (!_formKey.currentState.validate()) return;
-
-                                bool confirm = await locator<ModalService>()
-                                    .showConfirmation(
-                                        context: context,
-                                        title: 'Submit',
-                                        message: 'Are you sure?');
-
-                                if (!confirm) return;
-
-                                _editProfileBloc.add(
-                                  TeacherSubmitEvent(
-                                    firstName: _firstNameController.text,
-                                    lastName: _lastNameController.text,
-                                    school: _schoolController.text,
-                                  ),
-                                );
-                              },
-                              textColor: Colors.white,
-                            ),
-                          ],
+                    key: _formKey,
+                    child: ListView(
+                      children: [
+                        AppBarWidget(title: 'Edit Profile'),
+                        Center(
+                          child: ImageUploadWidget(
+                            imgUrl: currentUser.imgUrl,
+                            showSelectImageDialog: showSelectImageDialog,
+                          ),
                         ),
-                      )),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Teacher Info',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: COLOR_NAVY),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _firstNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Teacher First Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _lastNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Teacher Last Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _schoolController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'School',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FullWidthButtonWidget(
+                          text: 'Update',
+                          buttonColor: COLOR_NAVY,
+                          onPressed: () async {
+                            if (!_formKey.currentState.validate()) return;
+
+                            bool confirm = await locator<ModalService>()
+                                .showConfirmation(
+                                    context: context,
+                                    title: 'Submit',
+                                    message: 'Are you sure?');
+
+                            if (!confirm) return;
+
+                            _editProfileBloc.add(
+                              TeacherSubmitEvent(
+                                firstName: _firstNameController.text,
+                                lastName: _lastNameController.text,
+                                school: _schoolController.text,
+                              ),
+                            );
+                          },
+                          textColor: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -216,315 +209,292 @@ class EditProfilePageState extends State<EditProfilePage>
                 color: COLOR_CREAM,
                 child: SafeArea(
                   child: Form(
-                      key: _formKey,
-                      child: Expanded(
-                        child: ListView(
-                          children: [
-                            AppBarWidget(title: 'Edit Profile'),
-                            Center(
-                              child: ImageUploadWidget(
-                                imgUrl: currentUser.imgUrl,
-                                showSelectImageDialog: showSelectImageDialog,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Child Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: COLOR_NAVY),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _firstNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Child First Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _lastNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Child First Last',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                onTap: () async {
-                                  final DateTime picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: state.user.dob,
-                                    firstDate: DateTime(2000, 1),
-                                    lastDate: DateTime.now(),
-                                  );
-
-                                  if (picked != null &&
-                                      picked != state.user.dob) {
-                                    _editProfileBloc.add(
-                                      UpdateChildDOBEvent(childDOB: picked),
-                                    );
-
-                                    String formattedDate =
-                                        DateFormat('MMMM dd, yyyy')
-                                            .format(picked);
-                                    _dobController.text = formattedDate;
-                                  }
-                                },
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _dobController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Child DOB',
-                                  prefixIcon: Icon(Icons.calendar_today),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Primary Parent Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: COLOR_NAVY),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _primaryParentFirstNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Primary Parent First Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                validator: locator<ValidatorService>().isEmpty,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _primaryParentLastNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Primary Parent Last Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Secondary Parent Info',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: COLOR_NAVY),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _secondaryParentFirstNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Secondary Parent First Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                cursorColor: Colors.black,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                controller: _secondaryParentLastNameController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Secondary Parent Last Name',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Teacher',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: COLOR_NAVY),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: TextFormField(
-                                onTap: () async {
-                                  final SEARCH_TEACHERS_BP
-                                          .SearchTeachersRepository
-                                      _searchTeachersRepository =
-                                      SEARCH_TEACHERS_BP
-                                          .SearchTeachersRepository(
-                                    cache: SEARCH_TEACHERS_BP
-                                        .SearchTeachersCache(),
-                                  );
-
-                                  Route route = MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        BlocProvider(
-                                      create: (BuildContext context) =>
-                                          SEARCH_TEACHERS_BP.SearchTeachersBloc(
-                                              searchTeachersRepository:
-                                                  _searchTeachersRepository)
-                                            ..add(
-                                              SEARCH_TEACHERS_BP
-                                                  .LoadPageEvent(),
-                                            ),
-                                      child: SEARCH_TEACHERS_BP
-                                          .SearchTeachersPage(),
-                                    ),
-                                  );
-
-                                  final result =
-                                      await Navigator.push(context, route);
-
-                                  final selectedTeacher = result as UserModel;
-
-                                  _editProfileBloc.add(
-                                    SelectTeacherEvent(
-                                        selectedTeacher: selectedTeacher),
-                                  );
-
-                                  _teacherController.text =
-                                      '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
-                                },
-                                controller: _teacherController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SFUIDisplay'),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Teacher',
-                                  prefixIcon: Icon(Icons.person),
-                                  labelStyle: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FullWidthButtonWidget(
-                              text: 'Update',
-                              buttonColor: COLOR_NAVY,
-                              onPressed: () async {
-                                if (!_formKey.currentState.validate()) return;
-
-                                bool confirm = await locator<ModalService>()
-                                    .showConfirmation(
-                                        context: context,
-                                        title: 'Submit',
-                                        message: 'Are you sure?');
-
-                                if (!confirm) return;
-                                _editProfileBloc.add(
-                                  ParentSubmitEvent(
-                                    firstName: _firstNameController.text,
-                                    lastName: _lastNameController.text,
-                                    primaryParentFirstName:
-                                        _primaryParentFirstNameController.text,
-                                    primaryParentLastName:
-                                        _primaryParentLastNameController.text,
-                                    secondaryParentFirstName:
-                                        _secondaryParentFirstNameController
-                                            .text,
-                                    secondaryParentLastName:
-                                        _secondaryParentLastNameController.text,
-                                  ),
-                                );
-                              },
-                              textColor: Colors.white,
-                            ),
-                          ],
+                    key: _formKey,
+                    child: ListView(
+                      children: [
+                        AppBarWidget(title: 'Edit Profile'),
+                        Center(
+                          child: ImageUploadWidget(
+                            imgUrl: currentUser.imgUrl,
+                            showSelectImageDialog: showSelectImageDialog,
+                          ),
                         ),
-                      )),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Child Info',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: COLOR_NAVY),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _firstNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Child First Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _lastNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Child First Last',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            onTap: () async {
+                              final DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: state.user.dob,
+                                firstDate: DateTime(2000, 1),
+                                lastDate: DateTime.now(),
+                              );
+
+                              if (picked != null && picked != state.user.dob) {
+                                _editProfileBloc.add(
+                                  UpdateChildDOBEvent(childDOB: picked),
+                                );
+
+                                String formattedDate =
+                                    DateFormat('MMMM dd, yyyy').format(picked);
+                                _dobController.text = formattedDate;
+                              }
+                            },
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _dobController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Child DOB',
+                              prefixIcon: Icon(Icons.calendar_today),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Primary Parent Info',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: COLOR_NAVY),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _primaryParentFirstNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Primary Parent First Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _primaryParentLastNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Primary Parent Last Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Secondary Parent Info',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: COLOR_NAVY),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _secondaryParentFirstNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Secondary Parent First Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _secondaryParentLastNameController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Secondary Parent Last Name',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Teacher',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: COLOR_NAVY),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: TextFormField(
+                            onTap: () async {
+                              final SEARCH_TEACHERS_BP.SearchTeachersRepository
+                                  _searchTeachersRepository =
+                                  SEARCH_TEACHERS_BP.SearchTeachersRepository(
+                                cache: SEARCH_TEACHERS_BP.SearchTeachersCache(),
+                              );
+
+                              Route route = MaterialPageRoute(
+                                builder: (BuildContext context) => BlocProvider(
+                                  create: (BuildContext context) =>
+                                      SEARCH_TEACHERS_BP.SearchTeachersBloc(
+                                          searchTeachersRepository:
+                                              _searchTeachersRepository)
+                                        ..add(
+                                          SEARCH_TEACHERS_BP.LoadPageEvent(),
+                                        ),
+                                  child:
+                                      SEARCH_TEACHERS_BP.SearchTeachersPage(),
+                                ),
+                              );
+
+                              final result =
+                                  await Navigator.push(context, route);
+
+                              final selectedTeacher = result as UserModel;
+
+                              _editProfileBloc.add(
+                                SelectTeacherEvent(
+                                    selectedTeacher: selectedTeacher),
+                              );
+
+                              _teacherController.text =
+                                  '${selectedTeacher.firstName} ${selectedTeacher.lastName}';
+                            },
+                            controller: _teacherController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Teacher',
+                              prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FullWidthButtonWidget(
+                          text: 'Update',
+                          buttonColor: COLOR_NAVY,
+                          onPressed: () async {
+                            if (!_formKey.currentState.validate()) return;
+
+                            bool confirm = await locator<ModalService>()
+                                .showConfirmation(
+                                    context: context,
+                                    title: 'Submit',
+                                    message: 'Are you sure?');
+
+                            if (!confirm) return;
+                            _editProfileBloc.add(
+                              ParentSubmitEvent(
+                                firstName: _firstNameController.text,
+                                lastName: _lastNameController.text,
+                                primaryParentFirstName:
+                                    _primaryParentFirstNameController.text,
+                                primaryParentLastName:
+                                    _primaryParentLastNameController.text,
+                                secondaryParentFirstName:
+                                    _secondaryParentFirstNameController.text,
+                                secondaryParentLastName:
+                                    _secondaryParentLastNameController.text,
+                              ),
+                            );
+                          },
+                          textColor: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
