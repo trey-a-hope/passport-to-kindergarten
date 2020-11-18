@@ -150,18 +150,27 @@ class LogService extends ILogService {
       @required String documentID,
       @required LogModel log}) async {
     try {
+      final WriteBatch batch = Firestore.instance.batch();
+
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      final DocumentReference logDocRef = userDocRef
-          .collection('books')
-          .document(documentID)
-          .collection('logs')
-          .document();
+      final DocumentReference parentLogDocRef =
+          userDocRef.collection(collection).document(documentID);
+
+      final DocumentReference logDocRef =
+          parentLogDocRef.collection('logs').document();
 
       log.id = logDocRef.documentID;
-      logDocRef.setData(
-        log.toMap(),
-      );
+
+      batch.setData(logDocRef, log.toMap());
+
+      batch.updateData(parentLogDocRef, {
+        'logCount': FieldValue.increment(1),
+      });
+
+      await batch.commit();
+
+      return;
     } catch (e) {
       throw Exception(
         e.toString(),
