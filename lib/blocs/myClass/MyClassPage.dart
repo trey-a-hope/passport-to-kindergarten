@@ -421,8 +421,9 @@ class MyClassPageState extends State<MyClassPage>
                                               title: Row(
                                                 children: [
                                                   CircleAvatar(
-                                                    backgroundImage: NetworkImage(
-                                                        DUMMY_PROFILE_PHOTO_URL),
+                                                    backgroundImage: Image.asset(
+                                                            '${book.assetImagePath}')
+                                                        .image,
                                                   ),
                                                   SizedBox(
                                                     width: 15,
