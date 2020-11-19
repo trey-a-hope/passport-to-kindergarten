@@ -106,7 +106,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         width: 20,
       ),
       title: Text(
-        'Reading Log',
+        'Log Reading',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
@@ -132,7 +132,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         width: 20,
       ),
       title: Text(
-        'Visit Log',
+        'Log Visit',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
@@ -158,7 +158,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         height: 20,
       ),
       title: Text(
-        'Book of The Month',
+        'Explore Book of The Month',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
