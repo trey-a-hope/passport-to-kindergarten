@@ -130,6 +130,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       final String firstParentLastName = event.firstParentLastName;
       final String secondParentFirstName = event.secondParentFirstName;
       final String secondParentLastName = event.secondParentLastName;
+      final String teacherID = _selectedTeacher.uid;
 
       try {
         yield SigningIn();
@@ -160,7 +161,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           lastName: lastName,
           profileType: PROFILE_TYPE.PARENT.name,
           school: null,
-          teacherID: '${IDK_TEACHER_MODEL.uid}',
+          teacherID: teacherID,
           dob: _selectedDate,
           primaryParentFirstName: firstParentFirstName,
           primaryParentLastName: firstParentLastName,
