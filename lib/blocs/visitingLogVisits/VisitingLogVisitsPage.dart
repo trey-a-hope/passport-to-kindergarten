@@ -149,7 +149,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                                 'Website',
                                                 style: TextStyle(
                                                   color: COLOR_NAVY,
-                                                  fontSize: 18,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               )
@@ -176,7 +176,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                                 'Directions',
                                                 style: TextStyle(
                                                   color: COLOR_NAVY,
-                                                  fontSize: 18,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               )
@@ -196,7 +196,7 @@ class VisitingLogVisitsPageState extends State<VisitingLogVisitsPage>
                                                 'Log',
                                                 style: TextStyle(
                                                   color: COLOR_NAVY,
-                                                  fontSize: 18,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               )

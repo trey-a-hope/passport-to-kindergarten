@@ -224,7 +224,7 @@ class MyClassPageState extends State<MyClassPage>
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: COLOR_NAVY,
-                                              fontSize: 18,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -1007,7 +1007,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1035,7 +1035,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1056,7 +1056,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1366,7 +1366,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1394,7 +1394,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1415,7 +1415,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1724,7 +1724,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1752,7 +1752,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1773,7 +1773,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2103,7 +2103,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2131,7 +2131,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2152,7 +2152,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
