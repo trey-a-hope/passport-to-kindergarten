@@ -62,7 +62,6 @@ class MyPassportPageState extends State<MyPassportPage>
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
                               width: 120,
@@ -77,9 +76,10 @@ class MyPassportPageState extends State<MyPassportPage>
                               child: Image.network(child.imgUrl),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 15,
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   'Primary Parent Name',
