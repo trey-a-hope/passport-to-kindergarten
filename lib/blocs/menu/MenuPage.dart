@@ -13,7 +13,6 @@ import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/ModalService.dart';
-import 'package:p/widgets/ImageUploadWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
@@ -21,7 +20,6 @@ import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/visitingLogVisits/Bloc.dart' as VISITING_LOG_VISITS_BP;
 import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
-import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
     as AWESOME_READING_TIPS_BP;

@@ -2,23 +2,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p/AboutPage.dart';
-import 'package:p/constants.dart';
-import 'package:p/models/UserModel.dart';
 import '../ServiceLocator.dart';
-import '../SettingsPage.dart';
 import 'ValidatorService.dart';
-import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
-import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
-import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
-import 'package:p/blocs/visitingLogVisits/Bloc.dart' as VISITING_LOG_VISITS_BP;
-import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
-import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
-import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
-import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
-    as AWESOME_READING_TIPS_BP;
 
 abstract class IModalService {
   void showInSnackBar(
@@ -369,5 +354,4 @@ class ModalService extends IModalService {
       );
     }
   }
-
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/services/UserService.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';

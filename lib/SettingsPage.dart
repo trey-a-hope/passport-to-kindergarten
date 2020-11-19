@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
-import 'package:p/widgets/DrawerWidget.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'ServiceLocator.dart';

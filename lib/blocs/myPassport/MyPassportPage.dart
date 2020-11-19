@@ -188,27 +188,22 @@ class MyPassportPageState extends State<MyPassportPage>
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Expanded(
-                          child: StaggeredGridView.countBuilder(
-                            shrinkWrap: true,
-                            crossAxisCount: 4,
-                            itemCount: stamps.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final StampModel stamp = stamps[index];
-                              return Image.asset(
-                                stamp.assetImagePath,
-                                height: 100,
-                              );
-                            },
-                            staggeredTileBuilder: (int index) =>
-                                StaggeredTile.count(2, index.isEven ? 2 : 1),
-                            mainAxisSpacing: 4.0,
-                            crossAxisSpacing: 4.0,
-                          ),
-                        ),
-                      )
+                      StaggeredGridView.countBuilder(
+                        shrinkWrap: true,
+                        crossAxisCount: 4,
+                        itemCount: stamps.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final StampModel stamp = stamps[index];
+                          return Image.asset(
+                            stamp.assetImagePath,
+                            height: 100,
+                          );
+                        },
+                        staggeredTileBuilder: (int index) =>
+                            StaggeredTile.count(2, index.isEven ? 2 : 1),
+                        mainAxisSpacing: 4.0,
+                        crossAxisSpacing: 4.0,
+                      ),
                     ],
                   ),
                 ),
