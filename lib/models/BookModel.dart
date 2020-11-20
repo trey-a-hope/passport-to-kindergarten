@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'LogModel.dart';
+
 class BookModel {
   String id;
   DateTime created;
@@ -12,6 +14,7 @@ class BookModel {
   bool given;
   String summary;
   List<String> conversationStarters;
+  Map<DateTime, List<LogModel>> logEvents;
 
   BookModel({
     @required this.id,

@@ -34,16 +34,19 @@ class CreateBookForStudentEvent extends MyClassEvent {
 class CreateLogForStudentEvent extends MyClassEvent {
   final String studentUID;
   final String bookID;
+  final DateTime date;
 
   CreateLogForStudentEvent({
     @required this.studentUID,
     @required this.bookID,
+    @required this.date,
   });
 
   @override
   List<Object> get props => [
         studentUID,
         bookID,
+        date,
       ];
 }
 
@@ -90,4 +93,11 @@ class StudentSelectedEvent extends MyClassEvent {
   List<Object> get props => [
         studentSelected,
       ];
+}
+
+class RefreshEvent extends MyClassEvent {
+  RefreshEvent();
+
+  @override
+  List<Object> get props => [];
 }

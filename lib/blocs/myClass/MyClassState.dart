@@ -20,7 +20,6 @@ class LoadedState extends MyClassState {
   final List<BookModel> books;
   final List<VisitModel> selectedStudentVisits;
   final DateTime selectedDateForBookLogs;
-  final Map<DateTime, List<LogModel>> events;
   final bool studentSelected;
   final List<StampModel> stamps;
 
@@ -30,7 +29,6 @@ class LoadedState extends MyClassState {
     @required this.books,
     @required this.selectedStudentVisits,
     @required this.selectedDateForBookLogs,
-    @required this.events,
     @required this.studentSelected,
     @required this.stamps,
   });
@@ -42,7 +40,6 @@ class LoadedState extends MyClassState {
         books,
         selectedStudentVisits,
         selectedDateForBookLogs,
-        events,
         studentSelected,
         stamps,
       ];

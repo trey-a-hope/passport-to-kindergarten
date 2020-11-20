@@ -52,7 +52,6 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           books: _selectedStudentBooks,
           selectedStudentVisits: _selectedStudentVisits,
           selectedDateForBookLogs: selectedDateForBookLogs,
-          events: _events,
           studentSelected: studentSelected,
           stamps: _selectedStudentStamps,
         );
@@ -95,32 +94,39 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     if (event is CreateLogForStudentEvent) {
       final String studentUID = event.studentUID;
       final String bookID = event.bookID;
-      final DateTime now = DateTime.now();
+      final DateTime date = event.date;
 
       try {
+        final LogModel log = LogModel(
+          created: date,
+          id: null,
+        );
+
         locator<LogService>().createLog(
           uid: studentUID,
           collection: 'books',
           documentID: bookID,
-          log: LogModel(
-            created: now,
-            id: null,
-          ),
+          log: log,
         );
 
-        _myClassBlocDelegate.showMessage(message: 'Log added!');
+        Map<DateTime, List<LogModel>> logEvents = _selectedStudentBooks
+            .firstWhere(
+                (selectedStudentBook) => selectedStudentBook.id == bookID)
+            .logEvents;
 
-        _myClassBlocDelegate.clearAddTitleForm();
-      } catch (error) {
-        yield ErrorState(error: error);
-      }
-    }
+        DateTime dayKey = DateTime(
+          log.created.year,
+          log.created.month,
+          log.created.day,
+        );
 
-    if (event is GetBooksForStudentEvent) {
-      final String studentUID = event.studentUID;
-      try {
-        _selectedStudentBooks =
-            await locator<LogService>().getBooksForUser(uid: studentUID);
+        if (logEvents.containsKey(dayKey)) {
+          if (!logEvents[dayKey].contains(log)) {
+            logEvents[dayKey].add(log);
+          }
+        } else {
+          logEvents[dayKey] = [log];
+        }
 
         yield LoadedState(
           user: _currentUser,
@@ -128,55 +134,71 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           books: _selectedStudentBooks,
           selectedStudentVisits: _selectedStudentVisits,
           selectedDateForBookLogs: selectedDateForBookLogs,
-          events: _events,
+          studentSelected: studentSelected,
+          stamps: _selectedStudentStamps,
+        );
+
+        _myClassBlocDelegate.showMessage(
+            message: 'Log added, close and reopen tile to see results.');
+      } catch (error) {
+        yield ErrorState(error: error);
+      }
+    }
+
+    if (event is GetBooksForStudentEvent) {
+      _myClassBlocDelegate.showMessage(message: 'Fetching logs, one second...');
+      final String studentUID = event.studentUID;
+
+      try {
+        _selectedStudentBooks =
+            await locator<LogService>().getBooksForUser(uid: studentUID);
+
+        for (int i = 0; i < _selectedStudentBooks.length; i++) {
+          final BookModel selectedStudentBook = _selectedStudentBooks[i];
+
+          final List<LogModel> logs = await locator<LogService>().getLogs(
+            uid: studentUID,
+            collection: 'books',
+            documentID: selectedStudentBook.id,
+          );
+
+          _events.clear();
+          Map<DateTime, List<LogModel>> logEvents =
+              Map<DateTime, List<LogModel>>();
+
+          logs.forEach(
+            (LogModel log) {
+              DateTime dayKey = DateTime(
+                log.created.year,
+                log.created.month,
+                log.created.day,
+              );
+
+              if (logEvents.containsKey(dayKey)) {
+                if (!logEvents[dayKey].contains(log)) {
+                  logEvents[dayKey].add(log);
+                }
+              } else {
+                logEvents[dayKey] = [log];
+              }
+            },
+          );
+
+          selectedStudentBook.logEvents = logEvents;
+        }
+
+        yield LoadedState(
+          user: _currentUser,
+          students: _students,
+          books: _selectedStudentBooks,
+          selectedStudentVisits: _selectedStudentVisits,
+          selectedDateForBookLogs: selectedDateForBookLogs,
           studentSelected: studentSelected,
           stamps: _selectedStudentStamps,
         );
       } catch (error) {
         yield ErrorState(error: error);
       }
-    }
-
-    if (event is SelectDateForBookEvent) {
-      final String studentUID = event.studentUID;
-      final String bookID = event.bookID;
-      selectedDateForBookLogs = event.selectedDate;
-
-      final List<LogModel> logs = await locator<LogService>().getLogs(
-        uid: studentUID,
-        collection: 'books',
-        documentID: bookID,
-      );
-
-      _events.clear();
-
-      logs.forEach(
-        (LogModel log) {
-          DateTime dayKey = DateTime(
-            log.created.year,
-            log.created.month,
-            log.created.day,
-          );
-
-          if (_events.containsKey(dayKey)) {
-            if (!_events[dayKey].contains(log)) {
-              _events[dayKey].add(log);
-            }
-          } else {
-            _events[dayKey] = [log];
-          }
-        },
-      );
-
-      yield LoadedState(
-          user: _currentUser,
-          students: _students,
-          books: _selectedStudentBooks,
-          selectedStudentVisits: _selectedStudentVisits,
-          selectedDateForBookLogs: selectedDateForBookLogs,
-          events: _events,
-          studentSelected: studentSelected,
-          stamps: _selectedStudentStamps);
     }
 
     if (event is StudentSelectedEvent) {
@@ -188,7 +210,6 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         books: _selectedStudentBooks,
         selectedStudentVisits: _selectedStudentVisits,
         selectedDateForBookLogs: selectedDateForBookLogs,
-        events: _events,
         studentSelected: studentSelected,
         stamps: _selectedStudentStamps,
       );
