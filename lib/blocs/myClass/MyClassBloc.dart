@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
@@ -42,21 +43,35 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        _students = await locator<UserService>()
-            .retrieveStudentsForTeacher(uid: _currentUser.uid);
+        Stream<QuerySnapshot> studentsStream = await locator<UserService>()
+            .streamStudentsForTeacher(teacherUID: _currentUser.uid);
 
-        yield LoadedState(
-          user: _currentUser,
-          students: _students,
-          books: _selectedStudentBooks,
-          selectedStudentVisits: _selectedStudentVisits,
-          selectedDateForBookLogs: selectedDateForBookLogs,
-          events: _events,
-          studentSelected: studentSelected,
+        studentsStream.listen(
+          (QuerySnapshot event) {
+            List<UserModel> students = event.documents
+                .map((doc) => UserModel.fromDocumentSnapshot(ds: doc))
+                .toList();
+
+            add(StudentsUpdatedEvent(students: students));
+          },
         );
       } catch (error) {
         yield ErrorState(error: error);
       }
+    }
+
+    if (event is StudentsUpdatedEvent) {
+      final List<UserModel> students = event.students;
+
+      yield LoadedState(
+        user: _currentUser,
+        students: students,
+        books: _selectedStudentBooks,
+        selectedStudentVisits: _selectedStudentVisits,
+        selectedDateForBookLogs: selectedDateForBookLogs,
+        events: _events,
+        studentSelected: studentSelected,
+      );
     }
 
     if (event is CreateBookForStudentEvent) {

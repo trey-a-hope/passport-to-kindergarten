@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/UserModel.dart';
 
 abstract class MyClassEvent extends Equatable {
   @override
@@ -89,5 +90,18 @@ class StudentSelectedEvent extends MyClassEvent {
   @override
   List<Object> get props => [
         studentSelected,
+      ];
+}
+
+class StudentsUpdatedEvent extends MyClassEvent {
+  final List<UserModel> students;
+
+  StudentsUpdatedEvent({
+    @required this.students,
+  });
+
+  @override
+  List<Object> get props => [
+        students,
       ];
 }

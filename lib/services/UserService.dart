@@ -13,6 +13,9 @@ abstract class IUserService {
   Future<List<UserModel>> retrieveStudentsForTeacher({
     @required String uid,
   });
+  Future<Stream<QuerySnapshot>> streamStudentsForTeacher({
+    @required String teacherUID,
+  });
 
   Future<void> createStamp({@required String uid, @required StampModel stamp});
   Future<List<StampModel>> listStamps({
@@ -172,4 +175,31 @@ class UserService extends IUserService {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Future<Stream<QuerySnapshot>> streamStudentsForTeacher(
+      {@required String teacherUID}) async {
+    try {
+      final Query studentsQuery = (_usersColRef
+          .orderBy('lastName')
+          .where('teacherID', isEqualTo: teacherUID));
+      return studentsQuery.snapshots();
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
 }
+
+//   List<UserModel> students = (await _usersColRef
+//         .orderBy('lastName')
+//         .where('teacherID', isEqualTo: uid)
+//         .getDocuments())
+//     .documents
+//     .map(
+//       (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
+//     )
+//     .toList();
+
+// return students;
