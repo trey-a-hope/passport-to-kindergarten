@@ -168,6 +168,15 @@ class LogService extends ILogService {
         'logCount': FieldValue.increment(1),
       });
 
+      if (collection == 'books') {
+        batch.updateData(userDocRef, {'bookLogCount': FieldValue.increment(1)});
+      } else if (collection == 'visits') {
+        batch
+            .updateData(userDocRef, {'visitLogCount': FieldValue.increment(1)});
+      } else if (collection == 'stamps') {
+        batch.updateData(userDocRef, {'stampCount': FieldValue.increment(1)});
+      }
+
       await batch.commit();
 
       return;

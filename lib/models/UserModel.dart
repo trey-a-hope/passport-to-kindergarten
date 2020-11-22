@@ -1,6 +1,9 @@
 import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/StampModel.dart';
+import 'package:p/models/VisitModel.dart';
 
 class UserModel {
   String email;
@@ -18,6 +21,13 @@ class UserModel {
   String school;
   String teacherID;
   DateTime dob;
+  int bookLogCount;
+  int visitLogCount;
+  int stampCount;
+
+  List<BookModel> books;
+  List<VisitModel> visits;
+  List<StampModel> stamps;
 
   UserModel({
     @required this.email,
@@ -35,6 +45,9 @@ class UserModel {
     @required this.school,
     @required this.teacherID,
     @required this.dob,
+    @required this.bookLogCount,
+    @required this.visitLogCount,
+    @required this.stampCount,
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -54,6 +67,9 @@ class UserModel {
       school: ds.data['school'],
       teacherID: ds.data['teacherID'],
       dob: ds.data['dob'].toDate(),
+      bookLogCount: ds.data['bookLogCount'] as int,
+      visitLogCount: ds.data['visitLogCount'] as int,
+      stampCount: ds.data['stampCount'] as int,
     );
   }
 
@@ -75,7 +91,10 @@ class UserModel {
       profileType: data['profileType'],
       school: data['school'],
       teacherID: data['teacherID'],
-      dob: DateTime.now(), //tTODOodo: Set accurate dob.
+      dob: DateTime.now(),
+      bookLogCount: data['bookLogCount'],
+      visitLogCount: data['visitLogCount'],
+      stampCount: data['stampCount'],
     );
   }
 
@@ -96,6 +115,9 @@ class UserModel {
       'school': school,
       'teacherID': teacherID,
       'dob': dob,
+      'bookLogCount': bookLogCount,
+      'visitLogCount': visitLogCount,
+      'stampCount': stampCount,
     };
   }
 }

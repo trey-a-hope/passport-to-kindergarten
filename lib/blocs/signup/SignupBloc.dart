@@ -107,6 +107,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           primaryParentLastName: null,
           secondaryParentFirstName: null,
           secondaryParentLastName: null,
+          bookLogCount: null,
+          visitLogCount: null,
+          stampCount: null,
         );
 
         await locator<UserService>().createUser(user: newTeacher);
@@ -167,6 +170,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           primaryParentLastName: firstParentLastName,
           secondaryParentFirstName: secondParentFirstName,
           secondaryParentLastName: secondParentLastName,
+          bookLogCount: 0,
+          visitLogCount: 0,
+          stampCount: 0,
         );
 
         await locator<UserService>().createUser(user: newParent);
@@ -228,6 +234,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           primaryParentLastName: null,
           secondaryParentFirstName: null,
           secondaryParentLastName: null,
+          bookLogCount: null,
+          visitLogCount: null,
+          stampCount: null,
         );
 
         await locator<UserService>().createUser(user: newSuperAdmin);

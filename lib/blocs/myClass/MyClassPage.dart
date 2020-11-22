@@ -66,24 +66,7 @@ class MyClassPageState extends State<MyClassPage>
         if (state is LoadedState) {
           final UserModel currentUser = state.user;
           final List<UserModel> students = state.students;
-          final List<BookModel> books = state.books;
-          final DateTime selectedDateForBookLogs =
-              state.selectedDateForBookLogs;
           final bool studentSelected = state.studentSelected;
-
-          final List<VisitModel> selectedStudentVisits =
-              state.selectedStudentVisits;
-
-          int totalLogCount = 0;
-          books.forEach((book) {
-            totalLogCount += book.logCount;
-          });
-
-          final int remainingLogCount =
-              totalLogCount % _totalBookProgressAmount;
-
-          final int numberOf15BooksRead =
-              totalLogCount ~/ _totalBookProgressAmount;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -138,14 +121,22 @@ class MyClassPageState extends State<MyClassPage>
                           itemCount: students.length,
                           itemBuilder: (BuildContext context, int index) {
                             final UserModel student = students[index];
-                            final List<StampModel> stamps = state.stamps;
+
+                            final List<StampModel> stamps = student.stamps;
+                            final List<BookModel> books = student.books;
+
+                            int totalLogCount = 0;
+                            books.forEach((book) {
+                              totalLogCount += book.logCount;
+                            });
+
+                            final int remainingLogCount =
+                                totalLogCount % _totalBookProgressAmount;
+
+                            final int numberOf15BooksRead =
+                                totalLogCount ~/ _totalBookProgressAmount;
 
                             return ExpansionTile(
-                              onExpansionChanged: (bool open) {
-                                _myClassBloc.add(
-                                  StudentSelectedEvent(studentSelected: open),
-                                );
-                              },
                               backgroundColor: COLOR_NAVY,
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
@@ -308,16 +299,6 @@ class MyClassPageState extends State<MyClassPage>
                                       color: Colors.white,
                                     ),
                                   ),
-                                  onExpansionChanged: (bool open) async {
-                                    if (open) {
-                                      _myClassBloc.add(
-                                        GetBooksForStudentEvent(
-                                            studentUID: student.uid),
-                                      );
-                                    } else {
-                                      print('close');
-                                    }
-                                  },
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.all(20),
@@ -372,23 +353,13 @@ class MyClassPageState extends State<MyClassPage>
                                     Container(
                                       height: 400,
                                       child: ListView.builder(
-                                        itemCount: books.length,
+                                        itemCount: student.books.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          final BookModel book = books[index];
+                                          final BookModel book =
+                                              student.books[index];
 
                                           return ExpansionTile(
-                                            onExpansionChanged: (bool open) {
-                                              // if (open) {
-                                              //   _myClassBloc.add(
-                                              //     SelectDateForBookEvent(
-                                              //       selectedDate: null,
-                                              //       studentUID: student.uid,
-                                              //       bookID: book.id,
-                                              //     ),
-                                              //   );
-                                              // }
-                                            },
                                             title: ListTile(
                                               leading: CircleAvatar(
                                                 backgroundColor:
@@ -424,7 +395,6 @@ class MyClassPageState extends State<MyClassPage>
                                                   )
                                                 ],
                                               ),
-                                              onTap: () {},
                                             ),
                                             children: [
                                               TableCalendar(
@@ -434,7 +404,7 @@ class MyClassPageState extends State<MyClassPage>
                                                 startingDayOfWeek:
                                                     StartingDayOfWeek.sunday,
                                                 initialSelectedDay:
-                                                    selectedDateForBookLogs,
+                                                    DateTime.now(),
                                                 calendarStyle: CalendarStyle(
                                                   selectedColor:
                                                       Colors.deepOrange[400],

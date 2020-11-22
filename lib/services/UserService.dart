@@ -18,7 +18,7 @@ abstract class IUserService {
   });
 
   Future<void> createStamp({@required String uid, @required StampModel stamp});
-  Future<List<StampModel>> listStamps({
+  Future<List<StampModel>> getStampsForUser({
     @required String uid,
   });
 }
@@ -158,7 +158,7 @@ class UserService extends IUserService {
   }
 
   @override
-  Future<List<StampModel>> listStamps({@required String uid}) async {
+  Future<List<StampModel>> getStampsForUser({@required String uid}) async {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
@@ -191,15 +191,3 @@ class UserService extends IUserService {
     }
   }
 }
-
-//   List<UserModel> students = (await _usersColRef
-//         .orderBy('lastName')
-//         .where('teacherID', isEqualTo: uid)
-//         .getDocuments())
-//     .documents
-//     .map(
-//       (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
-//     )
-//     .toList();
-
-// return students;

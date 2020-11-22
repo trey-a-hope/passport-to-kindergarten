@@ -12,6 +12,11 @@ abstract class IDummyService {
   Future<void> addDefaultVisitsToStudent({
     @required String uid,
   });
+  Future<void> addPropertyToAllDocsInCollection({
+    @required String collection,
+    @required String propertyName,
+    @required dynamic propertyValue,
+  });
 }
 
 class DummyService extends IDummyService {
@@ -57,6 +62,38 @@ class DummyService extends IDummyService {
         defaultVisit.id = defaultVisitRef.documentID;
         defaultVisitRef.setData(
           defaultVisit.toMap(),
+        );
+      }
+
+      return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> addPropertyToAllDocsInCollection({
+    @required String collection,
+    @required String propertyName,
+    @required dynamic propertyValue,
+  }) async {
+    try {
+      final List<DocumentSnapshot> docs =
+          (await Firestore.instance.collection(collection).getDocuments())
+              .documents;
+
+      for (int i = 0; i < docs.length; i++) {
+        final DocumentSnapshot doc = docs[i];
+
+        await Firestore.instance
+            .collection(collection)
+            .document(doc.documentID)
+            .updateData(
+          {
+            propertyName: propertyValue,
+          },
         );
       }
 

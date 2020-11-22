@@ -42,7 +42,7 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
         }
 
         final List<StampModel> stamps =
-            await locator<UserService>().listStamps(uid: _child.uid);
+            await locator<UserService>().getStampsForUser(uid: _child.uid);
 
         yield LoadedState(
           childUser: _child,

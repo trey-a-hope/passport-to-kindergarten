@@ -14,6 +14,7 @@ class BookModel {
   bool given;
   String summary;
   List<String> conversationStarters;
+
   Map<DateTime, List<LogModel>> logEvents;
 
   BookModel({
