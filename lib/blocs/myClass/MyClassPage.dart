@@ -8,6 +8,7 @@ import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
@@ -514,6 +515,55 @@ class MyClassPageState extends State<MyClassPage>
                                                   markersColor: Colors.black,
                                                   outsideDaysVisible: false,
                                                 ),
+                                                builders: CalendarBuilders(
+                                                  markersBuilder: (context,
+                                                      date, events, holidays) {
+                                                    final children = <Widget>[];
+
+                                                    if (events.isNotEmpty) {
+                                                      children.add(
+                                                        Center(
+                                                          child: Stack(
+                                                            children: [
+                                                              Container(
+                                                                  height: 50,
+                                                                  width: 50),
+                                                              Icon(
+                                                                MdiIcons
+                                                                    .bookOpen,
+                                                                color: Colors
+                                                                    .orange,
+                                                                size: 15,
+                                                              ),
+                                                              Positioned(
+                                                                bottom: 0,
+                                                                right: 0,
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      COLOR_NAVY,
+                                                                  child: Text(
+                                                                    '${events.length}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          10,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                  radius: 10,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+
+                                                    return children;
+                                                  },
+                                                ),
                                                 headerStyle: HeaderStyle(
                                                   formatButtonTextStyle:
                                                       TextStyle().copyWith(
@@ -805,6 +855,55 @@ class MyClassPageState extends State<MyClassPage>
                                                       Colors.deepOrange[200],
                                                   markersColor: Colors.black,
                                                   outsideDaysVisible: false,
+                                                ),
+                                                builders: CalendarBuilders(
+                                                  markersBuilder: (context,
+                                                      date, events, holidays) {
+                                                    final children = <Widget>[];
+
+                                                    if (events.isNotEmpty) {
+                                                      children.add(
+                                                        Center(
+                                                          child: Stack(
+                                                            children: [
+                                                              Container(
+                                                                  height: 50,
+                                                                  width: 50),
+                                                              Icon(
+                                                                Icons
+                                                                    .location_on,
+                                                                color: Colors
+                                                                    .orange,
+                                                                size: 15,
+                                                              ),
+                                                              Positioned(
+                                                                bottom: 0,
+                                                                right: 0,
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      COLOR_NAVY,
+                                                                  child: Text(
+                                                                    '${events.length}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          10,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                  radius: 10,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+
+                                                    return children;
+                                                  },
                                                 ),
                                                 headerStyle: HeaderStyle(
                                                   formatButtonTextStyle:
