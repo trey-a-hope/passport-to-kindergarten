@@ -228,7 +228,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                     currentUser.bookSortBy = 'alphabet';
                                   });
                                 },
-                                text: 'Alphabet',
+                                text: 'A-Z',
                                 shape: GFButtonShape.pills,
                                 type: currentUser.bookSortBy == 'alphabet'
                                     ? null

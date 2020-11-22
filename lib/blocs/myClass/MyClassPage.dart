@@ -442,7 +442,7 @@ class MyClassPageState extends State<MyClassPage>
                                                       'alphabet';
                                                 });
                                               },
-                                              text: 'Alphabet',
+                                              text: 'A-Z',
                                               shape: GFButtonShape.pills,
                                               type: student.bookSortBy ==
                                                       'alphabet'
@@ -712,7 +712,7 @@ class MyClassPageState extends State<MyClassPage>
                                                       'alphabet';
                                                 });
                                               },
-                                              text: 'Alphabet',
+                                              text: 'A-Z',
                                               shape: GFButtonShape.pills,
                                               type: student.visitSortBy ==
                                                       'alphabet'
