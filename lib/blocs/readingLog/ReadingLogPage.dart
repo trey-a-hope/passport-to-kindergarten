@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/SuccessMessagePage.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
@@ -61,8 +62,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
             totalLogCount += book.logCount;
           });
 
-          final int remainingLogCount =
-              totalLogCount % _totalBookProgressAmount;
+          final int currentLogCount = totalLogCount % _totalBookProgressAmount;
 
           final int numberOf15BooksRead =
               totalLogCount ~/ _totalBookProgressAmount;
@@ -109,13 +109,13 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                   ),
                                   LinearPercentIndicator(
                                     center: Text(
-                                      '$remainingLogCount',
+                                      '$currentLogCount',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                     ),
                                     lineHeight: 30.0,
-                                    percent: remainingLogCount /
+                                    percent: currentLogCount /
                                         _totalBookProgressAmount,
                                     backgroundColor: Colors.grey,
                                     progressColor: COLOR_ORANGE,
@@ -303,10 +303,16 @@ class ReadingLogPageState extends State<ReadingLogPage>
 
                                     if (!confirm) return;
 
+                                    bool totalLogLimitReached =
+                                        currentLogCount + 1 ==
+                                            _totalBookProgressAmount;
+
                                     _readingLogBloc.add(
                                       CreateBookLogEvent(
                                         bookID: book.id,
                                         date: day,
+                                        totalLogLimitReached:
+                                            totalLogLimitReached,
                                       ),
                                     );
                                   },
@@ -363,5 +369,13 @@ class ReadingLogPageState extends State<ReadingLogPage>
   void showMessage({String message}) {
     locator<ModalService>()
         .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+  }
+
+  @override
+  void showAwardMessage() {
+    Route route = MaterialPageRoute(
+      builder: (BuildContext context) => SuccessMessagePage(),
+    );
+    Navigator.push(context, route);
   }
 }

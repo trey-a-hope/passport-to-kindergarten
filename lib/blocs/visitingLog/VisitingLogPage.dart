@@ -25,7 +25,6 @@ class VisitingLogPageState extends State<VisitingLogPage>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   VisitingLogBloc _visitingLogBloc;
 
-  final int _totalVisitProgressAmount = 15;
   CalendarController _calendarController = CalendarController();
 
   @override

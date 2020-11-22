@@ -6,12 +6,11 @@ import 'constants.dart';
 class SuccessMessagePage extends StatelessWidget {
   SuccessMessagePage({Key key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  ConfettiController _confettiController;
+  final ConfettiController _confettiController =
+      ConfettiController(duration: const Duration(seconds: 10));
 
   @override
   Widget build(BuildContext context) {
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 10));
     final List<String> messages = [
       'You did it!',
       'AWEsome reading, 15 books!',

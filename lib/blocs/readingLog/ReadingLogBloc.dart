@@ -12,6 +12,7 @@ import 'Bloc.dart';
 
 abstract class ReadingLogDelegate {
   void showMessage({@required String message});
+  void showAwardMessage();
 }
 
 class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
@@ -121,7 +122,6 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
         );
 
         _readingLogDelegate.showMessage(message: 'Book added!');
-
       } catch (error) {
         yield ErrorState(error: error);
       }
@@ -130,6 +130,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
     if (event is CreateBookLogEvent) {
       final String bookID = event.bookID;
       final DateTime date = event.date;
+      final bool totalLogLimitReached = event.totalLogLimitReached;
 
       try {
         final LogModel log = LogModel(
@@ -144,7 +145,11 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
           log: log,
         );
 
-        _readingLogDelegate.showMessage(message: 'Log added!');
+        if (totalLogLimitReached) {
+          _readingLogDelegate.showAwardMessage();
+        } else {
+          _readingLogDelegate.showMessage(message: 'Log added!');
+        }
       } catch (error) {
         yield ErrorState(error: error);
       }

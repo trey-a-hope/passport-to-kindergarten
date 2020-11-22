@@ -46,15 +46,18 @@ class CreateBookEvent extends ReadingLogEvent {
 class CreateBookLogEvent extends ReadingLogEvent {
   final String bookID;
   final DateTime date;
+  final bool totalLogLimitReached;
 
   CreateBookLogEvent({
     @required this.bookID,
     @required this.date,
+    @required this.totalLogLimitReached,
   });
 
   @override
   List<Object> get props => [
         bookID,
         date,
+        totalLogLimitReached,
       ];
 }
