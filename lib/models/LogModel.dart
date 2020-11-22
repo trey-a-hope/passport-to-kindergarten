@@ -1,29 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ChildLogModel {
+class LogModel {
   String id;
   DateTime created;
-  String title;
-  String notes;
 
-  ChildLogModel({
+  LogModel({
     @required this.id,
     @required this.created,
-    @required this.title,
-    @required this.notes,
   });
 
-  factory ChildLogModel.fromDocumentSnapshot({
+  factory LogModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
     Map<String, dynamic> data = ds.data;
 
-    return ChildLogModel(
+    return LogModel(
       id: data['id'],
       created: data['created'].toDate(),
-      title: data['title'],
-      notes: data['notes'],
     );
   }
 
@@ -31,8 +25,6 @@ class ChildLogModel {
     return {
       'id': id,
       'created': created,
-      'title': title,
-      'notes': notes,
     };
   }
 }

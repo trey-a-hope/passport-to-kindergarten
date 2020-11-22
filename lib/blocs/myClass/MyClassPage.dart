@@ -8,7 +8,8 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -73,27 +74,6 @@ class MyClassPageState extends State<MyClassPage>
           final List<VisitModel> selectedStudentVisits =
               state.selectedStudentVisits;
 
-          final int boonshoftMuseumCount = selectedStudentVisits
-              .where((visitLog) =>
-                  visitLog.title == 'Boonshoft Museaum of Discovery')
-              .toList()
-              .length;
-
-          final int daytonMetroCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Dayton Metro Library')
-              .toList()
-              .length;
-
-          final int fiveRiversCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Five Rivers Metro Park')
-              .toList()
-              .length;
-
-          final int daytonArtCount = selectedStudentVisits
-              .where((visitLog) => visitLog.title == 'Dayton Art Institute')
-              .toList()
-              .length;
-
           int totalLogCount = 0;
           books.forEach((book) {
             totalLogCount += book.logCount;
@@ -104,8 +84,6 @@ class MyClassPageState extends State<MyClassPage>
 
           final int numberOf15BooksRead =
               totalLogCount ~/ _totalBookProgressAmount;
-
-          Map<DateTime, List<ChildLogModel>> events = state.events;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -142,27 +120,6 @@ class MyClassPageState extends State<MyClassPage>
                                 Padding(
                                   padding: EdgeInsets.all(10),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Type: Preschool',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: COLOR_NAVY),
-                                      ),
-                                      Text(
-                                        'Passport Number: 2020-2021',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: COLOR_NAVY),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
@@ -174,20 +131,6 @@ class MyClassPageState extends State<MyClassPage>
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'ABC Child Development Center',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: COLOR_NAVY),
-                                      ),
-                                    ],
-                                  ),
-                                )
                               ],
                             ),
                       Expanded(
@@ -195,6 +138,7 @@ class MyClassPageState extends State<MyClassPage>
                           itemCount: students.length,
                           itemBuilder: (BuildContext context, int index) {
                             final UserModel student = students[index];
+                            final List<StampModel> stamps = state.stamps;
 
                             return ExpansionTile(
                               onExpansionChanged: (bool open) {
@@ -225,11 +169,17 @@ class MyClassPageState extends State<MyClassPage>
                                     Container(
                                       height: 300,
                                       child: StaggeredGridView.countBuilder(
+                                        shrinkWrap: true,
                                         crossAxisCount: 4,
                                         itemCount: stamps.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return stamps[index];
+                                          final StampModel stamp =
+                                              stamps[index];
+                                          return Image.asset(
+                                            stamp.assetImagePath,
+                                            height: 100,
+                                          );
                                         },
                                         staggeredTileBuilder: (int index) =>
                                             StaggeredTile.count(
@@ -258,7 +208,7 @@ class MyClassPageState extends State<MyClassPage>
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: COLOR_NAVY,
-                                              fontSize: 18,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -429,15 +379,15 @@ class MyClassPageState extends State<MyClassPage>
 
                                           return ExpansionTile(
                                             onExpansionChanged: (bool open) {
-                                              if (!open) {
-                                                _myClassBloc.add(
-                                                  SelectDateForBookEvent(
-                                                    selectedDate: null,
-                                                    studentUID: student.uid,
-                                                    bookID: book.id,
-                                                  ),
-                                                );
-                                              }
+                                              // if (open) {
+                                              //   _myClassBloc.add(
+                                              //     SelectDateForBookEvent(
+                                              //       selectedDate: null,
+                                              //       studentUID: student.uid,
+                                              //       bookID: book.id,
+                                              //     ),
+                                              //   );
+                                              // }
                                             },
                                             title: ListTile(
                                               leading: CircleAvatar(
@@ -455,532 +405,88 @@ class MyClassPageState extends State<MyClassPage>
                                               title: Row(
                                                 children: [
                                                   CircleAvatar(
-                                                    backgroundImage: NetworkImage(
-                                                        DUMMY_PROFILE_PHOTO_URL),
+                                                    backgroundImage: Image.asset(
+                                                            '${book.assetImagePath}')
+                                                        .image,
                                                   ),
                                                   SizedBox(
                                                     width: 15,
                                                   ),
-                                                  Text(
-                                                    '${book.title}',
-                                                    style: TextStyle(
-                                                      color: COLOR_NAVY,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                  Flexible(
+                                                    child: Text(
+                                                      '${book.title}',
+                                                      style: TextStyle(
+                                                        color: COLOR_NAVY,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   )
                                                 ],
                                               ),
                                               onTap: () {},
                                             ),
-                                            children: selectedDateForBookLogs !=
-                                                    null
-                                                ? [
-                                                    TableCalendar(
-                                                      calendarController:
-                                                          _calendarController,
-                                                      events: events,
-                                                      startingDayOfWeek:
-                                                          StartingDayOfWeek
-                                                              .sunday,
-                                                      initialSelectedDay:
-                                                          selectedDateForBookLogs,
-                                                      calendarStyle:
-                                                          CalendarStyle(
-                                                        selectedColor: Colors
-                                                            .deepOrange[400],
-                                                        todayColor: Colors
-                                                            .deepOrange[200],
-                                                        markersColor:
-                                                            Colors.black,
-                                                        outsideDaysVisible:
-                                                            false,
-                                                      ),
-                                                      headerStyle: HeaderStyle(
-                                                        formatButtonTextStyle:
-                                                            TextStyle().copyWith(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15.0),
-                                                        formatButtonDecoration:
-                                                            BoxDecoration(
-                                                          color: Colors
-                                                              .deepOrange[400],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                      ),
-                                                      onDaySelected:
-                                                          (DateTime day,
-                                                              List events) {
-                                                        // _readingLogLogsBloc.add(
-                                                        //   READING_LOG_LOGS_BP
-                                                        //       .OnDaySelectedEvent(
-                                                        //           selectedDay:
-                                                        //               day),
-                                                        // );
-                                                      },
-                                                      onVisibleDaysChanged:
-                                                          (DateTime first,
-                                                              DateTime last,
-                                                              CalendarFormat
-                                                                  format) {},
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    FullWidthButtonWidget(
-                                                      buttonColor: COLOR_NAVY,
-                                                      text:
-                                                          'Add Log for ${DateFormat('MMMM dd, yyyy').format(DateTime.now())}',
-                                                      textColor: Colors.white,
-                                                      onPressed: () async {
-                                                        final bool confirm = await locator<
-                                                                ModalService>()
-                                                            .showConfirmation(
-                                                                context:
-                                                                    context,
-                                                                title:
-                                                                    'Add Log for ${book.title}',
-                                                                message:
-                                                                    'Are you sure?');
+                                            children: [
+                                              TableCalendar(
+                                                calendarController:
+                                                    _calendarController,
+                                                events: book.logEvents,
+                                                startingDayOfWeek:
+                                                    StartingDayOfWeek.sunday,
+                                                initialSelectedDay:
+                                                    selectedDateForBookLogs,
+                                                calendarStyle: CalendarStyle(
+                                                  selectedColor:
+                                                      Colors.deepOrange[400],
+                                                  todayColor:
+                                                      Colors.deepOrange[200],
+                                                  markersColor: Colors.black,
+                                                  outsideDaysVisible: false,
+                                                ),
+                                                headerStyle: HeaderStyle(
+                                                  formatButtonTextStyle:
+                                                      TextStyle().copyWith(
+                                                          color: Colors.white,
+                                                          fontSize: 15.0),
+                                                  formatButtonDecoration:
+                                                      BoxDecoration(
+                                                    color:
+                                                        Colors.deepOrange[400],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                ),
+                                                onDaySelected: (DateTime day,
+                                                    List events) async {
+                                                  final bool confirm =
+                                                      await locator<
+                                                              ModalService>()
+                                                          .showConfirmation(
+                                                              context: context,
+                                                              title: 'Add Log',
+                                                              message:
+                                                                  '${DateFormat('MMMM dd, yyyy').format(day)} for \"${book.title}\"');
 
-                                                        if (!confirm) return;
+                                                  if (!confirm) return;
 
-                                                        _myClassBloc.add(
-                                                          CreateLogForStudentEvent(
-                                                            studentUID:
-                                                                student.uid,
-                                                            bookID: book.id,
-                                                          ),
-                                                        );
-                                                      },
+                                                  _myClassBloc.add(
+                                                    CreateLogForStudentEvent(
+                                                      studentUID: student.uid,
+                                                      bookID: book.id,
+                                                      date: day,
                                                     ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                  ]
-                                                : [
-                                                    Container(
-                                                      height: 50,
-                                                      color: COLOR_YELLOW,
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Wow! You have read this book ${book.logCount} times!',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      1,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'January',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      2,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'February',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      3,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'March',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      4,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'April',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      5,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'May',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      6,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'June',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                      2020,
-                                                                      7,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'July',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                            2020,
-                                                                            8),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'August',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                            2020,
-                                                                            9),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'September',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                            2020,
-                                                                            10),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'October',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                            2020,
-                                                                            11),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'November',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                FullWidthButtonWidget(
-                                                              textColor:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                _myClassBloc
-                                                                    .add(
-                                                                  SelectDateForBookEvent(
-                                                                    studentUID:
-                                                                        student
-                                                                            .uid,
-                                                                    bookID:
-                                                                        book.id,
-                                                                    selectedDate:
-                                                                        DateTime(
-                                                                            2020,
-                                                                            12),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              buttonColor:
-                                                                  COLOR_NAVY,
-                                                              text: 'December',
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
+                                                  );
+                                                },
+                                                onVisibleDaysChanged: (DateTime
+                                                        first,
+                                                    DateTime last,
+                                                    CalendarFormat format) {},
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
                                           );
                                         },
                                       ),
@@ -1003,7 +509,7 @@ class MyClassPageState extends State<MyClassPage>
                                           ASSET_boonshoft_logo,
                                         ),
                                         title: Text(
-                                            'Boonshoft Museum of Discovery ($boonshoftMuseumCount)'),
+                                            'Boonshoft Museum of Discovery (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -1039,7 +545,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1067,7 +573,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1088,7 +594,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1362,8 +868,7 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_dayton_metro_library_logo,
                                         ),
-                                        title: Text(
-                                            'Dayton Metro Library ($daytonMetroCount)'),
+                                        title: Text('Dayton Metro Library (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -1399,7 +904,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1427,7 +932,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1448,7 +953,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1720,8 +1225,8 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_five_rivers_metroparks_logo,
                                         ),
-                                        title: Text(
-                                            'Five Rivers Metro Park ($fiveRiversCount)'),
+                                        title:
+                                            Text('Five Rivers Metro Park (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -1757,7 +1262,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1785,7 +1290,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1806,7 +1311,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2100,8 +1605,7 @@ class MyClassPageState extends State<MyClassPage>
                                         leading: Image.asset(
                                           ASSET_dayton_art_institute_logo,
                                         ),
-                                        title: Text(
-                                            'Dayton Art Institute ($daytonArtCount)'),
+                                        title: Text('Dayton Art Institute (?)'),
                                         children: [
                                           Row(
                                             children: [
@@ -2137,7 +1641,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Website',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2165,7 +1669,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Directions',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -2186,7 +1690,7 @@ class MyClassPageState extends State<MyClassPage>
                                                         'Log',
                                                         style: TextStyle(
                                                           color: COLOR_NAVY,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),

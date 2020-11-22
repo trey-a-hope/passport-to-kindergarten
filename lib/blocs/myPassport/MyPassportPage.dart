@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:p/constants.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
@@ -44,6 +45,7 @@ class MyPassportPageState extends State<MyPassportPage>
         if (state is LoadedState) {
           final UserModel child = state.childUser;
           final UserModel teacher = state.teacherUser;
+          final List<StampModel> stamps = state.stamps;
 
           return Scaffold(
             key: _scaffoldKey,
@@ -54,13 +56,12 @@ class MyPassportPageState extends State<MyPassportPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       AppBarWidget(title: 'My Passport'),
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
                               width: 120,
@@ -72,68 +73,63 @@ class MyPassportPageState extends State<MyPassportPage>
                                 ),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: Image.network(
-                                DUMMY_PROFILE_PHOTO_URL,
-                              ),
+                              child: Image.network(child.imgUrl),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 15,
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Primary Parent Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.primaryParentFirstName} ${child.primaryParentLastName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Secondary Parent Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Child Name',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    '${child.firstName} ${child.lastName}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    'Child DOB',
-                                    style: TextStyle(color: COLOR_NAVY),
-                                  ),
-                                  Text(
-                                    DateFormat('MMMM dd, yyyy')
-                                        .format(child.dob),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: COLOR_NAVY,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              ),
-                            )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Primary Parent Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.primaryParentFirstName} ${child.primaryParentLastName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Secondary Parent Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Child Name',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  '${child.firstName} ${child.lastName}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                                Divider(),
+                                Text(
+                                  'Child DOB',
+                                  style: TextStyle(color: COLOR_NAVY),
+                                ),
+                                Text(
+                                  DateFormat('MMMM dd, yyyy').format(child.dob),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: COLOR_NAVY,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -192,19 +188,22 @@ class MyPassportPageState extends State<MyPassportPage>
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          crossAxisCount: 4,
-                          itemCount: stamps.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return stamps[index];
-                          },
-                          staggeredTileBuilder: (int index) =>
-                              StaggeredTile.count(2, index.isEven ? 2 : 1),
-                          mainAxisSpacing: 4.0,
-                          crossAxisSpacing: 4.0,
-                        ),
-                      )
+                      StaggeredGridView.countBuilder(
+                        shrinkWrap: true,
+                        crossAxisCount: 4,
+                        itemCount: stamps.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final StampModel stamp = stamps[index];
+                          return Image.asset(
+                            stamp.assetImagePath,
+                            height: 100,
+                          );
+                        },
+                        staggeredTileBuilder: (int index) =>
+                            StaggeredTile.count(2, index.isEven ? 2 : 1),
+                        mainAxisSpacing: 4.0,
+                        crossAxisSpacing: 4.0,
+                      ),
                     ],
                   ),
                 ),

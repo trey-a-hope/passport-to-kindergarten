@@ -10,19 +10,10 @@ class ReadingLogBooksAddState extends Equatable {
 class LoadingState extends ReadingLogBooksAddState {}
 
 class LoadedState extends ReadingLogBooksAddState {
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
-
-  LoadedState({
-    @required this.autoValidate,
-    @required this.formKey,
-  });
+  LoadedState();
 
   @override
-  List<Object> get props => [
-        autoValidate,
-        formKey,
-      ];
+  List<Object> get props => [];
 }
 
 class ErrorState extends ReadingLogBooksAddState {

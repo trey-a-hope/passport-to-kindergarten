@@ -18,9 +18,12 @@ class ReadingLogBooksAddPage extends StatefulWidget {
 class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
     implements READING_LOG_BOOKS_ADD_BP.ReadingLogBooksAddDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   READING_LOG_BOOKS_ADD_BP.ReadingLogBooksAddBloc _readLogBooksBloc;
 
   final TextEditingController _bookTitleController = TextEditingController();
+  final TextEditingController _bookAuthorController = TextEditingController();
 
   @override
   void initState() {
@@ -60,14 +63,15 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                 color: COLOR_CREAM,
                 child: SafeArea(
                   child: Form(
-                    key: state.formKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         AppBarWidget(title: 'Add a New Title'),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
                           child: TextFormField(
-                            autovalidate: state.autoValidate,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             cursorColor: Colors.black,
                             validator: locator<ValidatorService>().isEmpty,
                             keyboardType: TextInputType.text,
@@ -79,6 +83,26 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                               border: OutlineInputBorder(),
                               labelText: 'Title',
                               prefixIcon: Icon(Icons.person),
+                              labelStyle: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            cursorColor: Colors.black,
+                            validator: locator<ValidatorService>().isEmpty,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            controller: _bookAuthorController,
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'SFUIDisplay'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Author',
+                              prefixIcon: Icon(Icons.book),
                               labelStyle: TextStyle(fontSize: 15),
                             ),
                           ),
@@ -98,7 +122,7 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
                             _readLogBooksBloc.add(
                               READING_LOG_BOOKS_ADD_BP.SubmitEvent(
                                 bookTitle: _bookTitleController.text,
-                                formKey: state.formKey,
+                                author: _bookAuthorController.text,
                               ),
                             );
                           },
@@ -138,6 +162,8 @@ class ReadingLogBooksAddPageState extends State<ReadingLogBooksAddPage>
 
   @override
   void clearForm() {
+    _formKey.currentState.reset();
     _bookTitleController.clear();
+    _bookAuthorController.clear();
   }
 }

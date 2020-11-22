@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/visitingLogLogsAdd/Bloc.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -50,16 +50,16 @@ class VisitingLogLogsAddBloc
       yield LoadingState();
 
       try {
-        ChildLogModel visitLog = ChildLogModel(
-          notes: description,
+        LogModel visitLog = LogModel(
           id: null,
           created: DateTime.now(),
-          title: title,
         );
 
-        locator<LogService>().createVisitLog(
+        locator<LogService>().createLog(
           uid: _currentUser.uid,
           log: visitLog,
+          collection: 'visits',
+          documentID: null,
         );
 
         yield LoadedState(

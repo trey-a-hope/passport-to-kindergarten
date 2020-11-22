@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -74,13 +74,13 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                       ),
                       Expanded(
                         child: GridView.builder(
-                          itemCount: BOOKS_OF_THE_MONTH.length,
+                          itemCount: DEFAULT_BOOKS.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
                           itemBuilder: (BuildContext context, int index) {
-                            final BookOfTheMonthModel bookOfTheMonth =
-                                BOOKS_OF_THE_MONTH[index];
+                            final BookModel bookOfTheMonth =
+                                DEFAULT_BOOKS[index];
 
                             return Padding(
                               padding: EdgeInsets.all(10),

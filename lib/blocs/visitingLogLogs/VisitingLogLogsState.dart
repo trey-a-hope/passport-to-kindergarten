@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 
 class VisitingLogLogState extends Equatable {
@@ -14,7 +14,7 @@ class LoadingState extends VisitingLogLogState {}
 class LoadedState extends VisitingLogLogState {
   final String title;
   final UserModel user;
-  final Map<DateTime, List<ChildLogModel>> events;
+  final Map<DateTime, List<LogModel>> events;
   final DateTime dateKey;
   final DateTime initialSelectedDay;
 

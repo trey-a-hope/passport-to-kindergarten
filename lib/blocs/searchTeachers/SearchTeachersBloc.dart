@@ -6,8 +6,8 @@ import 'package:bloc/bloc.dart';
 import 'Bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
-    SearchTeachersState> {
+class SearchTeachersBloc
+    extends Bloc<SearchTeachersEvent, SearchTeachersState> {
   final SearchTeachersRepository searchTeachersRepository;
   SearchTeachersBloc({@required this.searchTeachersRepository})
       : super(
@@ -15,12 +15,9 @@ class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
         );
 
   @override
-  Stream<
-      Transition<SearchTeachersEvent,
-          SearchTeachersState>> transformEvents(
+  Stream<Transition<SearchTeachersEvent, SearchTeachersState>> transformEvents(
       Stream<SearchTeachersEvent> events,
-      TransitionFunction<SearchTeachersEvent,
-              SearchTeachersState>
+      TransitionFunction<SearchTeachersEvent, SearchTeachersState>
           transitionFn) {
     return super.transformEvents(
       events.debounceTime(const Duration(milliseconds: 300)),
@@ -30,9 +27,7 @@ class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
 
   @override
   void onTransition(
-      Transition<SearchTeachersEvent,
-              SearchTeachersState>
-          transition) {
+      Transition<SearchTeachersEvent, SearchTeachersState> transition) {
     print(transition);
     super.onTransition(transition);
   }
@@ -45,7 +40,7 @@ class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
       try {
         yield SearchTeachersStateStart();
       } catch (error) {
-        print(error.toString()); //todo: Display error message.
+        print(error.toString()); //TODO: Display error message.
       }
     }
 
@@ -62,8 +57,7 @@ class SearchTeachersBloc extends Bloc<SearchTeachersEvent,
           if (results.isEmpty) {
             yield SearchTeachersStateNoResults();
           } else {
-            yield SearchTeachersStateFoundResults(
-                teachers: results);
+            yield SearchTeachersStateFoundResults(teachers: results);
           }
         } catch (error) {
           yield SearchTeachersStateError(error: error);

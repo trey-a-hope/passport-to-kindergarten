@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/UserModel.dart';
@@ -44,14 +46,17 @@ class TeacherSubmitEvent extends EditProfileEvent {
 
 class ParentSetTextFieldsEvent extends EditProfileEvent {
   final UserModel user;
+  final UserModel teacher;
 
   ParentSetTextFieldsEvent({
     @required this.user,
+    @required this.teacher,
   });
 
   @override
   List<Object> get props => [
         user,
+        teacher,
       ];
 }
 
@@ -114,5 +119,29 @@ class UpdateChildDOBEvent extends EditProfileEvent {
 
   List<Object> get props => [
         childDOB,
+      ];
+}
+
+class UploadPictureEvent extends EditProfileEvent {
+  final File image;
+
+  UploadPictureEvent({
+    @required this.image,
+  });
+
+  List<Object> get props => [
+        image,
+      ];
+}
+
+class SelectTeacherEvent extends EditProfileEvent {
+  final UserModel selectedTeacher;
+
+  SelectTeacherEvent({
+    @required this.selectedTeacher,
+  });
+
+  List<Object> get props => [
+        selectedTeacher,
       ];
 }

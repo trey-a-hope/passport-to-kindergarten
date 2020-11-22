@@ -16,58 +16,40 @@ class LoadingState extends EditProfileState {}
 
 class SuperAdminLoadedState extends EditProfileState {
   final UserModel user;
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
 
   SuperAdminLoadedState({
     @required this.user,
-    @required this.autoValidate,
-    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
         user,
-        autoValidate,
-        formKey,
       ];
 }
 
 class TeacherLoadedState extends EditProfileState {
   final UserModel user;
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
 
   TeacherLoadedState({
     @required this.user,
-    @required this.autoValidate,
-    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
         user,
-        autoValidate,
-        formKey,
       ];
 }
 
 class ParentLoadedState extends EditProfileState {
   final UserModel user;
-  final bool autoValidate;
-  final GlobalKey<FormState> formKey;
 
   ParentLoadedState({
     @required this.user,
-    @required this.autoValidate,
-    @required this.formKey,
   });
 
   @override
   List<Object> get props => [
         user,
-        autoValidate,
-        formKey,
       ];
 }
 

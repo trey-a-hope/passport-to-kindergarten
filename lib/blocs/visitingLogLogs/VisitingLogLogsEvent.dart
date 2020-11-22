@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
+import 'package:p/models/VisitModel.dart';
 
 abstract class VisitingLogLogsEvent extends Equatable {
   @override
@@ -15,7 +16,7 @@ class LoadPageEvent extends VisitingLogLogsEvent {
 }
 
 class LogsUpdatedEvent extends VisitingLogLogsEvent {
-  final List<ChildLogModel> logs;
+  final List<LogModel> logs;
 
   LogsUpdatedEvent({
     @required this.logs,
@@ -37,5 +38,18 @@ class OnDaySelectedEvent extends VisitingLogLogsEvent {
   @override
   List<Object> get props => [
         selectedDay,
+      ];
+}
+
+class VisitsUpdatedEvent extends VisitingLogLogsEvent {
+  final List<VisitModel> visits;
+
+  VisitsUpdatedEvent({
+    @required this.visits,
+  });
+
+  @override
+  List<Object> get props => [
+        visits,
       ];
 }

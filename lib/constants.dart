@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:p/extensions/HexColorExtension.dart';
-import 'package:p/models/BookOfTheMonthModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'models/UserModel.dart';
+import 'models/VisitModel.dart';
 
 //Books of the Month
 const String ASSET_LOLA_GOES_TO_SCHOOL =
@@ -33,7 +33,6 @@ const String ASSET_pp_text_logo = 'assets/images/pp_text_logo.png';
 const String ASSET_play_button = 'assets/images/play_button.png';
 const String ASSET_about_page_logos = 'assets/images/about_page_logos.png';
 const String ASSET_IMAGE_LOGO = 'assets/images/splash_logo.png';
-const String ASSET_IMAGE_P2K_LOGO = 'assets/images/icon_p2k.png';
 const String ASSET_IMAGE_P2K_TEXT = 'assets/images/preschool_text.png';
 const String ASSET_IMAGE_OR = 'assets/images/or_logo.png';
 const String ASSET_p2k20_app_opening_photo =
@@ -70,28 +69,28 @@ const String ASSET_stamp_five_rivers_metro_park =
 
 //Stamps
 
-final List<Image> stamps = [
-  Image.asset(
-    ASSET_p2k20_app_stamp_15_books_read,
-    height: 100,
-  ),
-  Image.asset(
-    ASSET_stamp_boonshoft,
-    height: 100,
-  ),
-  Image.asset(
-    ASSET_stamp_dayton_art_institute,
-    height: 100,
-  ),
-  Image.asset(
-    ASSET_stamp_dayton_metro_library,
-    height: 100,
-  ),
-  Image.asset(
-    ASSET_stamp_five_rivers_metro_park,
-    height: 100,
-  ),
-];
+// final List<Image> stamps = [
+//   Image.asset(
+//     ASSET_p2k20_app_stamp_15_books_read,
+//     height: 100,
+//   ),
+//   Image.asset(
+//     ASSET_stamp_boonshoft,
+//     height: 100,
+//   ),
+//   Image.asset(
+//     ASSET_stamp_dayton_art_institute,
+//     height: 100,
+//   ),
+//   Image.asset(
+//     ASSET_stamp_dayton_metro_library,
+//     height: 100,
+//   ),
+//   Image.asset(
+//     ASSET_stamp_five_rivers_metro_park,
+//     height: 100,
+//   ),
+// ];
 
 //Vist Log
 const String ASSET_dayton_metro_library_logo =
@@ -161,8 +160,49 @@ UserModel IDK_TEACHER_MODEL = UserModel(
   secondaryParentLastName: null,
 );
 
-final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
-  BookOfTheMonthModel(
+final List<VisitModel> DEFAULT_VISITS = [
+  VisitModel(
+      id: null,
+      created: DateTime.now(),
+      modified: DateTime.now(),
+      title: 'Boonshoft Museum of Discovery',
+      logCount: 0,
+      assetImagePath: ASSET_boonshoft_logo,
+      website: 'https://www.boonshoftmuseum.org/',
+      address: '2600 DeWeese Pkwy, Dayton, OH 45414, USA'),
+  VisitModel(
+    id: null,
+    created: DateTime.now(),
+    modified: DateTime.now(),
+    title: 'Dayton Metro Library',
+    logCount: 0,
+    assetImagePath: ASSET_dayton_metro_library_logo,
+    website: 'http://www.daytonmetrolibrary.org/',
+    address: '215 E. Third St., Dayton, OH 45402, USA',
+  ),
+  VisitModel(
+      id: null,
+      created: DateTime.now(),
+      modified: DateTime.now(),
+      title: 'Five Rivers Metro Park',
+      logCount: 0,
+      assetImagePath: ASSET_five_rivers_metroparks_logo,
+      website: 'https://www.metroparks.org/contact/',
+      address: '409 E. Monument Ave., Dayton, OH 45402, USA'),
+  VisitModel(
+    id: null,
+    created: DateTime.now(),
+    modified: DateTime.now(),
+    title: 'Dayton Art Institute',
+    logCount: 0,
+    assetImagePath: ASSET_dayton_art_institute_logo,
+    website: 'https://www.daytonartinstitute.org/',
+    address: '456 Belmonte Park N, Dayton, OH 45405, USA',
+  )
+];
+
+final List<BookModel> DEFAULT_BOOKS = [
+  BookModel(
     title: 'Lola Goes To School',
     assetImagePath: ASSET_LOLA_GOES_TO_SCHOOL,
     author: 'Anna McQuinn',
@@ -177,8 +217,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'What can you do when you feel nervous or upset to help yourself feel better.',
       'How does a person look when they feel worried or afraid?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'The Little Old Lady Who Was Not Afraid of Anything',
     assetImagePath: ASSET_THE_LITTLE_OLD_LADY_WHO_WAS_NOT_AFRAID_OF_ANYTHING,
     author: 'Linda Williams',
@@ -192,8 +236,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'Is there something that might scare you in the woods? Tell about it.'
           'Some things in books are real and true, but some things are make-believe. Go through this book and talk about what is real and what is make-believe.'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Bear Says Thanks',
     assetImagePath: ASSET_BEAR_SAYS_THANKS,
     author: 'Karma Wilson',
@@ -206,8 +254,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'If you were going to plan all the food to have for a feast, what foods would you like?',
       'People feel  thankful when they think about the things in their lives that make them happy. What are you some of the things in your life that make you feel happy?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'The Gingerbread Man',
     assetImagePath: ASSET_THE_GINGERBREAD_MAN,
     author: 'Karen Schmidt',
@@ -221,8 +273,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'What if the Gingerbread Man decided to hide somewhere? Where might he hide?',
       'What if the little boy caught the Gingerbread Man, what do you think he\'d do?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'The Mitten',
     assetImagePath: ASSET_THE_MITTEN,
     author: 'Jan Brett',
@@ -235,8 +291,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
           'Share stories of losing things. Do you feel like you are always losing a particular thing? Why might it be hard to keep track of.',
       'Does the boy in the story know why his mitten is all stretche out? Why not? What might the boy imagine happened to the stretched-out mitten?',
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Don\'t Let the Pigeon Drive the Bus',
     assetImagePath: ASSET_DONT_LET_THE_PIGEON_DRIVE_THE_BUS,
     author: 'Mo Williams',
@@ -249,8 +309,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'How do you feel when someone tells you: "No, you can\t do that?" What can you do to feel beter?',
       'Is there something the pigeon can do that the bus driver can\'t do? What can you do that a one-year-old baby can\'t do?',
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Lola Plants a Garden',
     assetImagePath: ASSET_LOLA_PLANTS_A_GARDEN,
     author: 'Anna McQuinn',
@@ -263,8 +327,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'Did you ever see a garden? Where was it and who did the work of tending it? What would you want to grow in a garden if you could?',
       'When Lola invites her friends to see her garden, she and her mother make cupcakes for them. If friends were coming to your house, what would you like to make for them? What clothes would you wear for a party like that? Who might you invite?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Pete the Cat and His Four Groovy Buttons',
     assetImagePath: ASSET_PETE_THE_CAT_AND_HIS_FOUR_GROOVY_BUTTONS,
     author: 'Eric Litwin & James Dean',
@@ -277,8 +345,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'Why do you think buttons sometimes pop off?',
       'Did you ever have a button come off your clothing? Tell about it.'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Not a Box',
     assetImagePath: ASSET_NOT_A_BOX,
     author: 'Antoinette Portis',
@@ -290,8 +362,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'Did you ever play in a large box? Tell about it?'
           'If you had a box, what might you imagine it to be? What else? Take turns thinknig up examples or pantomiming it\'s use.'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'The Three Billy Goats Gruff',
     assetImagePath: ASSET_THE_THREE_BILLY_GOATS_GRUFF,
     author: 'Ellen Appleby',
@@ -305,8 +381,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'Some imaginary creatures are scary and some are not. A troll is an imaginary creature, can you think of other imaginary creatures?F',
       'What could you say to the troll to get him to let you cross the bridge?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'Freight Train',
     assetImagePath: ASSET_FREIGHT_TRAIN,
     author: 'Donald Crews',
@@ -319,8 +399,12 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
           'Did you ever mail something? How do you think the card/letter/package got to where it was going?',
       'A plane travles faster than a train or a truck. Why do you think that is?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
-  BookOfTheMonthModel(
+  BookModel(
     title: 'I Got the Rhythm',
     assetImagePath: ASSET_I_GOT_THE_RHYTHM,
     author: 'Connie Schofield-Morrison',
@@ -333,6 +417,10 @@ final List<BookOfTheMonthModel> BOOKS_OF_THE_MONTH = [
       'At one point int he story, there are lots of kids. Where do you think they are? Why do you think that?',
       'If you were that little girl\'s mother, what would you say to her?'
     ],
+    modified: DateTime.now(),
+    created: DateTime.now(),
+    id: null,
+    logCount: 0,
   ),
 ];
 

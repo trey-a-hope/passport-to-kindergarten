@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
-import 'package:p/models/ChildLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
@@ -60,8 +60,8 @@ class VisitingLogLogsPageState extends State<VisitingLogLogsPage>
           // final ParentLogModel book = state.book;
           final String title = state.title;
 
-          final List<ChildLogModel> logs =
-              state.events[state.dateKey] ?? List<ChildLogModel>();
+          final List<LogModel> logs =
+              state.events[state.dateKey] ?? List<LogModel>();
           final DateTime initialSelectedDay = state.initialSelectedDay;
 
           return Scaffold(
@@ -112,14 +112,14 @@ class VisitingLogLogsPageState extends State<VisitingLogLogsPage>
                         child: ListView.builder(
                           itemCount: logs.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final ChildLogModel log = logs[index];
+                            final LogModel log = logs[index];
                             return ListTile(
                               leading: Icon(
                                 MdiIcons.book,
                                 color: COLOR_NAVY,
                               ),
                               title: Text(
-                                '\"${log.notes}\"',
+                                'Blah Blah Blah',
                                 style: TextStyle(
                                   color: COLOR_NAVY,
                                 ),

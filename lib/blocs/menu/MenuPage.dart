@@ -20,7 +20,6 @@ import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/visitingLogVisits/Bloc.dart' as VISITING_LOG_VISITS_BP;
 import 'package:p/blocs/readingLogBooks/Bloc.dart' as READING_LOG_BOOKS_BP;
-import 'package:p/blocs/admin/Bloc.dart' as ADMIN_LOG_BP;
 import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
     as AWESOME_READING_TIPS_BP;
@@ -33,6 +32,7 @@ class MenuPage extends StatefulWidget {
 
 class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final double _menuBottomPadding = 50;
   MenuBloc _menuBloc;
 
   @override
@@ -58,8 +58,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () async {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => MY_CLASS_BP.MyClassBloc()
@@ -85,8 +83,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () async {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => MY_PASSPORT_BP.MyPassportBloc()
@@ -108,12 +104,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         width: 20,
       ),
       title: Text(
-        'Reading Log',
+        'Log Reading',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -136,12 +130,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         width: 20,
       ),
       title: Text(
-        'Visit Log',
+        'Log Visit',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -164,12 +156,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         height: 20,
       ),
       title: Text(
-        'Book of The Month',
+        'Explore Book of The Month',
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -196,8 +186,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) =>
@@ -224,8 +212,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => EDIT_PROFILE_BP.EditProfileBloc()
@@ -248,7 +234,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   //       style: TextStyle(color: Colors.white),
   //     ),
   //     onTap: () {
-  //       HapticFeedback.vibrate();
+  //
 
   //       Route route = MaterialPageRoute(
   //         builder: (BuildContext context) => BlocProvider(
@@ -275,8 +261,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => AboutPage(),
         );
@@ -297,8 +281,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
         style: TextStyle(color: Colors.white),
       ),
       onTap: () {
-        HapticFeedback.vibrate();
-
         Route route = MaterialPageRoute(
           builder: (BuildContext context) => SettingsPage(),
         );
@@ -360,7 +342,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -369,15 +351,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                showSelectImageDialog();
-                              },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  user.imgUrl,
-                                ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
                               ),
                             ),
                             left: 20,
@@ -404,7 +381,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       myClassListTile(),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
@@ -414,7 +393,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),
@@ -442,7 +421,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -451,15 +430,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                showSelectImageDialog();
-                              },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  user.imgUrl,
-                                ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
                               ),
                             ),
                             left: 20,
@@ -486,7 +460,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       myPassportListTile(),
                       readingLogListTile(),
                       visitLogListTile(),
@@ -497,7 +473,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),
@@ -525,7 +501,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                   ),
                 ),
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       Stack(
                         children: [
@@ -569,7 +545,9 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                           )
                         ],
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
@@ -578,7 +556,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       settingsListTile(),
                       logOutListTile(),
                       SizedBox(
-                        height: 100,
+                        height: _menuBottomPadding,
                       ),
                     ],
                   ),

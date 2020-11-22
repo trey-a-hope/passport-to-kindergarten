@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class StampModel {
   String id;
   String name;
-  String created;
+  DateTime created;
+  String assetImagePath;
 
   StampModel({
     @required this.id,
     @required this.name,
     @required this.created,
+    @required this.assetImagePath,
   });
 
   factory StampModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -17,6 +19,7 @@ class StampModel {
       id: ds.data['id'],
       name: ds.data['name'],
       created: ds.data['created'].toDate(),
+      assetImagePath: ds.data['assetImagePath'],
     );
   }
 
@@ -25,6 +28,7 @@ class StampModel {
       'id': id,
       'name': name,
       'created': created,
+      'assetImagePath': assetImagePath,
     };
   }
 }

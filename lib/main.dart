@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
-
-    
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -55,8 +54,8 @@ class MyApp extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
       home: AnimatedSplashScreen(
-        splash: 'assets/images/p2k20_app_opening_photo.png',
-        splashIconSize: 3000,
+        splash: 'assets/images/app_icon.png',
+        splashIconSize: 200,
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.fade,
         nextScreen: StreamBuilder(

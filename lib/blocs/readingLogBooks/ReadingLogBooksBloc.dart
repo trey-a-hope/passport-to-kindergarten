@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/blocs/readingLogBooks/Bloc.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -34,16 +34,15 @@ class ReadingLogBooksBloc
         _currentUser = await locator<AuthService>().getCurrentUser();
 
         Stream<QuerySnapshot> booksStream =
-            await locator<LogService>().retrieveParentLogsStream(
+            await locator<LogService>().streamBooksForUser(
           uid: _currentUser.uid,
-          collection: 'books',
         );
 
         booksStream.listen(
           (QuerySnapshot event) {
-            List<ParentLogModel> books = event.documents
+            List<BookModel> books = event.documents
                 .map(
-                  (doc) => ParentLogModel.fromDocumentSnapshot(ds: doc),
+                  (doc) => BookModel.fromDocumentSnapshot(ds: doc),
                 )
                 .toList();
             add(
@@ -57,7 +56,7 @@ class ReadingLogBooksBloc
     }
 
     if (event is BooksUpdatedEvent) {
-      final List<ParentLogModel> books = event.books;
+      final List<BookModel> books = event.books;
 
       switch (_sortBy) {
         case 'recent':

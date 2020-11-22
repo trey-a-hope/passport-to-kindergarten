@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
-import 'package:p/models/ChildLogModel.dart';
-import 'package:p/models/ParentLogModel.dart';
+import 'package:p/models/LogModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
@@ -33,14 +32,15 @@ class VisitingLogVisitsBloc
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        Stream<QuerySnapshot> logsStream =
-            await locator<LogService>().streamVisitLogs(
-          uid: _currentUser.uid,
-        );
+        Stream<QuerySnapshot> logsStream = await locator<LogService>()
+            .streamLogs(
+                uid: _currentUser.uid,
+                collection: 'visits',
+                documentID: null); //TODO:
 
         logsStream.listen((QuerySnapshot event) {
-          List<ChildLogModel> logs = event.documents
-              .map((doc) => ChildLogModel.fromDocumentSnapshot(ds: doc))
+          List<LogModel> logs = event.documents
+              .map((doc) => LogModel.fromDocumentSnapshot(ds: doc))
               .toList();
           add(LogsUpdatedEvent(logs: logs));
         });
@@ -50,7 +50,7 @@ class VisitingLogVisitsBloc
     }
 
     if (event is LogsUpdatedEvent) {
-      final List<ChildLogModel> logs = event.logs;
+      final List<LogModel> logs = event.logs;
 
       yield LoadedState(
         logs: logs,
