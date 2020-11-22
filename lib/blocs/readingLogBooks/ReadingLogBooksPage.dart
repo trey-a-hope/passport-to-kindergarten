@@ -251,42 +251,20 @@ class ReadingLogBooksPageState extends State<ReadingLogBooksPage>
                             //TODO: check here if any of the books have the same title as any of the books of the month.
                             //TODO: this way, you can just use the image url here instead of the DUMMY one.
                             return ExpansionTile(
-                              title: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  child: Text(
-                                    '${book.logCount}',
-                                    style: TextStyle(
-                                      color: COLOR_ORANGE,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                child: CircleAvatar(
+                                  backgroundImage: book.assetImagePath == null
+                                      ? NetworkImage(DUMMY_PROFILE_PHOTO_URL)
+                                      : AssetImage(book.assetImagePath),
                                 ),
-                                title: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          book.assetImagePath == null
-                                              ? NetworkImage(
-                                                  DUMMY_PROFILE_PHOTO_URL)
-                                              : AssetImage(book.assetImagePath),
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        '${book.title}',
-                                        style: TextStyle(
-                                          color: COLOR_NAVY,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                              ),
+                              title: Text(
+                                '${book.title} (${book.logCount})',
+                                style: TextStyle(
+                                  color: COLOR_NAVY,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                onTap: () {},
                               ),
                               children: [
                                 Container(
