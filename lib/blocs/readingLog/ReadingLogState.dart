@@ -1,34 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
+import 'package:p/models/UserModel.dart';
 
-class ReadingLogBooksState extends Equatable {
-  const ReadingLogBooksState();
+class ReadingLogState extends Equatable {
+  const ReadingLogState();
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends ReadingLogBooksState {}
+class LoadingState extends ReadingLogState {}
 
-class LoadedState extends ReadingLogBooksState {
+class LoadedState extends ReadingLogState {
   final List<BookModel> books;
-  final String sortBy;
+  final UserModel currentUser;
 
   LoadedState({
-    //@required this.user,
     @required this.books,
-    @required this.sortBy,
+    @required this.currentUser,
   });
 
   @override
   List<Object> get props => [
-        //user,
         books,
-        sortBy,
+        currentUser,
       ];
 }
 
-class ErrorState extends ReadingLogBooksState {
+class ErrorState extends ReadingLogState {
   final dynamic error;
 
   ErrorState({

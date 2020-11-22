@@ -16,6 +16,8 @@ abstract class IModalService {
       @required String message});
   Future<String> showPasswordResetEmail({@required BuildContext context});
   Future<String> showChangeEmail({@required BuildContext context});
+  Future<dynamic> showAddBook({@required BuildContext context});
+
   Future<bool> showConfirmation(
       {@required BuildContext context,
       @required String title,
@@ -138,9 +140,8 @@ class ModalService extends IModalService {
 
   @override
   Future<String> showChangeEmail({@required BuildContext context}) {
-    final TextEditingController emailController = TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    bool autovalidate = false;
+    final TextEditingController _emailController = TextEditingController();
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
     return showDialog<String>(
       barrierDismissible: false,
@@ -148,10 +149,10 @@ class ModalService extends IModalService {
       child: AlertDialog(
         title: Text('Change Email'),
         content: Form(
-          key: formKey,
-          autovalidate: autovalidate,
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: TextFormField(
-            controller: emailController,
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.done,
             maxLengthEnforced: true,
@@ -175,12 +176,8 @@ class ModalService extends IModalService {
           FlatButton(
             child: const Text('SUBMIT'),
             onPressed: () {
-              final FormState form = formKey.currentState;
-              if (!form.validate()) {
-                autovalidate = true;
-              } else {
-                Navigator.of(context).pop(emailController.text);
-              }
+              if (!_formKey.currentState.validate()) return;
+              Navigator.of(context).pop(_emailController.text);
             },
           )
         ],
@@ -353,5 +350,73 @@ class ModalService extends IModalService {
         },
       );
     }
+  }
+
+  @override
+  Future<dynamic> showAddBook({@required BuildContext context}) async {
+    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _authorController = TextEditingController();
+
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+    return showDialog<dynamic>(
+      barrierDismissible: false,
+      context: context,
+      child: AlertDialog(
+        title: Text('Add new title'),
+        content: Container(
+          height: 150,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _titleController,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  validator: locator<ValidatorService>().isEmpty,
+                  decoration: InputDecoration(
+                    hintText: 'Title',
+                    icon: Icon(Icons.book),
+                    fillColor: Colors.white,
+                  ),
+                ),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _authorController,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  validator: locator<ValidatorService>().isEmpty,
+                  decoration: InputDecoration(
+                    hintText: 'Author',
+                    icon: Icon(Icons.person),
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: const Text('SUBMIT'),
+            onPressed: () {
+              if (!_formKey.currentState.validate()) return;
+              Navigator.of(context).pop({
+                'title': _titleController.text,
+                'author': _authorController.text,
+              });
+            },
+          )
+        ],
+      ),
+    );
   }
 }

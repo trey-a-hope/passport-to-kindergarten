@@ -158,6 +158,9 @@ UserModel IDK_TEACHER_MODEL = UserModel(
   primaryParentLastName: null,
   secondaryParentFirstName: null,
   secondaryParentLastName: null,
+  bookLogCount: null,
+  stampCount: null,
+  visitLogCount: null,
 );
 
 final List<VisitModel> DEFAULT_VISITS = [
