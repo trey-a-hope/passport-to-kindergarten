@@ -29,6 +29,9 @@ class UserModel {
   List<VisitModel> visits;
   List<StampModel> stamps;
 
+  String bookSortBy;
+  String visitSortBy;
+
   UserModel({
     @required this.email,
     @required this.imgUrl,

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/shape/gf_button_shape.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
@@ -124,6 +126,7 @@ class MyClassPageState extends State<MyClassPage>
 
                             final List<StampModel> stamps = student.stamps;
                             final List<BookModel> books = student.books;
+                            final List<VisitModel> visits = student.visits;
 
                             int totalLogCount = 0;
                             books.forEach((book) {
@@ -350,14 +353,112 @@ class MyClassPageState extends State<MyClassPage>
                                         ],
                                       ),
                                     ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                books.sort(
+                                                  (a, b) => b.modified
+                                                      .compareTo(a.modified),
+                                                );
+                                                setState(() {
+                                                  student.bookSortBy = 'recent';
+                                                });
+                                              },
+                                              text: "Recent",
+                                              shape: GFButtonShape.pills,
+                                              type:
+                                                  student.bookSortBy == 'recent'
+                                                      ? null
+                                                      : GFButtonType.outline2x,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                books.sort(
+                                                  (a, b) => b.logCount
+                                                      .compareTo(a.logCount),
+                                                );
+                                                setState(() {
+                                                  student.bookSortBy =
+                                                      'mostRead';
+                                                });
+                                              },
+                                              text: "Most Read",
+                                              shape: GFButtonShape.pills,
+                                              type: student.bookSortBy ==
+                                                      'mostRead'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                books.sort(
+                                                  (a, b) => a.logCount
+                                                      .compareTo(b.logCount),
+                                                );
+                                                setState(() {
+                                                  student.bookSortBy =
+                                                      'leastRead';
+                                                });
+                                              },
+                                              text: "Least Read",
+                                              shape: GFButtonShape.pills,
+                                              type: student.bookSortBy ==
+                                                      'leastRead'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                books.sort(
+                                                  (a, b) => a.title
+                                                      .compareTo(b.title),
+                                                );
+                                                setState(() {
+                                                  student.bookSortBy =
+                                                      'alphabet';
+                                                });
+                                              },
+                                              text: 'Alphabet',
+                                              shape: GFButtonShape.pills,
+                                              type: student.bookSortBy ==
+                                                      'alphabet'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                     Container(
                                       height: 400,
                                       child: ListView.builder(
-                                        itemCount: student.books.length,
+                                        itemCount: books.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          final BookModel book =
-                                              student.books[index];
+                                          final BookModel book = books[index];
 
                                           return ExpansionTile(
                                             title: ListTile(
@@ -441,7 +542,7 @@ class MyClassPageState extends State<MyClassPage>
                                                   if (!confirm) return;
 
                                                   _myClassBloc.add(
-                                                    CreateLogForStudentEvent(
+                                                    CreateBookLogForStudentEvent(
                                                       studentUID: student.uid,
                                                       bookID: book.id,
                                                       date: day,
@@ -472,1482 +573,285 @@ class MyClassPageState extends State<MyClassPage>
                                     ),
                                   ),
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ExpansionTile(
-                                        leading: Image.asset(
-                                          ASSET_boonshoft_logo,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                visits.sort(
+                                                  (a, b) => b.modified
+                                                      .compareTo(a.modified),
+                                                );
+                                                setState(() {
+                                                  student.visitSortBy =
+                                                      'recent';
+                                                });
+                                              },
+                                              text: "Recent",
+                                              shape: GFButtonShape.pills,
+                                              type: student.visitSortBy ==
+                                                      'recent'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
+                                          ),
                                         ),
-                                        title: Text(
-                                            'Boonshoft Museum of Discovery (?)'),
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          const url =
-                                                              'https://www.boonshoftmuseum.org/';
-                                                          if (await canLaunch(
-                                                              url)) {
-                                                            await launch(url);
-                                                          } else {
-                                                            locator<ModalService>()
-                                                                .showAlert(
-                                                                    context:
-                                                                        context,
-                                                                    title:
-                                                                        'Error',
-                                                                    message:
-                                                                        'Could not open url.');
-                                                            //throw 'Could not launch $url';
-                                                          }
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_website_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Website',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          await MapsLauncher
-                                                              .launchQuery(
-                                                                  '2600 DeWeese Pkwy, Dayton, OH 45414, USA');
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_directions_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Directions',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        ASSET_site_login_icon,
-                                                      ),
-                                                      Text(
-                                                        'Log',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                visits.sort(
+                                                  (a, b) => b.logCount
+                                                      .compareTo(a.logCount),
+                                                );
+                                                setState(() {
+                                                  student.visitSortBy =
+                                                      'mostVisit';
+                                                });
+                                              },
+                                              text: "Most Visit",
+                                              shape: GFButtonShape.pills,
+                                              type: student.visitSortBy ==
+                                                      'mostVisit'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 1),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'January',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 2),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'February',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                visits.sort(
+                                                  (a, b) => a.logCount
+                                                      .compareTo(b.logCount),
+                                                );
+                                                setState(() {
+                                                  student.visitSortBy =
+                                                      'leastVisit';
+                                                });
+                                              },
+                                              text: "Least Visit",
+                                              shape: GFButtonShape.pills,
+                                              type: student.visitSortBy ==
+                                                      'leastVisit'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 3),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'March',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 4),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'April',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: GFButton(
+                                              color: COLOR_NAVY,
+                                              onPressed: () {
+                                                visits.sort(
+                                                  (a, b) => a.title
+                                                      .compareTo(b.title),
+                                                );
+                                                setState(() {
+                                                  student.visitSortBy =
+                                                      'alphabet';
+                                                });
+                                              },
+                                              text: 'Alphabet',
+                                              shape: GFButtonShape.pills,
+                                              type: student.visitSortBy ==
+                                                      'alphabet'
+                                                  ? null
+                                                  : GFButtonType.outline2x,
+                                            ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 5),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'May',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 6),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'June',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 7),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'July',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 8),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'August',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 9),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'September',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 10),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'October',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 11),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'November',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Boonshoft Museum of Discovery',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     12,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'December',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ExpansionTile(
-                                        leading: Image.asset(
-                                          ASSET_dayton_metro_library_logo,
-                                        ),
-                                        title: Text('Dayton Metro Library (?)'),
-                                        children: [
-                                          Row(
+                                    Container(
+                                      height: 400,
+                                      child: ListView.builder(
+                                        itemCount: visits.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          final VisitModel visit =
+                                              visits[index];
+
+                                          return ExpansionTile(
+                                            leading: Image.asset(
+                                              visit.assetImagePath,
+                                            ),
+                                            title: Text(
+                                              '${visit.title} (${visit.logCount})',
+                                            ),
                                             children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          const url =
-                                                              'http://www.daytonmetrolibrary.org/';
-                                                          if (await canLaunch(
-                                                              url)) {
-                                                            await launch(url);
-                                                          } else {
-                                                            locator<ModalService>()
-                                                                .showAlert(
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(20),
+                                                      child: Column(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              String url =
+                                                                  visit.website;
+                                                              if (await canLaunch(
+                                                                  url)) {
+                                                                await launch(
+                                                                    url);
+                                                              } else {
+                                                                locator<ModalService>().showAlert(
                                                                     context:
                                                                         context,
                                                                     title:
                                                                         'Error',
                                                                     message:
                                                                         'Could not open url.');
-                                                            //throw 'Could not launch $url';
-                                                          }
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_website_icon,
-                                                        ),
+                                                                //throw 'Could not launch $url';
+                                                              }
+                                                            },
+                                                            child: Image.asset(
+                                                              ASSET_website_icon,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            'Website',
+                                                            style: TextStyle(
+                                                              color: COLOR_NAVY,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
-                                                      Text(
-                                                        'Website',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          await MapsLauncher
-                                                              .launchQuery(
-                                                                  '215 E. Third St., Dayton, OH 45402, USA');
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_directions_icon,
-                                                        ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(20),
+                                                      child: Column(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              await MapsLauncher
+                                                                  .launchQuery(visit
+                                                                      .address);
+                                                            },
+                                                            child: Image.asset(
+                                                              ASSET_directions_icon,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            'Directions',
+                                                            style: TextStyle(
+                                                              color: COLOR_NAVY,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
-                                                      Text(
-                                                        'Directions',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        ASSET_site_login_icon,
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(20),
+                                                      child: Column(
+                                                        children: [
+                                                          Image.asset(
+                                                            ASSET_site_login_icon,
+                                                          ),
+                                                          Text(
+                                                            'Log',
+                                                            style: TextStyle(
+                                                              color: COLOR_NAVY,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
-                                                      Text(
-                                                        'Log',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              TableCalendar(
+                                                calendarController:
+                                                    _calendarController,
+                                                events: visit.logEvents,
+                                                startingDayOfWeek:
+                                                    StartingDayOfWeek.sunday,
+                                                initialSelectedDay:
+                                                    DateTime.now(),
+                                                calendarStyle: CalendarStyle(
+                                                  selectedColor:
+                                                      Colors.deepOrange[400],
+                                                  todayColor:
+                                                      Colors.deepOrange[200],
+                                                  markersColor: Colors.black,
+                                                  outsideDaysVisible: false,
+                                                ),
+                                                headerStyle: HeaderStyle(
+                                                  formatButtonTextStyle:
+                                                      TextStyle().copyWith(
+                                                          color: Colors.white,
+                                                          fontSize: 15.0),
+                                                  formatButtonDecoration:
+                                                      BoxDecoration(
+                                                    color:
+                                                        Colors.deepOrange[400],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
                                                   ),
                                                 ),
+                                                onDaySelected: (DateTime day,
+                                                    List events) async {
+                                                  final bool confirm =
+                                                      await locator<
+                                                              ModalService>()
+                                                          .showConfirmation(
+                                                              context: context,
+                                                              title: 'Add Log',
+                                                              message:
+                                                                  '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visit.title}\"');
+
+                                                  if (!confirm) return;
+
+                                                  _myClassBloc.add(
+                                                    CreateVisitLogForStudentEvent(
+                                                      studentUID: student.uid,
+                                                      visitID: visit.id,
+                                                      date: day,
+                                                    ),
+                                                  );
+                                                },
+                                                onVisibleDaysChanged: (DateTime
+                                                        first,
+                                                    DateTime last,
+                                                    CalendarFormat format) {},
+                                              ),
+                                              SizedBox(
+                                                height: 20,
                                               ),
                                             ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 1),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'January',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 1),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'February',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 3),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'March',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 4),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'April',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 5),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'May',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 6),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'June',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 7),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'July',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 8),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'August',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 9),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'September',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 10),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'October',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 11),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'November',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Metro Library',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 12),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'December',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ExpansionTile(
-                                        leading: Image.asset(
-                                          ASSET_five_rivers_metroparks_logo,
-                                        ),
-                                        title:
-                                            Text('Five Rivers Metro Park (?)'),
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          const url =
-                                                              'https://www.metroparks.org/contact/';
-                                                          if (await canLaunch(
-                                                              url)) {
-                                                            await launch(url);
-                                                          } else {
-                                                            locator<ModalService>()
-                                                                .showAlert(
-                                                                    context:
-                                                                        context,
-                                                                    title:
-                                                                        'Error',
-                                                                    message:
-                                                                        'Could not open url.');
-                                                            //throw 'Could not launch $url';
-                                                          }
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_website_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Website',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          await MapsLauncher
-                                                              .launchQuery(
-                                                                  '409 E. Monument Ave., Dayton, OH 45402, USA');
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_directions_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Directions',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        ASSET_site_login_icon,
-                                                      ),
-                                                      Text(
-                                                        'Log',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     1,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'January',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     2,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'February',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     3,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'March',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     4,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'April',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     5,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'May',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     6,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'June',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //           2020, 7),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'July',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     8,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'August',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     9,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'September',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     10,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'October',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     11,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'November',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Fiver Rivers Metro Park',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     12,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'December',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ExpansionTile(
-                                        leading: Image.asset(
-                                          ASSET_dayton_art_institute_logo,
-                                        ),
-                                        title: Text('Dayton Art Institute (?)'),
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          const url =
-                                                              'https://www.daytonartinstitute.org/';
-                                                          if (await canLaunch(
-                                                              url)) {
-                                                            await launch(url);
-                                                          } else {
-                                                            locator<ModalService>()
-                                                                .showAlert(
-                                                                    context:
-                                                                        context,
-                                                                    title:
-                                                                        'Error',
-                                                                    message:
-                                                                        'Could not open url.');
-                                                            //throw 'Could not launch $url';
-                                                          }
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_website_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Website',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          await MapsLauncher
-                                                              .launchQuery(
-                                                                  '456 Belmonte Park N, Dayton, OH 45405, USA');
-                                                        },
-                                                        child: Image.asset(
-                                                          ASSET_directions_icon,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Directions',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(20),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        ASSET_site_login_icon,
-                                                      ),
-                                                      Text(
-                                                        'Log',
-                                                        style: TextStyle(
-                                                          color: COLOR_NAVY,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     1,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'January',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     2,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'February',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     3,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'March',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     4,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'April',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     5,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'May',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     6,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'June',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     7,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'July',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     8,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'August',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     9,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'September',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     10,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'October',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //   title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     11,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'November',
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: FullWidthButtonWidget(
-                                                    textColor: Colors.white,
-                                                    onPressed: () {
-                                                      // _goToLogsForThisVisit(
-                                                      //  title:
-                                                      //       'Dayton Art Institute',
-                                                      //   initialSelectedDay:
-                                                      //       DateTime(
-                                                      //     2020,
-                                                      //     12,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                    buttonColor: COLOR_NAVY,
-                                                    text: 'December',
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
+                                          );
+                                        },
                                       ),
                                     ),
                                   ],

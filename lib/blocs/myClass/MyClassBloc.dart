@@ -58,19 +58,23 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     if (event is StudentsUpdatedEvent) {
       final List<UserModel> students = event.students;
 
-      for (int studentLoopCount = 0;
-          studentLoopCount < students.length;
-          studentLoopCount++) {
-        final UserModel student = students[studentLoopCount];
+      for (int studentCount = 0;
+          studentCount < students.length;
+          studentCount++) {
+        final UserModel student = students[studentCount];
 
         final List<BookModel> books =
             await locator<LogService>().getBooksForUser(uid: student.uid);
         student.books = books;
 
-        for (int bookLoopCount = 0;
-            bookLoopCount < books.length;
-            bookLoopCount++) {
-          final BookModel book = books[bookLoopCount];
+        student.bookSortBy = 'recent';
+
+        books.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
+
+        for (int bookCount = 0; bookCount < books.length; bookCount++) {
+          final BookModel book = books[bookCount];
           final List<LogModel> logs = await locator<LogService>().getLogs(
               uid: student.uid, collection: 'books', documentID: book.id);
 
@@ -102,6 +106,41 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
             await locator<LogService>().getVisitsForUser(uid: student.uid);
         student.visits = visits;
 
+        student.visitSortBy = 'recent';
+
+        visits.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
+
+        for (int visitCount = 0; visitCount < visits.length; visitCount++) {
+          final VisitModel visit = visits[visitCount];
+          final List<LogModel> logs = await locator<LogService>().getLogs(
+              uid: student.uid, collection: 'visits', documentID: visit.id);
+
+          Map<DateTime, List<LogModel>> logEvents =
+              Map<DateTime, List<LogModel>>();
+
+          logs.forEach(
+            (LogModel log) {
+              DateTime dayKey = DateTime(
+                log.created.year,
+                log.created.month,
+                log.created.day,
+              );
+
+              if (logEvents.containsKey(dayKey)) {
+                if (!logEvents[dayKey].contains(log)) {
+                  logEvents[dayKey].add(log);
+                }
+              } else {
+                logEvents[dayKey] = [log];
+              }
+            },
+          );
+
+          visit.logEvents = logEvents;
+        }
+
         final List<StampModel> stamps =
             await locator<UserService>().getStampsForUser(uid: student.uid);
         student.stamps = stamps;
@@ -110,7 +149,6 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       yield LoadedState(
         user: _currentUser,
         students: students,
-        // selectedDateForBookLogs: selectedDateForBookLogs,
         studentSelected: studentSelected,
       );
     }
@@ -146,7 +184,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       }
     }
 
-    if (event is CreateLogForStudentEvent) {
+    if (event is CreateBookLogForStudentEvent) {
       final String studentUID = event.studentUID;
       final String bookID = event.bookID;
       final DateTime date = event.date;
@@ -161,6 +199,30 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           uid: studentUID,
           collection: 'books',
           documentID: bookID,
+          log: log,
+        );
+
+        _myClassBlocDelegate.showMessage(message: 'Log added!');
+      } catch (error) {
+        yield ErrorState(error: error);
+      }
+    }
+
+    if (event is CreateVisitLogForStudentEvent) {
+      final String studentUID = event.studentUID;
+      final String visitID = event.visitID;
+      final DateTime date = event.date;
+
+      try {
+        final LogModel log = LogModel(
+          created: date,
+          id: null,
+        );
+
+        locator<LogService>().createLog(
+          uid: studentUID,
+          collection: 'visits',
+          documentID: visitID,
           log: log,
         );
 

@@ -166,6 +166,7 @@ class LogService extends ILogService {
 
       batch.updateData(parentLogDocRef, {
         'logCount': FieldValue.increment(1),
+        'modified': DateTime.now(),
       });
 
       if (collection == 'books') {

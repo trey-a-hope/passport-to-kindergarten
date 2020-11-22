@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'LogModel.dart';
+
 class VisitModel {
   String id;
   DateTime created;
@@ -10,6 +12,8 @@ class VisitModel {
   String assetImagePath;
   String website;
   String address;
+
+  Map<DateTime, List<LogModel>> logEvents;
 
   VisitModel({
     @required this.id,

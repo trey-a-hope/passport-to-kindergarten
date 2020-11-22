@@ -32,12 +32,12 @@ class CreateBookForStudentEvent extends MyClassEvent {
       ];
 }
 
-class CreateLogForStudentEvent extends MyClassEvent {
+class CreateBookLogForStudentEvent extends MyClassEvent {
   final String studentUID;
   final String bookID;
   final DateTime date;
 
-  CreateLogForStudentEvent({
+  CreateBookLogForStudentEvent({
     @required this.studentUID,
     @required this.bookID,
     @required this.date,
@@ -47,6 +47,25 @@ class CreateLogForStudentEvent extends MyClassEvent {
   List<Object> get props => [
         studentUID,
         bookID,
+        date,
+      ];
+}
+
+class CreateVisitLogForStudentEvent extends MyClassEvent {
+  final String studentUID;
+  final String visitID;
+  final DateTime date;
+
+  CreateVisitLogForStudentEvent({
+    @required this.studentUID,
+    @required this.visitID,
+    @required this.date,
+  });
+
+  @override
+  List<Object> get props => [
+        studentUID,
+        visitID,
         date,
       ];
 }
