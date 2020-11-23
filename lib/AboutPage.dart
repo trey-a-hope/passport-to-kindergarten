@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/FullWidthButtonWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'ServiceLocator.dart';
 import 'constants.dart';
@@ -254,11 +255,16 @@ class AboutPage extends StatelessWidget {
                 buttonColor: COLOR_NAVY,
                 textColor: Colors.white,
                 text: 'Learn More',
-                onPressed: () {
-                  locator<ModalService>().showAlert(
-                      context: context,
-                      title: 'To Do',
-                      message: 'Proceed to website.');
+                onPressed: () async {
+                  final String url = 'https://www.preschoolpromise.org/';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    locator<ModalService>().showAlert(
+                        context: context,
+                        title: 'Error',
+                        message: 'Could not open url.');
+                  }
                 },
               ),
             ],

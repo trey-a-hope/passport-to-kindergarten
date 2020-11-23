@@ -204,11 +204,11 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                                   } else {
                                                     locator<ModalService>()
                                                         .showAlert(
-                                                            context: context,
-                                                            title: 'Error',
-                                                            message:
-                                                                'Could not open url.');
-                                                    //throw 'Could not launch $url';
+                                                      context: context,
+                                                      title: 'Error',
+                                                      message:
+                                                          'Could not open url.',
+                                                    );
                                                   }
                                                 },
                                                 child: Image.asset(
