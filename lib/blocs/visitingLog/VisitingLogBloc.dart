@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/LogModel.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
+import 'package:p/services/UserService.dart';
 
 import 'Bloc.dart';
 
@@ -49,7 +52,6 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
             );
           },
         );
-
       } catch (error) {
         yield ErrorState(error: error);
       }
@@ -102,6 +104,7 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
     if (event is CreateVisitLogEvent) {
       final String visitID = event.visitID;
       final DateTime date = event.date;
+      final String name = event.visitName;
 
       try {
         final LogModel log = LogModel(
@@ -114,6 +117,35 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
           collection: 'visits',
           documentID: visitID,
           log: log,
+        );
+
+        String assetImagePath;
+        switch (name) {
+          case 'Dayton Art Institute':
+            assetImagePath = ASSET_stamp_dayton_art_institute;
+            break;
+          case 'Dayton Metro Library':
+            assetImagePath = ASSET_dayton_metro_library_logo;
+            break;
+          case 'Five Rivers Metro Park':
+            assetImagePath = ASSET_five_rivers_metroparks_logo;
+            break;
+          case 'Boonshoft Museum of Discovery':
+            assetImagePath = ASSET_boonshoft_logo;
+            break;
+          default:
+            assetImagePath = ASSET_stamp_dayton_art_institute;
+            break;
+        }
+
+        await locator<UserService>().createStamp(
+          uid: _currentUser.uid,
+          stamp: StampModel(
+            name: name,
+            assetImagePath: assetImagePath,
+            created: DateTime.now(),
+            id: null,
+          ),
         );
 
         _visitingLogDelegate.showMessage(message: 'Log added!');

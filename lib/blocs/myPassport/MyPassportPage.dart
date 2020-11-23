@@ -188,22 +188,42 @@ class MyPassportPageState extends State<MyPassportPage>
                           ],
                         ),
                       ),
-                      StaggeredGridView.countBuilder(
-                        shrinkWrap: true,
-                        crossAxisCount: 4,
-                        itemCount: stamps.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final StampModel stamp = stamps[index];
-                          return Image.asset(
-                            stamp.assetImagePath,
-                            height: 100,
-                          );
-                        },
-                        staggeredTileBuilder: (int index) =>
-                            StaggeredTile.count(2, index.isEven ? 2 : 1),
-                        mainAxisSpacing: 4.0,
-                        crossAxisSpacing: 4.0,
-                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: 400,
+                          child: StaggeredGridView.countBuilder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            crossAxisCount: 4,
+                            itemCount: stamps.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final StampModel stamp = stamps[index];
+                              return Padding(
+                                padding: EdgeInsets.all(5),
+                                child: InkWell(
+                                  child: Image.asset(
+                                    stamp.assetImagePath,
+                                    height: 100,
+                                  ),
+                                  onTap: () {
+                                    locator<ModalService>().showAlert(
+                                      context: context,
+                                      title: stamp.name,
+                                      message: DateFormat('MMMM dd, yyyy')
+                                          .format(stamp.created),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            staggeredTileBuilder: (int index) =>
+                                StaggeredTile.count(2, index.isEven ? 2 : 1),
+                            mainAxisSpacing: 4.0,
+                            crossAxisSpacing: 4.0,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

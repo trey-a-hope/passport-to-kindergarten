@@ -134,7 +134,7 @@ class MyClassPageState extends State<MyClassPage>
                               totalLogCount += book.logCount;
                             });
 
-                            final int remainingLogCount =
+                            final int currentLogCount =
                                 totalLogCount % _totalBookProgressAmount;
 
                             final int numberOf15BooksRead =
@@ -336,14 +336,14 @@ class MyClassPageState extends State<MyClassPage>
                                                 ),
                                                 LinearPercentIndicator(
                                                   center: Text(
-                                                    '$remainingLogCount',
+                                                    '$currentLogCount',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white),
                                                   ),
                                                   lineHeight: 30.0,
-                                                  percent: remainingLogCount /
+                                                  percent: currentLogCount /
                                                       _totalBookProgressAmount,
                                                   backgroundColor: Colors.grey,
                                                   progressColor: COLOR_ORANGE,
@@ -591,11 +591,17 @@ class MyClassPageState extends State<MyClassPage>
 
                                                   if (!confirm) return;
 
+                                                  bool totalLogLimitReached =
+                                                      currentLogCount + 1 ==
+                                                          _totalBookProgressAmount;
+
                                                   _myClassBloc.add(
                                                     CreateBookLogForStudentEvent(
                                                       studentUID: student.uid,
                                                       bookID: book.id,
                                                       date: day,
+                                                      totalLogLimitReached:
+                                                          totalLogLimitReached,
                                                     ),
                                                   );
                                                 },
@@ -936,6 +942,7 @@ class MyClassPageState extends State<MyClassPage>
                                                     CreateVisitLogForStudentEvent(
                                                       studentUID: student.uid,
                                                       visitID: visit.id,
+                                                      visitName: visit.title,
                                                       date: day,
                                                     ),
                                                   );

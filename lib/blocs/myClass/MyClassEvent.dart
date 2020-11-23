@@ -36,11 +36,13 @@ class CreateBookLogForStudentEvent extends MyClassEvent {
   final String studentUID;
   final String bookID;
   final DateTime date;
+  final bool totalLogLimitReached;
 
   CreateBookLogForStudentEvent({
     @required this.studentUID,
     @required this.bookID,
     @required this.date,
+    @required this.totalLogLimitReached,
   });
 
   @override
@@ -48,17 +50,20 @@ class CreateBookLogForStudentEvent extends MyClassEvent {
         studentUID,
         bookID,
         date,
+        totalLogLimitReached,
       ];
 }
 
 class CreateVisitLogForStudentEvent extends MyClassEvent {
   final String studentUID;
   final String visitID;
+  final String visitName;
   final DateTime date;
 
   CreateVisitLogForStudentEvent({
     @required this.studentUID,
     @required this.visitID,
+    @required this.visitName,
     @required this.date,
   });
 
@@ -66,6 +71,7 @@ class CreateVisitLogForStudentEvent extends MyClassEvent {
   List<Object> get props => [
         studentUID,
         visitID,
+        visitName,
         date,
       ];
 }

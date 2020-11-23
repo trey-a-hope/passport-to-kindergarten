@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
+import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/LogModel.dart';
+import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
+import 'package:p/services/UserService.dart';
 
 import 'Bloc.dart';
 
@@ -146,6 +149,16 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
         );
 
         if (totalLogLimitReached) {
+          await locator<UserService>().createStamp(
+            uid: _currentUser.uid,
+            stamp: StampModel(
+              name: '15 Books Read',
+              assetImagePath: ASSET_p2k20_app_stamp_15_books_read,
+              created: DateTime.now(),
+              id: null,
+            ),
+          );
+
           _readingLogDelegate.showAwardMessage();
         } else {
           _readingLogDelegate.showMessage(message: 'Log added!');

@@ -355,6 +355,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                       _visitingLogBloc.add(
                                         CreateVisitLogEvent(
                                           visitID: visit.id,
+                                          visitName: visit.title,
                                           date: day,
                                         ),
                                       );

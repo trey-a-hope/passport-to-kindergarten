@@ -31,15 +31,18 @@ class VisitsUpdatedEvent extends VisitingLogEvent {
 class CreateVisitLogEvent extends VisitingLogEvent {
   final String visitID;
   final DateTime date;
+  final String visitName;
 
   CreateVisitLogEvent({
     @required this.visitID,
     @required this.date,
+    @required this.visitName,
   });
 
   @override
   List<Object> get props => [
         visitID,
         date,
+        visitName,
       ];
 }
