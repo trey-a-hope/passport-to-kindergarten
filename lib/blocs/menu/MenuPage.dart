@@ -660,7 +660,13 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
       if (file == null) return;
 
-      File image = await ImageCropper.cropImage(sourcePath: file.path);
+      File image = await ImageCropper.cropImage(
+        sourcePath: file.path,
+        aspectRatio: CropAspectRatio(
+          ratioX: 100,
+          ratioY: 100,
+        ),
+      );
 
       if (image == null) return;
 

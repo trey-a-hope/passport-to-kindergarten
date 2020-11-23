@@ -1329,7 +1329,13 @@ class SignupPageState extends State<SignupPage>
 
       if (file == null) return;
 
-      _image = await ImageCropper.cropImage(sourcePath: file.path);
+      _image = await ImageCropper.cropImage(
+        sourcePath: file.path,
+        aspectRatio: CropAspectRatio(
+          ratioX: 100,
+          ratioY: 100,
+        ),
+      );
 
       if (_image == null) return;
 
