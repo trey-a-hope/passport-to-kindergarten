@@ -14,6 +14,7 @@ import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
 import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
@@ -309,6 +310,41 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     );
   }
 
+  ListTile contactListTile() {
+    return ListTile(
+      title: RichText(
+        text: TextSpan(
+          style: TextStyle(fontSize: 16),
+          children: [
+            TextSpan(text: 'Contact us with any questions or concerns at '),
+            TextSpan(
+              text: COMPANY_EMAIL,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ],
+        ),
+      ),
+      onTap: () async {
+        final Uri emailLaunchUri = Uri(
+          scheme: 'mailto',
+          path: COMPANY_EMAIL,
+          queryParameters: {
+            'subject': 'Contact',
+          },
+        );
+
+        if (await canLaunch(emailLaunchUri.toString())) {
+          await launch(emailLaunchUri.toString());
+        } else {
+          locator<ModalService>().showAlert(
+              context: context, title: 'Error', message: 'Could not open url.');
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -393,6 +429,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       SizedBox(
                         height: _menuBottomPadding,
                       ),
+                      contactListTile(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
                     ],
                   ),
                 ),
@@ -470,6 +510,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
+                      contactListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
                       ),
@@ -553,6 +597,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       aboutListTile(),
                       settingsListTile(),
                       logOutListTile(),
+                      SizedBox(
+                        height: _menuBottomPadding,
+                      ),
+                      contactListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
                       ),
