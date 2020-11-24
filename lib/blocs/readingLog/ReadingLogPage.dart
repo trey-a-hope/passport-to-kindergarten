@@ -274,6 +274,9 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                   ),
                                 ),
                                 TableCalendar(
+                                   availableCalendarFormats: const {
+                                                  CalendarFormat.month: 'Month'
+                                                },
                                   calendarController: _calendarController,
                                   events: book.logEvents,
                                   startingDayOfWeek: StartingDayOfWeek.sunday,

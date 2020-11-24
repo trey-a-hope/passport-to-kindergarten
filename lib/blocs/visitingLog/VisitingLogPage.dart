@@ -277,6 +277,9 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                     ],
                                   ),
                                   TableCalendar(
+                                    availableCalendarFormats: const {
+                                      CalendarFormat.month: 'Month'
+                                    },
                                     calendarController: _calendarController,
                                     events: visit.logEvents,
                                     startingDayOfWeek: StartingDayOfWeek.sunday,

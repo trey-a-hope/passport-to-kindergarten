@@ -500,6 +500,9 @@ class MyClassPageState extends State<MyClassPage>
                                             ),
                                             children: [
                                               TableCalendar(
+                                                availableCalendarFormats: const {
+                                                  CalendarFormat.month: 'Month'
+                                                },
                                                 calendarController:
                                                     _calendarController,
                                                 events: book.logEvents,
@@ -847,6 +850,9 @@ class MyClassPageState extends State<MyClassPage>
                                                 ],
                                               ),
                                               TableCalendar(
+                                                availableCalendarFormats: const {
+                                                  CalendarFormat.month: 'Month'
+                                                },
                                                 calendarController:
                                                     _calendarController,
                                                 events: visit.logEvents,
