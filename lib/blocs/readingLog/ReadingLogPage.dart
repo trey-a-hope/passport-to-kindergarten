@@ -260,19 +260,21 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                 ),
                               ),
                               children: [
-                                Container(
-                                  height: 50,
-                                  color: COLOR_YELLOW,
-                                  child: Center(
-                                    child: Text(
-                                      'Wow! You have read this book ${book.logCount} times!',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                book.logCount == 0
+                                    ? SizedBox.shrink()
+                                    : Container(
+                                        height: 50,
+                                        color: COLOR_YELLOW,
+                                        child: Center(
+                                          child: Text(
+                                            'Wow! You have read this book ${book.logCount} ${book.logCount == 1 ? 'time' : 'times'}!',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                                 TableCalendar(
                                   availableCalendarFormats: const {
                                     CalendarFormat.month: 'Month'
