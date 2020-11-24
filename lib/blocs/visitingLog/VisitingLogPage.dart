@@ -302,11 +302,6 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                                 children: [
                                                   Container(
                                                       height: 50, width: 50),
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    color: Colors.orange,
-                                                    size: 15,
-                                                  ),
                                                   Positioned(
                                                     bottom: 0,
                                                     right: 0,

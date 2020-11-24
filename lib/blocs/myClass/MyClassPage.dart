@@ -531,13 +531,6 @@ class MyClassPageState extends State<MyClassPage>
                                                               Container(
                                                                   height: 50,
                                                                   width: 50),
-                                                              Icon(
-                                                                MdiIcons
-                                                                    .bookOpen,
-                                                                color: Colors
-                                                                    .orange,
-                                                                size: 15,
-                                                              ),
                                                               Positioned(
                                                                 bottom: 0,
                                                                 right: 0,
@@ -894,13 +887,6 @@ class MyClassPageState extends State<MyClassPage>
                                                               Container(
                                                                   height: 50,
                                                                   width: 50),
-                                                              Icon(
-                                                                Icons
-                                                                    .location_on,
-                                                                color: Colors
-                                                                    .orange,
-                                                                size: 15,
-                                                              ),
                                                               Positioned(
                                                                 bottom: 0,
                                                                 right: 0,
