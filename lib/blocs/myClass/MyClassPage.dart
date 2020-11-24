@@ -410,30 +410,6 @@ class MyClassPageState extends State<MyClassPage>
                                               color: COLOR_NAVY,
                                               onPressed: () {
                                                 books.sort(
-                                                  (a, b) => a.logCount
-                                                      .compareTo(b.logCount),
-                                                );
-                                                setState(() {
-                                                  student.bookSortBy =
-                                                      'leastRead';
-                                                });
-                                              },
-                                              text: "Least Read",
-                                              shape: GFButtonShape.pills,
-                                              type: student.bookSortBy ==
-                                                      'leastRead'
-                                                  ? null
-                                                  : GFButtonType.outline2x,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: GFButton(
-                                              color: COLOR_NAVY,
-                                              onPressed: () {
-                                                books.sort(
                                                   (a, b) => a.title
                                                       .compareTo(b.title),
                                                 );
@@ -659,54 +635,6 @@ class MyClassPageState extends State<MyClassPage>
                                               shape: GFButtonShape.pills,
                                               type: student.visitSortBy ==
                                                       'recent'
-                                                  ? null
-                                                  : GFButtonType.outline2x,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: GFButton(
-                                              color: COLOR_NAVY,
-                                              onPressed: () {
-                                                visits.sort(
-                                                  (a, b) => b.logCount
-                                                      .compareTo(a.logCount),
-                                                );
-                                                setState(() {
-                                                  student.visitSortBy =
-                                                      'mostVisit';
-                                                });
-                                              },
-                                              text: "Most Visit",
-                                              shape: GFButtonShape.pills,
-                                              type: student.visitSortBy ==
-                                                      'mostVisit'
-                                                  ? null
-                                                  : GFButtonType.outline2x,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: GFButton(
-                                              color: COLOR_NAVY,
-                                              onPressed: () {
-                                                visits.sort(
-                                                  (a, b) => a.logCount
-                                                      .compareTo(b.logCount),
-                                                );
-                                                setState(() {
-                                                  student.visitSortBy =
-                                                      'leastVisit';
-                                                });
-                                              },
-                                              text: "Least Visit",
-                                              shape: GFButtonShape.pills,
-                                              type: student.visitSortBy ==
-                                                      'leastVisit'
                                                   ? null
                                                   : GFButtonType.outline2x,
                                             ),

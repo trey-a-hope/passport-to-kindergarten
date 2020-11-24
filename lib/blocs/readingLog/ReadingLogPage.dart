@@ -201,27 +201,6 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                 color: COLOR_NAVY,
                                 onPressed: () {
                                   books.sort(
-                                    (a, b) => a.logCount.compareTo(b.logCount),
-                                  );
-                                  setState(() {
-                                    currentUser.bookSortBy = 'leastRead';
-                                  });
-                                },
-                                text: "Least Read",
-                                shape: GFButtonShape.pills,
-                                type: currentUser.bookSortBy == 'leastRead'
-                                    ? null
-                                    : GFButtonType.outline2x,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: GFButton(
-                                color: COLOR_NAVY,
-                                onPressed: () {
-                                  books.sort(
                                     (a, b) => a.title.compareTo(b.title),
                                   );
                                   setState(() {

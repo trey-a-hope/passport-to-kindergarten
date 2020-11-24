@@ -116,48 +116,6 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                 color: COLOR_NAVY,
                                 onPressed: () {
                                   visits.sort(
-                                    (a, b) => b.logCount.compareTo(a.logCount),
-                                  );
-                                  setState(() {
-                                    currentUser.visitSortBy = 'mostVisited';
-                                  });
-                                },
-                                text: "Most Visits",
-                                shape: GFButtonShape.pills,
-                                type: currentUser.visitSortBy == 'mostVisited'
-                                    ? null
-                                    : GFButtonType.outline2x,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: GFButton(
-                                color: COLOR_NAVY,
-                                onPressed: () {
-                                  visits.sort(
-                                    (a, b) => a.logCount.compareTo(b.logCount),
-                                  );
-                                  setState(() {
-                                    currentUser.visitSortBy = 'leastVisited';
-                                  });
-                                },
-                                text: "Least Visits",
-                                shape: GFButtonShape.pills,
-                                type: currentUser.visitSortBy == 'leastVisited'
-                                    ? null
-                                    : GFButtonType.outline2x,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: GFButton(
-                                color: COLOR_NAVY,
-                                onPressed: () {
-                                  visits.sort(
                                     (a, b) => a.title.compareTo(b.title),
                                   );
                                   setState(() {
