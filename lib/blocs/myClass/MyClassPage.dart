@@ -438,6 +438,7 @@ class MyClassPageState extends State<MyClassPage>
                                           final BookModel book = books[index];
 
                                           return ExpansionTile(
+                                            key: GlobalKey(),
                                             title: ListTile(
                                               leading: CircleAvatar(
                                                 backgroundColor:
@@ -676,6 +677,7 @@ class MyClassPageState extends State<MyClassPage>
                                               visits[index];
 
                                           return ExpansionTile(
+                                            key: GlobalKey(),
                                             leading: Image.asset(
                                               visit.assetImagePath,
                                             ),

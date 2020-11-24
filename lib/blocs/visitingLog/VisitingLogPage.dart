@@ -140,6 +140,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                             return Padding(
                               padding: EdgeInsets.all(10),
                               child: ExpansionTile(
+                                key: GlobalKey(),
                                 leading: Image.asset(
                                   '${visit.assetImagePath}',
                                 ),

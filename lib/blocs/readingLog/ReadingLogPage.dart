@@ -223,6 +223,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                           itemBuilder: (BuildContext context, int index) {
                             final BookModel book = books[index];
                             return ExpansionTile(
+                              key: GlobalKey(),
                               leading: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 child: CircleAvatar(
