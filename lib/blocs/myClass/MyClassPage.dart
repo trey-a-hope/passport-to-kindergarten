@@ -583,6 +583,19 @@ class MyClassPageState extends State<MyClassPage>
                                                 ),
                                                 onDaySelected: (DateTime day,
                                                     List events) async {
+                                                  DateTime now = DateTime.now();
+                                                  now = now.add(
+                                                    const Duration(days: 1),
+                                                  );
+                                                  if (now.isBefore(day)) {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Sorry',
+                                                            message:
+                                                                'You cannot log in the future.');
+                                                    return;
+                                                  }
                                                   final bool confirm =
                                                       await locator<
                                                               ModalService>()
@@ -933,6 +946,20 @@ class MyClassPageState extends State<MyClassPage>
                                                 ),
                                                 onDaySelected: (DateTime day,
                                                     List events) async {
+                                                  DateTime now = DateTime.now();
+                                                  now = now.add(
+                                                    const Duration(days: 1),
+                                                  );
+                                                  if (now.isBefore(day)) {
+                                                    locator<ModalService>()
+                                                        .showAlert(
+                                                            context: context,
+                                                            title: 'Sorry',
+                                                            message:
+                                                                'You cannot log in the future.');
+                                                    return;
+                                                  }
+
                                                   final bool confirm =
                                                       await locator<
                                                               ModalService>()
