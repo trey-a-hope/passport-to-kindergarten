@@ -59,6 +59,8 @@ const String ASSET_success_message_background =
     'assets/images/success_message_background.png';
 const String ASSET_p2k20_app_stamp_15_books_read =
     'assets/images/stamp_15_books_read.png';
+const String ASSET_p2k20_app_stamp_15_books_read_counter =
+    'assets/images/stamp_15_books_read_counter';
 const String ASSET_stamp_boonshoft = 'assets/images/stamp_boonshoft.png';
 const String ASSET_stamp_dayton_art_institute =
     'assets/images/stamp_dayton_art_institute.png';
