@@ -385,31 +385,34 @@ class SignupPageState extends State<SignupPage>
                                 hintText: 'Password'),
                           ),
                         ),
-                        FullWidthButtonWidget(
-                          buttonColor: COLOR_ORANGE,
-                          text: 'Sign Up',
-                          textColor: Colors.white,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            buttonColor: COLOR_ORANGE,
+                            text: 'Sign Up',
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            if (!confirm) return;
+                              if (!confirm) return;
 
-                            _signupBloc.add(
-                              TeacherSignupEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                                school: _schoolController.text,
-                              ),
-                            );
-                          },
+                              _signupBloc.add(
+                                TeacherSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  school: _schoolController.text,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(10),
@@ -926,38 +929,41 @@ class SignupPageState extends State<SignupPage>
                         SizedBox(
                           height: 20,
                         ),
-                        FullWidthButtonWidget(
-                          buttonColor: COLOR_ORANGE,
-                          text: 'Sign Up',
-                          textColor: Colors.white,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            buttonColor: COLOR_ORANGE,
+                            text: 'Sign Up',
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            if (!confirm) return;
+                              if (!confirm) return;
 
-                            _signupBloc.add(
-                              ParentSignupEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                                firstParentFirstName:
-                                    _firstParentFirstNameController.text,
-                                firstParentLastName:
-                                    _firstParentLastNameController.text,
-                                secondParentFirstName:
-                                    _secondParentFirstNameController.text,
-                                secondParentLastName:
-                                    _secondParentLastNameController.text,
-                              ),
-                            );
-                          },
+                              _signupBloc.add(
+                                ParentSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  firstParentFirstName:
+                                      _firstParentFirstNameController.text,
+                                  firstParentLastName:
+                                      _firstParentLastNameController.text,
+                                  secondParentFirstName:
+                                      _secondParentFirstNameController.text,
+                                  secondParentLastName:
+                                      _secondParentLastNameController.text,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(10),
@@ -1194,39 +1200,42 @@ class SignupPageState extends State<SignupPage>
                                 hintText: 'Secret Key'),
                           ),
                         ),
-                        FullWidthButtonWidget(
-                          buttonColor: COLOR_ORANGE,
-                          text: 'Sign Up',
-                          textColor: Colors.white,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            buttonColor: COLOR_ORANGE,
+                            text: 'Sign Up',
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            if (_superAdminSecretKeyController.text !=
-                                SECRET_SUPER_ADMIN_SIGNUP_KEY) {
-                              locator<ModalService>().showAlert(
-                                  context: context,
-                                  title: 'Error',
-                                  message: 'Secret Key Incorrect');
-                              return;
-                            }
-
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
+                              if (_superAdminSecretKeyController.text !=
+                                  SECRET_SUPER_ADMIN_SIGNUP_KEY) {
+                                locator<ModalService>().showAlert(
                                     context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                                    title: 'Error',
+                                    message: 'Secret Key Incorrect');
+                                return;
+                              }
 
-                            if (!confirm) return;
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            _signupBloc.add(
-                              SuperAdminSignupEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                              ),
-                            );
-                          },
+                              if (!confirm) return;
+
+                              _signupBloc.add(
+                                SuperAdminSignupEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(10),

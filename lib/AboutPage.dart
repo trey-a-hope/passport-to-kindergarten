@@ -251,22 +251,25 @@ class AboutPage extends StatelessWidget {
                   height: 100,
                 ),
               ),
-              FullWidthButtonWidget(
-                buttonColor: COLOR_NAVY,
-                textColor: Colors.white,
-                text: 'Learn More',
-                onPressed: () async {
-                  final String url = 'https://www.preschoolpromise.org/';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    locator<ModalService>().showAlert(
-                        context: context,
-                        title: 'Error',
-                        message: 'Could not open url.');
-                  }
-                },
-              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: FullWidthButtonWidget(
+                  buttonColor: COLOR_NAVY,
+                  textColor: Colors.white,
+                  text: 'Learn More',
+                  onPressed: () async {
+                    final String url = 'https://www.preschoolpromise.org/';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      locator<ModalService>().showAlert(
+                          context: context,
+                          title: 'Error',
+                          message: 'Could not open url.');
+                    }
+                  },
+                ),
+              )
             ],
           ),
         ),

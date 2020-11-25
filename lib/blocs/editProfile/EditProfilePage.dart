@@ -164,30 +164,33 @@ class EditProfilePageState extends State<EditProfilePage>
                         SizedBox(
                           height: 20,
                         ),
-                        FullWidthButtonWidget(
-                          text: 'Update',
-                          buttonColor: COLOR_NAVY,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            text: 'Update',
+                            buttonColor: COLOR_NAVY,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            if (!confirm) return;
+                              if (!confirm) return;
 
-                            _editProfileBloc.add(
-                              TeacherSubmitEvent(
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                                school: _schoolController.text,
-                              ),
-                            );
-                          },
-                          textColor: Colors.white,
-                        ),
+                              _editProfileBloc.add(
+                                TeacherSubmitEvent(
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  school: _schoolController.text,
+                                ),
+                              );
+                            },
+                            textColor: Colors.white,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -462,36 +465,39 @@ class EditProfilePageState extends State<EditProfilePage>
                         SizedBox(
                           height: 20,
                         ),
-                        FullWidthButtonWidget(
-                          text: 'Update',
-                          buttonColor: COLOR_NAVY,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            text: 'Update',
+                            buttonColor: COLOR_NAVY,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            if (!confirm) return;
-                            _editProfileBloc.add(
-                              ParentSubmitEvent(
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                                primaryParentFirstName:
-                                    _primaryParentFirstNameController.text,
-                                primaryParentLastName:
-                                    _primaryParentLastNameController.text,
-                                secondaryParentFirstName:
-                                    _secondaryParentFirstNameController.text,
-                                secondaryParentLastName:
-                                    _secondaryParentLastNameController.text,
-                              ),
-                            );
-                          },
-                          textColor: Colors.white,
-                        ),
+                              if (!confirm) return;
+                              _editProfileBloc.add(
+                                ParentSubmitEvent(
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  primaryParentFirstName:
+                                      _primaryParentFirstNameController.text,
+                                  primaryParentLastName:
+                                      _primaryParentLastNameController.text,
+                                  secondaryParentFirstName:
+                                      _secondaryParentFirstNameController.text,
+                                  secondaryParentLastName:
+                                      _secondaryParentLastNameController.text,
+                                ),
+                              );
+                            },
+                            textColor: Colors.white,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -572,28 +578,31 @@ class EditProfilePageState extends State<EditProfilePage>
                             ),
                           ),
                         ),
-                        FullWidthButtonWidget(
-                          text: 'Update',
-                          buttonColor: COLOR_NAVY,
-                          onPressed: () async {
-                            if (!_formKey.currentState.validate()) return;
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FullWidthButtonWidget(
+                            text: 'Update',
+                            buttonColor: COLOR_NAVY,
+                            onPressed: () async {
+                              if (!_formKey.currentState.validate()) return;
 
-                            bool confirm = await locator<ModalService>()
-                                .showConfirmation(
-                                    context: context,
-                                    title: 'Submit',
-                                    message: 'Are you sure?');
+                              bool confirm = await locator<ModalService>()
+                                  .showConfirmation(
+                                      context: context,
+                                      title: 'Submit',
+                                      message: 'Are you sure?');
 
-                            if (!confirm) return;
-                            _editProfileBloc.add(
-                              SuperAdminSubmitEvent(
-                                firstName: _firstNameController.text,
-                                lastName: _lastNameController.text,
-                              ),
-                            );
-                          },
-                          textColor: Colors.white,
-                        ),
+                              if (!confirm) return;
+                              _editProfileBloc.add(
+                                SuperAdminSubmitEvent(
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                ),
+                              );
+                            },
+                            textColor: Colors.white,
+                          ),
+                        )
                       ],
                     ),
                   ),

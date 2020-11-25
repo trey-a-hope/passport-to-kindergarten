@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
@@ -65,7 +64,8 @@ class VisitingLogPageState extends State<VisitingLogPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
                       AppBarWidget(title: 'Visit Log'),
                       Padding(
@@ -82,6 +82,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                       ),
                       Text(
                         'Sort Visits By...',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: COLOR_NAVY,
                         ),
@@ -134,6 +135,8 @@ class VisitingLogPageState extends State<VisitingLogPage>
                       ),
                       Expanded(
                         child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
                           itemCount: visits.length,
                           itemBuilder: (BuildContext context, int index) {
                             final VisitModel visit = visits[index];

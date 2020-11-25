@@ -57,7 +57,8 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
                       AppBarWidget(title: 'Book of The Month'),
                       Padding(
@@ -74,6 +75,8 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                       ),
                       Expanded(
                         child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
                           itemCount: DEFAULT_BOOKS.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(

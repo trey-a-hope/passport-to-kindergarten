@@ -77,7 +77,8 @@ class ReadingLogPageState extends State<ReadingLogPage>
                 height: screenHeight,
                 color: COLOR_CREAM,
                 child: SafeArea(
-                  child: Column(
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
                       AppBarWidget(title: 'Reading Log'),
                       Padding(
@@ -146,6 +147,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                       ),
                       Text(
                         'Sort Books By...',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: COLOR_NAVY,
                         ),
@@ -219,6 +221,8 @@ class ReadingLogPageState extends State<ReadingLogPage>
                       ),
                       Expanded(
                         child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
                           itemCount: books.length,
                           itemBuilder: (BuildContext context, int index) {
                             final BookModel book = books[index];
@@ -358,23 +362,26 @@ class ReadingLogPageState extends State<ReadingLogPage>
                           },
                         ),
                       ),
-                      FullWidthButtonWidget(
-                        onPressed: () async {
-                          dynamic res = await locator<ModalService>()
-                              .showAddBook(context: context);
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: FullWidthButtonWidget(
+                          onPressed: () async {
+                            dynamic res = await locator<ModalService>()
+                                .showAddBook(context: context);
 
-                          if (res == null) return;
+                            if (res == null) return;
 
-                          _readingLogBloc.add(
-                            CreateBookEvent(
-                              title: res['title'],
-                              author: res['author'],
-                            ),
-                          );
-                        },
-                        text: 'Add new title',
-                        buttonColor: COLOR_NAVY,
-                        textColor: Colors.white,
+                            _readingLogBloc.add(
+                              CreateBookEvent(
+                                title: res['title'],
+                                author: res['author'],
+                              ),
+                            );
+                          },
+                          text: 'Add new title',
+                          buttonColor: COLOR_NAVY,
+                          textColor: Colors.white,
+                        ),
                       )
                     ],
                   ),
