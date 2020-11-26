@@ -133,215 +133,206 @@ class VisitingLogPageState extends State<VisitingLogPage>
                           ),
                         ],
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: visits.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final VisitModel visit = visits[index];
-                            return Padding(
-                              padding: EdgeInsets.all(10),
-                              child: ExpansionTile(
-                                key: GlobalKey(),
-                                leading: Image.asset(
-                                  '${visit.assetImagePath}',
-                                ),
-                                title:
-                                    Text('${visit.title} (${visit.logCount})'),
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  final String url =
-                                                      '${visit.website}';
-                                                  if (await canLaunch(url)) {
-                                                    await launch(url);
-                                                  } else {
-                                                    locator<ModalService>()
-                                                        .showAlert(
-                                                      context: context,
-                                                      title: 'Error',
-                                                      message:
-                                                          'Could not open url.',
-                                                    );
-                                                  }
-                                                },
-                                                child: Image.asset(
-                                                  ASSET_website_icon,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Website',
-                                                style: TextStyle(
-                                                  color: COLOR_NAVY,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  await MapsLauncher
-                                                      .launchQuery(
-                                                          '${visit.address}');
-                                                },
-                                                child: Image.asset(
-                                                  ASSET_directions_icon,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Directions',
-                                                style: TextStyle(
-                                                  color: COLOR_NAVY,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
-                                            children: [
-                                              Image.asset(
-                                                ASSET_site_login_icon,
-                                              ),
-                                              Text(
-                                                'Log',
-                                                style: TextStyle(
-                                                  color: COLOR_NAVY,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  TableCalendar(
-                                    availableCalendarFormats: const {
-                                      CalendarFormat.month: 'Month'
-                                    },
-                                    calendarController: _calendarController,
-                                    events: visit.logEvents,
-                                    startingDayOfWeek: StartingDayOfWeek.sunday,
-                                    initialSelectedDay: DateTime.now(),
-                                    calendarStyle: CalendarStyle(
-                                      selectedColor: Colors.deepOrange[400],
-                                      todayColor: Colors.deepOrange[200],
-                                      markersColor: Colors.black,
-                                      outsideDaysVisible: false,
-                                    ),
-                                    builders: CalendarBuilders(
-                                      markersBuilder:
-                                          (context, date, events, holidays) {
-                                        final children = <Widget>[];
-
-                                        if (events.isNotEmpty) {
-                                          children.add(
-                                            Center(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                      height: 50, width: 50),
-                                                  Positioned(
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    child: CircleAvatar(
-                                                      backgroundColor:
-                                                          COLOR_NAVY,
-                                                      child: Text(
-                                                        '${events.length}',
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      radius: 10,
-                                                    ),
-                                                  )
-                                                ],
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: visits.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final VisitModel visit = visits[index];
+                          return Padding(
+                            padding: EdgeInsets.all(10),
+                            child: ExpansionTile(
+                              key: GlobalKey(),
+                              leading: Image.asset(
+                                '${visit.assetImagePath}',
+                              ),
+                              title: Text('${visit.title} (${visit.logCount})'),
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                final String url =
+                                                    '${visit.website}';
+                                                if (await canLaunch(url)) {
+                                                  await launch(url);
+                                                } else {
+                                                  locator<ModalService>()
+                                                      .showAlert(
+                                                    context: context,
+                                                    title: 'Error',
+                                                    message:
+                                                        'Could not open url.',
+                                                  );
+                                                }
+                                              },
+                                              child: Image.asset(
+                                                ASSET_website_icon,
                                               ),
                                             ),
-                                          );
-                                        }
-
-                                        return children;
-                                      },
-                                    ),
-                                    headerStyle: HeaderStyle(
-                                      formatButtonTextStyle: TextStyle()
-                                          .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 15.0),
-                                      formatButtonDecoration: BoxDecoration(
-                                        color: Colors.deepOrange[400],
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
+                                            Text(
+                                              'Website',
+                                              style: TextStyle(
+                                                color: COLOR_NAVY,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    onDaySelected:
-                                        (DateTime day, List events) async {
-                                      DateTime now = DateTime.now();
-                                      now = now.add(
-                                        const Duration(days: 1),
-                                      );
-                                      if (now.isBefore(day)) {
-                                        locator<ModalService>().showAlert(
-                                            context: context,
-                                            title: 'Sorry',
-                                            message:
-                                                'You cannot log in the future.');
-                                        return;
-                                      }
-                                      final bool confirm = await locator<
-                                              ModalService>()
-                                          .showConfirmation(
-                                              context: context,
-                                              title: 'Add Log',
-                                              message:
-                                                  '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visit.title}\"');
-
-                                      if (!confirm) return;
-
-                                      _visitingLogBloc.add(
-                                        CreateVisitLogEvent(
-                                          visitID: visit.id,
-                                          visitName: visit.title,
-                                          date: day,
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                await MapsLauncher.launchQuery(
+                                                    '${visit.address}');
+                                              },
+                                              child: Image.asset(
+                                                ASSET_directions_icon,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Directions',
+                                              style: TextStyle(
+                                                color: COLOR_NAVY,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      );
-                                    },
-                                    onVisibleDaysChanged: (DateTime first,
-                                        DateTime last,
-                                        CalendarFormat format) {},
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              ASSET_site_login_icon,
+                                            ),
+                                            Text(
+                                              'Log',
+                                              style: TextStyle(
+                                                color: COLOR_NAVY,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                TableCalendar(
+                                  availableCalendarFormats: const {
+                                    CalendarFormat.month: 'Month'
+                                  },
+                                  calendarController: _calendarController,
+                                  events: visit.logEvents,
+                                  startingDayOfWeek: StartingDayOfWeek.sunday,
+                                  initialSelectedDay: DateTime.now(),
+                                  calendarStyle: CalendarStyle(
+                                    selectedColor: Colors.deepOrange[400],
+                                    todayColor: Colors.deepOrange[200],
+                                    markersColor: Colors.black,
+                                    outsideDaysVisible: false,
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      )
+                                  builders: CalendarBuilders(
+                                    markersBuilder:
+                                        (context, date, events, holidays) {
+                                      final children = <Widget>[];
+
+                                      if (events.isNotEmpty) {
+                                        children.add(
+                                          Center(
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                    height: 50, width: 50),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: COLOR_NAVY,
+                                                    child: Text(
+                                                      '${events.length}',
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    radius: 10,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      return children;
+                                    },
+                                  ),
+                                  headerStyle: HeaderStyle(
+                                    formatButtonTextStyle: TextStyle().copyWith(
+                                        color: Colors.white, fontSize: 15.0),
+                                    formatButtonDecoration: BoxDecoration(
+                                      color: Colors.deepOrange[400],
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  onDaySelected:
+                                      (DateTime day, List events) async {
+                                    DateTime now = DateTime.now();
+                                    now = now.add(
+                                      const Duration(days: 1),
+                                    );
+                                    if (now.isBefore(day)) {
+                                      locator<ModalService>().showAlert(
+                                          context: context,
+                                          title: 'Sorry',
+                                          message:
+                                              'You cannot log in the future.');
+                                      return;
+                                    }
+                                    final bool confirm = await locator<
+                                            ModalService>()
+                                        .showConfirmation(
+                                            context: context,
+                                            title: 'Add Log',
+                                            message:
+                                                '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visit.title}\"');
+
+                                    if (!confirm) return;
+
+                                    _visitingLogBloc.add(
+                                      CreateVisitLogEvent(
+                                        visitID: visit.id,
+                                        visitName: visit.title,
+                                        date: day,
+                                      ),
+                                    );
+                                  },
+                                  onVisibleDaysChanged: (DateTime first,
+                                      DateTime last, CalendarFormat format) {},
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

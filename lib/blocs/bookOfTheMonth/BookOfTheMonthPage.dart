@@ -73,60 +73,56 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage>
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: DEFAULT_BOOKS.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemBuilder: (BuildContext context, int index) {
-                            final BookModel bookOfTheMonth =
-                                DEFAULT_BOOKS[index];
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: DEFAULT_BOOKS.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                        itemBuilder: (BuildContext context, int index) {
+                          final BookModel bookOfTheMonth = DEFAULT_BOOKS[index];
 
-                            return Padding(
-                              padding: EdgeInsets.all(10),
-                              child: InkWell(
-                                child: Container(
-                                  foregroundDecoration: BoxDecoration(
-                                    color: bookOfTheMonth.given
-                                        ? Colors.transparent
-                                        : Colors.grey,
-                                    backgroundBlendMode: BlendMode.saturation,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: Image.asset(
-                                              bookOfTheMonth.assetImagePath)
-                                          .image,
-                                    ),
+                          return Padding(
+                            padding: EdgeInsets.all(10),
+                            child: InkWell(
+                              child: Container(
+                                foregroundDecoration: BoxDecoration(
+                                  color: bookOfTheMonth.given
+                                      ? Colors.transparent
+                                      : Colors.grey,
+                                  backgroundBlendMode: BlendMode.saturation,
+                                ),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: Image.asset(
+                                            bookOfTheMonth.assetImagePath)
+                                        .image,
                                   ),
                                 ),
-                                onTap: () {
-                                  Route route = MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        BlocProvider(
-                                      create: (BuildContext context) =>
-                                          BOOK_OF_THE_MONTH_DETAILS_BP
-                                              .BookOfTheMonthDetailsBloc(
-                                        bookOfTheMonth: bookOfTheMonth,
-                                      )..add(
-                                              BOOK_OF_THE_MONTH_DETAILS_BP
-                                                  .LoadPageEvent(),
-                                            ),
-                                      child: BOOK_OF_THE_MONTH_DETAILS_BP
-                                          .BookOfTheMonthDetailsPage(),
-                                    ),
-                                  );
-                                  Navigator.push(context, route);
-                                },
                               ),
-                            );
-                          },
-                        ),
-                      )
+                              onTap: () {
+                                Route route = MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      BlocProvider(
+                                    create: (BuildContext context) =>
+                                        BOOK_OF_THE_MONTH_DETAILS_BP
+                                            .BookOfTheMonthDetailsBloc(
+                                      bookOfTheMonth: bookOfTheMonth,
+                                    )..add(
+                                            BOOK_OF_THE_MONTH_DETAILS_BP
+                                                .LoadPageEvent(),
+                                          ),
+                                    child: BOOK_OF_THE_MONTH_DETAILS_BP
+                                        .BookOfTheMonthDetailsPage(),
+                                  ),
+                                );
+                                Navigator.push(context, route);
+                              },
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

@@ -219,148 +219,145 @@ class ReadingLogPageState extends State<ReadingLogPage>
                           ),
                         ],
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: books.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final BookModel book = books[index];
-                            return ExpansionTile(
-                              key: GlobalKey(),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: CircleAvatar(
-                                  backgroundImage: book.assetImagePath == null
-                                      ? NetworkImage(DUMMY_PROFILE_PHOTO_URL)
-                                      : AssetImage(book.assetImagePath),
-                                ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: books.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final BookModel book = books[index];
+                          return ExpansionTile(
+                            key: GlobalKey(),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child: CircleAvatar(
+                                backgroundImage: book.assetImagePath == null
+                                    ? NetworkImage(DUMMY_PROFILE_PHOTO_URL)
+                                    : AssetImage(book.assetImagePath),
                               ),
-                              title: Text(
-                                '${book.title} (${book.logCount})',
-                                style: TextStyle(
-                                  color: COLOR_NAVY,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            title: Text(
+                              '${book.title} (${book.logCount})',
+                              style: TextStyle(
+                                color: COLOR_NAVY,
+                                fontWeight: FontWeight.bold,
                               ),
-                              children: [
-                                book.logCount == 0
-                                    ? SizedBox.shrink()
-                                    : Container(
-                                        height: 50,
-                                        color: COLOR_YELLOW,
-                                        child: Center(
-                                          child: Text(
-                                            'Wow! You have read this book ${book.logCount} ${book.logCount == 1 ? 'time' : 'times'}!',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                            ),
+                            children: [
+                              book.logCount == 0
+                                  ? SizedBox.shrink()
+                                  : Container(
+                                      height: 50,
+                                      color: COLOR_YELLOW,
+                                      child: Center(
+                                        child: Text(
+                                          'Wow! You have read this book ${book.logCount} ${book.logCount == 1 ? 'time' : 'times'}!',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
-                                TableCalendar(
-                                  availableCalendarFormats: const {
-                                    CalendarFormat.month: 'Month'
-                                  },
-                                  calendarController: _calendarController,
-                                  events: book.logEvents,
-                                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                                  initialSelectedDay: DateTime.now(),
-                                  calendarStyle: CalendarStyle(
-                                    selectedColor: Colors.deepOrange[400],
-                                    todayColor: Colors.deepOrange[200],
-                                    markersColor: Colors.black,
-                                    outsideDaysVisible: false,
-                                  ),
-                                  builders: CalendarBuilders(
-                                    markersBuilder:
-                                        (context, date, events, holidays) {
-                                      final children = <Widget>[];
-
-                                      if (events.isNotEmpty) {
-                                        children.add(
-                                          Center(
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                    height: 50, width: 50),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  child: CircleAvatar(
-                                                    backgroundColor: COLOR_NAVY,
-                                                    child: Text(
-                                                      '${events.length}',
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    radius: 10,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                      return children;
-                                    },
-                                  ),
-                                  headerStyle: HeaderStyle(
-                                    formatButtonTextStyle: TextStyle().copyWith(
-                                        color: Colors.white, fontSize: 15.0),
-                                    formatButtonDecoration: BoxDecoration(
-                                      color: Colors.deepOrange[400],
-                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                  ),
-                                  onDaySelected:
-                                      (DateTime day, List events) async {
-                                    DateTime now = DateTime.now();
-                                    now = now.add(
-                                      const Duration(days: 1),
-                                    );
-                                    if (now.isBefore(day)) {
-                                      locator<ModalService>().showAlert(
-                                          context: context,
-                                          title: 'Sorry',
-                                          message:
-                                              'You cannot log in the future.');
-                                      return;
-                                    }
-                                    final bool confirm = await locator<
-                                            ModalService>()
-                                        .showConfirmation(
-                                            context: context,
-                                            title: 'Add Log',
-                                            message:
-                                                '${DateFormat('MMMM dd, yyyy').format(day)} for \"${book.title}\"');
-
-                                    if (!confirm) return;
-
-                                    bool totalLogLimitReached =
-                                        currentLogCount + 1 ==
-                                            _totalBookProgressAmount;
-
-                                    _readingLogBloc.add(
-                                      CreateBookLogEvent(
-                                        bookID: book.id,
-                                        date: day,
-                                        totalLogLimitReached:
-                                            totalLogLimitReached,
-                                      ),
-                                    );
-                                  },
-                                  onVisibleDaysChanged: (DateTime first,
-                                      DateTime last, CalendarFormat format) {},
+                              TableCalendar(
+                                availableCalendarFormats: const {
+                                  CalendarFormat.month: 'Month'
+                                },
+                                calendarController: _calendarController,
+                                events: book.logEvents,
+                                startingDayOfWeek: StartingDayOfWeek.sunday,
+                                initialSelectedDay: DateTime.now(),
+                                calendarStyle: CalendarStyle(
+                                  selectedColor: Colors.deepOrange[400],
+                                  todayColor: Colors.deepOrange[200],
+                                  markersColor: Colors.black,
+                                  outsideDaysVisible: false,
                                 ),
-                              ],
-                            );
-                          },
-                        ),
+                                builders: CalendarBuilders(
+                                  markersBuilder:
+                                      (context, date, events, holidays) {
+                                    final children = <Widget>[];
+
+                                    if (events.isNotEmpty) {
+                                      children.add(
+                                        Center(
+                                          child: Stack(
+                                            children: [
+                                              Container(height: 50, width: 50),
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: CircleAvatar(
+                                                  backgroundColor: COLOR_NAVY,
+                                                  child: Text(
+                                                    '${events.length}',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  radius: 10,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    return children;
+                                  },
+                                ),
+                                headerStyle: HeaderStyle(
+                                  formatButtonTextStyle: TextStyle().copyWith(
+                                      color: Colors.white, fontSize: 15.0),
+                                  formatButtonDecoration: BoxDecoration(
+                                    color: Colors.deepOrange[400],
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                onDaySelected:
+                                    (DateTime day, List events) async {
+                                  DateTime now = DateTime.now();
+                                  now = now.add(
+                                    const Duration(days: 1),
+                                  );
+                                  if (now.isBefore(day)) {
+                                    locator<ModalService>().showAlert(
+                                        context: context,
+                                        title: 'Sorry',
+                                        message:
+                                            'You cannot log in the future.');
+                                    return;
+                                  }
+                                  final bool confirm = await locator<
+                                          ModalService>()
+                                      .showConfirmation(
+                                          context: context,
+                                          title: 'Add Log',
+                                          message:
+                                              '${DateFormat('MMMM dd, yyyy').format(day)} for \"${book.title}\"');
+
+                                  if (!confirm) return;
+
+                                  bool totalLogLimitReached =
+                                      currentLogCount + 1 ==
+                                          _totalBookProgressAmount;
+
+                                  _readingLogBloc.add(
+                                    CreateBookLogEvent(
+                                      bookID: book.id,
+                                      date: day,
+                                      totalLogLimitReached:
+                                          totalLogLimitReached,
+                                    ),
+                                  );
+                                },
+                                onVisibleDaysChanged: (DateTime first,
+                                    DateTime last, CalendarFormat format) {},
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
