@@ -73,6 +73,23 @@ class MyClassPageState extends State<MyClassPage>
 
           return Scaffold(
             key: _scaffoldKey,
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: COLOR_NAVY,
+              child: Icon(Icons.note),
+              onPressed: () async {
+                final bool confirm =
+                    await locator<ModalService>().showConfirmation(
+                  context: context,
+                  title: 'Generate Report?',
+                  message:
+                      'This will list all stamps and visits for each student in your class.',
+                );
+
+                if (!confirm) return;
+
+                _myClassBloc.add(GenerateReportEvent());
+              },
+            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -96,7 +113,7 @@ class MyClassPageState extends State<MyClassPage>
                                     style: TextStyle(
                                       color: COLOR_NAVY,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 21,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),

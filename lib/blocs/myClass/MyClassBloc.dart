@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
@@ -11,8 +14,10 @@ import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/UserService.dart';
+import 'package:path_provider/path_provider.dart';
 import 'MyClassEvent.dart';
 import 'MyClassState.dart';
+import 'package:excel/excel.dart';
 
 abstract class MyClassBlocDelegate {
   void showMessage({@required String message});
@@ -25,7 +30,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
   MyClassBlocDelegate _myClassBlocDelegate;
   UserModel _currentUser;
   List<UserModel> _students;
-  bool studentSelected = false;
+  bool _studentSelected = false;
 
   void setDelegate({@required MyClassBlocDelegate delegate}) {
     this._myClassBlocDelegate = delegate;
@@ -57,12 +62,12 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     }
 
     if (event is StudentsUpdatedEvent) {
-      final List<UserModel> students = event.students;
+      _students = event.students;
 
       for (int studentCount = 0;
-          studentCount < students.length;
+          studentCount < _students.length;
           studentCount++) {
-        final UserModel student = students[studentCount];
+        final UserModel student = _students[studentCount];
 
         final List<BookModel> books =
             await locator<LogService>().getBooksForUser(uid: student.uid);
@@ -149,8 +154,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
       yield LoadedState(
         user: _currentUser,
-        students: students,
-        studentSelected: studentSelected,
+        students: _students,
+        studentSelected: _studentSelected,
       );
     }
 
@@ -277,13 +282,89 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     }
 
     if (event is StudentSelectedEvent) {
-      studentSelected = event.studentSelected;
+      _studentSelected = event.studentSelected;
 
       yield LoadedState(
         user: _currentUser,
         students: _students,
-        studentSelected: studentSelected,
+        studentSelected: _studentSelected,
       );
+    }
+
+    if (event is GenerateReportEvent) {
+      try {
+        yield LoadingState();
+        final Excel excel =
+            Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
+
+        /* 
+      * sheetObject.updateCell(cell, value, { CellStyle (Optional)});
+      * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+      * cell can be identified with Cell Address or by 2D array having row and column Index;
+      * Cell Style options are optional
+      */
+
+        Sheet sheetObject = excel['SheetName'];
+
+        CellStyle cellStyle = CellStyle(
+            backgroundColorHex: "#1AFF1A",
+            fontFamily: getFontFamily(FontFamily.Calibri));
+
+        cellStyle.underline = Underline.Single; // or Underline.Double
+
+        var cell = sheetObject.cell(CellIndex.indexByString("A1"));
+        cell.value = 8; // dynamic values support provided;
+        cell.cellStyle = cellStyle;
+
+        // printing cell-type
+        print("CellType: " + cell.cellType.toString());
+
+        ///
+        /// Inserting and removing column and rows
+
+        // insert column at index = 8
+        sheetObject.insertColumn(8);
+
+        // remove column at index = 18
+        sheetObject.removeColumn(18);
+
+        // insert row at index = 82
+        sheetObject.removeRow(82);
+
+        // remove row at index = 80
+        sheetObject.removeRow(80);
+
+        final List<int> encoded = await excel.encode();
+
+        Directory appDocDir = await getApplicationDocumentsDirectory();
+
+        File(
+            "${appDocDir.path}/Class_Report_${DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now())}.xlsx")
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(encoded);
+
+        // for (int i = 0; i < _students.length; i++) {
+        //   final UserModel student = _students[i];
+
+        //   print(student.firstName);
+        // }
+        _myClassBlocDelegate.showMessage(
+            message: 'Report generated, go to the files app on your phone.');
+
+        yield LoadedState(
+          user: _currentUser,
+          students: _students,
+          studentSelected: _studentSelected,
+        );
+      } catch (error) {
+        _myClassBlocDelegate.showMessage(message: error.toString());
+
+        yield LoadedState(
+          user: _currentUser,
+          students: _students,
+          studentSelected: _studentSelected,
+        );
+      }
     }
   }
 }
