@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p/AboutPage.dart';
 import 'package:p/ServiceLocator.dart';
@@ -14,6 +10,8 @@ import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
@@ -32,6 +30,15 @@ class MenuPage extends StatefulWidget {
 }
 
 class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
+  static GlobalKey myClassGlobalKey = GlobalKey();
+  static GlobalKey exploreBookOfTheMonthGlobalKey = GlobalKey();
+  static GlobalKey awesomeReadingTipsGlobalKey = GlobalKey();
+  static GlobalKey editProfileGlobalKey = GlobalKey();
+  static GlobalKey aboutGlobalKey = GlobalKey();
+  static GlobalKey myPassportGlobalKey = GlobalKey();
+  static GlobalKey logReadingGlobalKey = GlobalKey();
+  static GlobalKey logVisitGlobalKey = GlobalKey();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _menuBottomPadding = 50;
   MenuBloc _menuBloc;
@@ -52,6 +59,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_my_passport,
+        key: myClassGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -77,6 +85,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_my_passport,
+        key: myPassportGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -102,6 +111,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_reading_log,
+        key: logReadingGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -127,6 +137,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_visit_log,
+        key: logVisitGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -152,6 +163,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_book_of_the_month,
+        key: exploreBookOfTheMonthGlobalKey,
         height: 20,
       ),
       title: Text(
@@ -178,6 +190,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_awesome_reading_tips,
+        key: awesomeReadingTipsGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -204,6 +217,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_edit_profile,
+        key: editProfileGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -253,6 +267,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_about,
+        key: aboutGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -552,15 +567,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                             width: screenWidth,
                           ),
                           Positioned(
-                            child: InkWell(
-                              onTap: () {
-                                showSelectImageDialog();
-                              },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  user.imgUrl,
-                                ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                user.imgUrl,
                               ),
                             ),
                             left: 20,
@@ -642,87 +652,316 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     );
   }
 
-  showSelectImageDialog() {
-    return Platform.isIOS ? iOSBottomSheet() : androidDialog();
-  }
+  List<TargetFocus> _buildTargetFocusPoints(
+      {@required PROFILE_TYPE profile_type}) {
+    bool isTeacher = profile_type.name == PROFILE_TYPE.TEACHER.name;
+    bool isParent = profile_type.name == PROFILE_TYPE.PARENT.name;
+    bool isSuperAdmin = profile_type.name == PROFILE_TYPE.SUPER_ADMIN.name;
 
-  iOSBottomSheet() {
-    showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoActionSheet(
-            title: Text('Add Photo'),
-            actions: <Widget>[
-              CupertinoActionSheetAction(
-                child: Text('Take Photo'),
-                onPressed: () => handleImage(source: ImageSource.camera),
-              ),
-              CupertinoActionSheetAction(
-                child: Text('Choose From Gallery'),
-                onPressed: () => handleImage(source: ImageSource.gallery),
-              )
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: Colors.redAccent),
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          );
-        });
-  }
+    List<TargetFocus> targetFocusPoints = List<TargetFocus>();
 
-  androidDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Text('Add Photo'),
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text('Take Photo'),
-                onPressed: () => handleImage(source: ImageSource.camera),
-              ),
-              SimpleDialogOption(
-                child: Text('Choose From Gallery'),
-                onPressed: () => handleImage(source: ImageSource.gallery),
-              ),
-              SimpleDialogOption(
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.redAccent),
+    final TargetFocus myClassFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: myClassGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "My Class",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
                 ),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          );
-        });
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "View students in your class and run reports.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus exploreBookOfTheMonthFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: exploreBookOfTheMonthGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Explore Book of The Month",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Learn more about this year's books of the month.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus awesomeReadingTipsFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: awesomeReadingTipsGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "AWEsome Reading Tips",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Get tips on how to improve your reading experience.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus editProfileFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: editProfileGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Edit Profile",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Update your personal info.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus aboutFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: aboutGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "About",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Learn more about Passport to Kindergarten.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus myPassportFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: myPassportGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "My Passport",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "View child information and stamps they've earned.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
+    final TargetFocus logReadingFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: logReadingGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Log Reading",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Create new entry for reading log.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+    final TargetFocus logVisitFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: logVisitGlobalKey,
+      contents: [
+        ContentTarget(
+          align: AlignContent.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Log Visit",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Create new entry for visiting log.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+    if (isTeacher) {
+      targetFocusPoints.add(myClassFocus);
+      targetFocusPoints.add(exploreBookOfTheMonthFocus);
+      targetFocusPoints.add(awesomeReadingTipsFocus);
+      targetFocusPoints.add(editProfileFocus);
+      targetFocusPoints.add(aboutFocus);
+    }
+
+    if (isParent) {
+      targetFocusPoints.add(myPassportFocus);
+      targetFocusPoints.add(logReadingFocus);
+      targetFocusPoints.add(logVisitFocus);
+      targetFocusPoints.add(exploreBookOfTheMonthFocus);
+      targetFocusPoints.add(awesomeReadingTipsFocus);
+      targetFocusPoints.add(editProfileFocus);
+      targetFocusPoints.add(aboutFocus);
+    }
+
+    if (isSuperAdmin) {
+      targetFocusPoints.add(exploreBookOfTheMonthFocus);
+      targetFocusPoints.add(awesomeReadingTipsFocus);
+      targetFocusPoints.add(editProfileFocus);
+      targetFocusPoints.add(aboutFocus);
+    }
+
+    return targetFocusPoints;
   }
 
-  handleImage({@required ImageSource source}) async {
-    Navigator.pop(context);
+  void _showTutorial({@required PROFILE_TYPE profile_type}) async {
+    final List<TargetFocus> targets =
+        _buildTargetFocusPoints(profile_type: profile_type);
 
-    try {
-      final PickedFile file = await ImagePicker().getImage(source: source);
+    TutorialCoachMark tutorial = TutorialCoachMark(context,
+        targets: targets, // List<TargetFocus>
+        colorShadow: Colors.black, onFinish: () {
+      print("finish");
+    }, onClickTarget: (target) {
+      print(target);
+    }, onClickSkip: () {
+      print("skip");
+    });
 
-      if (file == null) return;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
 
-      File image = await ImageCropper.cropImage(
-        sourcePath: file.path,
-        aspectRatio: CropAspectRatio(
-          ratioX: 100,
-          ratioY: 100,
-        ),
-      );
-
-      if (image == null) return;
-
-      _menuBloc.add(
-        UploadPictureEvent(image: image),
-      );
-    } catch (error) {
-      print(error);
+    if (!seenTutorial) {
+      tutorial.show();
+      prefs.setBool('seenTutorial', true);
     }
   }
 
@@ -730,5 +969,10 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   void showMessage({String message}) {
     locator<ModalService>()
         .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+  }
+
+  @override
+  void showTutorial({PROFILE_TYPE profile_type}) {
+    _showTutorial(profile_type: profile_type);
   }
 }

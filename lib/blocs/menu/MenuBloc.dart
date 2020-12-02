@@ -14,6 +14,7 @@ import 'MenuState.dart';
 
 abstract class MenuBlocDelegate {
   void showMessage({@required String message});
+  void showTutorial({@required PROFILE_TYPE profile_type});
 }
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
@@ -96,17 +97,29 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           greetingMessage = 'Evening';
         }
 
-        if (_currentUser.profileType == PROFILE_TYPE.PARENT.name)
+        if (_currentUser.profileType == PROFILE_TYPE.PARENT.name) {
           yield ParentState(
               user: _currentUser, greetingMessage: greetingMessage);
-        else if (_currentUser.profileType == PROFILE_TYPE.TEACHER.name)
+
+          await Future.delayed(Duration(microseconds: 50000));
+
+          _menuBlocDelegate.showTutorial(profile_type: PROFILE_TYPE.PARENT);
+        } else if (_currentUser.profileType == PROFILE_TYPE.TEACHER.name) {
           yield TeacherState(
               user: _currentUser, greetingMessage: greetingMessage);
-        else if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name)
+          await Future.delayed(Duration(microseconds: 50000));
+
+          _menuBlocDelegate.showTutorial(profile_type: PROFILE_TYPE.TEACHER);
+        } else if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name) {
           yield SuperAdminState(
               user: _currentUser, greetingMessage: greetingMessage);
-        else
+          await Future.delayed(Duration(microseconds: 50000));
+
+          _menuBlocDelegate.showTutorial(
+              profile_type: PROFILE_TYPE.SUPER_ADMIN);
+        } else {
           yield ErrorState(error: 'Should not see this...');
+        }
       } catch (error) {
         yield ErrorState(error: error);
       }

@@ -40,7 +40,7 @@ class SearchTeachersBloc
       try {
         yield SearchTeachersStateStart();
       } catch (error) {
-        print(error.toString()); //TODO: Display error message.
+        print(error.toString());
       }
     }
 
