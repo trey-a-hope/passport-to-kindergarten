@@ -22,8 +22,6 @@ abstract class IDummyService {
 class DummyService extends IDummyService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
-  final DocumentReference _tableCountsDocRef =
-      Firestore.instance.collection('Data').document('tableCounts');
 
   @override
   Future<void> addDefaultBooksToStudent({

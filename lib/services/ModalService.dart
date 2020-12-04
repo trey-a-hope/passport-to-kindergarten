@@ -90,7 +90,6 @@ class ModalService extends IModalService {
   Future<String> showPasswordResetEmail({@required BuildContext context}) {
     final TextEditingController emailController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    bool autovalidate = false;
 
     return showDialog<String>(
       barrierDismissible: false,
@@ -99,7 +98,7 @@ class ModalService extends IModalService {
         title: Text('Reset Password'),
         content: Form(
           key: formKey,
-          autovalidate: autovalidate,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
@@ -125,12 +124,8 @@ class ModalService extends IModalService {
           FlatButton(
             child: const Text('SUBMIT'),
             onPressed: () {
-              final FormState form = formKey.currentState;
-              if (!form.validate()) {
-                autovalidate = true;
-              } else {
-                Navigator.of(context).pop(emailController.text);
-              }
+              if (!formKey.currentState.validate()) return;
+              Navigator.of(context).pop(emailController.text);
             },
           )
         ],

@@ -82,7 +82,7 @@ class MyClassPageState extends State<MyClassPage>
                   context: context,
                   title: 'Generate Report?',
                   message:
-                      'This will list all stamps and visits for each student in your class.',
+                      'This will list all books, visits, and stamps for each student in your class.',
                 );
 
                 if (!confirm) return;

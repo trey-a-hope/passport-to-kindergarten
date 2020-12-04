@@ -6,7 +6,6 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
-import 'package:p/services/DummyService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'MenuEvent.dart';

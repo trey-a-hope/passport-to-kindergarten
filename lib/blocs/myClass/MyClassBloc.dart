@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
@@ -422,8 +423,42 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           ..createSync(recursive: true)
           ..writeAsBytesSync(encoded);
 
-        // Uint8List bytes = File(excelDocPath).readAsBytesSync();
-        // Excel openExcel = Excel.decodeBytes(bytes);
+        final MailOptions mailOptions = MailOptions(
+          //body: 'This is a body.',
+          subject: 'Generated Class Report',
+          recipients: ['a@a.com'],
+          isHTML: false,
+          //bccRecipients: ['other@example.com'],
+          //ccRecipients: ['third@example.com'],
+          attachments: [
+            excelDocPath,
+          ],
+        );
+
+        final MailerResponse response = await FlutterMailer.send(mailOptions);
+        String platformResponse;
+        switch (response) {
+          case MailerResponse.saved:
+            // ios only
+            platformResponse = 'mail was saved to draft';
+            break;
+          case MailerResponse.sent:
+            // ios only
+            platformResponse = 'mail was sent';
+            break;
+          case MailerResponse.cancelled:
+            // ios only
+            platformResponse = 'mail was cancelled';
+            break;
+          case MailerResponse.android:
+            platformResponse = 'intent was successful';
+            break;
+          default:
+            platformResponse = 'unknown';
+            break;
+        }
+
+        print(platformResponse);
 
         // for (var table in openExcel.tables.keys) {
         //   print(table); //sheet Name
@@ -434,8 +469,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         //   }
         // }
 
-        _myClassBlocDelegate.showMessage(
-            message: 'Report generated, go to the files app on your phone.');
+        // _myClassBlocDelegate.showMessage(
+        //     message: 'Report generated, go to the files app on your phone.');
 
         // yield LoadedState(
         //   user: _currentUser,
