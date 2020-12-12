@@ -184,6 +184,12 @@ final List<VisitModel> DEFAULT_VISITS = [
   )
 ];
 
+final List<String> BOOK_OF_THE_MONTH_YOUTUBE_URLS = [
+  'https://youtu.be/WUMfyHf6-2E', //BEAR SAYS THANKS
+  'https://youtu.be/d0wtKhsBoyo', //THE GINGER BREAD MAN
+  'https://youtu.be/c6THdsBvknI', //THE LITTLE OLD LADY
+];
+
 final List<BookModel> DEFAULT_BOOKS = [
   BookModel(
     title: 'Lola Goes To School',
