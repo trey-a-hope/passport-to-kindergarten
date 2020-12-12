@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/UserModel.dart';
 
 class BookOfTheMonthDetailsState extends Equatable {
   const BookOfTheMonthDetailsState();
@@ -12,17 +11,14 @@ class BookOfTheMonthDetailsState extends Equatable {
 class LoadingState extends BookOfTheMonthDetailsState {}
 
 class LoadedState extends BookOfTheMonthDetailsState {
-  final UserModel user;
   final BookModel bookOfTheMonth;
 
   LoadedState({
-    @required this.user,
     @required this.bookOfTheMonth,
   });
 
   @override
   List<Object> get props => [
-        user,
         bookOfTheMonth,
       ];
 }

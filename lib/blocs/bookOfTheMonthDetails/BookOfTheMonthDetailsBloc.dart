@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:p/ServiceLocator.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/services/AuthService.dart';
-
 import 'Bloc.dart';
 
 abstract class BookOfTheMonthDetailsDelegate {
@@ -19,7 +16,6 @@ class BookOfTheMonthDetailsBloc
 
   final BookModel bookOfTheMonth;
   BookOfTheMonthDetailsDelegate _bookOfTheMonthDetailsDelegate;
-  UserModel _currentUser;
 
   void setDelegate({@required BookOfTheMonthDetailsDelegate delegate}) {
     this._bookOfTheMonthDetailsDelegate = delegate;
@@ -32,9 +28,7 @@ class BookOfTheMonthDetailsBloc
       yield LoadingState();
 
       try {
-        _currentUser = await locator<AuthService>().getCurrentUser();
         yield LoadedState(
-          user: _currentUser,
           bookOfTheMonth: bookOfTheMonth,
         );
       } catch (error) {

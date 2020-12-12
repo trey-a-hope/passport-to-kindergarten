@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
@@ -293,69 +295,188 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
     if (event is GenerateReportEvent) {
       try {
-        yield LoadingState();
         final Excel excel =
             Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
+        excel.delete('Sheet1');
 
-        /* 
-      * sheetObject.updateCell(cell, value, { CellStyle (Optional)});
-      * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-      * cell can be identified with Cell Address or by 2D array having row and column Index;
-      * Cell Style options are optional
-      */
+        final CellStyle labelCellStyle = CellStyle(bold: true);
 
-        Sheet sheetObject = excel['SheetName'];
+        for (int i = 0; i < _students.length; i++) {
+          final UserModel student = _students[i];
 
-        CellStyle cellStyle = CellStyle(
-            backgroundColorHex: "#1AFF1A",
-            fontFamily: getFontFamily(FontFamily.Calibri));
+          Sheet studentSheet =
+              excel['${student.firstName} ${student.lastName}'];
 
-        cellStyle.underline = Underline.Single; // or Underline.Double
+          //Add 'Book Name' label header for column 0.
+          Data bookNameLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0),
+          );
+          bookNameLabelCell.value = 'Book Name';
+          bookNameLabelCell.cellStyle = labelCellStyle;
 
-        var cell = sheetObject.cell(CellIndex.indexByString("A1"));
-        cell.value = 8; // dynamic values support provided;
-        cell.cellStyle = cellStyle;
+          //Add 'Log Count' label header for column 1.
+          Data bookLogCountLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0),
+          );
+          bookLogCountLabelCell.value = 'Log Count';
+          bookLogCountLabelCell.cellStyle = labelCellStyle;
 
-        // printing cell-type
-        print("CellType: " + cell.cellType.toString());
+          //Iterate over books for student.
+          for (int bookCounter = 0;
+              bookCounter < student.books.length;
+              bookCounter++) {
+            final BookModel book = student.books[bookCounter];
 
-        ///
-        /// Inserting and removing column and rows
+            //Add book title.
+            Data bookTitleCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 0, rowIndex: bookCounter + 1),
+            );
+            bookTitleCell.value = book.title;
 
-        // insert column at index = 8
-        sheetObject.insertColumn(8);
+            //Add log count.
+            Data bookLogCountCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 1, rowIndex: bookCounter + 1),
+            );
+            bookLogCountCell.value = book.logCount;
+          }
 
-        // remove column at index = 18
-        sheetObject.removeColumn(18);
+          //Add 'Visit Name' label header for column 2.
+          Data visitNameLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0),
+          );
+          visitNameLabelCell.value = 'Visit Name';
+          visitNameLabelCell.cellStyle = labelCellStyle;
 
-        // insert row at index = 82
-        sheetObject.removeRow(82);
+          //Add 'Log Count' label header for column 3.
+          Data visitLogCountLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0),
+          );
+          visitLogCountLabelCell.value = 'Log Count';
+          visitLogCountLabelCell.cellStyle = labelCellStyle;
 
-        // remove row at index = 80
-        sheetObject.removeRow(80);
+          //Iterate over visits for student.
+          for (int visitCounter = 0;
+              visitCounter < student.visits.length;
+              visitCounter++) {
+            final VisitModel visit = student.visits[visitCounter];
+
+            //Add visit title.
+            Data visitTitleCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 2, rowIndex: visitCounter + 1),
+            );
+            visitTitleCell.value = visit.title;
+
+            //Add log count.
+            Data visitLogCountCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 3, rowIndex: visitCounter + 1),
+            );
+            visitLogCountCell.value = visit.logCount;
+          }
+
+          //Add 'Stamp Name' label header for column 4.
+          Data stampNameLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0),
+          );
+          stampNameLabelCell.value = 'Stamp Name';
+          stampNameLabelCell.cellStyle = labelCellStyle;
+
+          //Add 'Count' label header for column 5.
+          Data stampCountLabelCell = studentSheet.cell(
+            CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0),
+          );
+          stampCountLabelCell.value = 'Count';
+          stampCountLabelCell.cellStyle = labelCellStyle;
+
+          //Iterate over stamps for student.
+          for (int stampCounter = 0;
+              stampCounter < student.stamps.length;
+              stampCounter++) {
+            final StampModel stamp = student.stamps[stampCounter];
+
+            //Add stamp title.
+            Data stampTitleCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 4, rowIndex: stampCounter + 1),
+            );
+            stampTitleCell.value = stamp.name;
+
+            //Add count.
+            Data stampCountCell = studentSheet.cell(
+              CellIndex.indexByColumnRow(
+                  columnIndex: 5, rowIndex: stampCounter + 1),
+            );
+            stampCountCell.value = 1;
+          }
+        }
 
         final List<int> encoded = await excel.encode();
 
         Directory appDocDir = await getApplicationDocumentsDirectory();
 
-        File(
-            "${appDocDir.path}/Class_Report_${DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now())}.xlsx")
+        final String excelDocPath =
+            '${appDocDir.path}/Class_Report_${DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now())}.xlsx';
+        File(excelDocPath)
           ..createSync(recursive: true)
           ..writeAsBytesSync(encoded);
 
-        // for (int i = 0; i < _students.length; i++) {
-        //   final UserModel student = _students[i];
-
-        //   print(student.firstName);
-        // }
-        _myClassBlocDelegate.showMessage(
-            message: 'Report generated, go to the files app on your phone.');
-
-        yield LoadedState(
-          user: _currentUser,
-          students: _students,
-          studentSelected: _studentSelected,
+        final MailOptions mailOptions = MailOptions(
+          //body: 'This is a body.',
+          subject: 'Generated Class Report',
+          recipients: ['a@a.com'],
+          isHTML: false,
+          //bccRecipients: ['other@example.com'],
+          //ccRecipients: ['third@example.com'],
+          attachments: [
+            excelDocPath,
+          ],
         );
+
+        final MailerResponse response = await FlutterMailer.send(mailOptions);
+        String platformResponse;
+        switch (response) {
+          case MailerResponse.saved:
+            // ios only
+            platformResponse = 'mail was saved to draft';
+            break;
+          case MailerResponse.sent:
+            // ios only
+            platformResponse = 'mail was sent';
+            break;
+          case MailerResponse.cancelled:
+            // ios only
+            platformResponse = 'mail was cancelled';
+            break;
+          case MailerResponse.android:
+            platformResponse = 'intent was successful';
+            break;
+          default:
+            platformResponse = 'unknown';
+            break;
+        }
+
+        print(platformResponse);
+
+        // for (var table in openExcel.tables.keys) {
+        //   print(table); //sheet Name
+        //   print(excel.tables[table].maxCols);
+        //   print(excel.tables[table].maxRows);
+        //   for (var row in excel.tables[table].rows) {
+        //     print("$row");
+        //   }
+        // }
+
+        // _myClassBlocDelegate.showMessage(
+        //     message: 'Report generated, go to the files app on your phone.');
+
+        // yield LoadedState(
+        //   user: _currentUser,
+        //   students: _students,
+        //   studentSelected: _studentSelected,
+        // );
       } catch (error) {
         _myClassBlocDelegate.showMessage(message: error.toString());
 
