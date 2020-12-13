@@ -8,6 +8,7 @@ import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
 import 'Bloc.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class BookOfTheMonthDetailsPage extends StatefulWidget {
   @override
@@ -45,6 +46,23 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
 
         if (state is LoadedState) {
           final BookModel bookOfTheMonth = state.bookOfTheMonth;
+
+          String initialVideoId;
+
+          switch (bookOfTheMonth.title) {
+            case 'Bear Says Thanks':
+              initialVideoId = 'WUMfyHf6-2E';
+              break;
+            case 'The Gingerbread Man':
+              initialVideoId = 'd0wtKhsBoyo';
+              break;
+            case 'The Little Old Lady Who Was Not Afraid of Anything':
+              initialVideoId = 'c6THdsBvknI';
+              break;
+            default:
+              break;
+          }
+
           List<Widget> conversationStarters = List<Widget>();
 
           bookOfTheMonth.conversationStarters.forEach(
@@ -166,56 +184,18 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                           ),
                         ),
                       ),
-                      Divider(),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 20),
-                          height: 200,
-                          width: screenWidth * 0.9,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              locator<ModalService>().showAlert(
-                                context: context,
-                                title: 'To Do',
-                                message: 'Play Video',
-                              );
-                            },
-                            child: Stack(
-                              children: [
-                                Image.network(
-                                  'https://goodereader.com/blog/uploads/images/AdobeStock_118516528-e1559744022425.jpeg',
-                                  fit: BoxFit.fitWidth,
-                                  width: screenWidth * 0.9,
+                      initialVideoId != null
+                          ? YoutubePlayer(
+                              controller: YoutubePlayerController(
+                                initialVideoId: initialVideoId,
+                                flags: YoutubePlayerFlags(
+                                  autoPlay: false,
+                                  mute: false,
                                 ),
-                                Center(
-                                  child: Image.asset(
-                                    ASSET_play_button,
-                                    height: 50,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                              ),
+                              showVideoProgressIndicator: true,
+                            )
+                          : SizedBox.shrink(),
                       Divider(),
                       Padding(
                         padding: EdgeInsets.all(20),
