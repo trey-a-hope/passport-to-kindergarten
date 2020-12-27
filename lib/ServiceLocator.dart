@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:p/services/AnalyticsService.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/BookService.dart';
 import 'package:p/services/DummyService.dart';
 import 'package:p/services/FCMNotificationService.dart';
 import 'package:p/services/ModalService.dart';
@@ -14,11 +15,12 @@ GetIt locator = GetIt.I;
 void setUpLocater() {
   locator.registerLazySingleton(() => AnalyticsService());
   locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => BookService());
   locator.registerLazySingleton(() => DummyService());
   locator.registerLazySingleton(() => FCMNotificationService());
+  locator.registerLazySingleton(() => LogService());
   locator.registerLazySingleton(() => ModalService());
   locator.registerLazySingleton(() => StorageService());
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => ValidatorService());
-  locator.registerLazySingleton(() => LogService());
 }

@@ -93,7 +93,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
           },
         );
 
-        book.logEvents = logEvents;
+        // book.logEvents = logEvents;
       }
 
       yield LoadedState(
@@ -108,21 +108,21 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
       final DateTime now = DateTime.now();
 
       try {
-        await locator<LogService>().createBookForUser(
-          uid: _currentUser.uid,
-          book: BookModel(
-            author: author,
-            title: title,
-            logCount: 0,
-            created: now,
-            modified: now,
-            id: null,
-            given: true,
-            summary: null,
-            conversationStarters: null,
-            assetImagePath: null,
-          ),
-        );
+        // await locator<LogService>().createBookForUser(
+        //   uid: _currentUser.uid,
+        //   book: BookModel(
+        //     author: author,
+        //     title: title,
+        //     logCount: 0,
+        //     created: now,
+        //     modified: now,
+        //     id: null,
+        //     given: true,
+        //     summary: null,
+        //     conversationStarters: null,
+        //     assetImagePath: null,
+        //   ),
+        // );
 
         _readingLogDelegate.showMessage(message: 'Book added!');
       } catch (error) {

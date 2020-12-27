@@ -6,9 +6,10 @@ import 'package:p/models/VisitModel.dart';
 
 abstract class IDummyService {
   // Future<void> addIDKTeacherToUsers();
-  Future<void> addDefaultBooksToStudent({
-    @required String uid,
-  });
+  // Future<void> addDefaultBooksToStudent({
+  //   @required String uid,
+  // });
+  // void addDefaultBooks();
   Future<void> addDefaultVisitsToStudent({
     @required String uid,
   });
@@ -22,31 +23,33 @@ abstract class IDummyService {
 class DummyService extends IDummyService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
+  final CollectionReference _booksColRef =
+      Firestore.instance.collection('Books');
 
-  @override
-  Future<void> addDefaultBooksToStudent({
-    @required String uid,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+  // @override
+  // Future<void> addDefaultBooksToStudent({
+  //   @required String uid,
+  // }) async {
+  //   try {
+  //     final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      for (int i = 0; i < DEFAULT_BOOKS.length; i++) {
-        final BookModel defaultBook = DEFAULT_BOOKS[i];
-        DocumentReference defaultBookRef =
-            userDocRef.collection('books').document();
-        defaultBook.id = defaultBookRef.documentID;
-        defaultBookRef.setData(
-          defaultBook.toMap(),
-        );
-      }
+  //     for (int i = 0; i < DEFAULT_BOOKS.length; i++) {
+  //       final BookModel defaultBook = DEFAULT_BOOKS[i];
+  //       DocumentReference defaultBookRef =
+  //           userDocRef.collection('books').document();
+  //       defaultBook.id = defaultBookRef.documentID;
+  //       defaultBookRef.setData(
+  //         defaultBook.toMap(),
+  //       );
+  //     }
 
-      return;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
+  //     return;
+  //   } catch (e) {
+  //     throw Exception(
+  //       e.toString(),
+  //     );
+  //   }
+  // }
 
   @override
   Future<void> addDefaultVisitsToStudent({@required String uid}) async {
@@ -102,4 +105,27 @@ class DummyService extends IDummyService {
       );
     }
   }
+
+  // @override
+  // void addDefaultBooks() {
+  //   try {
+  //     //final DocumentReference userDocRef = _usersColRef.document(uid);
+
+  //     for (int i = 0; i < DEFAULT_BOOKS.length; i++) {
+  //       final BookModel defaultBook = DEFAULT_BOOKS[i];
+  //       DocumentReference defaultBookRef =
+  //           _booksColRef.document();
+  //       defaultBook.id = defaultBookRef.documentID;
+  //       defaultBookRef.setData(
+  //         defaultBook.toMap(),
+  //       );
+  //     }
+
+  //     return;
+  //   } catch (e) {
+  //     throw Exception(
+  //       e.toString(),
+  //     );
+  //   }
+  // }
 }

@@ -107,7 +107,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
             },
           );
 
-          book.logEvents = logEvents;
+          // book.logEvents = logEvents;
         }
 
         final List<VisitModel> visits =
@@ -168,21 +168,21 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       final DateTime now = DateTime.now();
 
       try {
-        await locator<LogService>().createBookForUser(
-          uid: studentUID,
-          book: BookModel(
-            author: author,
-            title: title,
-            logCount: 0,
-            created: now,
-            modified: now,
-            id: null,
-            given: true,
-            summary: null,
-            conversationStarters: null,
-            assetImagePath: null,
-          ),
-        );
+        // await locator<LogService>().createBookForUser(
+        //   uid: studentUID,
+        //   book: BookModel(
+        //     author: author,
+        //     title: title,
+        //     logCount: 0,
+        //     created: now,
+        //     modified: now,
+        //     id: null,
+        //     given: true,
+        //     summary: null,
+        //     conversationStarters: null,
+        //     assetImagePath: null,
+        //   ),
+        // );
 
         _myClassBlocDelegate.showMessage(message: 'Book added!');
 
@@ -339,7 +339,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
               CellIndex.indexByColumnRow(
                   columnIndex: 1, rowIndex: bookCounter + 1),
             );
-            bookLogCountCell.value = book.logCount;
+            // bookLogCountCell.value = book.logCount;
           }
 
           //Add 'Visit Name' label header for column 2.

@@ -15,7 +15,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
-import 'package:p/blocs/bookOfTheMonth/Bloc.dart' as BOOK_OF_THE_MONTH_BP;
+import 'package:p/blocs/book_of_the_month/book_of_the_month_bloc.dart' as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;

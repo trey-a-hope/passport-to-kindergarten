@@ -132,10 +132,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                       Align(
                         alignment: Alignment.center,
                         child: Container(
-                          child: Image.asset(
-                            bookOfTheMonth.assetImagePath,
-                            fit: BoxFit.contain,
-                          ),
+                          child: Image.network(bookOfTheMonth.imgUrl),
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(

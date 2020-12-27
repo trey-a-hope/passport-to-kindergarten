@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'LogModel.dart';
-
 class BookModel {
   String id;
   DateTime created;
   DateTime modified;
   String title;
   String author;
-  int logCount;
-  String assetImagePath;
+  String imgUrl;
   bool given;
   String summary;
   List<String> conversationStarters;
+  String youtubeUrl;
 
-  Map<DateTime, List<LogModel>> logEvents;
+  // Map<DateTime, List<LogModel>> logEvents;
 
   BookModel({
     @required this.id,
@@ -23,11 +21,11 @@ class BookModel {
     @required this.modified,
     @required this.title,
     @required this.author,
-    @required this.logCount,
-    this.assetImagePath,
-    this.given,
-    this.summary,
-    this.conversationStarters,
+    @required this.imgUrl,
+    @required this.given,
+    @required this.summary,
+    @required this.conversationStarters,
+    @required this.youtubeUrl,
   });
 
   factory BookModel.fromDocumentSnapshot({
@@ -41,11 +39,11 @@ class BookModel {
       modified: data['modified'].toDate(),
       title: data['title'],
       author: data['author'],
-      logCount: data['logCount'],
-      assetImagePath: data['assetImagePath'],
-      // given: data['given'],
-      // summary: data['summary'],
-      // conversationStarters: data['conversationStarters'],
+      imgUrl: data['imgUrl'],
+      given: data['given'],
+      summary: data['summary'],
+      conversationStarters: List.from(data['conversationStarters']),
+      youtubeUrl: data['youtubeUrl'],
     );
   }
 
@@ -56,11 +54,11 @@ class BookModel {
       'modified': modified,
       'title': title,
       'author': author,
-      'logCount': logCount,
-      'assetImagePath': assetImagePath,
+      'imgUrl': imgUrl,
       'given': given,
       'summary': summary,
       'conversationStarters': conversationStarters,
+      'youtubeUrl': youtubeUrl,
     };
   }
 }
