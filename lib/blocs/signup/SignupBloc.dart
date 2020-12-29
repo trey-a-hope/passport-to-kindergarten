@@ -177,12 +177,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
         await locator<UserService>().createUser(user: newParent);
 
-        // await locator<DummyService>()
-        //     .addDefaultBooksToStudent(uid: newParent.uid);
-
-        await locator<DummyService>()
-            .addDefaultVisitsToStudent(uid: newParent.uid);
-
         await Future.delayed(
           const Duration(
             seconds: 3,

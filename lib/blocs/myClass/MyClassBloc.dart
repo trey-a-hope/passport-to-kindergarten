@@ -209,18 +209,18 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         //   collection: 'books',
         //   documentID: bookID,
         //   log: log,
-        // );
+        // );//todo:
 
         if (totalLogLimitReached) {
-          await locator<UserService>().createStamp(
-            uid: studentUID,
-            stamp: StampModel(
-              name: '15 Books Read',
-              assetImagePath: ASSET_p2k20_app_stamp_15_books_read,
-              created: DateTime.now(),
-              id: null,
-            ),
-          );
+          // await locator<UserService>().createStamp(
+          //   uid: studentUID,
+          //   stamp: StampModel(
+          //     name: '15 Books Read',
+          //     assetImagePath: ASSET_p2k20_app_stamp_15_books_read,
+          //     created: DateTime.now(),
+          //     id: null,
+          //   ),
+          // );//todo:
         }
 
         _myClassBlocDelegate.showMessage(message: 'Log added!');
@@ -248,22 +248,22 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         //   log: log,
         // );
 
-        String assetImagePath;
+        String imgUrl;
         switch (name) {
           case 'Dayton Art Institute':
-            assetImagePath = ASSET_stamp_dayton_art_institute;
+            imgUrl = STAMP_DAYTON_ART_INSTITUE;
             break;
           case 'Dayton Metro Library':
-            assetImagePath = ASSET_dayton_metro_library_logo;
+            imgUrl = STAMP_DAYTON_METRO_LIBRARY;
             break;
           case 'Five Rivers Metro Park':
-            assetImagePath = ASSET_five_rivers_metroparks_logo;
+            imgUrl = STAMP_FIVE_RIVERS_METROPARKS;
             break;
           case 'Boonshoft Museum of Discovery':
-            assetImagePath = ASSET_boonshoft_logo;
+            imgUrl = STAMP_BOONSHOFT;
             break;
           default:
-            assetImagePath = ASSET_stamp_dayton_art_institute;
+            imgUrl = STAMP_DAYTON_ART_INSTITUE;
             break;
         }
 
@@ -271,7 +271,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           uid: studentUID,
           stamp: StampModel(
             name: '15 Books Read',
-            assetImagePath: assetImagePath,
+            imgUrl: imgUrl,
             created: DateTime.now(),
             id: null,
           ),
@@ -339,7 +339,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
               CellIndex.indexByColumnRow(
                   columnIndex: 1, rowIndex: bookCounter + 1),
             );
-            // bookLogCountCell.value = book.logCount;
+            // bookLogCountCell.value = book.logCount;//todo
           }
 
           //Add 'Visit Name' label header for column 2.
@@ -374,7 +374,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
               CellIndex.indexByColumnRow(
                   columnIndex: 3, rowIndex: visitCounter + 1),
             );
-            visitLogCountCell.value = visit.logCount;
+            // visitLogCountCell.value = visit.logCount;//todo:
           }
 
           //Add 'Stamp Name' label header for column 4.

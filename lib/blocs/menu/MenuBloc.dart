@@ -78,10 +78,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        // await locator<DummyService>().addPropertyToAllDocsInCollection(
-        //     collection: 'Users',
-        //     propertyName: 'stampCount',
-        //     propertyValue: 0);
+        //todo: Call any database updates here.
 
         _setUpFirebaseMessaging();
 

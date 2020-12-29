@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/ModalService.dart';
@@ -52,7 +53,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
         }
 
         if (state is LoadedState) {
-          final List<VisitModel> visits = state.visits;
+          final List<EntryModel> visitEntries = state.visitEntries;
           final UserModel currentUser = state.currentUser;
 
           return Scaffold(
@@ -95,7 +96,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                               child: GFButton(
                                 color: COLOR_NAVY,
                                 onPressed: () {
-                                  visits.sort(
+                                  visitEntries.sort(
                                     (a, b) => b.modified.compareTo(a.modified),
                                   );
                                   setState(() {
@@ -116,8 +117,9 @@ class VisitingLogPageState extends State<VisitingLogPage>
                               child: GFButton(
                                 color: COLOR_NAVY,
                                 onPressed: () {
-                                  visits.sort(
-                                    (a, b) => a.title.compareTo(b.title),
+                                  visitEntries.sort(
+                                    (a, b) =>
+                                        a.visit.title.compareTo(b.visit.title),
                                   );
                                   setState(() {
                                     currentUser.visitSortBy = 'alphabet';
@@ -136,17 +138,18 @@ class VisitingLogPageState extends State<VisitingLogPage>
                       ListView.builder(
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
-                        itemCount: visits.length,
+                        itemCount: visitEntries.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final VisitModel visit = visits[index];
+                          final EntryModel visitEntry = visitEntries[index];
                           return Padding(
                             padding: EdgeInsets.all(10),
                             child: ExpansionTile(
                               key: GlobalKey(),
-                              leading: Image.asset(
-                                '${visit.assetImagePath}',
+                              leading: Image.network(
+                                '${visitEntry.visit.imgUrl}',
                               ),
-                              title: Text('${visit.title} (${visit.logCount})'),
+                              title: Text(
+                                  '${visitEntry.visit.title} (${visitEntry.logCount})'),
                               children: [
                                 Row(
                                   children: [
@@ -158,7 +161,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             InkWell(
                                               onTap: () async {
                                                 final String url =
-                                                    '${visit.website}';
+                                                    '${visitEntry.visit.website}';
                                                 if (await canLaunch(url)) {
                                                   await launch(url);
                                                 } else {
@@ -195,7 +198,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             InkWell(
                                               onTap: () async {
                                                 await MapsLauncher.launchQuery(
-                                                    '${visit.address}');
+                                                    '${visitEntry.visit.address}');
                                               },
                                               child: Image.asset(
                                                 ASSET_directions_icon,
@@ -240,7 +243,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                     CalendarFormat.month: 'Month'
                                   },
                                   calendarController: _calendarController,
-                                  events: visit.logEvents,
+                                  events: visitEntry.logEvents,
                                   startingDayOfWeek: StartingDayOfWeek.sunday,
                                   initialSelectedDay: DateTime.now(),
                                   calendarStyle: CalendarStyle(
@@ -313,15 +316,15 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             context: context,
                                             title: 'Add Log',
                                             message:
-                                                '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visit.title}\"');
+                                                '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visitEntry.visit.title}\"');
 
                                     if (!confirm) return;
 
                                     _visitingLogBloc.add(
                                       CreateVisitLogEvent(
-                                        visitID: visit.id,
-                                        visitName: visit.title,
                                         date: day,
+                                        idOfEntry: visitEntry.id,
+                                        visitName: visitEntry.visit.title,
                                       ),
                                     );
                                   },

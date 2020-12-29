@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
@@ -10,6 +11,7 @@ import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/UserService.dart';
+import 'package:p/services/VisitService.dart';
 
 import 'Bloc.dart';
 
@@ -35,20 +37,46 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        Stream<QuerySnapshot> visitsStream =
-            await locator<LogService>().streamVisitsForUser(
-          uid: _currentUser.uid,
-        );
+        List<String> visitEntriesIDs = (await locator<LogService>()
+                .retrieveEntries(uid: _currentUser.uid, type: 'visits'))
+            .map((visitEntry) => visitEntry.entryID)
+            .toList();
 
-        visitsStream.listen(
+        //Validate that this student has an entry for every visit currently.
+        List<String> visitsIDs =
+            (await locator<VisitService>().retrieveVisits())
+                .map((visit) => visit.id)
+                .toList();
+
+        for (var i = 0; i < visitsIDs.length; i++) {
+          if (!visitEntriesIDs.contains(visitsIDs[i])) {
+            await locator<LogService>().createEntry(
+              uid: _currentUser.uid,
+              type: 'visits',
+              entry: EntryModel(
+                id: null,
+                entryID: visitsIDs[i],
+                created: DateTime.now(),
+                modified: DateTime.now(),
+                logCount: 0,
+              ),
+            );
+          }
+        }
+
+        Stream<QuerySnapshot> entriesStream = await locator<LogService>()
+            .streamEntries(uid: _currentUser.uid, type: 'visits');
+
+        entriesStream.listen(
           (QuerySnapshot event) {
-            List<VisitModel> visits = event.documents
+            List<EntryModel> visitEntries = event.documents
                 .map(
-                  (doc) => VisitModel.fromDocumentSnapshot(ds: doc),
+                  (doc) => EntryModel.fromDocSnapshot(ds: doc),
                 )
                 .toList();
+
             add(
-              VisitsUpdatedEvent(visits: visits),
+              VisitsUpdatedEvent(visitEntries: visitEntries),
             );
           },
         );
@@ -58,18 +86,27 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
     }
 
     if (event is VisitsUpdatedEvent) {
-      final List<VisitModel> visits = event.visits;
+      final List<EntryModel> visitEntries = event.visitEntries;
 
-      _currentUser.visitSortBy = 'recent';
+      _currentUser.bookSortBy = 'recent';
 
-      visits.sort(
+      visitEntries.sort(
         (a, b) => b.modified.compareTo(a.modified),
       );
 
-      for (int visitCount = 0; visitCount < visits.length; visitCount++) {
-        final VisitModel visit = visits[visitCount];
-        final List<LogModel> logs = await locator<LogService>().getLogs(
-            uid: _currentUser.uid, collection: 'visits', documentID: visit.id);
+      for (int i = 0; i < visitEntries.length; i++) {
+        EntryModel visitEntry = visitEntries[i];
+
+        final VisitModel visit = await locator<VisitService>()
+            .retrieveVisit(visitID: visitEntry.entryID);
+
+        visitEntry.visit = visit;
+
+        final List<LogModel> logs = await locator<LogService>().retrieveLogs(
+          uid: _currentUser.uid,
+          type: 'visits',
+          idOfEntry: visitEntry.id,
+        );
 
         Map<DateTime, List<LogModel>> logEvents =
             Map<DateTime, List<LogModel>>();
@@ -92,17 +129,16 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
           },
         );
 
-        visit.logEvents = logEvents;
+        visitEntry.logEvents = logEvents;
       }
-
       yield LoadedState(
-        visits: visits,
+        visitEntries: visitEntries,
         currentUser: _currentUser,
       );
     }
 
     if (event is CreateVisitLogEvent) {
-      final String visitID = event.visitID;
+      final String idOfEntry = event.idOfEntry;
       final DateTime date = event.date;
       final String name = event.visitName;
 
@@ -112,29 +148,29 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
           id: null,
         );
 
-        // locator<LogService>().createLog(
-        //   uid: _currentUser.uid,
-        //   collection: 'visits',
-        //   documentID: visitID,
-        //   log: log,
-        // );
+        locator<LogService>().createLog(
+          uid: _currentUser.uid,
+          collection: 'visits',
+          idOfEntry: idOfEntry,
+          log: log,
+        );
 
-        String assetImagePath;
+        String imgUrl;
         switch (name) {
           case 'Dayton Art Institute':
-            assetImagePath = ASSET_stamp_dayton_art_institute;
+            imgUrl = STAMP_DAYTON_ART_INSTITUE;
             break;
           case 'Dayton Metro Library':
-            assetImagePath = ASSET_dayton_metro_library_logo;
+            imgUrl = STAMP_DAYTON_METRO_LIBRARY;
             break;
           case 'Five Rivers Metro Park':
-            assetImagePath = ASSET_five_rivers_metroparks_logo;
+            imgUrl = STAMP_FIVE_RIVERS_METROPARKS;
             break;
           case 'Boonshoft Museum of Discovery':
-            assetImagePath = ASSET_boonshoft_logo;
+            imgUrl = STAMP_BOONSHOFT;
             break;
           default:
-            assetImagePath = ASSET_stamp_dayton_art_institute;
+            imgUrl = STAMP_DAYTON_ART_INSTITUE;
             break;
         }
 
@@ -142,7 +178,7 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
           uid: _currentUser.uid,
           stamp: StampModel(
             name: name,
-            assetImagePath: assetImagePath,
+            imgUrl: imgUrl,
             created: DateTime.now(),
             id: null,
           ),

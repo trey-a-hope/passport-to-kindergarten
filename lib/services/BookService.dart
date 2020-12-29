@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/EntryModel.dart';
-import 'package:p/models/LogModel.dart';
 import 'package:p/models/VisitModel.dart';
 
 abstract class IBookService {
@@ -11,15 +10,12 @@ abstract class IBookService {
     @required BookModel book,
   });
 
+  Future<void> createVisit({
+    @required VisitModel visit,
+  });
+
   Future<BookModel> retrieveBook({@required String bookID});
   Future<List<BookModel>> retrieveBooksOfTheMonth();
-
-  // BookModel retrieveBook({@required String bookID});
-
-  // void updateBook(
-  //     {@required String bookID, @required Map<String, dynamic> data});
-
-  // void deleteBook({@required String bookID});
 }
 
 class BookService extends IBookService {
@@ -27,6 +23,8 @@ class BookService extends IBookService {
       Firestore.instance.collection('Users');
   final CollectionReference _booksColRef =
       Firestore.instance.collection('Books');
+  final CollectionReference _visitsColRef =
+      Firestore.instance.collection('Visits');
   final CollectionReference _dataColRef = Firestore.instance.collection('Data');
 
   @override
@@ -113,19 +111,23 @@ class BookService extends IBookService {
     }
   }
 
-  // @override
-  // void deleteBook({String bookID}) {
-  //   // TODO: implement deleteBook
-  // }
+  @override
+  Future<void> createVisit({@required VisitModel visit}) async {
+    try {
+      final WriteBatch batch = Firestore.instance.batch();
 
-  // @override
-  // BookModel retrieveBook({String bookID}) {
-  //   // TODO: implement retrieveBook
-  //   throw UnimplementedError();
-  // }
+      //Add new book to books collection.
+      final DocumentReference videoDocRef = _visitsColRef.document();
+      visit.id = videoDocRef.documentID;
+      batch.setData(videoDocRef, visit.toMap());
 
-  // @override
-  // void updateBook({String bookID, Map<String, dynamic> data}) {
-  //   // TODO: implement updateBook
-  // }
+      await batch.commit();
+
+      return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
 }

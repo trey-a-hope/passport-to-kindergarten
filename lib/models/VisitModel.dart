@@ -1,27 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'LogModel.dart';
-
 class VisitModel {
   String id;
   DateTime created;
   DateTime modified;
   String title;
-  int logCount;
-  String assetImagePath;
+  String imgUrl;
   String website;
   String address;
-
-  Map<DateTime, List<LogModel>> logEvents;
 
   VisitModel({
     @required this.id,
     @required this.created,
     @required this.modified,
     @required this.title,
-    @required this.logCount,
-    @required this.assetImagePath,
+    @required this.imgUrl,
     @required this.website,
     @required this.address,
   });
@@ -35,9 +29,8 @@ class VisitModel {
       id: data['id'],
       created: data['created'].toDate(),
       modified: data['modified'].toDate(),
+      imgUrl: data['imgUrl'],
       title: data['title'],
-      logCount: data['logCount'],
-      assetImagePath: data['assetImagePath'],
       website: data['website'],
       address: data['address'],
     );
@@ -48,9 +41,8 @@ class VisitModel {
       'id': id,
       'created': created,
       'modified': modified,
+      'imgUrl': imgUrl,
       'title': title,
-      'logCount': logCount,
-      'assetImagePath': assetImagePath,
       'website': website,
       'address': address,
     };

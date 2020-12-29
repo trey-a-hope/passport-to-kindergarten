@@ -122,7 +122,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                         height: 20,
                       ),
                       Image.asset(
-                        ASSET_dayton_metro_library_logo,
+                        '$LOGO_DAYTON_METRO_LIBRARY',
                         height: 100,
                       ),
                       Divider(),

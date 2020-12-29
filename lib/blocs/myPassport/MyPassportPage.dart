@@ -202,8 +202,8 @@ class MyPassportPageState extends State<MyPassportPage>
                               return Padding(
                                 padding: EdgeInsets.all(5),
                                 child: InkWell(
-                                  child: Image.asset(
-                                    stamp.assetImagePath,
+                                  child: Image.network(
+                                    stamp.imgUrl,
                                     height: 100,
                                   ),
                                   onTap: () {

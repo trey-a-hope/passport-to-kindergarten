@@ -147,6 +147,8 @@ class UserService extends IUserService {
 
       batch.setData(stampDocRef, stamp.toMap());
 
+      batch.updateData(userDocRef, {'stampCount': FieldValue.increment(1)});
+
       await batch.commit();
 
       return;

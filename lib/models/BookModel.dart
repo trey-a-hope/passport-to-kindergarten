@@ -13,8 +13,6 @@ class BookModel {
   List<String> conversationStarters;
   String youtubeUrl;
 
-  // Map<DateTime, List<LogModel>> logEvents;
-
   BookModel({
     @required this.id,
     @required this.created,

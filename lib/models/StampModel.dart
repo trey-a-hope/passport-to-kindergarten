@@ -5,13 +5,13 @@ class StampModel {
   String id;
   String name;
   DateTime created;
-  String assetImagePath;
+  String imgUrl;
 
   StampModel({
     @required this.id,
     @required this.name,
     @required this.created,
-    @required this.assetImagePath,
+    @required this.imgUrl,
   });
 
   factory StampModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
@@ -19,7 +19,7 @@ class StampModel {
       id: ds.data['id'],
       name: ds.data['name'],
       created: ds.data['created'].toDate(),
-      assetImagePath: ds.data['assetImagePath'],
+      imgUrl: ds.data['imgUrl'],
     );
   }
 
@@ -28,7 +28,7 @@ class StampModel {
       'id': id,
       'name': name,
       'created': created,
-      'assetImagePath': assetImagePath,
+      'imgUrl': imgUrl,
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/VisitModel.dart';
+import 'package:p/models/EntryModel.dart';
 
 abstract class VisitingLogEvent extends Equatable {
   @override
@@ -15,33 +15,33 @@ class LoadPageEvent extends VisitingLogEvent {
 }
 
 class VisitsUpdatedEvent extends VisitingLogEvent {
-  final List<VisitModel> visits;
+  final List<EntryModel> visitEntries;
 
   VisitsUpdatedEvent({
-    @required this.visits,
+    @required this.visitEntries,
   });
 
   @override
   List<Object> get props => [
-        visits,
+        visitEntries,
       ];
 }
 
 class CreateVisitLogEvent extends VisitingLogEvent {
-  final String visitID;
   final DateTime date;
+  final String idOfEntry;
   final String visitName;
 
   CreateVisitLogEvent({
-    @required this.visitID,
     @required this.date,
+    @required this.idOfEntry,
     @required this.visitName,
   });
 
   @override
   List<Object> get props => [
-        visitID,
         date,
-        visitName,
+        idOfEntry,
+        visitName
       ];
 }

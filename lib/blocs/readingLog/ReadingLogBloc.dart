@@ -103,8 +103,11 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
 
         bookEntry.book = book;
 
-        final List<LogModel> logs = await locator<LogService>().getLogs(
-            uid: _currentUser.uid, collection: 'books', documentID: book.id);
+        final List<LogModel> logs = await locator<LogService>().retrieveLogs(
+          uid: _currentUser.uid,
+          type: 'books',
+          idOfEntry: bookEntry.id,
+        );
 
         Map<DateTime, List<LogModel>> logEvents =
             Map<DateTime, List<LogModel>>();
@@ -186,7 +189,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
             uid: _currentUser.uid,
             stamp: StampModel(
               name: '15 Books Read',
-              assetImagePath: ASSET_p2k20_app_stamp_15_books_read,
+              imgUrl: '$STAMP_15_BOOKS_READ',
               created: DateTime.now(),
               id: null,
             ),

@@ -2,19 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/EntryModel.dart';
 import 'package:p/models/LogModel.dart';
-import 'package:p/models/VisitModel.dart';
 
 abstract class ILogService {
-
-  void createVisitForUser({
+  Future<void> createEntry({
     @required String uid,
-    @required VisitModel visit,
+    @required String type,
+    @required EntryModel entry,
   });
-
-  Future<void> createEntry(
-      {@required String uid,
-      @required String type,
-      @required EntryModel entry});
 
   Future<List<EntryModel>> retrieveEntries({
     @required String uid,
@@ -25,18 +19,10 @@ abstract class ILogService {
     @required String type,
   });
 
-  Future<Stream<QuerySnapshot>> streamVisitsForUser({
+  Future<List<LogModel>> retrieveLogs({
     @required String uid,
-  });
-
-  Future<List<VisitModel>> getVisitsForUser({
-    @required String uid,
-  });
-
-  Future<List<LogModel>> getLogs({
-    @required String uid,
-    @required String collection,
-    @required String documentID,
+    @required String type,
+    @required String idOfEntry,
   });
 
   Future<Stream<QuerySnapshot>> streamLogs({
@@ -56,48 +42,6 @@ abstract class ILogService {
 class LogService extends ILogService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
-
-  @override
-  void createVisitForUser(
-      {@required String uid, @required VisitModel visit}) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference visitsColRef = userDocRef.collection('visits');
-
-      DocumentReference visitDocRef = visitsColRef.document();
-      visit.id = visitDocRef.documentID;
-      visitDocRef.setData(
-        visit.toMap(),
-      );
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<List<VisitModel>> getVisitsForUser({@required String uid}) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      List<DocumentSnapshot> visitDocSnaps =
-          (await userDocRef.collection('visits').getDocuments()).documents;
-
-      List<VisitModel> visits = visitDocSnaps
-          .map(
-            (visitDocSnap) => VisitModel.fromDocumentSnapshot(ds: visitDocSnap),
-          )
-          .toList();
-
-      return visits;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
 
   @override
   Future<void> createLog({
@@ -146,16 +90,17 @@ class LogService extends ILogService {
   }
 
   @override
-  Future<List<LogModel>> getLogs(
-      {@required String uid,
-      @required String collection,
-      @required String documentID}) async {
+  Future<List<LogModel>> retrieveLogs({
+    @required String uid,
+    @required String type,
+    @required String idOfEntry,
+  }) async {
     try {
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
       List<DocumentSnapshot> logDocSnaps = (await userDocRef
-              .collection(collection)
-              .document(documentID)
+              .collection(type)
+              .document(idOfEntry)
               .collection('logs')
               .getDocuments())
           .documents;
@@ -186,40 +131,6 @@ class LogService extends ILogService {
           .snapshots();
 
       return logQueryStream;
-    } catch (error) {
-      throw Exception(
-        error.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<Stream<QuerySnapshot>> streamBooksForUser(
-      {@required String uid}) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      Stream<QuerySnapshot> booksQueryStream =
-          userDocRef.collection('books').snapshots();
-
-      return booksQueryStream;
-    } catch (error) {
-      throw Exception(
-        error.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<Stream<QuerySnapshot>> streamVisitsForUser(
-      {@required String uid}) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      Stream<QuerySnapshot> visitsQueryStream =
-          userDocRef.collection('visits').snapshots();
-
-      return visitsQueryStream;
     } catch (error) {
       throw Exception(
         error.toString(),

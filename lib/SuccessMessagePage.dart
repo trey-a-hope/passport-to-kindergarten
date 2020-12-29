@@ -59,8 +59,8 @@ class SuccessMessagePage extends StatelessWidget {
                   SizedBox(
                     height: 50,
                   ),
-                  Image.asset(
-                    ASSET_p2k20_app_stamp_15_books_read,
+                  Image.network(
+                    '$STAMP_15_BOOKS_READ',
                     width: 200,
                   )
                 ],

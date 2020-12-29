@@ -93,7 +93,7 @@ class ReadingLogPageState extends State<ReadingLogPage>
                               ),
                             ),
                             SizedBox(width: 10),
-                            Image.asset(ASSET_p2k20_app_stamp_15_books_read,
+                            Image.network('$STAMP_15_BOOKS_READ',
                                 width: 100),
                             SizedBox(width: 10),
                             Expanded(
