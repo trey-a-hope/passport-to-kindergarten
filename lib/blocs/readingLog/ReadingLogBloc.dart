@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/BookService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/UserService.dart';
 
@@ -36,20 +38,46 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
-        Stream<QuerySnapshot> booksStream =
-            await locator<LogService>().streamBooksForUser(
-          uid: _currentUser.uid,
-        );
+        List<String> bookEntriesIDs = (await locator<LogService>()
+                .retrieveEntries(uid: _currentUser.uid, type: 'books'))
+            .map((bookEntry) => bookEntry.entryID)
+            .toList();
 
-        booksStream.listen(
+        //Validate that this student has an entry for every book of the month currently.
+        List<String> booksOfTheMonthIDs =
+            (await locator<BookService>().retrieveBooksOfTheMonth())
+                .map((bookOfTheMonth) => bookOfTheMonth.id)
+                .toList();
+
+        for (var i = 0; i < booksOfTheMonthIDs.length; i++) {
+          if (!bookEntriesIDs.contains(booksOfTheMonthIDs[i])) {
+            await locator<LogService>().createEntry(
+              uid: _currentUser.uid,
+              type: 'books',
+              entry: EntryModel(
+                id: null,
+                entryID: booksOfTheMonthIDs[i],
+                created: DateTime.now(),
+                modified: DateTime.now(),
+                logCount: 0,
+              ),
+            );
+          }
+        }
+
+        Stream<QuerySnapshot> entriesStream = await locator<LogService>()
+            .streamEntries(uid: _currentUser.uid, type: 'books');
+
+        entriesStream.listen(
           (QuerySnapshot event) {
-            List<BookModel> books = event.documents
+            List<EntryModel> bookEntries = event.documents
                 .map(
-                  (doc) => BookModel.fromDocumentSnapshot(ds: doc),
+                  (doc) => EntryModel.fromDocSnapshot(ds: doc),
                 )
                 .toList();
+
             add(
-              BooksUpdatedEvent(books: books),
+              BooksUpdatedEvent(bookEntries: bookEntries),
             );
           },
         );
@@ -59,16 +87,22 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
     }
 
     if (event is BooksUpdatedEvent) {
-      final List<BookModel> books = event.books;
+      final List<EntryModel> bookEntries = event.bookEntries;
 
       _currentUser.bookSortBy = 'recent';
 
-      books.sort(
+      bookEntries.sort(
         (a, b) => b.modified.compareTo(a.modified),
       );
 
-      for (int bookCount = 0; bookCount < books.length; bookCount++) {
-        final BookModel book = books[bookCount];
+      for (int i = 0; i < bookEntries.length; i++) {
+        EntryModel bookEntry = bookEntries[i];
+
+        final BookModel book = await locator<BookService>()
+            .retrieveBook(bookID: bookEntry.entryID);
+
+        bookEntry.book = book;
+
         final List<LogModel> logs = await locator<LogService>().getLogs(
             uid: _currentUser.uid, collection: 'books', documentID: book.id);
 
@@ -93,11 +127,10 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
           },
         );
 
-        // book.logEvents = logEvents;
+        bookEntry.logEvents = logEvents;
       }
-
       yield LoadedState(
-        books: books,
+        bookEntries: bookEntries,
         currentUser: _currentUser,
       );
     }
@@ -108,21 +141,21 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
       final DateTime now = DateTime.now();
 
       try {
-        // await locator<LogService>().createBookForUser(
-        //   uid: _currentUser.uid,
-        //   book: BookModel(
-        //     author: author,
-        //     title: title,
-        //     logCount: 0,
-        //     created: now,
-        //     modified: now,
-        //     id: null,
-        //     given: true,
-        //     summary: null,
-        //     conversationStarters: null,
-        //     assetImagePath: null,
-        //   ),
-        // );
+        await locator<BookService>().createBook(
+          uid: _currentUser.uid,
+          book: BookModel(
+            author: author,
+            title: title,
+            created: now,
+            modified: now,
+            id: null,
+            given: true,
+            summary: null,
+            conversationStarters: null,
+            imgUrl: null,
+            youtubeUrl: null,
+          ),
+        );
 
         _readingLogDelegate.showMessage(message: 'Book added!');
       } catch (error) {
@@ -131,7 +164,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
     }
 
     if (event is CreateBookLogEvent) {
-      final String bookID = event.bookID;
+      final String idOfEntry = event.idOfEntry;
       final DateTime date = event.date;
       final bool totalLogLimitReached = event.totalLogLimitReached;
 
@@ -144,7 +177,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
         locator<LogService>().createLog(
           uid: _currentUser.uid,
           collection: 'books',
-          documentID: bookID,
+          idOfEntry: idOfEntry,
           log: log,
         );
 

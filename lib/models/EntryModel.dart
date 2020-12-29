@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p/models/BookModel.dart';
+import 'package:p/models/VisitModel.dart';
 
 import 'LogModel.dart';
 
@@ -9,13 +11,14 @@ class EntryModel {
   DateTime created;
   DateTime modified;
   int logCount;
-    Map<DateTime, List<LogModel>> logEvents;
 
+  Map<DateTime, List<LogModel>> logEvents;
+  BookModel book;
+  VisitModel visit;
 
   EntryModel({
     @required this.id,
     @required this.entryID,
-    
     @required this.created,
     @required this.modified,
     @required this.logCount,

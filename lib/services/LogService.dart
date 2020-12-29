@@ -1,26 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/VisitModel.dart';
 
 abstract class ILogService {
-  void createBookForUser({
-    @required String uid,
-    @required BookModel book,
-  });
 
   void createVisitForUser({
     @required String uid,
     @required VisitModel visit,
   });
 
-  Future<List<BookModel>> getBooksForUser({
+  Future<void> createEntry(
+      {@required String uid,
+      @required String type,
+      @required EntryModel entry});
+
+  Future<List<EntryModel>> retrieveEntries({
     @required String uid,
   });
 
-  Future<Stream<QuerySnapshot>> streamBooksForUser({
+  Future<Stream<QuerySnapshot>> streamEntries({
     @required String uid,
+    @required String type,
   });
 
   Future<Stream<QuerySnapshot>> streamVisitsForUser({
@@ -46,7 +48,7 @@ abstract class ILogService {
   Future<void> createLog({
     @required String uid,
     @required String collection,
-    @required String documentID,
+    @required String idOfEntry,
     @required LogModel log,
   });
 }
@@ -54,52 +56,6 @@ abstract class ILogService {
 class LogService extends ILogService {
   final CollectionReference _usersColRef =
       Firestore.instance.collection('Users');
-
-  @override
-  Future<void> createBookForUser({
-    @required String uid,
-    @required BookModel book,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      final CollectionReference booksColRef = userDocRef.collection('books');
-
-      DocumentReference bookDocRef = booksColRef.document();
-      book.id = bookDocRef.documentID;
-      bookDocRef.setData(
-        book.toMap(),
-      );
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<List<BookModel>> getBooksForUser({
-    @required String uid,
-  }) async {
-    try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
-
-      List<DocumentSnapshot> bookDocSnaps =
-          (await userDocRef.collection('books').getDocuments()).documents;
-
-      List<BookModel> books = bookDocSnaps
-          .map(
-            (bookDocSnap) => BookModel.fromDocumentSnapshot(ds: bookDocSnap),
-          )
-          .toList();
-
-      return books;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
 
   @override
   void createVisitForUser(
@@ -144,27 +100,28 @@ class LogService extends ILogService {
   }
 
   @override
-  Future<void> createLog(
-      {@required String uid,
-      @required String collection,
-      @required String documentID,
-      @required LogModel log}) async {
+  Future<void> createLog({
+    @required String uid,
+    @required String collection,
+    @required String idOfEntry,
+    @required LogModel log,
+  }) async {
     try {
       final WriteBatch batch = Firestore.instance.batch();
 
       final DocumentReference userDocRef = _usersColRef.document(uid);
 
-      final DocumentReference parentLogDocRef =
-          userDocRef.collection(collection).document(documentID);
+      final DocumentReference entryDocRef =
+          userDocRef.collection(collection).document(idOfEntry);
 
       final DocumentReference logDocRef =
-          parentLogDocRef.collection('logs').document();
+          entryDocRef.collection('logs').document();
 
       log.id = logDocRef.documentID;
 
       batch.setData(logDocRef, log.toMap());
 
-      batch.updateData(parentLogDocRef, {
+      batch.updateData(entryDocRef, {
         'logCount': FieldValue.increment(1),
         'modified': DateTime.now(),
       });
@@ -266,6 +223,71 @@ class LogService extends ILogService {
     } catch (error) {
       throw Exception(
         error.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<EntryModel>> retrieveEntries(
+      {@required String uid, @required String type}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      List<DocumentSnapshot> entryDocSnaps =
+          (await userDocRef.collection(type).getDocuments()).documents;
+
+      List<EntryModel> entries = entryDocSnaps
+          .map(
+            (entryDocSnap) => EntryModel.fromDocSnapshot(ds: entryDocSnap),
+          )
+          .toList();
+
+      return entries;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot>> streamEntries(
+      {@required String uid, @required String type}) async {
+    try {
+      final DocumentReference userDocRef = _usersColRef.document(uid);
+
+      Stream<QuerySnapshot> entriesQueryStream =
+          userDocRef.collection(type).snapshots();
+
+      return entriesQueryStream;
+    } catch (error) {
+      throw Exception(
+        error.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> createEntry({
+    @required String uid,
+    @required String type,
+    @required EntryModel entry,
+  }) async {
+    try {
+      final WriteBatch batch = Firestore.instance.batch();
+
+      final DocumentReference entryDocRef =
+          _usersColRef.document(uid).collection(type).document();
+      entry.id = entryDocRef.documentID;
+
+      batch.setData(entryDocRef, entry.toMap());
+
+      await batch.commit();
+
+      return;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
       );
     }
   }

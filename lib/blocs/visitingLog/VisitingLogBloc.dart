@@ -112,12 +112,12 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
           id: null,
         );
 
-        locator<LogService>().createLog(
-          uid: _currentUser.uid,
-          collection: 'visits',
-          documentID: visitID,
-          log: log,
-        );
+        // locator<LogService>().createLog(
+        //   uid: _currentUser.uid,
+        //   collection: 'visits',
+        //   documentID: visitID,
+        //   log: log,
+        // );
 
         String assetImagePath;
         switch (name) {

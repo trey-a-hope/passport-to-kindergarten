@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
+import 'package:p/models/EntryModel.dart';
 
 abstract class ReadingLogEvent extends Equatable {
   @override
@@ -15,15 +15,15 @@ class LoadPageEvent extends ReadingLogEvent {
 }
 
 class BooksUpdatedEvent extends ReadingLogEvent {
-  final List<BookModel> books;
+  final List<EntryModel> bookEntries;
 
   BooksUpdatedEvent({
-    @required this.books,
+    @required this.bookEntries,
   });
 
   @override
   List<Object> get props => [
-        books,
+        bookEntries,
       ];
 }
 
@@ -44,20 +44,20 @@ class CreateBookEvent extends ReadingLogEvent {
 }
 
 class CreateBookLogEvent extends ReadingLogEvent {
-  final String bookID;
   final DateTime date;
   final bool totalLogLimitReached;
+  final String idOfEntry;
 
   CreateBookLogEvent({
-    @required this.bookID,
     @required this.date,
     @required this.totalLogLimitReached,
+    @required this.idOfEntry,
   });
 
   @override
   List<Object> get props => [
-        bookID,
         date,
         totalLogLimitReached,
+        idOfEntry,
       ];
 }

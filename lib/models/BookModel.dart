@@ -42,7 +42,11 @@ class BookModel {
       imgUrl: data['imgUrl'],
       given: data['given'],
       summary: data['summary'],
-      conversationStarters: List.from(data['conversationStarters']),
+      conversationStarters: data['conversationStarters'] == null
+          ? []
+          : List.from(
+              data['conversationStarters'],
+            ),
       youtubeUrl: data['youtubeUrl'],
     );
   }

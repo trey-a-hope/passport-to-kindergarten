@@ -6,7 +6,7 @@ import 'package:p/models/LogModel.dart';
 import 'package:p/models/VisitModel.dart';
 
 abstract class IBookService {
-  void createBook({
+  Future<void> createBook({
     @required String uid,
     @required BookModel book,
   });
@@ -30,7 +30,7 @@ class BookService extends IBookService {
   final CollectionReference _dataColRef = Firestore.instance.collection('Data');
 
   @override
-  void createBook({
+  Future<void> createBook({
     @required String uid,
     @required BookModel book,
   }) async {

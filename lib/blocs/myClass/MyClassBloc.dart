@@ -64,101 +64,101 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     }
 
     if (event is StudentsUpdatedEvent) {
-      _students = event.students;
+      // _students = event.students;
 
-      for (int studentCount = 0;
-          studentCount < _students.length;
-          studentCount++) {
-        final UserModel student = _students[studentCount];
+      // for (int studentCount = 0;
+      //     studentCount < _students.length;
+      //     studentCount++) {
+      //   final UserModel student = _students[studentCount];
 
-        final List<BookModel> books =
-            await locator<LogService>().getBooksForUser(uid: student.uid);
-        student.books = books;
+      //   final List<BookModel> books =
+      //       await locator<LogService>().getBooksForUser(uid: student.uid);
+      //   student.books = books;
 
-        student.bookSortBy = 'recent';
+      //   student.bookSortBy = 'recent';
 
-        books.sort(
-          (a, b) => b.modified.compareTo(a.modified),
-        );
+      //   books.sort(
+      //     (a, b) => b.modified.compareTo(a.modified),
+      //   );
 
-        for (int bookCount = 0; bookCount < books.length; bookCount++) {
-          final BookModel book = books[bookCount];
-          final List<LogModel> logs = await locator<LogService>().getLogs(
-              uid: student.uid, collection: 'books', documentID: book.id);
+      //   for (int bookCount = 0; bookCount < books.length; bookCount++) {
+      //     final BookModel book = books[bookCount];
+      //     final List<LogModel> logs = await locator<LogService>().getLogs(
+      //         uid: student.uid, collection: 'books', documentID: book.id);
 
-          Map<DateTime, List<LogModel>> logEvents =
-              Map<DateTime, List<LogModel>>();
+      //     Map<DateTime, List<LogModel>> logEvents =
+      //         Map<DateTime, List<LogModel>>();
 
-          logs.forEach(
-            (LogModel log) {
-              DateTime dayKey = DateTime(
-                log.created.year,
-                log.created.month,
-                log.created.day,
-              );
+      //     logs.forEach(
+      //       (LogModel log) {
+      //         DateTime dayKey = DateTime(
+      //           log.created.year,
+      //           log.created.month,
+      //           log.created.day,
+      //         );
 
-              if (logEvents.containsKey(dayKey)) {
-                if (!logEvents[dayKey].contains(log)) {
-                  logEvents[dayKey].add(log);
-                }
-              } else {
-                logEvents[dayKey] = [log];
-              }
-            },
-          );
+      //         if (logEvents.containsKey(dayKey)) {
+      //           if (!logEvents[dayKey].contains(log)) {
+      //             logEvents[dayKey].add(log);
+      //           }
+      //         } else {
+      //           logEvents[dayKey] = [log];
+      //         }
+      //       },
+      //     );
 
-          // book.logEvents = logEvents;
-        }
+      //     // book.logEvents = logEvents;
+      //   }
 
-        final List<VisitModel> visits =
-            await locator<LogService>().getVisitsForUser(uid: student.uid);
-        student.visits = visits;
+      //   final List<VisitModel> visits =
+      //       await locator<LogService>().getVisitsForUser(uid: student.uid);
+      //   student.visits = visits;
 
-        student.visitSortBy = 'recent';
+      //   student.visitSortBy = 'recent';
 
-        visits.sort(
-          (a, b) => b.modified.compareTo(a.modified),
-        );
+      //   visits.sort(
+      //     (a, b) => b.modified.compareTo(a.modified),
+      //   );
 
-        for (int visitCount = 0; visitCount < visits.length; visitCount++) {
-          final VisitModel visit = visits[visitCount];
-          final List<LogModel> logs = await locator<LogService>().getLogs(
-              uid: student.uid, collection: 'visits', documentID: visit.id);
+      //   for (int visitCount = 0; visitCount < visits.length; visitCount++) {
+      //     final VisitModel visit = visits[visitCount];
+      //     final List<LogModel> logs = await locator<LogService>().getLogs(
+      //         uid: student.uid, collection: 'visits', documentID: visit.id);
 
-          Map<DateTime, List<LogModel>> logEvents =
-              Map<DateTime, List<LogModel>>();
+      //     Map<DateTime, List<LogModel>> logEvents =
+      //         Map<DateTime, List<LogModel>>();
 
-          logs.forEach(
-            (LogModel log) {
-              DateTime dayKey = DateTime(
-                log.created.year,
-                log.created.month,
-                log.created.day,
-              );
+      //     logs.forEach(
+      //       (LogModel log) {
+      //         DateTime dayKey = DateTime(
+      //           log.created.year,
+      //           log.created.month,
+      //           log.created.day,
+      //         );
 
-              if (logEvents.containsKey(dayKey)) {
-                if (!logEvents[dayKey].contains(log)) {
-                  logEvents[dayKey].add(log);
-                }
-              } else {
-                logEvents[dayKey] = [log];
-              }
-            },
-          );
+      //         if (logEvents.containsKey(dayKey)) {
+      //           if (!logEvents[dayKey].contains(log)) {
+      //             logEvents[dayKey].add(log);
+      //           }
+      //         } else {
+      //           logEvents[dayKey] = [log];
+      //         }
+      //       },
+      //     );
 
-          visit.logEvents = logEvents;
-        }
+      //     visit.logEvents = logEvents;
+      //   }
 
-        final List<StampModel> stamps =
-            await locator<UserService>().getStampsForUser(uid: student.uid);
-        student.stamps = stamps;
-      }
+      //   final List<StampModel> stamps =
+      //       await locator<UserService>().getStampsForUser(uid: student.uid);
+      //   student.stamps = stamps;
+      // }
 
-      yield LoadedState(
-        user: _currentUser,
-        students: _students,
-        studentSelected: _studentSelected,
-      );
+      // yield LoadedState(
+      //   user: _currentUser,
+      //   students: _students,
+      //   studentSelected: _studentSelected,
+      // );
     }
 
     if (event is CreateBookForStudentEvent) {
@@ -204,12 +204,12 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           id: null,
         );
 
-        locator<LogService>().createLog(
-          uid: studentUID,
-          collection: 'books',
-          documentID: bookID,
-          log: log,
-        );
+        // locator<LogService>().createLog(
+        //   uid: studentUID,
+        //   collection: 'books',
+        //   documentID: bookID,
+        //   log: log,
+        // );
 
         if (totalLogLimitReached) {
           await locator<UserService>().createStamp(
@@ -241,12 +241,12 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           id: null,
         );
 
-        locator<LogService>().createLog(
-          uid: studentUID,
-          collection: 'visits',
-          documentID: visitID,
-          log: log,
-        );
+        // locator<LogService>().createLog(
+        //   uid: studentUID,
+        //   collection: 'visits',
+        //   documentID: visitID,
+        //   log: log,
+        // );
 
         String assetImagePath;
         switch (name) {
