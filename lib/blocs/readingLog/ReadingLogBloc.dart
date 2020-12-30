@@ -11,6 +11,7 @@ import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/BookService.dart';
 import 'package:p/services/LogService.dart';
+import 'package:p/services/StampService.dart';
 import 'package:p/services/UserService.dart';
 
 import 'Bloc.dart';
@@ -185,7 +186,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
         );
 
         if (totalLogLimitReached) {
-          await locator<UserService>().createStamp(
+          await locator<StampService>().createStamp(
             uid: _currentUser.uid,
             stamp: StampModel(
               name: '15 Books Read',

@@ -10,6 +10,7 @@ import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
+import 'package:p/services/StampService.dart';
 import 'package:p/services/UserService.dart';
 import 'package:p/services/VisitService.dart';
 
@@ -174,7 +175,7 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
             break;
         }
 
-        await locator<UserService>().createStamp(
+        await locator<StampService>().createStamp(
           uid: _currentUser.uid,
           stamp: StampModel(
             name: name,

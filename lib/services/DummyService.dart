@@ -10,11 +10,6 @@ abstract class IDummyService {
 }
 
 class DummyService extends IDummyService {
-  final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
-  final CollectionReference _booksColRef =
-      Firestore.instance.collection('Books');
-
   @override
   Future<void> addPropertyToAllDocsInCollection({
     @required String collection,

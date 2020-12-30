@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +12,7 @@ import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
-import 'package:p/services/LogService.dart';
+import 'package:p/services/StampService.dart';
 import 'package:p/services/UserService.dart';
 import 'package:path_provider/path_provider.dart';
 import 'MyClassEvent.dart';
@@ -267,7 +265,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
             break;
         }
 
-        await locator<UserService>().createStamp(
+        await locator<StampService>().createStamp(
           uid: studentUID,
           stamp: StampModel(
             name: '15 Books Read',

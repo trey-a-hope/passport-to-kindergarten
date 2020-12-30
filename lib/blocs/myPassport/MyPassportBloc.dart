@@ -6,6 +6,7 @@ import 'package:p/constants.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/StampService.dart';
 import 'package:p/services/UserService.dart';
 import 'dart:async';
 import '../../ServiceLocator.dart';
@@ -42,7 +43,7 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
         }
 
         final List<StampModel> stamps =
-            await locator<UserService>().getStampsForUser(uid: _child.uid);
+            await locator<StampService>().getStampsForUser(uid: _child.uid);
 
         yield LoadedState(
           childUser: _child,

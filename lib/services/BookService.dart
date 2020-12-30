@@ -10,10 +10,6 @@ abstract class IBookService {
     @required BookModel book,
   });
 
-  Future<void> createVisit({
-    @required VisitModel visit,
-  });
-
   Future<BookModel> retrieveBook({@required String bookID});
   Future<List<BookModel>> retrieveBooksOfTheMonth();
 }
@@ -23,8 +19,6 @@ class BookService extends IBookService {
       Firestore.instance.collection('Users');
   final CollectionReference _booksColRef =
       Firestore.instance.collection('Books');
-  final CollectionReference _visitsColRef =
-      Firestore.instance.collection('Visits');
   final CollectionReference _dataColRef = Firestore.instance.collection('Data');
 
   @override
@@ -104,26 +98,6 @@ class BookService extends IBookService {
       }
 
       return booksOfTheMonth;
-    } catch (e) {
-      throw Exception(
-        e.toString(),
-      );
-    }
-  }
-
-  @override
-  Future<void> createVisit({@required VisitModel visit}) async {
-    try {
-      final WriteBatch batch = Firestore.instance.batch();
-
-      //Add new book to books collection.
-      final DocumentReference videoDocRef = _visitsColRef.document();
-      visit.id = videoDocRef.documentID;
-      batch.setData(videoDocRef, visit.toMap());
-
-      await batch.commit();
-
-      return;
     } catch (e) {
       throw Exception(
         e.toString(),
