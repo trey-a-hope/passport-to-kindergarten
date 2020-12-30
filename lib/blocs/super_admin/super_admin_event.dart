@@ -29,3 +29,19 @@ class UpdateBookGivenEvent extends SuperAdminEvent {
         given,
       ];
 }
+
+class GenerateReportEvent extends SuperAdminEvent {
+  final UserModel teacher;
+  final List<UserModel> students;
+
+  GenerateReportEvent({
+    @required this.teacher,
+    @required this.students,
+  });
+
+  @override
+  List<Object> get props => [
+        teacher,
+        students,
+      ];
+}

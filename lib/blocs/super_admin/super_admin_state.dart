@@ -13,14 +13,17 @@ class LoadingState extends SuperAdminState {}
 
 class LoadedState extends SuperAdminState {
   final List<BookModel> booksOfTheMonth;
+  final Map<UserModel, List<UserModel>> teacherStudentMap;
 
   LoadedState({
     @required this.booksOfTheMonth,
+    @required this.teacherStudentMap,
   });
 
   @override
   List<Object> get props => [
         booksOfTheMonth,
+        teacherStudentMap,
       ];
 }
 

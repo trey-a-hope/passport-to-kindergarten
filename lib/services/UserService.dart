@@ -13,11 +13,10 @@ abstract class IUserService {
   Future<List<UserModel>> retrieveStudentsForTeacher({
     @required String uid,
   });
+  Future<List<UserModel>> retrieveTeachers();
   Future<Stream<QuerySnapshot>> streamStudentsForTeacher({
     @required String teacherUID,
   });
-
-
 }
 
 class UserService extends IUserService {
@@ -140,6 +139,26 @@ class UserService extends IUserService {
       throw Exception(
         e.toString(),
       );
+    }
+  }
+
+  @override
+  Future<List<UserModel>> retrieveTeachers() async {
+    try {
+      List<UserModel> teachers = (await _usersColRef
+              .orderBy('lastName')
+              .where('profileType', isEqualTo: 'TEACHER')
+              .getDocuments())
+          .documents
+          .map(
+            (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
+          )
+          .toList();
+
+      return teachers;
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
     }
   }
 }

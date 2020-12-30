@@ -20,7 +20,10 @@ class SuperAdminViewState extends State<SuperAdminView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: COLOR_ORANGE,
+        title: Text('Super Admin'),
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
@@ -28,44 +31,117 @@ class SuperAdminViewState extends State<SuperAdminView> {
           height: screenHeight,
           color: COLOR_CREAM,
           child: SafeArea(
-            child: BlocBuilder<SuperAdminBloc, SuperAdminState>(
+            child: BlocConsumer<SuperAdminBloc, SuperAdminState>(
+              listener: (context, state) {
+                if (state is ErrorState) {
+                  print(state.error.toString());
+                }
+              },
               builder: (BuildContext context, SuperAdminState state) {
                 if (state is LoadingState) {
-                  return SpinnerWidget();
+                  return Container(
+                    child: SpinnerWidget(),
+                  );
                 }
 
                 if (state is LoadedState) {
                   final List<BookModel> booksOfTheMonth = state.booksOfTheMonth;
+                  final Map<UserModel, List<UserModel>> teacherStudentMap =
+                      state.teacherStudentMap;
 
-                  return ListView(
-                    children: [
-                      AppBarWidget(title: 'Super Admin'),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: booksOfTheMonth.length,
-                        itemBuilder: (context, index) {
-                          final BookModel bookOfTheMonth =
-                              booksOfTheMonth[index];
-                          return SwitchListTile(
-                            secondary:
-                                Image.network('${bookOfTheMonth.imgUrl}'),
-                            title: Text('${bookOfTheMonth.title}'),
-                            value: bookOfTheMonth.given,
-                            onChanged: (bool newValue) {
-                              context.read<SuperAdminBloc>().add(
-                                    UpdateBookGivenEvent(
-                                      bookID: bookOfTheMonth.id,
-                                      given: newValue,
-                                    ),
-                                  );
-                              setState(() {
-                                bookOfTheMonth.given = newValue;
-                              });
-                            },
-                          );
-                        },
+                  return DefaultTabController(
+                    length: 2,
+                    child: Scaffold(
+                      appBar: TabBar(
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              'Books Of The Month',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Generate Reports',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                      key: _scaffoldKey,
+                      body: TabBarView(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: booksOfTheMonth.length,
+                            itemBuilder: (context, index) {
+                              final BookModel bookOfTheMonth =
+                                  booksOfTheMonth[index];
+                              return SwitchListTile(
+                                secondary:
+                                    Image.network('${bookOfTheMonth.imgUrl}'),
+                                title: Text('${bookOfTheMonth.title}'),
+                                value: bookOfTheMonth.given,
+                                onChanged: (bool newValue) {
+                                  context.read<SuperAdminBloc>().add(
+                                        UpdateBookGivenEvent(
+                                          bookID: bookOfTheMonth.id,
+                                          given: newValue,
+                                        ),
+                                      );
+                                  setState(() {
+                                    bookOfTheMonth.given = newValue;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: teacherStudentMap.keys.length,
+                            itemBuilder: (context, index) {
+                              final UserModel teacher =
+                                  teacherStudentMap.keys.elementAt(index);
+
+                              final List<UserModel> students =
+                                  teacherStudentMap[teacher];
+
+                              return ListTile(
+                                title: Text(
+                                    '${teacher.firstName} ${teacher.lastName}'),
+                                subtitle: Text('${students.length} students'),
+                                trailing: students.isEmpty
+                                    ? SizedBox.shrink()
+                                    : RaisedButton(
+                                        child: Text('Generate'),
+                                        onPressed: () async {
+                                          final bool confirm = await locator<
+                                                  ModalService>()
+                                              .showConfirmation(
+                                                  context: context,
+                                                  title:
+                                                      'Generate Report for ${teacher.firstName} ${teacher.lastName}',
+                                                  message: 'Are you sure?');
+
+                                          if (!confirm) return;
+
+                                          context.read<SuperAdminBloc>().add(
+                                                GenerateReportEvent(
+                                                    teacher: teacher,
+                                                    students: students),
+                                              );
+                                        },
+                                      ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }
 
