@@ -32,6 +32,9 @@ part 'super_admin_view.dart';
 class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
   SuperAdminBloc() : super(SuperAdminInitial());
 
+  List<BookModel> _booksOfTheMonth;
+  Map<UserModel, List<UserModel>> _teacherStudentMap;
+
   @override
   Stream<SuperAdminState> mapEventToState(
     SuperAdminEvent event,
@@ -40,13 +43,13 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
       yield LoadingState();
 
       try {
-        final List<BookModel> booksOfTheMonth =
+       _booksOfTheMonth =
             await locator<BookService>().retrieveBooksOfTheMonth();
 
         final List<UserModel> teachers =
             await locator<UserService>().retrieveTeachers();
 
-        Map<UserModel, List<UserModel>> teacherStudentMap =
+        _teacherStudentMap =
             Map<UserModel, List<UserModel>>();
 
         for (int i = 0; i < teachers.length; i++) {
@@ -55,12 +58,12 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
           final List<UserModel> students = await locator<UserService>()
               .retrieveStudentsForTeacher(uid: teacher.uid);
 
-          teacherStudentMap[teacher] = students;
+          _teacherStudentMap[teacher] = students;
         }
 
         yield LoadedState(
-          booksOfTheMonth: booksOfTheMonth,
-          teacherStudentMap: teacherStudentMap,
+          booksOfTheMonth: _booksOfTheMonth,
+          teacherStudentMap: _teacherStudentMap,
         );
       } catch (error) {
         yield ErrorState(error: error);
@@ -86,6 +89,8 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
       final List<UserModel> students = event.students;
 
       try {
+        yield LoadingState();
+
         final Excel excel =
             Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
         excel.delete('Sheet1');
@@ -219,7 +224,7 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
           List<StampModel> stamps =
               await locator<StampService>().getStampsForUser(uid: student.uid);
           student.stamps = stamps;
-          
+
           //Iterate over stamps for student.
           for (int stampCounter = 0;
               stampCounter < student.stamps.length;
@@ -248,6 +253,7 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
 
         final String excelDocPath =
             '${appDocDir.path}/Class_Report_For_${teacher.firstName}_${teacher.lastName}_${DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now())}.xlsx';
+
         File(excelDocPath)
           ..createSync(recursive: true)
           ..writeAsBytesSync(encoded);
@@ -287,16 +293,14 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
             break;
         }
 
-        print(platformResponse);
-      } catch (error) {
+        yield LoadedState(
+          booksOfTheMonth: _booksOfTheMonth,
+          teacherStudentMap: _teacherStudentMap,
+        );     
+        
+       } catch (error) {
         yield ErrorState(error: error);
-        // _myClassBlocDelegate.showMessage(message: error.toString());
-
-        // yield LoadedState(
-        //   user: _currentUser,
-        //   students: _students,
-        //   studentSelected: _studentSelected,
-        // );
+        print(error.toString());
       }
     }
   }
