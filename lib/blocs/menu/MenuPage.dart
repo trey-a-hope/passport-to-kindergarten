@@ -15,7 +15,8 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../SettingsPage.dart';
 import 'Bloc.dart';
-import 'package:p/blocs/book_of_the_month/book_of_the_month_bloc.dart' as BOOK_OF_THE_MONTH_BP;
+import 'package:p/blocs/book_of_the_month/book_of_the_month_bloc.dart'
+    as BOOK_OF_THE_MONTH_BP;
 import 'package:p/blocs/myPassport/Bloc.dart' as MY_PASSPORT_BP;
 import 'package:p/blocs/readingLog/Bloc.dart' as READING_LOG_BP;
 import 'package:p/blocs/visitingLog/Bloc.dart' as VISITING_LOG_BP;
@@ -23,6 +24,7 @@ import 'package:p/blocs/editProfile/Bloc.dart' as EDIT_PROFILE_BP;
 import 'package:p/blocs/awesomeReadingTips/Bloc.dart'
     as AWESOME_READING_TIPS_BP;
 import 'package:p/blocs/myClass/Bloc.dart' as MY_CLASS_BP;
+import 'package:p/blocs/super_admin/super_admin_bloc.dart' as SUPER_ADMIN_BP;
 
 class MenuPage extends StatefulWidget {
   @override
@@ -239,29 +241,27 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     );
   }
 
-  // ListTile adminListTile() {
-  //   return ListTile(
-  //     leading: Icon(MdiIcons.security, color: Colors.white),
-  //     title: Text(
-  //       'Admin',
-  //       style: TextStyle(color: Colors.white),
-  //     ),
-  //     onTap: () {
-  //
-
-  //       Route route = MaterialPageRoute(
-  //         builder: (BuildContext context) => BlocProvider(
-  //           create: (BuildContext context) => ADMIN_LOG_BP.AdminBloc()
-  //             ..add(
-  //               ADMIN_LOG_BP.LoadPageEvent(),
-  //             ),
-  //           child: ADMIN_LOG_BP.AdminPage(),
-  //         ),
-  //       );
-  //       Navigator.push(context, route);
-  //     },
-  //   );
-  // }
+  ListTile adminListTile() {
+    return ListTile(
+      leading: Icon(MdiIcons.security, color: Colors.white),
+      title: Text(
+        'Admin',
+        style: TextStyle(color: Colors.white),
+      ),
+      onTap: () {
+        Route route = MaterialPageRoute(
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => SUPER_ADMIN_BP.SuperAdminBloc()
+              ..add(
+                SUPER_ADMIN_BP.LoadPageEvent(),
+              ),
+            child: SUPER_ADMIN_BP.SuperAdminView(),
+          ),
+        );
+        Navigator.push(context, route);
+      },
+    );
+  }
 
   ListTile aboutListTile() {
     return ListTile(
@@ -437,9 +437,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
-                      // adminListTile(),
                       aboutListTile(),
-                      // settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
@@ -523,7 +521,6 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
                       aboutListTile(),
-                      // settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
@@ -600,12 +597,11 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       SizedBox(
                         height: _menuBottomPadding,
                       ),
+                      adminListTile(),
                       bookOfTheMonthListTile(),
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
-                      // adminListTile(),
                       aboutListTile(),
-                      // settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
