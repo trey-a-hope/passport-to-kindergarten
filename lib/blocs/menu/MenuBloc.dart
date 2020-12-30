@@ -6,6 +6,7 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/DummyService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'MenuEvent.dart';
@@ -79,6 +80,49 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         _currentUser = await locator<AuthService>().getCurrentUser();
 
         //todo: Call any database updates here.
+
+        // final String userID = 'zVKbORtpDfdmJ55lCewe5Pmktop1';
+
+        // await locator<DummyService>().deleteAllDocsInNestedCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   nestedCollection: 'visits',
+        // );
+
+        // await locator<DummyService>().deleteAllDocsInNestedCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   nestedCollection: 'books',
+        // );
+
+        // await locator<DummyService>().deleteAllDocsInNestedCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   nestedCollection: 'stamps',
+        // );
+
+        // await locator<DummyService>().updatePropertyToAllDocsInCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   propertyName: 'bookLogCount',
+        //   propertyValue: 0,
+        // );
+
+        // await locator<DummyService>().updatePropertyToAllDocsInCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   propertyName: 'stampCount',
+        //   propertyValue: 0,
+        // );
+
+        // await locator<DummyService>().updatePropertyToAllDocsInCollection(
+        //   userID: userID,
+        //   collection: 'Users',
+        //   propertyName: 'visitLogCount',
+        //   propertyValue: 0,
+        // );
+
+        // print('Done!');
 
         _setUpFirebaseMessaging();
 
