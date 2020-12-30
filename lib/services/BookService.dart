@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
 import 'package:p/models/EntryModel.dart';
-import 'package:p/models/VisitModel.dart';
 
 abstract class IBookService {
   Future<void> createBook({
@@ -12,6 +11,8 @@ abstract class IBookService {
 
   Future<BookModel> retrieveBook({@required String bookID});
   Future<List<BookModel>> retrieveBooksOfTheMonth();
+  Future<void> updateBook(
+      {@required String bookID, @required Map<String, dynamic> data});
 }
 
 class BookService extends IBookService {
@@ -98,6 +99,22 @@ class BookService extends IBookService {
       }
 
       return booksOfTheMonth;
+    } catch (e) {
+      throw Exception(
+        e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> updateBook(
+      {@required String bookID, @required Map<String, dynamic> data}) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await _booksColRef.document(bookID).get();
+      DocumentReference documentReference = documentSnapshot.reference;
+      await documentReference.updateData(data);
+      return;
     } catch (e) {
       throw Exception(
         e.toString(),

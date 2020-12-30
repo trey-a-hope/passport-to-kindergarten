@@ -35,9 +35,36 @@ class SuperAdminViewState extends State<SuperAdminView> {
                 }
 
                 if (state is LoadedState) {
-                  return Column(
+                  final List<BookModel> booksOfTheMonth = state.booksOfTheMonth;
+
+                  return ListView(
                     children: [
                       AppBarWidget(title: 'Super Admin'),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: booksOfTheMonth.length,
+                        itemBuilder: (context, index) {
+                          final BookModel bookOfTheMonth =
+                              booksOfTheMonth[index];
+                          return SwitchListTile(
+                            secondary:
+                                Image.network('${bookOfTheMonth.imgUrl}'),
+                            title: Text('${bookOfTheMonth.title}'),
+                            value: bookOfTheMonth.given,
+                            onChanged: (bool newValue) {
+                              context.read<SuperAdminBloc>().add(
+                                    UpdateBookGivenEvent(
+                                      bookID: bookOfTheMonth.id,
+                                      given: newValue,
+                                    ),
+                                  );
+                              setState(() {
+                                bookOfTheMonth.given = newValue;
+                              });
+                            },
+                          );
+                        },
+                      ),
                     ],
                   );
                 }

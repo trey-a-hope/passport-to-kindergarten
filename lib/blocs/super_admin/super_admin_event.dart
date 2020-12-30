@@ -13,3 +13,19 @@ class LoadPageEvent extends SuperAdminEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateBookGivenEvent extends SuperAdminEvent {
+  final String bookID;
+  final bool given;
+
+  UpdateBookGivenEvent({
+    @required this.bookID,
+    @required this.given,
+  });
+
+  @override
+  List<Object> get props => [
+        bookID,
+        given,
+      ];
+}
