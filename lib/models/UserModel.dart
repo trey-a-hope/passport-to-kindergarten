@@ -2,6 +2,7 @@ import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/BookModel.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/VisitModel.dart';
 
@@ -25,8 +26,8 @@ class UserModel {
   int visitLogCount;
   int stampCount;
 
-  List<BookModel> books;
-  List<VisitModel> visits;
+  List<EntryModel> bookEntries;
+  List<EntryModel> visitEntries;
   List<StampModel> stamps;
 
   String bookSortBy;

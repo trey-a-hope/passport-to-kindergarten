@@ -7,13 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/BookModel.dart';
+import 'package:p/models/EntryModel.dart';
 import 'package:p/models/LogModel.dart';
 import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
+import 'package:p/services/BookService.dart';
+import 'package:p/services/LogService.dart';
 import 'package:p/services/StampService.dart';
 import 'package:p/services/UserService.dart';
+import 'package:p/services/VisitService.dart';
 import 'package:path_provider/path_provider.dart';
 import 'MyClassEvent.dart';
 import 'MyClassState.dart';
@@ -62,101 +66,117 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     }
 
     if (event is StudentsUpdatedEvent) {
-      // _students = event.students;
+      _students = event.students;
 
-      // for (int studentCount = 0;
-      //     studentCount < _students.length;
-      //     studentCount++) {
-      //   final UserModel student = _students[studentCount];
+      for (int studentCount = 0;
+          studentCount < _students.length;
+          studentCount++) {
+        final UserModel student = _students[studentCount];
 
-      //   final List<BookModel> books =
-      //       await locator<LogService>().getBooksForUser(uid: student.uid);
-      //   student.books = books;
+        //Book Entries
+        final List<EntryModel> bookEntries = await locator<LogService>()
+            .retrieveEntries(uid: student.uid, type: 'books');
 
-      //   student.bookSortBy = 'recent';
+        for (var i = 0; i < bookEntries.length; i++) {
+          final EntryModel bookEntry = bookEntries[i];
 
-      //   books.sort(
-      //     (a, b) => b.modified.compareTo(a.modified),
-      //   );
+          final BookModel book = await locator<BookService>()
+              .retrieveBook(bookID: bookEntry.entryID);
 
-      //   for (int bookCount = 0; bookCount < books.length; bookCount++) {
-      //     final BookModel book = books[bookCount];
-      //     final List<LogModel> logs = await locator<LogService>().getLogs(
-      //         uid: student.uid, collection: 'books', documentID: book.id);
+          bookEntry.book = book;
 
-      //     Map<DateTime, List<LogModel>> logEvents =
-      //         Map<DateTime, List<LogModel>>();
+          final List<LogModel> logs = await locator<LogService>().retrieveLogs(
+              uid: student.uid, type: 'books', idOfEntry: bookEntry.id);
 
-      //     logs.forEach(
-      //       (LogModel log) {
-      //         DateTime dayKey = DateTime(
-      //           log.created.year,
-      //           log.created.month,
-      //           log.created.day,
-      //         );
+          Map<DateTime, List<LogModel>> logEvents =
+              Map<DateTime, List<LogModel>>();
 
-      //         if (logEvents.containsKey(dayKey)) {
-      //           if (!logEvents[dayKey].contains(log)) {
-      //             logEvents[dayKey].add(log);
-      //           }
-      //         } else {
-      //           logEvents[dayKey] = [log];
-      //         }
-      //       },
-      //     );
+          logs.forEach(
+            (LogModel log) {
+              DateTime dayKey = DateTime(
+                log.created.year,
+                log.created.month,
+                log.created.day,
+              );
 
-      //     // book.logEvents = logEvents;
-      //   }
+              if (logEvents.containsKey(dayKey)) {
+                if (!logEvents[dayKey].contains(log)) {
+                  logEvents[dayKey].add(log);
+                }
+              } else {
+                logEvents[dayKey] = [log];
+              }
+            },
+          );
 
-      //   final List<VisitModel> visits =
-      //       await locator<LogService>().getVisitsForUser(uid: student.uid);
-      //   student.visits = visits;
+          bookEntry.logEvents = logEvents;
+        }
 
-      //   student.visitSortBy = 'recent';
+        student.bookEntries = bookEntries;
 
-      //   visits.sort(
-      //     (a, b) => b.modified.compareTo(a.modified),
-      //   );
+        student.bookSortBy = 'recent';
 
-      //   for (int visitCount = 0; visitCount < visits.length; visitCount++) {
-      //     final VisitModel visit = visits[visitCount];
-      //     final List<LogModel> logs = await locator<LogService>().getLogs(
-      //         uid: student.uid, collection: 'visits', documentID: visit.id);
+        student.bookEntries.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
 
-      //     Map<DateTime, List<LogModel>> logEvents =
-      //         Map<DateTime, List<LogModel>>();
+        //Visit Entries
+        final List<EntryModel> visitEntries = await locator<LogService>()
+            .retrieveEntries(uid: student.uid, type: 'visits');
 
-      //     logs.forEach(
-      //       (LogModel log) {
-      //         DateTime dayKey = DateTime(
-      //           log.created.year,
-      //           log.created.month,
-      //           log.created.day,
-      //         );
+        for (var i = 0; i < visitEntries.length; i++) {
+          final EntryModel visitEntry = visitEntries[i];
 
-      //         if (logEvents.containsKey(dayKey)) {
-      //           if (!logEvents[dayKey].contains(log)) {
-      //             logEvents[dayKey].add(log);
-      //           }
-      //         } else {
-      //           logEvents[dayKey] = [log];
-      //         }
-      //       },
-      //     );
+          final VisitModel visit = await locator<VisitService>()
+              .retrieveVisit(visitID: visitEntry.entryID);
 
-      //     visit.logEvents = logEvents;
-      //   }
+          visitEntry.visit = visit;
 
-      //   final List<StampModel> stamps =
-      //       await locator<UserService>().getStampsForUser(uid: student.uid);
-      //   student.stamps = stamps;
-      // }
+          final List<LogModel> logs = await locator<LogService>().retrieveLogs(
+              uid: student.uid, type: 'visits', idOfEntry: visitEntry.id);
 
-      // yield LoadedState(
-      //   user: _currentUser,
-      //   students: _students,
-      //   studentSelected: _studentSelected,
-      // );
+          Map<DateTime, List<LogModel>> logEvents =
+              Map<DateTime, List<LogModel>>();
+
+          logs.forEach(
+            (LogModel log) {
+              DateTime dayKey = DateTime(
+                log.created.year,
+                log.created.month,
+                log.created.day,
+              );
+
+              if (logEvents.containsKey(dayKey)) {
+                if (!logEvents[dayKey].contains(log)) {
+                  logEvents[dayKey].add(log);
+                }
+              } else {
+                logEvents[dayKey] = [log];
+              }
+            },
+          );
+
+          visitEntry.logEvents = logEvents;
+        }
+
+        student.visitEntries = visitEntries;
+
+        student.visitSortBy = 'recent';
+
+        student.visitEntries.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
+
+        final List<StampModel> stamps =
+            await locator<StampService>().getStampsForUser(uid: student.uid);
+        student.stamps = stamps;
+      }
+
+      yield LoadedState(
+        user: _currentUser,
+        students: _students,
+        studentSelected: _studentSelected,
+      );
     }
 
     if (event is CreateBookForStudentEvent) {
@@ -166,23 +186,23 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
       final DateTime now = DateTime.now();
 
       try {
-        // await locator<LogService>().createBookForUser(
-        //   uid: studentUID,
-        //   book: BookModel(
-        //     author: author,
-        //     title: title,
-        //     logCount: 0,
-        //     created: now,
-        //     modified: now,
-        //     id: null,
-        //     given: true,
-        //     summary: null,
-        //     conversationStarters: null,
-        //     assetImagePath: null,
-        //   ),
-        // );
+        await locator<BookService>().createBook(
+          uid: studentUID,
+          book: BookModel(
+            author: author,
+            title: title,
+            created: now,
+            modified: now,
+            id: null,
+            given: true,
+            summary: null,
+            conversationStarters: null,
+            imgUrl: null,
+            youtubeUrl: null,
+          ),
+        );
 
-        _myClassBlocDelegate.showMessage(message: 'Book added!');
+        _myClassBlocDelegate.showMessage(message: 'Book added; reopen page to see results.');
 
         _myClassBlocDelegate.clearAddTitleForm();
       } catch (error) {
@@ -192,7 +212,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
     if (event is CreateBookLogForStudentEvent) {
       final String studentUID = event.studentUID;
-      final String bookID = event.bookID;
+      final String idOfEntry = event.idOfEntry;
       final DateTime date = event.date;
       final bool totalLogLimitReached = event.totalLogLimitReached;
 
@@ -202,23 +222,23 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           id: null,
         );
 
-        // locator<LogService>().createLog(
-        //   uid: studentUID,
-        //   collection: 'books',
-        //   documentID: bookID,
-        //   log: log,
-        // );//todo:
+        locator<LogService>().createLog(
+          uid: studentUID,
+          collection: 'books',
+          idOfEntry: idOfEntry,
+          log: log,
+        );
 
         if (totalLogLimitReached) {
-          // await locator<UserService>().createStamp(
-          //   uid: studentUID,
-          //   stamp: StampModel(
-          //     name: '15 Books Read',
-          //     assetImagePath: ASSET_p2k20_app_stamp_15_books_read,
-          //     created: DateTime.now(),
-          //     id: null,
-          //   ),
-          // );//todo:
+          await locator<StampService>().createStamp(
+            uid: studentUID,
+            stamp: StampModel(
+              name: '15 Books Read',
+              imgUrl: '$STAMP_15_BOOKS_READ',
+              created: DateTime.now(),
+              id: null,
+            ),
+          );
         }
 
         _myClassBlocDelegate.showMessage(message: 'Log added!');
@@ -229,7 +249,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
     if (event is CreateVisitLogForStudentEvent) {
       final String studentUID = event.studentUID;
-      final String visitID = event.visitID;
+      final String idOfEntry = event.idOfEntry;
       final DateTime date = event.date;
       final String name = event.visitName;
 
@@ -239,12 +259,12 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           id: null,
         );
 
-        // locator<LogService>().createLog(
-        //   uid: studentUID,
-        //   collection: 'visits',
-        //   documentID: visitID,
-        //   log: log,
-        // );
+        locator<LogService>().createLog(
+          uid: studentUID,
+          collection: 'visits',
+          idOfEntry: idOfEntry,
+          log: log,
+        );
 
         String imgUrl;
         switch (name) {
@@ -321,23 +341,23 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
           //Iterate over books for student.
           for (int bookCounter = 0;
-              bookCounter < student.books.length;
+              bookCounter < student.bookEntries.length;
               bookCounter++) {
-            final BookModel book = student.books[bookCounter];
+            final EntryModel bookEntry = student.bookEntries[bookCounter];
 
             //Add book title.
             Data bookTitleCell = studentSheet.cell(
               CellIndex.indexByColumnRow(
                   columnIndex: 0, rowIndex: bookCounter + 1),
             );
-            bookTitleCell.value = book.title;
+            bookTitleCell.value = bookEntry.book.title;
 
             //Add log count.
             Data bookLogCountCell = studentSheet.cell(
               CellIndex.indexByColumnRow(
                   columnIndex: 1, rowIndex: bookCounter + 1),
             );
-            // bookLogCountCell.value = book.logCount;//todo
+            bookLogCountCell.value = bookEntry.logCount;
           }
 
           //Add 'Visit Name' label header for column 2.
@@ -356,23 +376,23 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
           //Iterate over visits for student.
           for (int visitCounter = 0;
-              visitCounter < student.visits.length;
+              visitCounter < student.visitEntries.length;
               visitCounter++) {
-            final VisitModel visit = student.visits[visitCounter];
+            final EntryModel visitEntry = student.visitEntries[visitCounter];
 
             //Add visit title.
             Data visitTitleCell = studentSheet.cell(
               CellIndex.indexByColumnRow(
                   columnIndex: 2, rowIndex: visitCounter + 1),
             );
-            visitTitleCell.value = visit.title;
+            visitTitleCell.value = visitEntry.visit.title;
 
             //Add log count.
             Data visitLogCountCell = studentSheet.cell(
               CellIndex.indexByColumnRow(
                   columnIndex: 3, rowIndex: visitCounter + 1),
             );
-            // visitLogCountCell.value = visit.logCount;//todo:
+            visitLogCountCell.value = visitEntry.logCount;
           }
 
           //Add 'Stamp Name' label header for column 4.
@@ -424,7 +444,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         final MailOptions mailOptions = MailOptions(
           //body: 'This is a body.',
           subject: 'Generated Class Report',
-          recipients: ['a@a.com'],
+          recipients: [],
           isHTML: false,
           //bccRecipients: ['other@example.com'],
           //ccRecipients: ['third@example.com'],
@@ -458,23 +478,6 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
         print(platformResponse);
 
-        // for (var table in openExcel.tables.keys) {
-        //   print(table); //sheet Name
-        //   print(excel.tables[table].maxCols);
-        //   print(excel.tables[table].maxRows);
-        //   for (var row in excel.tables[table].rows) {
-        //     print("$row");
-        //   }
-        // }
-
-        // _myClassBlocDelegate.showMessage(
-        //     message: 'Report generated, go to the files app on your phone.');
-
-        // yield LoadedState(
-        //   user: _currentUser,
-        //   students: _students,
-        //   studentSelected: _studentSelected,
-        // );
       } catch (error) {
         _myClassBlocDelegate.showMessage(message: error.toString());
 
