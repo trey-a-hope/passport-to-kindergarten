@@ -35,6 +35,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
   UserModel _currentUser;
   List<UserModel> _students;
   bool _studentSelected = false;
+  List<String> _visitsIDs;
+  List<String> _booksOfTheMonthIDs;
 
   void setDelegate({@required MyClassBlocDelegate delegate}) {
     this._myClassBlocDelegate = delegate;
@@ -47,6 +49,15 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
       try {
         _currentUser = await locator<AuthService>().getCurrentUser();
+
+        _visitsIDs = (await locator<VisitService>().retrieveVisits())
+            .map((visit) => visit.id)
+            .toList();
+
+        _booksOfTheMonthIDs =
+            (await locator<BookService>().retrieveBooksOfTheMonth())
+                .map((bookOfTheMonth) => bookOfTheMonth.id)
+                .toList();
 
         Stream<QuerySnapshot> studentsStream = await locator<UserService>()
             .streamStudentsForTeacher(teacherUID: _currentUser.uid);
@@ -76,6 +87,25 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         //Book Entries
         final List<EntryModel> bookEntries = await locator<LogService>()
             .retrieveEntries(uid: student.uid, type: 'books');
+
+        final List<String> bookEntriesIDs =
+            bookEntries.map((bookEntry) => bookEntry.entryID).toList();
+
+        for (var i = 0; i < _booksOfTheMonthIDs.length; i++) {
+          if (!bookEntriesIDs.contains(_booksOfTheMonthIDs[i])) {
+            await locator<LogService>().createEntry(
+              uid: student.uid,
+              type: 'books',
+              entry: EntryModel(
+                id: null,
+                entryID: _booksOfTheMonthIDs[i],
+                created: DateTime.now(),
+                modified: DateTime.now(),
+                logCount: 0,
+              ),
+            );
+          }
+        }
 
         for (var i = 0; i < bookEntries.length; i++) {
           final EntryModel bookEntry = bookEntries[i];
@@ -120,9 +150,27 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           (a, b) => b.modified.compareTo(a.modified),
         );
 
-        //Visit Entries
         final List<EntryModel> visitEntries = await locator<LogService>()
             .retrieveEntries(uid: student.uid, type: 'visits');
+
+        final List<String> visitEntriesIDs =
+            visitEntries.map((visitEntry) => visitEntry.entryID).toList();
+
+        for (var i = 0; i < _visitsIDs.length; i++) {
+          if (!visitEntriesIDs.contains(_visitsIDs[i])) {
+            await locator<LogService>().createEntry(
+              uid: student.uid,
+              type: 'visits',
+              entry: EntryModel(
+                id: null,
+                entryID: _visitsIDs[i],
+                created: DateTime.now(),
+                modified: DateTime.now(),
+                logCount: 0,
+              ),
+            );
+          }
+        }
 
         for (var i = 0; i < visitEntries.length; i++) {
           final EntryModel visitEntry = visitEntries[i];
@@ -202,7 +250,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
           ),
         );
 
-        _myClassBlocDelegate.showMessage(message: 'Book added; reopen page to see results.');
+        _myClassBlocDelegate.showMessage(
+            message: 'Book added; reopen page to see results.');
 
         _myClassBlocDelegate.clearAddTitleForm();
       } catch (error) {
@@ -477,7 +526,6 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         }
 
         print(platformResponse);
-
       } catch (error) {
         _myClassBlocDelegate.showMessage(message: error.toString());
 
