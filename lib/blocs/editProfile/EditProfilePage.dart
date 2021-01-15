@@ -276,11 +276,13 @@ class EditProfilePageState extends State<EditProfilePage>
                           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextFormField(
                             onTap: () async {
+                              final DateTime now = DateTime.now();
+
                               final DateTime picked = await showDatePicker(
                                 context: context,
                                 initialDate: state.user.dob,
-                                firstDate: DateTime(2000, 1),
-                                lastDate: DateTime.now(),
+                                firstDate: DateTime(now.year - 7),
+                                lastDate: DateTime(now.year - 2),
                               );
 
                               if (picked != null && picked != state.user.dob) {
