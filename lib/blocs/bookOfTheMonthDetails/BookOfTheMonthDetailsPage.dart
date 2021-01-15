@@ -168,16 +168,16 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                       ),
                       Divider(),
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 20,
-                          right: 20,
+                        padding: EdgeInsets.all(
+                          20,
                         ),
                         child: Text(
                           '${bookOfTheMonth.summary}',
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                           style: TextStyle(
                             color: COLOR_NAVY,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
                           ),
                         ),
                       ),
