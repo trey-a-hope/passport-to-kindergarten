@@ -66,7 +66,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                             children: [
                               TextSpan(
                                 text:
-                                    'To make the most of the time you spend sharing books with your child, pause in your reading to have AWEsome conversations.  Use the acronym ',
+                                    'To make the most of the time you spend sharing books with your child, pause in your reading to have AWEsome conversations. Use the acronym ',
                               ),
                               TextSpan(
                                 text: 'A.W.E. ',
