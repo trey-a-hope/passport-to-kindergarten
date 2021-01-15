@@ -121,7 +121,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                       SizedBox(
                         height: 20,
                       ),
-                      Image.asset(
+                      Image.network(
                         '$LOGO_DAYTON_METRO_LIBRARY',
                         height: 100,
                       ),
@@ -186,8 +186,8 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                               controller: YoutubePlayerController(
                                 initialVideoId: initialVideoId,
                                 flags: YoutubePlayerFlags(
-                                  autoPlay: false,
-                                  mute: false,
+                                  autoPlay: true,
+                                  mute: true,
                                 ),
                               ),
                               showVideoProgressIndicator: true,
