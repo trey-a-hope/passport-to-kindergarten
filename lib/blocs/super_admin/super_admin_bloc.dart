@@ -43,14 +43,13 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
       yield LoadingState();
 
       try {
-       _booksOfTheMonth =
+        _booksOfTheMonth =
             await locator<BookService>().retrieveBooksOfTheMonth();
 
         final List<UserModel> teachers =
             await locator<UserService>().retrieveTeachers();
 
-        _teacherStudentMap =
-            Map<UserModel, List<UserModel>>();
+        _teacherStudentMap = Map<UserModel, List<UserModel>>();
 
         for (int i = 0; i < teachers.length; i++) {
           final UserModel teacher = teachers[i];
@@ -126,6 +125,10 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
               bookEntryCount++) {
             final EntryModel bookEntry = bookEntries[bookEntryCount];
 
+            if (bookEntry.entryID == null) {
+              throw ('${student.firstName} ${student.lastName} has a null book entry id.');
+            }
+
             //Fetch book for the entry.
             final BookModel book = await locator<BookService>()
                 .retrieveBook(bookID: bookEntry.entryID);
@@ -177,6 +180,10 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
               visitEntryCount < visitEntries.length;
               visitEntryCount++) {
             final EntryModel visitEntry = visitEntries[visitEntryCount];
+
+            if (visitEntry.entryID == null) {
+              throw ('${student.firstName} ${student.lastName} has a null visit entry id.');
+            }
 
             //Fetch visit for the entry.
             final VisitModel visit = await locator<VisitService>()
@@ -296,9 +303,8 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
         yield LoadedState(
           booksOfTheMonth: _booksOfTheMonth,
           teacherStudentMap: _teacherStudentMap,
-        );     
-        
-       } catch (error) {
+        );
+      } catch (error) {
         yield ErrorState(error: error);
         print(error.toString());
       }

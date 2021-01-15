@@ -337,7 +337,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+            TextSpan(text: '\n\nApp Version: $version ($buildNumber)'),
           ],
         ),
       ),

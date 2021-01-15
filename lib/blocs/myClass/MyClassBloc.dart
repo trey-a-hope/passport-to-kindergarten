@@ -110,6 +110,10 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
         for (var i = 0; i < bookEntries.length; i++) {
           final EntryModel bookEntry = bookEntries[i];
 
+          if (bookEntry.entryID == null) {
+            throw ('${student.firstName} ${student.lastName} has a null book entry id.');
+          }
+
           final BookModel book = await locator<BookService>()
               .retrieveBook(bookID: bookEntry.entryID);
 
@@ -428,6 +432,10 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
               visitCounter < student.visitEntries.length;
               visitCounter++) {
             final EntryModel visitEntry = student.visitEntries[visitCounter];
+
+            if (visitEntry.entryID == null) {
+              throw ('${student.firstName} ${student.lastName} has a null visit entry id.');
+            }
 
             //Add visit title.
             Data visitTitleCell = studentSheet.cell(
