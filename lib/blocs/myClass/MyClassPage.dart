@@ -487,9 +487,8 @@ class MyClassPageState extends State<MyClassPage>
                                             children: [
                                               CircleAvatar(
                                                 backgroundImage: Image.network(
-                                                        '${bookEntry.book.imgUrl == null ? DUMMY_PROFILE_PHOTO_URL : bookEntry.book.imgUrl}' ,
-                                                        ) 
-                                                    .image,
+                                                  '${bookEntry.book.imgUrl == null ? DUMMY_PROFILE_PHOTO_URL : bookEntry.book.imgUrl}',
+                                                ).image,
                                               ),
                                               SizedBox(
                                                 width: 15,
@@ -936,12 +935,10 @@ class MyClassPageState extends State<MyClassPage>
         if (state is ErrorState) {
           return Scaffold(
             backgroundColor: COLOR_CREAM,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(state.error.toString()),
-              ],
+            body: Center(
+              child: Text(
+                state.error.toString(),
+              ),
             ),
           );
         }

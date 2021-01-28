@@ -77,158 +77,164 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
     }
 
     if (event is StudentsUpdatedEvent) {
-      _students = event.students;
+      try {
+        _students = event.students;
 
-      for (int studentCount = 0;
-          studentCount < _students.length;
-          studentCount++) {
-        final UserModel student = _students[studentCount];
+        for (int studentCount = 0;
+            studentCount < _students.length;
+            studentCount++) {
+          final UserModel student = _students[studentCount];
 
-        //Book Entries
-        final List<EntryModel> bookEntries = await locator<LogService>()
-            .retrieveEntries(uid: student.uid, type: 'books');
+          //Book Entries
+          final List<EntryModel> bookEntries = await locator<LogService>()
+              .retrieveEntries(uid: student.uid, type: 'books');
 
-        final List<String> bookEntriesIDs =
-            bookEntries.map((bookEntry) => bookEntry.entryID).toList();
+          final List<String> bookEntriesIDs =
+              bookEntries.map((bookEntry) => bookEntry.entryID).toList();
 
-        for (var i = 0; i < _booksOfTheMonthIDs.length; i++) {
-          if (!bookEntriesIDs.contains(_booksOfTheMonthIDs[i])) {
-            await locator<LogService>().createEntry(
-              uid: student.uid,
-              type: 'books',
-              entry: EntryModel(
-                id: null,
-                entryID: _booksOfTheMonthIDs[i],
-                created: DateTime.now(),
-                modified: DateTime.now(),
-                logCount: 0,
-              ),
-            );
-          }
-        }
-
-        for (var i = 0; i < bookEntries.length; i++) {
-          final EntryModel bookEntry = bookEntries[i];
-
-          if (bookEntry.entryID == null) {
-            throw ('${student.firstName} ${student.lastName} has a null book entry id.');
-          }
-
-          final BookModel book = await locator<BookService>()
-              .retrieveBook(bookID: bookEntry.entryID);
-
-          bookEntry.book = book;
-
-          final List<LogModel> logs = await locator<LogService>().retrieveLogs(
-              uid: student.uid, type: 'books', idOfEntry: bookEntry.id);
-
-          Map<DateTime, List<LogModel>> logEvents =
-              Map<DateTime, List<LogModel>>();
-
-          logs.forEach(
-            (LogModel log) {
-              DateTime dayKey = DateTime(
-                log.created.year,
-                log.created.month,
-                log.created.day,
+          for (var i = 0; i < _booksOfTheMonthIDs.length; i++) {
+            if (!bookEntriesIDs.contains(_booksOfTheMonthIDs[i])) {
+              await locator<LogService>().createEntry(
+                uid: student.uid,
+                type: 'books',
+                entry: EntryModel(
+                  id: null,
+                  entryID: _booksOfTheMonthIDs[i],
+                  created: DateTime.now(),
+                  modified: DateTime.now(),
+                  logCount: 0,
+                ),
               );
+            }
+          }
 
-              if (logEvents.containsKey(dayKey)) {
-                if (!logEvents[dayKey].contains(log)) {
-                  logEvents[dayKey].add(log);
+          for (var i = 0; i < bookEntries.length; i++) {
+            final EntryModel bookEntry = bookEntries[i];
+
+            if (bookEntry.entryID == null) {
+              throw ('${student.firstName} ${student.lastName} has a null book entry id.');
+            }
+
+            final BookModel book = await locator<BookService>()
+                .retrieveBook(bookID: bookEntry.entryID);
+
+            bookEntry.book = book;
+
+            final List<LogModel> logs = await locator<LogService>()
+                .retrieveLogs(
+                    uid: student.uid, type: 'books', idOfEntry: bookEntry.id);
+
+            Map<DateTime, List<LogModel>> logEvents =
+                Map<DateTime, List<LogModel>>();
+
+            logs.forEach(
+              (LogModel log) {
+                DateTime dayKey = DateTime(
+                  log.created.year,
+                  log.created.month,
+                  log.created.day,
+                );
+
+                if (logEvents.containsKey(dayKey)) {
+                  if (!logEvents[dayKey].contains(log)) {
+                    logEvents[dayKey].add(log);
+                  }
+                } else {
+                  logEvents[dayKey] = [log];
                 }
-              } else {
-                logEvents[dayKey] = [log];
-              }
-            },
+              },
+            );
+
+            bookEntry.logEvents = logEvents;
+          }
+
+          student.bookEntries = bookEntries;
+
+          student.bookSortBy = 'recent';
+
+          student.bookEntries.sort(
+            (a, b) => b.modified.compareTo(a.modified),
           );
 
-          bookEntry.logEvents = logEvents;
-        }
+          final List<EntryModel> visitEntries = await locator<LogService>()
+              .retrieveEntries(uid: student.uid, type: 'visits');
 
-        student.bookEntries = bookEntries;
+          final List<String> visitEntriesIDs =
+              visitEntries.map((visitEntry) => visitEntry.entryID).toList();
 
-        student.bookSortBy = 'recent';
-
-        student.bookEntries.sort(
-          (a, b) => b.modified.compareTo(a.modified),
-        );
-
-        final List<EntryModel> visitEntries = await locator<LogService>()
-            .retrieveEntries(uid: student.uid, type: 'visits');
-
-        final List<String> visitEntriesIDs =
-            visitEntries.map((visitEntry) => visitEntry.entryID).toList();
-
-        for (var i = 0; i < _visitsIDs.length; i++) {
-          if (!visitEntriesIDs.contains(_visitsIDs[i])) {
-            await locator<LogService>().createEntry(
-              uid: student.uid,
-              type: 'visits',
-              entry: EntryModel(
-                id: null,
-                entryID: _visitsIDs[i],
-                created: DateTime.now(),
-                modified: DateTime.now(),
-                logCount: 0,
-              ),
-            );
-          }
-        }
-
-        for (var i = 0; i < visitEntries.length; i++) {
-          final EntryModel visitEntry = visitEntries[i];
-
-          final VisitModel visit = await locator<VisitService>()
-              .retrieveVisit(visitID: visitEntry.entryID);
-
-          visitEntry.visit = visit;
-
-          final List<LogModel> logs = await locator<LogService>().retrieveLogs(
-              uid: student.uid, type: 'visits', idOfEntry: visitEntry.id);
-
-          Map<DateTime, List<LogModel>> logEvents =
-              Map<DateTime, List<LogModel>>();
-
-          logs.forEach(
-            (LogModel log) {
-              DateTime dayKey = DateTime(
-                log.created.year,
-                log.created.month,
-                log.created.day,
+          for (var i = 0; i < _visitsIDs.length; i++) {
+            if (!visitEntriesIDs.contains(_visitsIDs[i])) {
+              await locator<LogService>().createEntry(
+                uid: student.uid,
+                type: 'visits',
+                entry: EntryModel(
+                  id: null,
+                  entryID: _visitsIDs[i],
+                  created: DateTime.now(),
+                  modified: DateTime.now(),
+                  logCount: 0,
+                ),
               );
+            }
+          }
 
-              if (logEvents.containsKey(dayKey)) {
-                if (!logEvents[dayKey].contains(log)) {
-                  logEvents[dayKey].add(log);
+          for (var i = 0; i < visitEntries.length; i++) {
+            final EntryModel visitEntry = visitEntries[i];
+
+            final VisitModel visit = await locator<VisitService>()
+                .retrieveVisit(visitID: visitEntry.entryID);
+
+            visitEntry.visit = visit;
+
+            final List<LogModel> logs = await locator<LogService>()
+                .retrieveLogs(
+                    uid: student.uid, type: 'visits', idOfEntry: visitEntry.id);
+
+            Map<DateTime, List<LogModel>> logEvents =
+                Map<DateTime, List<LogModel>>();
+
+            logs.forEach(
+              (LogModel log) {
+                DateTime dayKey = DateTime(
+                  log.created.year,
+                  log.created.month,
+                  log.created.day,
+                );
+
+                if (logEvents.containsKey(dayKey)) {
+                  if (!logEvents[dayKey].contains(log)) {
+                    logEvents[dayKey].add(log);
+                  }
+                } else {
+                  logEvents[dayKey] = [log];
                 }
-              } else {
-                logEvents[dayKey] = [log];
-              }
-            },
+              },
+            );
+
+            visitEntry.logEvents = logEvents;
+          }
+
+          student.visitEntries = visitEntries;
+
+          student.visitSortBy = 'recent';
+
+          student.visitEntries.sort(
+            (a, b) => b.modified.compareTo(a.modified),
           );
 
-          visitEntry.logEvents = logEvents;
+          final List<StampModel> stamps =
+              await locator<StampService>().getStampsForUser(uid: student.uid);
+          student.stamps = stamps;
         }
 
-        student.visitEntries = visitEntries;
-
-        student.visitSortBy = 'recent';
-
-        student.visitEntries.sort(
-          (a, b) => b.modified.compareTo(a.modified),
+        yield LoadedState(
+          user: _currentUser,
+          students: _students,
+          studentSelected: _studentSelected,
         );
-
-        final List<StampModel> stamps =
-            await locator<StampService>().getStampsForUser(uid: student.uid);
-        student.stamps = stamps;
+      } catch (error) {
+        yield ErrorState(error: error);
       }
-
-      yield LoadedState(
-        user: _currentUser,
-        students: _students,
-        studentSelected: _studentSelected,
-      );
     }
 
     if (event is CreateBookForStudentEvent) {
