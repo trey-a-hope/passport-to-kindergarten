@@ -1,7 +1,7 @@
 name: p
 description: A new Flutter project.
 publish_to: "none"
-version: 1.2.4+124
+version: 1.2.5+125
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -47,6 +47,7 @@ dependencies:
   tutorial_coach_mark: ^0.5.1
   url_launcher: ^5.4.2
   uuid: 2.2.0
+  youtube_parser: ^1.1.0
   youtube_player_flutter: ^7.0.0+7
 
 dev_dependencies:

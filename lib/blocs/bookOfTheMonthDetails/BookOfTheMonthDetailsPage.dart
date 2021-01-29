@@ -7,6 +7,7 @@ import 'package:p/models/BookModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
+import 'package:youtube_parser/youtube_parser.dart';
 import 'Bloc.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -49,19 +50,8 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
 
           String initialVideoId;
 
-          switch (bookOfTheMonth.title) {
-            case 'Bear Says Thanks':
-              initialVideoId = 'WUMfyHf6-2E';
-              break;
-            case 'The Gingerbread Man':
-              initialVideoId = 'd0wtKhsBoyo';
-              break;
-            case 'The Little Old Lady Who Was Not Afraid of Anything':
-              initialVideoId = 'c6THdsBvknI';
-              break;
-            default:
-              break;
-          }
+          if (bookOfTheMonth.youtubeUrl != null)
+            initialVideoId = getIdFromUrl('${bookOfTheMonth.youtubeUrl}');
 
           List<Widget> conversationStarters = List<Widget>();
 
