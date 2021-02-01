@@ -85,6 +85,8 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
             studentCount++) {
           final UserModel student = _students[studentCount];
 
+          print('${student.firstName} ${student.lastName}');
+
           //Book Entries
           final List<EntryModel> bookEntries = await locator<LogService>()
               .retrieveEntries(uid: student.uid, type: 'books');
@@ -180,6 +182,10 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
           for (var i = 0; i < visitEntries.length; i++) {
             final EntryModel visitEntry = visitEntries[i];
+
+            if (visitEntry.entryID == null) {
+              throw ('${student.firstName} ${student.lastName} has a null video entry id.');
+            }
 
             final VisitModel visit = await locator<VisitService>()
                 .retrieveVisit(visitID: visitEntry.entryID);
