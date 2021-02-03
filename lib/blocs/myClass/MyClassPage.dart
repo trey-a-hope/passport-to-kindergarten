@@ -17,15 +17,19 @@ class MyClassPage extends StatefulWidget {
   State createState() => MyClassPageState();
 }
 
-class MyClassPageState extends State<MyClassPage> {
+class MyClassPageState extends State<MyClassPage>
+    implements MyClassBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _titleConController = TextEditingController();
   final TextEditingController _authorConController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CalendarController _calendarController = CalendarController();
+  MyClassBloc _myClassBloc;
 
   @override
   void initState() {
+    _myClassBloc = BlocProvider.of<MyClassBloc>(context);
+    _myClassBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -42,9 +46,12 @@ class MyClassPageState extends State<MyClassPage> {
     return BlocBuilder<MyClassBloc, MyClassState>(
       builder: (BuildContext context, MyClassState state) {
         if (state is LoadingState) {
+          final String text = state.text;
           return Container(
             color: Colors.white,
-            child: SpinnerWidget(),
+            child: SpinnerWidget(
+              text: text,
+            ),
           );
         }
 
@@ -56,6 +63,23 @@ class MyClassPageState extends State<MyClassPage> {
 
           return Scaffold(
             key: _scaffoldKey,
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: COLOR_NAVY,
+              child: Icon(Icons.note),
+              onPressed: () async {
+                final bool confirm =
+                    await locator<ModalService>().showConfirmation(
+                  context: context,
+                  title: 'Generate Report?',
+                  message:
+                      'This will list all books, visits, and stamps for all students of your class.',
+                );
+
+                if (!confirm) return;
+
+                context.read<MyClassBloc>().add(GenerateClassReportEvent());
+              },
+            ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.light,
               child: Container(
@@ -158,5 +182,18 @@ class MyClassPageState extends State<MyClassPage> {
         return Container();
       },
     );
+  }
+
+  @override
+  void showMessage({String message}) {
+    locator<ModalService>()
+        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+  }
+
+  @override
+  void clearAddTitleForm() {
+    _titleConController.clear();
+    _authorConController.clear();
+    _formKey.currentState.reset();
   }
 }

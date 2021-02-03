@@ -102,8 +102,8 @@ class StudentsUpdatedEvent extends MyClassEvent {
       ];
 }
 
-class GenerateReportEvent extends MyClassEvent {
-  GenerateReportEvent();
+class GenerateClassReportEvent extends MyClassEvent {
+  GenerateClassReportEvent();
 
   @override
   List<Object> get props => [];

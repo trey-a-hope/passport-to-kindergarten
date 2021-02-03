@@ -9,7 +9,18 @@ abstract class StudentDetailsState extends Equatable {
 
 class StudentDetailsInitialState extends StudentDetailsState {}
 
-class StudentDetailsLoadingState extends StudentDetailsState {}
+class StudentDetailsLoadingState extends StudentDetailsState {
+  final String text;
+
+  StudentDetailsLoadingState({
+    @required this.text,
+  });
+
+  @override
+  List<Object> get props => [
+        text,
+      ];
+}
 
 class StudentDetailsLoadedState extends StudentDetailsState {
   final UserModel student;

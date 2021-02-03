@@ -39,8 +39,9 @@ class SuperAdminViewState extends State<SuperAdminView> {
               },
               builder: (BuildContext context, SuperAdminState state) {
                 if (state is LoadingState) {
+                  final String text = state.text;
                   return Container(
-                    child: SpinnerWidget(),
+                    child: SpinnerWidget(text: text),
                   );
                 }
 
@@ -131,8 +132,9 @@ class SuperAdminViewState extends State<SuperAdminView> {
 
                                           context.read<SuperAdminBloc>().add(
                                                 GenerateReportEvent(
-                                                    teacher: teacher,
-                                                    students: students),
+                                                  teacher: teacher,
+                                                  students: students,
+                                                ),
                                               );
                                         },
                                       ),
