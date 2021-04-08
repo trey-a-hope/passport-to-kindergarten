@@ -5,6 +5,7 @@ import 'package:p/services/BookService.dart';
 import 'package:p/services/DummyService.dart';
 import 'package:p/services/FCMNotificationService.dart';
 import 'package:p/services/ModalService.dart';
+import 'package:p/services/ReportService.dart';
 import 'package:p/services/StampService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
@@ -22,6 +23,7 @@ void setUpLocater() {
   locator.registerLazySingleton(() => FCMNotificationService());
   locator.registerLazySingleton(() => LogService());
   locator.registerLazySingleton(() => ModalService());
+  locator.registerLazySingleton(() => ReportService());
   locator.registerLazySingleton(() => StampService());
   locator.registerLazySingleton(() => StorageService());
   locator.registerLazySingleton(() => UserService());

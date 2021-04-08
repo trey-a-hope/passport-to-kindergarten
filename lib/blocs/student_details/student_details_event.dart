@@ -1,20 +1,20 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:p/models/UserModel.dart';
+part of 'student_details_bloc.dart';
 
-abstract class MyClassEvent extends Equatable {
-  @override
-  List<Object> get props => [];
-}
-
-class LoadPageEvent extends MyClassEvent {
-  LoadPageEvent();
+abstract class StudentDetailsEvent extends Equatable {
+  const StudentDetailsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class CreateBookForStudentEvent extends MyClassEvent {
+class StudentDetailsLoadPageEvent extends StudentDetailsEvent {
+  StudentDetailsLoadPageEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CreateBookForStudentEvent extends StudentDetailsEvent {
   final String studentUID;
   final String title;
   final String author;
@@ -32,7 +32,7 @@ class CreateBookForStudentEvent extends MyClassEvent {
       ];
 }
 
-class CreateBookLogForStudentEvent extends MyClassEvent {
+class CreateBookLogForStudentEvent extends StudentDetailsEvent {
   final String studentUID;
   final String idOfEntry;
   final DateTime date;
@@ -54,7 +54,7 @@ class CreateBookLogForStudentEvent extends MyClassEvent {
       ];
 }
 
-class CreateVisitLogForStudentEvent extends MyClassEvent {
+class CreateVisitLogForStudentEvent extends StudentDetailsEvent {
   final String studentUID;
   final String idOfEntry;
   final String visitName;
@@ -76,34 +76,8 @@ class CreateVisitLogForStudentEvent extends MyClassEvent {
       ];
 }
 
-class StudentSelectedEvent extends MyClassEvent {
-  final bool studentSelected;
-
-  StudentSelectedEvent({
-    @required this.studentSelected,
-  });
-
-  @override
-  List<Object> get props => [
-        studentSelected,
-      ];
-}
-
-class StudentsUpdatedEvent extends MyClassEvent {
-  final List<UserModel> students;
-
-  StudentsUpdatedEvent({
-    @required this.students,
-  });
-
-  @override
-  List<Object> get props => [
-        students,
-      ];
-}
-
-class GenerateClassReportEvent extends MyClassEvent {
-  GenerateClassReportEvent();
+class GenerateReportEvent extends StudentDetailsEvent {
+  GenerateReportEvent();
 
   @override
   List<Object> get props => [];

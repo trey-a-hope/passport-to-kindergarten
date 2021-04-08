@@ -9,7 +9,16 @@ abstract class SuperAdminState extends Equatable {
 
 class SuperAdminInitial extends SuperAdminState {}
 
-class LoadingState extends SuperAdminState {}
+class LoadingState extends SuperAdminState {
+  final String text;
+
+  LoadingState({
+    @required this.text,
+  });
+
+  @override
+  List<Object> get props => [text];
+}
 
 class LoadedState extends SuperAdminState {
   final List<BookModel> booksOfTheMonth;

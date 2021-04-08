@@ -177,7 +177,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                                 initialVideoId: initialVideoId,
                                 flags: YoutubePlayerFlags(
                                   autoPlay: true,
-                                  mute: true,
+                                  mute: false,
                                 ),
                               ),
                               showVideoProgressIndicator: true,
