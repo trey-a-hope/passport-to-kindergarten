@@ -8,7 +8,6 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/EntryModel.dart';
 import 'package:p/models/UserModel.dart';
-import 'package:p/models/VisitModel.dart';
 import 'package:p/services/ModalService.dart';
 import 'package:p/widgets/AppBarWidget.dart';
 import 'package:p/widgets/SpinnerWidget.dart';
@@ -26,7 +25,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   VisitingLogBloc _visitingLogBloc;
 
-  CalendarController _calendarController = CalendarController();
+  // CalendarController _calendarController = CalendarController();
 
   @override
   void initState() {
@@ -37,7 +36,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
 
   @override
   void dispose() {
-    _calendarController.dispose();
+    // _calendarController.dispose();
     super.dispose();
   }
 
@@ -63,7 +62,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: ListView(
                     shrinkWrap: true,
@@ -75,7 +74,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                           'Go to our partner sites and collect all four Visit Stamps for your Passport!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: COLOR_NAVY,
+                            color: colorNavy,
                             fontWeight: FontWeight.bold,
                             fontSize: 21,
                           ),
@@ -85,7 +84,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                         'Sort Visits By...',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: COLOR_NAVY,
+                          color: colorNavy,
                         ),
                       ),
                       Row(
@@ -94,7 +93,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                             child: Padding(
                               padding: EdgeInsets.all(10),
                               child: GFButton(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 onPressed: () {
                                   visitEntries.sort(
                                     (a, b) => b.modified.compareTo(a.modified),
@@ -115,7 +114,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                             child: Padding(
                               padding: EdgeInsets.all(10),
                               child: GFButton(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 onPressed: () {
                                   visitEntries.sort(
                                     (a, b) =>
@@ -181,7 +180,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             Text(
                                               'Website',
                                               style: TextStyle(
-                                                color: COLOR_NAVY,
+                                                color: colorNavy,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -207,7 +206,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             Text(
                                               'Directions',
                                               style: TextStyle(
-                                                color: COLOR_NAVY,
+                                                color: colorNavy,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -227,7 +226,7 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             Text(
                                               'Log',
                                               style: TextStyle(
-                                                color: COLOR_NAVY,
+                                                color: colorNavy,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -239,53 +238,66 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                   ],
                                 ),
                                 TableCalendar(
+                                  focusedDay: DateTime.now(),
                                   availableCalendarFormats: const {
                                     CalendarFormat.month: 'Month'
                                   },
-                                  calendarController: _calendarController,
-                                  events: visitEntry.logEvents,
+                                  firstDay: DateTime.now().subtract(
+                                    Duration(days: 365),
+                                  ),
+                                  lastDay: DateTime.now().add(
+                                    Duration(days: 365),
+                                  ),
+                                  // calendarController: _calendarController,
+                                  eventLoader: (day) =>
+                                      visitEntry.logEvents[day],
                                   startingDayOfWeek: StartingDayOfWeek.sunday,
-                                  initialSelectedDay: DateTime.now(),
                                   calendarStyle: CalendarStyle(
-                                    selectedColor: Colors.deepOrange[400],
-                                    todayColor: Colors.deepOrange[200],
-                                    markersColor: Colors.black,
                                     outsideDaysVisible: false,
                                   ),
-                                  builders: CalendarBuilders(
-                                    markersBuilder:
-                                        (context, date, events, holidays) {
-                                      final children = <Widget>[];
+                                  calendarBuilders: CalendarBuilders(
+                                    dowBuilder: (context, day) {
+                                      // final children = <Widget>[];
 
-                                      if (events.isNotEmpty) {
-                                        children.add(
-                                          Center(
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                    height: 50, width: 50),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  child: CircleAvatar(
-                                                    backgroundColor: COLOR_NAVY,
-                                                    child: Text(
-                                                      '${events.length}',
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    radius: 10,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
+                                      // if (events.isNotEmpty) {
+                                      //   children.add(
+                                      //     Center(
+                                      //       child: Stack(
+                                      //         children: [
+                                      //           Container(height: 50, width: 50),
+                                      //           Positioned(
+                                      //             bottom: 0,
+                                      //             right: 0,
+                                      //             child: CircleAvatar(
+                                      //               backgroundColor: colorNavy,
+                                      //               child: Text(
+                                      //                 '${events.length}',
+                                      //                 style: TextStyle(
+                                      //                   fontSize: 10,
+                                      //                   color: Colors.white,
+                                      //                 ),
+                                      //               ),
+                                      //               radius: 10,
+                                      //             ),
+                                      //           )
+                                      //         ],
+                                      //       ),
+                                      //     ),
+                                      //   );
+                                      // }
+
+                                      // return children;
+
+                                      if (day.weekday == DateTime.sunday) {
+                                        final text = DateFormat.E().format(day);
+
+                                        return Center(
+                                          child: Text(
+                                            text,
+                                            style: TextStyle(color: Colors.red),
                                           ),
                                         );
                                       }
-
-                                      return children;
                                     },
                                   ),
                                   headerStyle: HeaderStyle(
@@ -297,12 +309,12 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                     ),
                                   ),
                                   onDaySelected:
-                                      (DateTime day, List events) async {
+                                      (selectedDay, focusedDay) async {
                                     DateTime now = DateTime.now();
                                     now = now.add(
                                       const Duration(days: 1),
                                     );
-                                    if (now.isBefore(day)) {
+                                    if (now.isBefore(selectedDay)) {
                                       locator<ModalService>().showAlert(
                                           context: context,
                                           title: 'Sorry',
@@ -316,21 +328,25 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                             context: context,
                                             title: 'Add Log',
                                             message:
-                                                '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visitEntry.visit.title}\"');
+                                                '${DateFormat('MMMM dd, yyyy').format(selectedDay)} for \"${visitEntry.visit.title}\"');
 
                                     if (!confirm) return;
 
                                     _visitingLogBloc.add(
                                       CreateVisitLogEvent(
-                                        date: day,
+                                        date: selectedDay,
                                         idOfEntry: visitEntry.id,
                                         visitName: visitEntry.visit.title,
                                       ),
                                     );
                                   },
-                                  onVisibleDaysChanged: (DateTime first,
-                                      DateTime last, CalendarFormat format) {},
+                                  // onVisibleDaysChanged: (DateTime first,
+                                  //     DateTime last,
+                                  //     CalendarFormat format) {},
                                 ),
+
+                                // onVisibleDaysChanged: (DateTime first,
+                                //     DateTime last, CalendarFormat format) {},
                               ],
                             ),
                           );
@@ -361,7 +377,6 @@ class VisitingLogPageState extends State<VisitingLogPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 }

@@ -88,7 +88,7 @@ class _SearchBody extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(
                     context,
-                    IDK_TEACHER_MODEL,
+                    idkTeacherModel,
                   );
                 },
               ),

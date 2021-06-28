@@ -6,40 +6,54 @@ import '../ServiceLocator.dart';
 import 'ValidatorService.dart';
 
 abstract class IModalService {
-  void showInSnackBar(
-      {@required GlobalKey<ScaffoldState> scaffoldKey,
-      @required String message});
+  void showInSnackBar({
+    @required BuildContext context,
+    @required String message,
+  });
 
-  void showAlert(
-      {@required BuildContext context,
-      @required String title,
-      @required String message});
-  Future<String> showPasswordResetEmail({@required BuildContext context});
-  Future<String> showChangeEmail({@required BuildContext context});
-  Future<dynamic> showAddBook({@required BuildContext context});
+  void showAlert({
+    @required BuildContext context,
+    @required String title,
+    @required String message,
+  });
 
-  Future<bool> showConfirmation(
-      {@required BuildContext context,
-      @required String title,
-      @required String message});
-  Future<bool> showConfirmationWithImage(
-      {@required BuildContext context,
-      @required String title,
-      @required String message,
-      @required File file});
+  Future<String> showPasswordResetEmail({
+    @required BuildContext context,
+  });
 
-  Future<int> showOptions(
-      {@required BuildContext context,
-      @required String title,
-      @required List<String> options});
+  Future<String> showChangeEmail({
+    @required BuildContext context,
+  });
+
+  Future<dynamic> showAddBook({
+    @required BuildContext context,
+  });
+
+  Future<bool> showConfirmation({
+    @required BuildContext context,
+    @required String title,
+    @required String message,
+  });
+
+  Future<bool> showConfirmationWithImage({
+    @required BuildContext context,
+    @required String title,
+    @required String message,
+    @required File file,
+  });
+
+  Future<int> showOptions({
+    @required BuildContext context,
+    @required String title,
+    @required List<String> options,
+  });
 }
 
 class ModalService extends IModalService {
   @override
   void showInSnackBar(
-      {@required GlobalKey<ScaffoldState> scaffoldKey,
-      @required String message}) {
-    scaffoldKey.currentState.showSnackBar(
+      {@required BuildContext context, @required String message}) {
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
       ),
@@ -73,7 +87,7 @@ class ModalService extends IModalService {
             title: Text(title),
             content: Text(message),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -94,7 +108,7 @@ class ModalService extends IModalService {
     return showDialog<String>(
       barrierDismissible: false,
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text('Reset Password'),
         content: Form(
           key: formKey,
@@ -103,7 +117,7 @@ class ModalService extends IModalService {
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.done,
-            maxLengthEnforced: true,
+            maxLengthEnforcement: MaxLengthEnforcement.enforced,
             onFieldSubmitted: (term) {},
             validator: locator<ValidatorService>().email,
             onSaved: (value) {},
@@ -115,13 +129,13 @@ class ModalService extends IModalService {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text('CANCEL'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: const Text('SUBMIT'),
             onPressed: () {
               if (!formKey.currentState.validate()) return;
@@ -141,7 +155,7 @@ class ModalService extends IModalService {
     return showDialog<String>(
       barrierDismissible: false,
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text('Change Email'),
         content: Form(
           key: _formKey,
@@ -150,7 +164,7 @@ class ModalService extends IModalService {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.done,
-            maxLengthEnforced: true,
+            maxLengthEnforcement: MaxLengthEnforcement.enforced,
             onFieldSubmitted: (term) {},
             validator: locator<ValidatorService>().email,
             onSaved: (value) {},
@@ -162,13 +176,13 @@ class ModalService extends IModalService {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text('CANCEL'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: const Text('SUBMIT'),
             onPressed: () {
               if (!_formKey.currentState.validate()) return;
@@ -215,13 +229,13 @@ class ModalService extends IModalService {
             title: Text(title),
             content: Text(message),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: const Text('YES', style: TextStyle(color: Colors.black)),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: const Text('NO', style: TextStyle(color: Colors.black)),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -243,7 +257,7 @@ class ModalService extends IModalService {
     return showDialog<bool>(
       barrierDismissible: false,
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           title,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -252,7 +266,7 @@ class ModalService extends IModalService {
           child: Image.file(file),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text(
               'NO',
               style:
@@ -262,7 +276,7 @@ class ModalService extends IModalService {
               Navigator.of(context).pop(false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: const Text(
               'YES',
               style:
@@ -286,8 +300,7 @@ class ModalService extends IModalService {
       return showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
-          List<CupertinoActionSheetAction> actions =
-              List<CupertinoActionSheetAction>();
+          List<CupertinoActionSheetAction> actions = [];
 
           //Build actions based on optino titles.
           for (var i = 0; i < options.length; i++) {
@@ -318,7 +331,7 @@ class ModalService extends IModalService {
       return await showModalBottomSheet<int>(
         context: context,
         builder: (BuildContext context) {
-          List<ListTile> actions = List<ListTile>();
+          List<ListTile> actions = [];
 
           actions.add(
             ListTile(
@@ -357,7 +370,7 @@ class ModalService extends IModalService {
     return showDialog<dynamic>(
       barrierDismissible: false,
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text('Add new title'),
         content: Container(
           height: 150,
@@ -394,13 +407,13 @@ class ModalService extends IModalService {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text('CANCEL'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: const Text('SUBMIT'),
             onPressed: () {
               if (!_formKey.currentState.validate()) return;

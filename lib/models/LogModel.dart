@@ -13,7 +13,7 @@ class LogModel {
   factory LogModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
-    Map<String, dynamic> data = ds.data;
+    Map<String, dynamic> data = ds.data();
 
     return LogModel(
       id: data['id'],

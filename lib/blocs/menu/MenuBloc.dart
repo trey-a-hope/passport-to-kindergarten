@@ -6,7 +6,6 @@ import 'package:p/ServiceLocator.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
-import 'package:p/services/DummyService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'MenuEvent.dart';
@@ -14,13 +13,13 @@ import 'MenuState.dart';
 
 abstract class MenuBlocDelegate {
   void showMessage({@required String message});
-  void showTutorial({@required PROFILE_TYPE profile_type});
+  void showTutorial({@required PROFILE_TYPE profileType});
 }
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc() : super(null);
 
-  final FirebaseMessaging _fcm = FirebaseMessaging();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   MenuBlocDelegate _menuBlocDelegate;
   UserModel _currentUser;
 
@@ -32,12 +31,12 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       Map<String, dynamic> message) async {
     if (message.containsKey('data')) {
       // Handle data message
-      final dynamic data = message['data'];
+      // final dynamic data = message['data'];
     }
 
     if (message.containsKey('notification')) {
       // Handle notification message
-      final dynamic notification = message['notification'];
+      // final dynamic notification = message['notification'];
     }
 
     // Or do other work.
@@ -46,9 +45,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   //Request notification permissions and register call backs for receiving push notifications.
   void _setUpFirebaseMessaging() async {
     if (Platform.isIOS) {
-      _fcm.requestNotificationPermissions(
-        IosNotificationSettings(),
-      );
+      _fcm.requestPermission();
     }
 
     final String fcmToken = await _fcm.getToken();
@@ -57,18 +54,28 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           .updateUser(uid: _currentUser.uid, data: {'fcmToken': fcmToken});
     }
 
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
-    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage messag) {});
+
+    FirebaseMessaging.onBackgroundMessage((message) {
+      if (Platform.isAndroid) myBackgroundMessageHandler({});
+      // Platform.isIOS ? null : myBackgroundMessageHandler,
+      return;
+    });
+
+    // _fcm.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print("onMessage: $message");
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print("onResume: $message");
+    //   },
+    //   onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
+    // );
   }
 
   @override
@@ -143,20 +150,19 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
           await Future.delayed(Duration(microseconds: 50000));
 
-          _menuBlocDelegate.showTutorial(profile_type: PROFILE_TYPE.PARENT);
+          _menuBlocDelegate.showTutorial(profileType: PROFILE_TYPE.PARENT);
         } else if (_currentUser.profileType == PROFILE_TYPE.TEACHER.name) {
           yield TeacherState(
               user: _currentUser, greetingMessage: greetingMessage);
           await Future.delayed(Duration(microseconds: 50000));
 
-          _menuBlocDelegate.showTutorial(profile_type: PROFILE_TYPE.TEACHER);
+          _menuBlocDelegate.showTutorial(profileType: PROFILE_TYPE.TEACHER);
         } else if (_currentUser.profileType == PROFILE_TYPE.SUPER_ADMIN.name) {
           yield SuperAdminState(
               user: _currentUser, greetingMessage: greetingMessage);
           await Future.delayed(Duration(microseconds: 50000));
 
-          _menuBlocDelegate.showTutorial(
-              profile_type: PROFILE_TYPE.SUPER_ADMIN);
+          _menuBlocDelegate.showTutorial(profileType: PROFILE_TYPE.SUPER_ADMIN);
         } else {
           yield ErrorState(error: 'Should not see this...');
         }
@@ -170,7 +176,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
       try {
         final String imgUrl = await locator<StorageService>().uploadImage(
-            file: image, path: 'Images/Users/${_currentUser.uid}/Profile');
+            file: image, imgPath: 'Images/Users/${_currentUser.uid}/Profile');
 
         await locator<UserService>().updateUser(
           uid: _currentUser.uid,

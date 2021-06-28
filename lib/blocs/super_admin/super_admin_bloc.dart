@@ -78,7 +78,7 @@ class SuperAdminBloc extends Bloc<SuperAdminEvent, SuperAdminState> {
     }
 
     if (event is GenerateReportEvent) {
-      final UserModel teacher = event.teacher;
+      // final UserModel teacher = event.teacher;
       final List<UserModel> students = event.students;
       try {
         Excel excel = Excel.createExcel();

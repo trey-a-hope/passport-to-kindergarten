@@ -52,7 +52,7 @@ class SuccessMessagePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: COLOR_NAVY,
+                      color: colorNavy,
                       fontSize: 30,
                     ),
                   ),
@@ -75,9 +75,9 @@ class SuccessMessagePage extends StatelessWidget {
                 shouldLoop:
                     true, // start again as soon as the animation is finished
                 colors: [
-                  COLOR_ORANGE,
-                  COLOR_YELLOW,
-                  COLOR_NAVY,
+                  colorOrange,
+                  colorYellow,
+                  colorNavy,
                 ], // manually specify the colors to be used
               ),
             ),

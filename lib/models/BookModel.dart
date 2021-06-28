@@ -29,7 +29,7 @@ class BookModel {
   factory BookModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
-    Map<String, dynamic> data = ds.data;
+    Map<String, dynamic> data = ds.data();
 
     return BookModel(
       id: data['id'],

@@ -27,10 +27,10 @@ class DummyService extends IDummyService {
     try {
       print('Updating $propertyName to $propertyValue for userID $userID...');
 
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection(collection)
-          .document(userID)
-          .updateData(
+          .doc(userID)
+          .update(
         {
           propertyName: propertyValue,
         },
@@ -78,45 +78,47 @@ class DummyService extends IDummyService {
       //   }
       // }
 
-      final List<DocumentSnapshot> nestedDocs = (await Firestore.instance
+      final List<DocumentSnapshot> nestedDocs = (await FirebaseFirestore
+              .instance
               .collection(collection)
-              .document(userID)
+              .doc(userID)
               .collection(nestedCollection)
-              .getDocuments())
-          .documents;
+              .get())
+          .docs;
 
       for (int j = 0; j < nestedDocs.length; j++) {
         final DocumentSnapshot nestedDoc = nestedDocs[j];
 
         if (nestedCollection != 'stamps') {
-          final List<DocumentSnapshot> logDocs = (await Firestore.instance
+          final List<DocumentSnapshot> logDocs = (await FirebaseFirestore
+                  .instance
                   .collection(collection)
-                  .document(userID)
+                  .doc(userID)
                   .collection(nestedCollection)
-                  .document(nestedDoc.documentID)
+                  .doc(nestedDoc.id)
                   .collection('logs')
-                  .getDocuments())
-              .documents;
+                  .get())
+              .docs;
 
           for (int l = 0; l < logDocs.length; l++) {
             final DocumentSnapshot logDoc = logDocs[l];
 
-            await Firestore.instance
+            await FirebaseFirestore.instance
                 .collection(collection)
-                .document(userID)
+                .doc(userID)
                 .collection(nestedCollection)
-                .document(nestedDoc.documentID)
+                .doc(nestedDoc.id)
                 .collection('logs')
-                .document(logDoc.documentID)
+                .doc(logDoc.id)
                 .delete();
           }
         }
 
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection(collection)
-            .document(userID)
+            .doc(userID)
             .collection(nestedCollection)
-            .document(nestedDoc.documentID)
+            .doc(nestedDoc.id)
             .delete();
       }
 

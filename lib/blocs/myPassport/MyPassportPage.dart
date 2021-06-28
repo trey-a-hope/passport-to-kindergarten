@@ -22,12 +22,12 @@ class MyPassportPageState extends State<MyPassportPage>
     implements MyPassportBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MyPassportBloc _myPassportBloc;
+  // MyPassportBloc _myPassportBloc;
 
   @override
   void initState() {
-    _myPassportBloc = BlocProvider.of<MyPassportBloc>(context);
-    _myPassportBloc.setDelegate(delegate: this);
+    // _myPassportBloc = BlocProvider.of<MyPassportBloc>(context);
+    // _myPassportBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class MyPassportPageState extends State<MyPassportPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: ListView(
                     children: [
@@ -68,7 +68,7 @@ class MyPassportPageState extends State<MyPassportPage>
                               height: 120,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: COLOR_ORANGE,
+                                  color: colorOrange,
                                   width: 5,
                                 ),
                                 borderRadius: BorderRadius.circular(10.0),
@@ -83,49 +83,49 @@ class MyPassportPageState extends State<MyPassportPage>
                               children: [
                                 Text(
                                   'Primary Parent Name',
-                                  style: TextStyle(color: COLOR_NAVY),
+                                  style: TextStyle(color: colorNavy),
                                 ),
                                 Text(
                                   '${child.primaryParentFirstName} ${child.primaryParentLastName}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: COLOR_NAVY,
+                                      color: colorNavy,
                                       fontSize: 18),
                                 ),
                                 Divider(),
                                 Text(
                                   'Secondary Parent Name',
-                                  style: TextStyle(color: COLOR_NAVY),
+                                  style: TextStyle(color: colorNavy),
                                 ),
                                 Text(
                                   '${child.secondaryParentFirstName} ${child.secondaryParentFirstName}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: COLOR_NAVY,
+                                      color: colorNavy,
                                       fontSize: 18),
                                 ),
                                 Divider(),
                                 Text(
                                   'Child Name',
-                                  style: TextStyle(color: COLOR_NAVY),
+                                  style: TextStyle(color: colorNavy),
                                 ),
                                 Text(
                                   '${child.firstName} ${child.lastName}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: COLOR_NAVY,
+                                      color: colorNavy,
                                       fontSize: 18),
                                 ),
                                 Divider(),
                                 Text(
                                   'Child DOB',
-                                  style: TextStyle(color: COLOR_NAVY),
+                                  style: TextStyle(color: colorNavy),
                                 ),
                                 Text(
                                   DateFormat('MMMM dd, yyyy').format(child.dob),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: COLOR_NAVY,
+                                      color: colorNavy,
                                       fontSize: 18),
                                 ),
                               ],
@@ -142,13 +142,13 @@ class MyPassportPageState extends State<MyPassportPage>
                             Divider(),
                             Text(
                               'Teacher Name',
-                              style: TextStyle(color: COLOR_NAVY),
+                              style: TextStyle(color: colorNavy),
                               textAlign: TextAlign.start,
                             ),
                             Text(
                               '${teacher.firstName} ${teacher.lastName}',
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
@@ -156,12 +156,12 @@ class MyPassportPageState extends State<MyPassportPage>
                             Divider(),
                             Text(
                               'School',
-                              style: TextStyle(color: COLOR_NAVY),
+                              style: TextStyle(color: colorNavy),
                             ),
                             Text(
                               '${teacher.school}',
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
@@ -182,7 +182,7 @@ class MyPassportPageState extends State<MyPassportPage>
                               'Stamps',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: COLOR_NAVY,
+                                  color: colorNavy,
                                   fontSize: 21),
                             ),
                           ],

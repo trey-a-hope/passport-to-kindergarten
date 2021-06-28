@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
 import 'package:p/models/EntryModel.dart';
 import 'package:p/models/UserModel.dart';
 

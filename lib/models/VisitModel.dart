@@ -23,7 +23,7 @@ class VisitModel {
   factory VisitModel.fromDocumentSnapshot({
     @required DocumentSnapshot ds,
   }) {
-    Map<String, dynamic> data = ds.data;
+    Map<String, dynamic> data = ds.data();
 
     return VisitModel(
       id: data['id'],

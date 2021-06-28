@@ -21,7 +21,7 @@ class SuperAdminViewState extends State<SuperAdminView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: COLOR_ORANGE,
+        backgroundColor: colorOrange,
         title: Text('Super Admin'),
       ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -29,7 +29,7 @@ class SuperAdminViewState extends State<SuperAdminView> {
         child: Container(
           width: screenWidth,
           height: screenHeight,
-          color: COLOR_CREAM,
+          color: colorCream,
           child: SafeArea(
             child: BlocConsumer<SuperAdminBloc, SuperAdminState>(
               listener: (context, state) {
@@ -117,7 +117,12 @@ class SuperAdminViewState extends State<SuperAdminView> {
                                 subtitle: Text('${students.length} students'),
                                 trailing: students.isEmpty
                                     ? SizedBox.shrink()
-                                    : RaisedButton(
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: colorOrange,
+                                          textStyle:
+                                              TextStyle(color: Colors.white),
+                                        ),
                                         child: Text('Generate'),
                                         onPressed: () async {
                                           final bool confirm = await locator<

@@ -16,12 +16,12 @@ class AwesomeReadingTipsPage extends StatefulWidget {
 class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
     implements AwesomeReadingTipsBlocDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  AwesomeReadingTipsBloc _awesomeReadingTipsBloc;
+  // AwesomeReadingTipsBloc _awesomeReadingTipsBloc;
 
   @override
   void initState() {
-    _awesomeReadingTipsBloc = BlocProvider.of<AwesomeReadingTipsBloc>(context);
-    _awesomeReadingTipsBloc.setDelegate(delegate: this);
+    // _awesomeReadingTipsBloc = BlocProvider.of<AwesomeReadingTipsBloc>(context);
+    // _awesomeReadingTipsBloc.setDelegate(delegate: this);
 
     super.initState();
   }
@@ -50,7 +50,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: ListView(
                     children: [
@@ -60,7 +60,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                         child: RichText(
                           text: TextSpan(
                             style: TextStyle(
-                              color: COLOR_NAVY,
+                              color: colorNavy,
                               fontSize: 18,
                             ),
                             children: [
@@ -90,7 +90,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: Text(
                                     '-',
                                     style: TextStyle(
-                                      color: COLOR_ORANGE,
+                                      color: colorOrange,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
@@ -101,7 +101,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: RichText(
                                     text: TextSpan(
                                       style: TextStyle(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         fontSize: 18,
                                       ),
                                       children: [
@@ -131,7 +131,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: Text(
                                     '-',
                                     style: TextStyle(
-                                      color: COLOR_ORANGE,
+                                      color: colorOrange,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
@@ -142,7 +142,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: RichText(
                                     text: TextSpan(
                                       style: TextStyle(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         fontSize: 18,
                                       ),
                                       children: [
@@ -172,7 +172,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: Text(
                                     '-',
                                     style: TextStyle(
-                                      color: COLOR_ORANGE,
+                                      color: colorOrange,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
@@ -183,7 +183,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                                   child: RichText(
                                     text: TextSpan(
                                       style: TextStyle(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         fontSize: 18,
                                       ),
                                       children: [
@@ -214,7 +214,7 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
                         child: RichText(
                           text: TextSpan(
                             style: TextStyle(
-                              color: COLOR_NAVY,
+                              color: colorNavy,
                               fontSize: 18,
                             ),
                             children: [
@@ -256,7 +256,6 @@ class AwesomeReadingTipsPageState extends State<AwesomeReadingTipsPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 }

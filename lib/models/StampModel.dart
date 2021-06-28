@@ -15,11 +15,13 @@ class StampModel {
   });
 
   factory StampModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
+    Map<String, dynamic> data = ds.data();
+
     return StampModel(
-      id: ds.data['id'],
-      name: ds.data['name'],
-      created: ds.data['created'].toDate(),
-      imgUrl: ds.data['imgUrl'],
+      id: data['id'],
+      name: data['name'],
+      created: data['created'].toDate(),
+      imgUrl: data['imgUrl'],
     );
   }
 

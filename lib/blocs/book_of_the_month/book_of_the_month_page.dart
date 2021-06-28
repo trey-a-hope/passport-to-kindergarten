@@ -7,12 +7,12 @@ class BookOfTheMonthPage extends StatefulWidget {
 
 class BookOfTheMonthPageState extends State<BookOfTheMonthPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  BookOfTheMonthBloc _bookOfTheMonthBloc;
+  // BookOfTheMonthBloc _bookOfTheMonthBloc;
 
   @override
   void initState() {
-    _bookOfTheMonthBloc = BlocProvider.of<BookOfTheMonthBloc>(context)
-      ..add(LoadPageEvent());
+    // _bookOfTheMonthBloc = BlocProvider.of<BookOfTheMonthBloc>(context)
+    //   ..add(LoadPageEvent());
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage> {
         child: Container(
           width: screenWidth,
           height: screenHeight,
-          color: COLOR_CREAM,
+          color: colorCream,
           child: SafeArea(
               child: BlocConsumer<BookOfTheMonthBloc, BookOfTheMonthState>(
             listener: (context, state) {},
@@ -52,7 +52,7 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage> {
                         'Tap each icon for a video and reading tips!',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: COLOR_NAVY,
+                          color: colorNavy,
                           fontWeight: FontWeight.bold,
                           fontSize: 21,
                         ),
@@ -119,7 +119,11 @@ class BookOfTheMonthPageState extends State<BookOfTheMonthPage> {
                       padding: EdgeInsets.all(40),
                       child: Text('${state.error.toString()}'),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: colorOrange,
+                        textStyle: TextStyle(color: Colors.white),
+                      ),
                       child: Text('Leave Page'),
                       onPressed: () {
                         Navigator.of(context).pop();

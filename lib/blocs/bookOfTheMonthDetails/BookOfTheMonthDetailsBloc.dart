@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/models/BookModel.dart';
-import 'package:p/models/UserModel.dart';
 import 'Bloc.dart';
 
 abstract class BookOfTheMonthDetailsDelegate {
@@ -15,11 +14,11 @@ class BookOfTheMonthDetailsBloc
   }) : super(null);
 
   final BookModel bookOfTheMonth;
-  BookOfTheMonthDetailsDelegate _bookOfTheMonthDetailsDelegate;
+  // BookOfTheMonthDetailsDelegate _bookOfTheMonthDetailsDelegate;
 
-  void setDelegate({@required BookOfTheMonthDetailsDelegate delegate}) {
-    this._bookOfTheMonthDetailsDelegate = delegate;
-  }
+  // void setDelegate({@required BookOfTheMonthDetailsDelegate delegate}) {
+  //   this._bookOfTheMonthDetailsDelegate = delegate;
+  // }
 
   @override
   Stream<BookOfTheMonthDetailsState> mapEventToState(

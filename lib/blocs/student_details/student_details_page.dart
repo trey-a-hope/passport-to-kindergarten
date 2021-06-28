@@ -10,7 +10,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _titleConController = TextEditingController();
   final TextEditingController _authorConController = TextEditingController();
-  CalendarController _calendarController = CalendarController();
+  // CalendarController _calendarController = CalendarController();
   StudentDetailsBloc _studentDetailsBloc;
   final int _totalBookProgressAmount = 15;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -25,7 +25,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
 
   @override
   void dispose() {
-    _calendarController.dispose();
+    // _calendarController.dispose();
     super.dispose();
   }
 
@@ -34,7 +34,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: COLOR_NAVY,
+        backgroundColor: colorNavy,
         child: Icon(Icons.note),
         onPressed: () async {
           final bool confirm = await locator<ModalService>().showConfirmation(
@@ -54,7 +54,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
         child: Container(
           width: screenWidth,
           height: screenHeight,
-          color: COLOR_CREAM,
+          color: colorCream,
           child: SafeArea(
             child: BlocConsumer<StudentDetailsBloc, StudentDetailsState>(
               listener: (context, state) {},
@@ -103,7 +103,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                             title: Text(
                               'List of passport stamps',
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                               ),
                             ),
                             children: [
@@ -134,9 +134,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                             backgroundColor: Colors.white,
                             title: Text(
                               'Add a new title',
-                              style: TextStyle(
-                                color: COLOR_NAVY,
-                              ),
+                              style: TextStyle(color: colorNavy),
                             ),
                             children: [
                               Container(
@@ -147,7 +145,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                       'Add a new book that your student hasn\'t already logged here.',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -217,9 +215,9 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                       height: 20,
                                     ),
                                     FullWidthButtonWidget(
-                                      buttonColor: COLOR_NAVY,
+                                      buttonColor: colorNavy,
                                       text: 'Add',
-                                      textColor: Colors.white,
+                                      textColor: colorNavy,
                                       onPressed: () async {
                                         final bool confirm =
                                             await locator<ModalService>()
@@ -250,7 +248,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                             title: Text(
                               'Log a reading',
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                               ),
                             ),
                             children: [
@@ -262,7 +260,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     Text(
                                       'x$numberOf15BooksRead',
                                       style: TextStyle(
-                                        color: COLOR_ORANGE,
+                                        color: colorOrange,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -276,7 +274,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                           Text(
                                             'Your progress to $_totalBookProgressAmount MORE books read!',
                                             style: TextStyle(
-                                              color: COLOR_NAVY,
+                                              color: colorNavy,
                                             ),
                                           ),
                                           SizedBox(
@@ -293,7 +291,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                             percent: currentLogCount /
                                                 _totalBookProgressAmount,
                                             backgroundColor: Colors.grey,
-                                            progressColor: COLOR_ORANGE,
+                                            progressColor: colorOrange,
                                           ),
                                         ],
                                       ),
@@ -307,7 +305,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: GFButton(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         onPressed: () {
                                           bookEntries.sort(
                                             (a, b) => b.modified
@@ -329,7 +327,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: GFButton(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         onPressed: () {
                                           bookEntries.sort(
                                             (a, b) => b.logCount
@@ -351,7 +349,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: GFButton(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         onPressed: () {
                                           bookEntries.sort(
                                             (a, b) => a.book.title
@@ -387,7 +385,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                         child: Text(
                                           '${bookEntry.logCount}',
                                           style: TextStyle(
-                                            color: COLOR_ORANGE,
+                                            color: colorOrange,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                           ),
@@ -407,7 +405,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                             child: Text(
                                               '${bookEntry.book.title}',
                                               style: TextStyle(
-                                                color: COLOR_NAVY,
+                                                color: colorNavy,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -417,57 +415,70 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     ),
                                     children: [
                                       TableCalendar(
+                                        focusedDay: DateTime.now(),
                                         availableCalendarFormats: const {
                                           CalendarFormat.month: 'Month'
                                         },
-                                        calendarController: _calendarController,
-                                        events: bookEntry.logEvents,
+                                        firstDay: DateTime.now().subtract(
+                                          Duration(days: 365),
+                                        ),
+                                        lastDay: DateTime.now().add(
+                                          Duration(days: 365),
+                                        ),
+                                        // calendarController: _calendarController,
+                                        eventLoader: (day) =>
+                                            bookEntry.logEvents[day],
                                         startingDayOfWeek:
                                             StartingDayOfWeek.sunday,
-                                        initialSelectedDay: DateTime.now(),
                                         calendarStyle: CalendarStyle(
-                                          selectedColor: Colors.deepOrange[400],
-                                          todayColor: Colors.deepOrange[200],
-                                          markersColor: Colors.black,
                                           outsideDaysVisible: false,
                                         ),
-                                        builders: CalendarBuilders(
-                                          markersBuilder: (context, date,
-                                              events, holidays) {
-                                            final children = <Widget>[];
+                                        calendarBuilders: CalendarBuilders(
+                                          dowBuilder: (context, day) {
+                                            // final children = <Widget>[];
 
-                                            if (events.isNotEmpty) {
-                                              children.add(
-                                                Center(
-                                                  child: Stack(
-                                                    children: [
-                                                      Container(
-                                                          height: 50,
-                                                          width: 50),
-                                                      Positioned(
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        child: CircleAvatar(
-                                                          backgroundColor:
-                                                              COLOR_NAVY,
-                                                          child: Text(
-                                                            '${events.length}',
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                          radius: 10,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                            // if (events.isNotEmpty) {
+                                            //   children.add(
+                                            //     Center(
+                                            //       child: Stack(
+                                            //         children: [
+                                            //           Container(height: 50, width: 50),
+                                            //           Positioned(
+                                            //             bottom: 0,
+                                            //             right: 0,
+                                            //             child: CircleAvatar(
+                                            //               backgroundColor: colorNavy,
+                                            //               child: Text(
+                                            //                 '${events.length}',
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 10,
+                                            //                   color: Colors.white,
+                                            //                 ),
+                                            //               ),
+                                            //               radius: 10,
+                                            //             ),
+                                            //           )
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   );
+                                            // }
+
+                                            // return children;
+
+                                            if (day.weekday ==
+                                                DateTime.sunday) {
+                                              final text =
+                                                  DateFormat.E().format(day);
+
+                                              return Center(
+                                                child: Text(
+                                                  text,
+                                                  style: TextStyle(
+                                                      color: Colors.red),
                                                 ),
                                               );
                                             }
-
-                                            return children;
                                           },
                                         ),
                                         headerStyle: HeaderStyle(
@@ -482,12 +493,12 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                           ),
                                         ),
                                         onDaySelected:
-                                            (DateTime day, List events) async {
+                                            (selectedDay, focusedDay) async {
                                           DateTime now = DateTime.now();
                                           now = now.add(
                                             const Duration(days: 1),
                                           );
-                                          if (now.isBefore(day)) {
+                                          if (now.isBefore(selectedDay)) {
                                             locator<ModalService>().showAlert(
                                                 context: context,
                                                 title: 'Sorry',
@@ -501,7 +512,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                   context: context,
                                                   title: 'Add Log',
                                                   message:
-                                                      '${DateFormat('MMMM dd, yyyy').format(day)} for \"${bookEntry.book.title}\"');
+                                                      '${DateFormat('MMMM dd, yyyy').format(selectedDay)} for \"${bookEntry.book.title}\"');
 
                                           if (!confirm) return;
 
@@ -515,15 +526,15 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                 CreateBookLogForStudentEvent(
                                                   studentUID: student.uid,
                                                   idOfEntry: bookEntry.id,
-                                                  date: day,
+                                                  date: selectedDay,
                                                   totalLogLimitReached:
                                                       totalLogLimitReached,
                                                 ),
                                               );
                                         },
-                                        onVisibleDaysChanged: (DateTime first,
-                                            DateTime last,
-                                            CalendarFormat format) {},
+                                        // onVisibleDaysChanged: (DateTime first,
+                                        //     DateTime last,
+                                        //     CalendarFormat format) {},
                                       ),
                                       SizedBox(
                                         height: 20,
@@ -538,9 +549,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                             backgroundColor: Colors.white,
                             title: Text(
                               'Log a visit',
-                              style: TextStyle(
-                                color: COLOR_NAVY,
-                              ),
+                              style: TextStyle(color: colorNavy),
                             ),
                             children: [
                               Row(
@@ -549,7 +558,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: GFButton(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         onPressed: () {
                                           visitEntries.sort(
                                             (a, b) => b.modified
@@ -571,7 +580,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: GFButton(
-                                        color: COLOR_NAVY,
+                                        color: colorNavy,
                                         onPressed: () {
                                           visitEntries.sort(
                                             (a, b) => a.visit.title
@@ -640,7 +649,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                   Text(
                                                     'Website',
                                                     style: TextStyle(
-                                                      color: COLOR_NAVY,
+                                                      color: colorNavy,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -669,7 +678,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                   Text(
                                                     'Directions',
                                                     style: TextStyle(
-                                                      color: COLOR_NAVY,
+                                                      color: colorNavy,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -690,7 +699,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                   Text(
                                                     'Log',
                                                     style: TextStyle(
-                                                      color: COLOR_NAVY,
+                                                      color: colorNavy,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -703,57 +712,70 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                         ],
                                       ),
                                       TableCalendar(
+                                        focusedDay: DateTime.now(),
                                         availableCalendarFormats: const {
                                           CalendarFormat.month: 'Month'
                                         },
-                                        calendarController: _calendarController,
-                                        events: visitEntry.logEvents,
+                                        firstDay: DateTime.now().subtract(
+                                          Duration(days: 365),
+                                        ),
+                                        lastDay: DateTime.now().add(
+                                          Duration(days: 365),
+                                        ),
+                                        // calendarController: _calendarController,
+                                        eventLoader: (day) =>
+                                            visitEntry.logEvents[day],
                                         startingDayOfWeek:
                                             StartingDayOfWeek.sunday,
-                                        initialSelectedDay: DateTime.now(),
                                         calendarStyle: CalendarStyle(
-                                          selectedColor: Colors.deepOrange[400],
-                                          todayColor: Colors.deepOrange[200],
-                                          markersColor: Colors.black,
                                           outsideDaysVisible: false,
                                         ),
-                                        builders: CalendarBuilders(
-                                          markersBuilder: (context, date,
-                                              events, holidays) {
-                                            final children = <Widget>[];
+                                        calendarBuilders: CalendarBuilders(
+                                          dowBuilder: (context, day) {
+                                            // final children = <Widget>[];
 
-                                            if (events.isNotEmpty) {
-                                              children.add(
-                                                Center(
-                                                  child: Stack(
-                                                    children: [
-                                                      Container(
-                                                          height: 50,
-                                                          width: 50),
-                                                      Positioned(
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        child: CircleAvatar(
-                                                          backgroundColor:
-                                                              COLOR_NAVY,
-                                                          child: Text(
-                                                            '${events.length}',
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                          radius: 10,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                            // if (events.isNotEmpty) {
+                                            //   children.add(
+                                            //     Center(
+                                            //       child: Stack(
+                                            //         children: [
+                                            //           Container(height: 50, width: 50),
+                                            //           Positioned(
+                                            //             bottom: 0,
+                                            //             right: 0,
+                                            //             child: CircleAvatar(
+                                            //               backgroundColor: colorNavy,
+                                            //               child: Text(
+                                            //                 '${events.length}',
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 10,
+                                            //                   color: Colors.white,
+                                            //                 ),
+                                            //               ),
+                                            //               radius: 10,
+                                            //             ),
+                                            //           )
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   );
+                                            // }
+
+                                            // return children;
+
+                                            if (day.weekday ==
+                                                DateTime.sunday) {
+                                              final text =
+                                                  DateFormat.E().format(day);
+
+                                              return Center(
+                                                child: Text(
+                                                  text,
+                                                  style: TextStyle(
+                                                      color: Colors.red),
                                                 ),
                                               );
                                             }
-
-                                            return children;
                                           },
                                         ),
                                         headerStyle: HeaderStyle(
@@ -768,12 +790,12 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                           ),
                                         ),
                                         onDaySelected:
-                                            (DateTime day, List events) async {
+                                            (selectedDay, focusedDay) async {
                                           DateTime now = DateTime.now();
                                           now = now.add(
                                             const Duration(days: 1),
                                           );
-                                          if (now.isBefore(day)) {
+                                          if (now.isBefore(selectedDay)) {
                                             locator<ModalService>().showAlert(
                                                 context: context,
                                                 title: 'Sorry',
@@ -781,32 +803,35 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                                                     'You cannot log in the future.');
                                             return;
                                           }
-
                                           final bool confirm = await locator<
                                                   ModalService>()
                                               .showConfirmation(
                                                   context: context,
                                                   title: 'Add Log',
                                                   message:
-                                                      '${DateFormat('MMMM dd, yyyy').format(day)} for \"${visitEntry.visit.title}\"');
+                                                      '${DateFormat('MMMM dd, yyyy').format(selectedDay)} for \"${visitEntry.book.title}\"');
 
                                           if (!confirm) return;
+
+                                          bool totalLogLimitReached =
+                                              currentLogCount + 1 ==
+                                                  _totalBookProgressAmount;
 
                                           context
                                               .read<StudentDetailsBloc>()
                                               .add(
-                                                CreateVisitLogForStudentEvent(
+                                                CreateBookLogForStudentEvent(
                                                   studentUID: student.uid,
                                                   idOfEntry: visitEntry.id,
-                                                  visitName:
-                                                      visitEntry.visit.title,
-                                                  date: day,
+                                                  date: selectedDay,
+                                                  totalLogLimitReached:
+                                                      totalLogLimitReached,
                                                 ),
                                               );
                                         },
-                                        onVisibleDaysChanged: (DateTime first,
-                                            DateTime last,
-                                            CalendarFormat format) {},
+                                        // onVisibleDaysChanged: (DateTime first,
+                                        //     DateTime last,
+                                        //     CalendarFormat format) {},
                                       ),
                                       SizedBox(
                                         height: 20,
@@ -832,7 +857,11 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
                         padding: EdgeInsets.all(40),
                         child: Text('${state.error.toString()}'),
                       ),
-                      RaisedButton(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: colorOrange,
+                          textStyle: TextStyle(color: Colors.white),
+                        ),
                         child: Text('Leave Page'),
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -853,8 +882,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 
   @override

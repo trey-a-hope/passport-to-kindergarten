@@ -27,7 +27,7 @@ class EntryModel {
   factory EntryModel.fromDocSnapshot({
     @required DocumentSnapshot ds,
   }) {
-    Map<String, dynamic> data = ds.data;
+    Map<String, dynamic> data = ds.data();
 
     return EntryModel(
       id: data['id'],

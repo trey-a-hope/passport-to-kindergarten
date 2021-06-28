@@ -11,25 +11,25 @@ abstract class IStampService {
 
 class StampService extends IStampService {
   final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
 
   @override
   Future<void> createStamp(
       {@required String uid, @required StampModel stamp}) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       final CollectionReference stampsColRef = userDocRef.collection('stamps');
 
-      final DocumentReference stampDocRef = stampsColRef.document();
+      final DocumentReference stampDocRef = stampsColRef.doc();
 
-      stamp.id = stampDocRef.documentID;
+      stamp.id = stampDocRef.id;
 
-      batch.setData(stampDocRef, stamp.toMap());
+      batch.set(stampDocRef, stamp.toMap());
 
-      batch.updateData(userDocRef, {'stampCount': FieldValue.increment(1)});
+      batch.update(userDocRef, {'stampCount': FieldValue.increment(1)});
 
       await batch.commit();
 
@@ -44,12 +44,12 @@ class StampService extends IStampService {
   @override
   Future<List<StampModel>> getStampsForUser({@required String uid}) async {
     try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       final CollectionReference stampColRef = userDocRef.collection('stamps');
 
       final List<DocumentSnapshot> stampDocSnaps =
-          (await stampColRef.getDocuments()).documents;
+          (await stampColRef.get()).docs;
 
       return stampDocSnaps
           .map((stampDocSnap) =>

@@ -17,7 +17,7 @@ class AboutPage extends StatelessWidget {
       body: Container(
         width: screenWidth,
         height: screenHeight,
-        color: COLOR_CREAM,
+        color: colorCream,
         child: SafeArea(
           child: ListView(
             children: [
@@ -29,7 +29,7 @@ class AboutPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: COLOR_NAVY,
+                    color: colorNavy,
                     fontSize: 28,
                   ),
                 ),
@@ -44,7 +44,7 @@ class AboutPage extends StatelessWidget {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                      color: COLOR_NAVY,
+                      color: colorNavy,
                       fontSize: 18,
                     ),
                     children: [
@@ -67,7 +67,7 @@ class AboutPage extends StatelessWidget {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                      color: COLOR_NAVY,
+                      color: colorNavy,
                       fontSize: 18,
                     ),
                     children: [
@@ -98,7 +98,7 @@ class AboutPage extends StatelessWidget {
                       'Passport to Kindergarten supports children and families by:',
                       style: TextStyle(
                         fontSize: 18,
-                        color: COLOR_NAVY,
+                        color: colorNavy,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -112,7 +112,7 @@ class AboutPage extends StatelessWidget {
                           child: Text(
                             '1.',
                             style: TextStyle(
-                              color: COLOR_ORANGE,
+                              color: colorNavy,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -123,7 +123,7 @@ class AboutPage extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontSize: 18,
                               ),
                               children: [
@@ -157,7 +157,7 @@ class AboutPage extends StatelessWidget {
                           child: Text(
                             '2.',
                             style: TextStyle(
-                              color: COLOR_ORANGE,
+                              color: colorOrange,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -168,7 +168,7 @@ class AboutPage extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontSize: 18,
                               ),
                               children: [
@@ -201,7 +201,7 @@ class AboutPage extends StatelessWidget {
                           child: Text(
                             '3.',
                             style: TextStyle(
-                              color: COLOR_ORANGE,
+                              color: colorOrange,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -212,7 +212,7 @@ class AboutPage extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontSize: 18,
                               ),
                               children: [
@@ -241,7 +241,7 @@ class AboutPage extends StatelessWidget {
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
-                  color: COLOR_NAVY,
+                  color: colorNavy,
                 ),
               ),
               Padding(
@@ -254,7 +254,7 @@ class AboutPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: FullWidthButtonWidget(
-                  buttonColor: COLOR_NAVY,
+                  buttonColor: colorNavy,
                   textColor: Colors.white,
                   text: 'Learn More',
                   onPressed: () async {

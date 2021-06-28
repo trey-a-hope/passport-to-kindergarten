@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:p/models/VisitModel.dart';
@@ -16,21 +14,21 @@ abstract class IVisitService {
 }
 
 class VisitService extends IVisitService {
-  final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
+  // final CollectionReference _usersColRef =
+  //     Firestore.instance.collection('Users');
   final CollectionReference _visitsColRef =
-      Firestore.instance.collection('Visits');
-  final CollectionReference _dataColRef = Firestore.instance.collection('Data');
+      FirebaseFirestore.instance.collection('Visits');
+  // final CollectionReference _dataColRef = Firestore.instance.collection('Data');
 
   @override
   Future<void> createVisit({@required VisitModel visit}) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
       //Add new book to books collection.
-      final DocumentReference videoDocRef = _visitsColRef.document();
-      visit.id = videoDocRef.documentID;
-      batch.setData(videoDocRef, visit.toMap());
+      final DocumentReference videoDocRef = _visitsColRef.doc();
+      visit.id = videoDocRef.id;
+      batch.set(videoDocRef, visit.toMap());
 
       await batch.commit();
 
@@ -45,7 +43,7 @@ class VisitService extends IVisitService {
   @override
   Future<VisitModel> retrieveVisit({@required String visitID}) async {
     try {
-      final DocumentReference visitDocRef = _visitsColRef.document(visitID);
+      final DocumentReference visitDocRef = _visitsColRef.doc(visitID);
 
       final DocumentSnapshot visitDocSnapshot = (await visitDocRef.get());
 
@@ -62,8 +60,8 @@ class VisitService extends IVisitService {
   @override
   Future<List<VisitModel>> retrieveVisits() async {
     try {
-      return (await _visitsColRef.getDocuments())
-          .documents
+      return (await _visitsColRef.get())
+          .docs
           .map((doc) => VisitModel.fromDocumentSnapshot(ds: doc))
           .toList();
     } catch (e) {

@@ -1,10 +1,8 @@
 import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/BookModel.dart';
 import 'package:p/models/EntryModel.dart';
 import 'package:p/models/StampModel.dart';
-import 'package:p/models/VisitModel.dart';
 
 class UserModel {
   String email;
@@ -55,25 +53,27 @@ class UserModel {
   });
 
   factory UserModel.fromDocumentSnapshot({@required DocumentSnapshot ds}) {
+    final Map<String, dynamic> data = ds.data();
+
     return UserModel(
-      email: ds.data['email'],
-      imgUrl: ds.data['imgUrl'],
-      fcmToken: ds.data['fcmToken'],
-      created: ds.data['created'].toDate(),
-      uid: ds.data['uid'],
-      firstName: ds.data['firstName'],
-      lastName: ds.data['lastName'],
-      primaryParentFirstName: ds.data['primaryParentFirstName'],
-      primaryParentLastName: ds.data['primaryParentLastName'],
-      secondaryParentFirstName: ds.data['secondaryParentFirstName'],
-      secondaryParentLastName: ds.data['secondaryParentLastName'],
-      profileType: ds.data['profileType'],
-      school: ds.data['school'],
-      teacherID: ds.data['teacherID'],
-      dob: ds.data['dob'].toDate(),
-      bookLogCount: ds.data['bookLogCount'] as int,
-      visitLogCount: ds.data['visitLogCount'] as int,
-      stampCount: ds.data['stampCount'] as int,
+      email: data['email'],
+      imgUrl: data['imgUrl'],
+      fcmToken: data['fcmToken'],
+      created: data['created'].toDate(),
+      uid: data['uid'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      primaryParentFirstName: data['primaryParentFirstName'],
+      primaryParentLastName: data['primaryParentLastName'],
+      secondaryParentFirstName: data['secondaryParentFirstName'],
+      secondaryParentLastName: data['secondaryParentLastName'],
+      profileType: data['profileType'],
+      school: data['school'],
+      teacherID: data['teacherID'],
+      dob: data['dob'].toDate(),
+      bookLogCount: data['bookLogCount'] as int,
+      visitLogCount: data['visitLogCount'] as int,
+      stampCount: data['stampCount'] as int,
     );
   }
 

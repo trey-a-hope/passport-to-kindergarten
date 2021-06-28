@@ -77,7 +77,7 @@ class EditProfilePageState extends State<EditProfilePage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: Form(
                     key: _formKey,
@@ -95,7 +95,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Teacher Info',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -168,7 +168,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
                             text: 'Update',
-                            buttonColor: COLOR_NAVY,
+                            buttonColor: colorNavy,
                             onPressed: () async {
                               if (!_formKey.currentState.validate()) return;
 
@@ -209,7 +209,7 @@ class EditProfilePageState extends State<EditProfilePage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: Form(
                     key: _formKey,
@@ -227,7 +227,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Child Info',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -315,7 +315,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Primary Parent Info',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -365,7 +365,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Secondary Parent Info',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -413,7 +413,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Teacher',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -471,7 +471,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
                             text: 'Update',
-                            buttonColor: COLOR_NAVY,
+                            buttonColor: colorNavy,
                             onPressed: () async {
                               if (!_formKey.currentState.validate()) return;
 
@@ -518,7 +518,7 @@ class EditProfilePageState extends State<EditProfilePage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: Form(
                     key: _formKey,
@@ -536,7 +536,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           child: Text(
                             'Super Admin Info',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: COLOR_NAVY),
+                            style: TextStyle(color: colorNavy),
                           ),
                         ),
                         Padding(
@@ -584,7 +584,7 @@ class EditProfilePageState extends State<EditProfilePage>
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
                             text: 'Update',
-                            buttonColor: COLOR_NAVY,
+                            buttonColor: colorNavy,
                             onPressed: () async {
                               if (!_formKey.currentState.validate()) return;
 
@@ -716,7 +716,7 @@ class EditProfilePageState extends State<EditProfilePage>
   @override
   void showMessage({String message}) {
     locator<ModalService>().showInSnackBar(
-      scaffoldKey: _scaffoldKey,
+      context: context,
       message: message,
     );
   }

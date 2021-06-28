@@ -17,10 +17,11 @@ abstract class IBookService {
 
 class BookService extends IBookService {
   final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
   final CollectionReference _booksColRef =
-      Firestore.instance.collection('Books');
-  final CollectionReference _dataColRef = Firestore.instance.collection('Data');
+      FirebaseFirestore.instance.collection('Books');
+  final CollectionReference _dataColRef =
+      FirebaseFirestore.instance.collection('Data');
 
   @override
   Future<void> createBook({
@@ -28,17 +29,17 @@ class BookService extends IBookService {
     @required BookModel book,
   }) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
       //Add new book to books collection.
-      final DocumentReference bookDocRef = _booksColRef.document();
-      book.id = bookDocRef.documentID;
-      batch.setData(bookDocRef, book.toMap());
+      final DocumentReference bookDocRef = _booksColRef.doc();
+      book.id = bookDocRef.id;
+      batch.set(bookDocRef, book.toMap());
 
       //Add a new entry in the user's profile linking the book to them.
       final DocumentReference entryDocRef =
-          _usersColRef.document(uid).collection('books').document();
-      final String entryID = entryDocRef.documentID;
+          _usersColRef.doc(uid).collection('books').doc();
+      final String entryID = entryDocRef.id;
 
       EntryModel entry = EntryModel(
         id: entryID,
@@ -48,7 +49,7 @@ class BookService extends IBookService {
         logCount: 0,
       );
 
-      batch.setData(entryDocRef, entry.toMap());
+      batch.set(entryDocRef, entry.toMap());
 
       await batch.commit();
 
@@ -63,7 +64,7 @@ class BookService extends IBookService {
   @override
   Future<BookModel> retrieveBook({@required String bookID}) async {
     try {
-      final DocumentReference bookDocRef = _booksColRef.document(bookID);
+      final DocumentReference bookDocRef = _booksColRef.doc(bookID);
 
       final DocumentSnapshot bookDocSnapshot = (await bookDocRef.get());
 
@@ -80,16 +81,18 @@ class BookService extends IBookService {
   @override
   Future<List<BookModel>> retrieveBooksOfTheMonth() async {
     try {
-      final dynamic data =
-          (await _dataColRef.document('books_of_the_month').get()).data['ids'];
+      final Map<String, dynamic> data =
+          (await _dataColRef.doc('books_of_the_month').get()).data();
+
+      final dynamic ids = data['ids'];
 
       final List<String> booksOfTheMonthIDs = [];
 
-      for (dynamic booksOfTheMonthID in data) {
+      for (dynamic booksOfTheMonthID in ids) {
         booksOfTheMonthIDs.add(booksOfTheMonthID);
       }
 
-      List<BookModel> booksOfTheMonth = List<BookModel>();
+      List<BookModel> booksOfTheMonth = [];
 
       for (var i = 0; i < booksOfTheMonthIDs.length; i++) {
         final BookModel bookOfTheMonth =
@@ -110,10 +113,9 @@ class BookService extends IBookService {
   Future<void> updateBook(
       {@required String bookID, @required Map<String, dynamic> data}) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await _booksColRef.document(bookID).get();
+      DocumentSnapshot documentSnapshot = await _booksColRef.doc(bookID).get();
       DocumentReference documentReference = documentSnapshot.reference;
-      await documentReference.updateData(data);
+      await documentReference.update(data);
       return;
     } catch (e) {
       throw Exception(

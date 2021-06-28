@@ -19,13 +19,13 @@ class BookOfTheMonthDetailsPage extends StatefulWidget {
 class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
     implements BookOfTheMonthDetailsDelegate {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  BookOfTheMonthDetailsBloc _bookOfTheMonthDetailsBloc;
+  // BookOfTheMonthDetailsBloc _bookOfTheMonthDetailsBloc;
 
   @override
   void initState() {
-    _bookOfTheMonthDetailsBloc =
-        BlocProvider.of<BookOfTheMonthDetailsBloc>(context);
-    _bookOfTheMonthDetailsBloc.setDelegate(delegate: this);
+    // _bookOfTheMonthDetailsBloc =
+    //     BlocProvider.of<BookOfTheMonthDetailsBloc>(context);
+    // _bookOfTheMonthDetailsBloc.setDelegate(delegate: this);
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
           if (bookOfTheMonth.youtubeUrl != null)
             initialVideoId = getIdFromUrl('${bookOfTheMonth.youtubeUrl}');
 
-          List<Widget> conversationStarters = List<Widget>();
+          List<Widget> conversationStarters = [];
 
           bookOfTheMonth.conversationStarters.forEach(
             (String conversationStarter) {
@@ -73,7 +73,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                         child: Text(
                           '$conversationStarter',
                           style: TextStyle(
-                            color: COLOR_NAVY,
+                            color: colorNavy,
                           ),
                         ),
                       )
@@ -91,7 +91,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: ListView(
                     children: [
@@ -103,7 +103,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                         'This content is provided courtesy of',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: COLOR_NAVY,
+                          color: colorNavy,
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
@@ -126,7 +126,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(
-                            color: COLOR_CREAM,
+                            color: colorCream,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.7),
@@ -165,7 +165,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                           '${bookOfTheMonth.summary}',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: COLOR_NAVY,
+                            color: colorNavy,
                             fontWeight: FontWeight.w400,
                             fontSize: 18,
                           ),
@@ -189,7 +189,7 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
                         child: Text(
                           'Conversation Starters:',
                           style: TextStyle(
-                            color: COLOR_NAVY,
+                            color: colorNavy,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -222,7 +222,6 @@ class BookOfTheMonthDetailsPageState extends State<BookOfTheMonthDetailsPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 }

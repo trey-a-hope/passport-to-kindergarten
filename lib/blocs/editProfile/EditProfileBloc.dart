@@ -54,8 +54,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
         if (_currentUser.profileType == PROFILE_TYPE.PARENT.name) {
           _childDOB = _currentUser.dob;
-          _teacher = _currentUser.teacherID == IDK_TEACHER_MODEL.uid
-              ? IDK_TEACHER_MODEL
+          _teacher = _currentUser.teacherID == idkTeacherModel.uid
+              ? idkTeacherModel
               : await locator<UserService>()
                   .retrieveUser(uid: _currentUser.teacherID);
 
@@ -170,7 +170,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
       try {
         final String imgUrl = await locator<StorageService>().uploadImage(
-            file: image, path: 'Images/Users/${_currentUser.uid}/Profile');
+            file: image, imgPath: 'Images/Users/${_currentUser.uid}/Profile');
 
         await locator<UserService>().updateUser(
           uid: _currentUser.uid,

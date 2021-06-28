@@ -16,9 +16,9 @@ class SpinnerWidget extends StatelessWidget {
         children: [
           GFLoader(
             type: GFLoaderType.circle,
-            loaderColorOne: COLOR_ORANGE,
-            loaderColorTwo: COLOR_NAVY,
-            loaderColorThree: COLOR_YELLOW,
+            loaderColorOne: colorOrange,
+            loaderColorTwo: colorNavy,
+            loaderColorThree: colorYellow,
           ),
           SizedBox(
             height: 20,

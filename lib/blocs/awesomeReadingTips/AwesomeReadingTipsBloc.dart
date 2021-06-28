@@ -14,12 +14,12 @@ class AwesomeReadingTipsBloc
     extends Bloc<AwesomeReadingTipsEvent, AwesomeReadingTipsState> {
   AwesomeReadingTipsBloc() : super(null);
 
-  AwesomeReadingTipsBlocDelegate _awesomeReadingTipsBlocDelegate;
+  // AwesomeReadingTipsBlocDelegate _awesomeReadingTipsBlocDelegate;
   UserModel _currentUser;
 
-  void setDelegate({@required AwesomeReadingTipsBlocDelegate delegate}) {
-    this._awesomeReadingTipsBlocDelegate = delegate;
-  }
+  // void setDelegate({@required AwesomeReadingTipsBlocDelegate delegate}) {
+  //   this._awesomeReadingTipsBlocDelegate = delegate;
+  // }
 
   @override
   Stream<AwesomeReadingTipsState> mapEventToState(

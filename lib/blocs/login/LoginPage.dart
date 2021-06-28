@@ -173,7 +173,7 @@ class LoginPageState extends State<LoginPage>
                         ),
                         Spacer(),
                         FullWidthButtonWidget(
-                          buttonColor: COLOR_ORANGE,
+                          buttonColor: colorOrange,
                           text: 'Login',
                           textColor: Colors.white,
                           onPressed: () {

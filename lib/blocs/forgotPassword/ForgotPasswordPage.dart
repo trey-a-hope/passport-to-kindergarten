@@ -56,7 +56,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: Column(
                     children: [
@@ -91,7 +91,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage>
                       ),
                       Spacer(),
                       FullWidthButtonWidget(
-                        buttonColor: COLOR_NAVY,
+                        buttonColor: colorNavy,
                         text: 'Reset Password',
                         onPressed: () async {
                           if (!_formKey.currentState.validate()) return;
@@ -138,7 +138,6 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 }

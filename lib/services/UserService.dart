@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:p/models/StampModel.dart';
 import 'package:p/models/UserModel.dart';
 
 abstract class IUserService {
@@ -21,20 +20,20 @@ abstract class IUserService {
 
 class UserService extends IUserService {
   final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
   final DocumentReference _tableCountsDocRef =
-      Firestore.instance.collection('Data').document('tableCounts');
+      FirebaseFirestore.instance.collection('Data').doc('tableCounts');
 
   @override
   Future<void> createUser({@required UserModel user}) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
-      DocumentReference userDocRef = _usersColRef.document(user.uid);
+      DocumentReference userDocRef = _usersColRef.doc(user.uid);
 
-      batch.setData(userDocRef, user.toMap());
+      batch.set(userDocRef, user.toMap());
 
-      batch.updateData(_tableCountsDocRef, {
+      batch.update(_tableCountsDocRef, {
         'users': FieldValue.increment(1),
       });
 
@@ -51,8 +50,7 @@ class UserService extends IUserService {
   @override
   Future<UserModel> retrieveUser({@required String uid}) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await _usersColRef.document(uid).get();
+      DocumentSnapshot documentSnapshot = await _usersColRef.doc(uid).get();
       return UserModel.fromDocumentSnapshot(ds: documentSnapshot);
     } catch (e) {
       throw Exception(e.toString());
@@ -63,10 +61,9 @@ class UserService extends IUserService {
   Future<void> updateUser(
       {@required String uid, @required Map<String, dynamic> data}) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await _usersColRef.document(uid).get();
+      DocumentSnapshot documentSnapshot = await _usersColRef.doc(uid).get();
       DocumentReference documentReference = documentSnapshot.reference;
-      await documentReference.updateData(data);
+      await documentReference.update(data);
       return;
     } catch (e) {
       throw Exception(
@@ -93,8 +90,8 @@ class UserService extends IUserService {
         query = query.orderBy(orderBy);
       }
 
-      List<DocumentSnapshot> docs = (await query.getDocuments()).documents;
-      List<UserModel> users = List<UserModel>();
+      List<DocumentSnapshot> docs = (await query.get()).docs;
+      List<UserModel> users = [];
       for (int i = 0; i < docs.length; i++) {
         users.add(
           UserModel.fromDocumentSnapshot(ds: docs[i]),
@@ -114,8 +111,8 @@ class UserService extends IUserService {
       List<UserModel> students = (await _usersColRef
               .orderBy('lastName')
               .where('teacherID', isEqualTo: uid)
-              .getDocuments())
-          .documents
+              .get())
+          .docs
           .map(
             (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
           )
@@ -148,8 +145,8 @@ class UserService extends IUserService {
       List<UserModel> teachers = (await _usersColRef
               .orderBy('lastName')
               .where('profileType', isEqualTo: 'TEACHER')
-              .getDocuments())
-          .documents
+              .get())
+          .docs
           .map(
             (docSnap) => UserModel.fromDocumentSnapshot(ds: docSnap),
           )

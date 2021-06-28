@@ -12,8 +12,6 @@ import 'package:p/services/AuthService.dart';
 import 'package:p/services/BookService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/StampService.dart';
-import 'package:p/services/UserService.dart';
-
 import 'Bloc.dart';
 
 abstract class ReadingLogDelegate {
@@ -71,7 +69,7 @@ class ReadingLogBloc extends Bloc<ReadingLogEvent, ReadingLogState> {
 
         entriesStream.listen(
           (QuerySnapshot event) {
-            List<EntryModel> bookEntries = event.documents
+            List<EntryModel> bookEntries = event.docs
                 .map(
                   (doc) => EntryModel.fromDocSnapshot(ds: doc),
                 )

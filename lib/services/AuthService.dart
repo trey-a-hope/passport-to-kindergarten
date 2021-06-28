@@ -6,30 +6,30 @@ import 'package:p/models/UserModel.dart';
 abstract class IAuthService {
   Future<UserModel> getCurrentUser();
   Future<void> signOut();
-  Stream<FirebaseUser> onAuthStateChanged();
-  Future<AuthResult> signInWithEmailAndPassword(
+  Stream<User> onAuthStateChanged();
+  Future<UserCredential> signInWithEmailAndPassword(
       {@required String email, @required String password});
-  Future<AuthResult> createUserWithEmailAndPassword(
+  Future<UserCredential> createUserWithEmailAndPassword(
       {@required String email, @required String password});
-  Future<void> updatePassword({@required String password});
+  void updatePassword({@required String password});
   Future<void> deleteUser({@required String userID});
   Future<void> resetPassword({@required String email});
 }
 
 class AuthService extends IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference _usersDB = Firestore.instance.collection('Users');
+  final CollectionReference _usersDB =
+      FirebaseFirestore.instance.collection('Users');
 
   @override
   Future<UserModel> getCurrentUser() async {
     try {
-      FirebaseUser firebaseUser = await _auth.currentUser();
-      DocumentSnapshot documentSnapshot =
-          await _usersDB.document(firebaseUser.uid).get();
-      final UserModel user =
+      User user = _auth.currentUser;
+      DocumentSnapshot documentSnapshot = await _usersDB.doc(user.uid).get();
+      final UserModel userModel =
           UserModel.fromDocumentSnapshot(ds: documentSnapshot);
 
-      return user;
+      return userModel;
     } catch (e) {
       throw Exception('Could not fetch user at this time.');
     }
@@ -41,28 +41,28 @@ class AuthService extends IAuthService {
   }
 
   @override
-  Stream<FirebaseUser> onAuthStateChanged() {
-    return _auth.onAuthStateChanged;
+  Stream<User> onAuthStateChanged() {
+    return _auth.authStateChanges();
   }
 
   @override
-  Future<AuthResult> signInWithEmailAndPassword(
+  Future<UserCredential> signInWithEmailAndPassword(
       {@required String email, @required String password}) {
     return _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   @override
-  Future<AuthResult> createUserWithEmailAndPassword(
+  Future<UserCredential> createUserWithEmailAndPassword(
       {@required String email, @required String password}) {
     return _auth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
 
   @override
-  Future<void> updatePassword({String password}) async {
+  void updatePassword({String password}) async {
     try {
-      FirebaseUser firebaseUser = await _auth.currentUser();
-      firebaseUser.updatePassword(password);
+      User user = _auth.currentUser;
+      user.updatePassword(password);
       return;
     } catch (e) {
       throw Exception(
@@ -72,11 +72,11 @@ class AuthService extends IAuthService {
   }
 
   @override
-  Future<void> deleteUser({String userID}) async {
+  Future<void> deleteUser({@required String userID}) async {
     try {
-      FirebaseUser firebaseUser = await _auth.currentUser();
-      await firebaseUser.delete();
-      await _usersDB.document(userID).delete();
+      User user = _auth.currentUser;
+      await user.delete();
+      await _usersDB.doc(userID).delete();
       return;
     } catch (e) {
       throw Exception(

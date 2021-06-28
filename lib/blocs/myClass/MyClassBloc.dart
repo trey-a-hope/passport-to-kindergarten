@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +55,7 @@ class MyClassBloc extends Bloc<MyClassEvent, MyClassState> {
 
         studentsStream.listen(
           (QuerySnapshot event) {
-            List<UserModel> students = event.documents
+            List<UserModel> students = event.docs
                 .map((doc) => UserModel.fromDocumentSnapshot(ds: doc))
                 .toList();
 

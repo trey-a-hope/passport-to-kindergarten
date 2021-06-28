@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/constants.dart';
 import 'package:p/models/UserModel.dart';
 import 'package:p/services/AuthService.dart';
-import 'package:p/services/DummyService.dart';
 import 'package:p/services/StorageService.dart';
 import 'package:p/services/UserService.dart';
 import 'dart:async';
@@ -25,7 +24,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(null);
   SignupBlocDelegate _signupBlocDelegate;
 
-  PROFILE_TYPE _profile_type = PROFILE_TYPE.SUPER_ADMIN;
+  PROFILE_TYPE _profileType = PROFILE_TYPE.SUPER_ADMIN;
   static DateTime now = DateTime.now();
   DateTime _selectedDate = DateTime(now.year - 2);
   File image;
@@ -46,9 +45,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     if (event is ToggleProfileTypeEvent) {
       _signupBlocDelegate.clearForm();
 
-      _profile_type = event.profileType;
+      _profileType = event.profileType;
 
-      switch (_profile_type) {
+      switch (_profileType) {
         case PROFILE_TYPE.TEACHER:
           yield TeacherState();
           break;
@@ -83,20 +82,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       try {
         yield SigningIn();
 
-        AuthResult authResult =
+        UserCredential userCredential =
             await locator<AuthService>().createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        final FirebaseUser firebaseUser = authResult.user;
+        final User user = userCredential.user;
 
         newTeacher = UserModel(
           imgUrl: DUMMY_PROFILE_PHOTO_URL,
           email: email,
           fcmToken: null,
           created: DateTime.now(),
-          uid: firebaseUser.uid,
+          uid: user.uid,
           firstName: firstName,
           lastName: lastName,
           profileType: PROFILE_TYPE.TEACHER.name,
@@ -138,20 +137,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       try {
         yield SigningIn();
 
-        AuthResult authResult =
+        UserCredential userCredential =
             await locator<AuthService>().createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        final String firebaseUserUID = authResult.user.uid;
+        final String firebaseUserUID = userCredential.user.uid;
 
         String imgUrl;
         if (image == null) {
           imgUrl = DUMMY_PROFILE_PHOTO_URL;
         } else {
           imgUrl = await locator<StorageService>().uploadImage(
-              file: image, path: 'Images/Users/$firebaseUserUID/Profile');
+              file: image, imgPath: 'Images/Users/$firebaseUserUID/Profile');
         }
 
         newParent = UserModel(
@@ -204,20 +203,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       try {
         yield SigningIn();
 
-        AuthResult authResult =
+        UserCredential userCredential =
             await locator<AuthService>().createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        final String firebaseUserUID = authResult.user.uid;
+        final String userUID = userCredential.user.uid;
 
         newSuperAdmin = UserModel(
           imgUrl: DUMMY_PROFILE_PHOTO_URL,
           email: email,
           fcmToken: null,
           created: DateTime.now(),
-          uid: firebaseUserUID,
+          uid: userUID,
           firstName: firstName,
           lastName: lastName,
           profileType: PROFILE_TYPE.SUPER_ADMIN.name,

@@ -41,7 +41,7 @@ abstract class ILogService {
 
 class LogService extends ILogService {
   final CollectionReference _usersColRef =
-      Firestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
 
   @override
   Future<void> createLog({
@@ -51,32 +51,30 @@ class LogService extends ILogService {
     @required LogModel log,
   }) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       final DocumentReference entryDocRef =
-          userDocRef.collection(collection).document(idOfEntry);
+          userDocRef.collection(collection).doc(idOfEntry);
 
-      final DocumentReference logDocRef =
-          entryDocRef.collection('logs').document();
+      final DocumentReference logDocRef = entryDocRef.collection('logs').doc();
 
-      log.id = logDocRef.documentID;
+      log.id = logDocRef.id;
 
-      batch.setData(logDocRef, log.toMap());
+      batch.set(logDocRef, log.toMap());
 
-      batch.updateData(entryDocRef, {
+      batch.update(entryDocRef, {
         'logCount': FieldValue.increment(1),
         'modified': DateTime.now(),
       });
 
       if (collection == 'books') {
-        batch.updateData(userDocRef, {'bookLogCount': FieldValue.increment(1)});
+        batch.update(userDocRef, {'bookLogCount': FieldValue.increment(1)});
       } else if (collection == 'visits') {
-        batch
-            .updateData(userDocRef, {'visitLogCount': FieldValue.increment(1)});
+        batch.update(userDocRef, {'visitLogCount': FieldValue.increment(1)});
       } else if (collection == 'stamps') {
-        batch.updateData(userDocRef, {'stampCount': FieldValue.increment(1)});
+        batch.update(userDocRef, {'stampCount': FieldValue.increment(1)});
       }
 
       await batch.commit();
@@ -96,14 +94,14 @@ class LogService extends ILogService {
     @required String idOfEntry,
   }) async {
     try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       List<DocumentSnapshot> logDocSnaps = (await userDocRef
               .collection(type)
-              .document(idOfEntry)
+              .doc(idOfEntry)
               .collection('logs')
-              .getDocuments())
-          .documents;
+              .get())
+          .docs;
 
       return logDocSnaps
           .map((logDocSnap) => LogModel.fromDocumentSnapshot(ds: logDocSnap))
@@ -122,11 +120,11 @@ class LogService extends ILogService {
     @required String documentID,
   }) async {
     try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       Stream<QuerySnapshot> logQueryStream = userDocRef
           .collection(collection)
-          .document(documentID)
+          .doc(documentID)
           .collection('logs')
           .snapshots();
 
@@ -142,10 +140,10 @@ class LogService extends ILogService {
   Future<List<EntryModel>> retrieveEntries(
       {@required String uid, @required String type}) async {
     try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       List<DocumentSnapshot> entryDocSnaps =
-          (await userDocRef.collection(type).getDocuments()).documents;
+          (await userDocRef.collection(type).get()).docs;
 
       List<EntryModel> entries = entryDocSnaps
           .map(
@@ -165,7 +163,7 @@ class LogService extends ILogService {
   Future<Stream<QuerySnapshot>> streamEntries(
       {@required String uid, @required String type}) async {
     try {
-      final DocumentReference userDocRef = _usersColRef.document(uid);
+      final DocumentReference userDocRef = _usersColRef.doc(uid);
 
       Stream<QuerySnapshot> entriesQueryStream =
           userDocRef.collection(type).snapshots();
@@ -185,13 +183,13 @@ class LogService extends ILogService {
     @required EntryModel entry,
   }) async {
     try {
-      final WriteBatch batch = Firestore.instance.batch();
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
 
       final DocumentReference entryDocRef =
-          _usersColRef.document(uid).collection(type).document();
-      entry.id = entryDocRef.documentID;
+          _usersColRef.doc(uid).collection(type).doc();
+      entry.id = entryDocRef.id;
 
-      batch.setData(entryDocRef, entry.toMap());
+      batch.set(entryDocRef, entry.toMap());
 
       await batch.commit();
 

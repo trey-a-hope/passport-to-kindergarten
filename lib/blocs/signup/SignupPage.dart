@@ -75,11 +75,11 @@ class SignupPageState extends State<SignupPage>
   }
 
   Widget _buttonRowWidget({
-    @required PROFILE_TYPE profile_type,
+    @required PROFILE_TYPE profileType,
   }) {
-    bool isTeacher = profile_type.name == PROFILE_TYPE.TEACHER.name;
-    bool isParent = profile_type.name == PROFILE_TYPE.PARENT.name;
-    bool isSuperAdmin = profile_type.name == PROFILE_TYPE.SUPER_ADMIN.name;
+    bool isTeacher = profileType.name == PROFILE_TYPE.TEACHER.name;
+    bool isParent = profileType.name == PROFILE_TYPE.PARENT.name;
+    bool isSuperAdmin = profileType.name == PROFILE_TYPE.SUPER_ADMIN.name;
 
     return Column(
       children: [
@@ -97,7 +97,7 @@ class SignupPageState extends State<SignupPage>
                     fontWeight: FontWeight.bold,
                   ),
                   textColor: Colors.white,
-                  color: COLOR_ORANGE,
+                  color: colorOrange,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(profileType: PROFILE_TYPE.TEACHER),
@@ -117,7 +117,7 @@ class SignupPageState extends State<SignupPage>
                     fontWeight: FontWeight.bold,
                   ),
                   textColor: Colors.white,
-                  color: COLOR_ORANGE,
+                  color: colorOrange,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(profileType: PROFILE_TYPE.PARENT),
@@ -137,7 +137,7 @@ class SignupPageState extends State<SignupPage>
                     fontWeight: FontWeight.bold,
                   ),
                   textColor: Colors.white,
-                  color: COLOR_ORANGE,
+                  color: colorOrange,
                   onPressed: () {
                     _signupBloc.add(
                       ToggleProfileTypeEvent(
@@ -200,7 +200,7 @@ class SignupPageState extends State<SignupPage>
                             ],
                           ),
                         ),
-                        _buttonRowWidget(profile_type: PROFILE_TYPE.TEACHER),
+                        _buttonRowWidget(profileType: PROFILE_TYPE.TEACHER),
                         Text(
                           'Teacher Info',
                           textAlign: TextAlign.center,
@@ -388,7 +388,7 @@ class SignupPageState extends State<SignupPage>
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
-                            buttonColor: COLOR_ORANGE,
+                            buttonColor: colorOrange,
                             text: 'Sign Up',
                             textColor: Colors.white,
                             onPressed: () async {
@@ -471,7 +471,7 @@ class SignupPageState extends State<SignupPage>
                             ],
                           ),
                         ),
-                        _buttonRowWidget(profile_type: PROFILE_TYPE.PARENT),
+                        _buttonRowWidget(profileType: PROFILE_TYPE.PARENT),
                         Text(
                           'Child Info',
                           textAlign: TextAlign.center,
@@ -914,8 +914,11 @@ class SignupPageState extends State<SignupPage>
                             SizedBox(
                               width: 10,
                             ),
-                            RaisedButton(
-                              color: COLOR_ORANGE,
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: colorOrange,
+                                textStyle: TextStyle(color: Colors.white),
+                              ),
                               onPressed: () {
                                 showSelectImageDialog();
                               },
@@ -932,7 +935,7 @@ class SignupPageState extends State<SignupPage>
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
-                            buttonColor: COLOR_ORANGE,
+                            buttonColor: colorOrange,
                             text: 'Sign Up',
                             textColor: Colors.white,
                             onPressed: () async {
@@ -1012,8 +1015,7 @@ class SignupPageState extends State<SignupPage>
                             ],
                           ),
                         ),
-                        _buttonRowWidget(
-                            profile_type: PROFILE_TYPE.SUPER_ADMIN),
+                        _buttonRowWidget(profileType: PROFILE_TYPE.SUPER_ADMIN),
                         Text(
                           'Super Admin Info',
                           textAlign: TextAlign.center,
@@ -1203,7 +1205,7 @@ class SignupPageState extends State<SignupPage>
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: FullWidthButtonWidget(
-                            buttonColor: COLOR_ORANGE,
+                            buttonColor: colorOrange,
                             text: 'Sign Up',
                             textColor: Colors.white,
                             onPressed: () async {

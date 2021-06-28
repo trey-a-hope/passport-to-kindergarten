@@ -17,15 +17,15 @@ abstract class MyPassportBlocDelegate {
 
 class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
   MyPassportBloc() : super(null);
-  MyPassportBlocDelegate _myPassportBlocDelegate;
+  // MyPassportBlocDelegate _myPassportBlocDelegate;
   UserModel _child;
   UserModel _teacher;
 
-  void setDelegate({
-    @required MyPassportBlocDelegate delegate,
-  }) {
-    this._myPassportBlocDelegate = delegate;
-  }
+  // void setDelegate({
+  //   @required MyPassportBlocDelegate delegate,
+  // }) {
+  //   this._myPassportBlocDelegate = delegate;
+  // }
 
   @override
   Stream<MyPassportState> mapEventToState(MyPassportEvent event) async* {
@@ -35,8 +35,8 @@ class MyPassportBloc extends Bloc<MyPassportEvent, MyPassportState> {
       try {
         _child = await locator<AuthService>().getCurrentUser();
 
-        if (_child.teacherID == '${IDK_TEACHER_MODEL.uid}') {
-          _teacher = IDK_TEACHER_MODEL;
+        if (_child.teacherID == '${idkTeacherModel.uid}') {
+          _teacher = idkTeacherModel;
         } else {
           _teacher =
               await locator<UserService>().retrieveUser(uid: _child.teacherID);

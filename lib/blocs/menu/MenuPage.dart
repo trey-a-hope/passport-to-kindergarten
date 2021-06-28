@@ -621,16 +621,18 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
         if (state is ErrorState) {
           return Scaffold(
-            backgroundColor: COLOR_CREAM,
+            backgroundColor: colorCream,
             body: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(state.error.toString()),
-                  RaisedButton(
-                    color: COLOR_ORANGE,
-                    textColor: Colors.white,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: colorOrange,
+                      textStyle: TextStyle(color: Colors.white),
+                    ),
                     child: Text('Refresh Page'),
                     onPressed: () {
                       _menuBloc.add(
@@ -650,19 +652,19 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
   }
 
   List<TargetFocus> _buildTargetFocusPoints(
-      {@required PROFILE_TYPE profile_type}) {
-    bool isTeacher = profile_type.name == PROFILE_TYPE.TEACHER.name;
-    bool isParent = profile_type.name == PROFILE_TYPE.PARENT.name;
-    bool isSuperAdmin = profile_type.name == PROFILE_TYPE.SUPER_ADMIN.name;
+      {@required PROFILE_TYPE profileType}) {
+    bool isTeacher = profileType.name == PROFILE_TYPE.TEACHER.name;
+    bool isParent = profileType.name == PROFILE_TYPE.PARENT.name;
+    bool isSuperAdmin = profileType.name == PROFILE_TYPE.SUPER_ADMIN.name;
 
-    List<TargetFocus> targetFocusPoints = List<TargetFocus>();
+    List<TargetFocus> targetFocusPoints = [];
 
     final TargetFocus myClassFocus = TargetFocus(
       enableOverlayTab: true,
       keyTarget: myClassGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -693,8 +695,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: exploreBookOfTheMonthGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -725,8 +727,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: awesomeReadingTipsGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -757,8 +759,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: editProfileGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -789,8 +791,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: aboutGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -821,8 +823,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: myPassportGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -853,8 +855,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: logReadingGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -884,8 +886,8 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       enableOverlayTab: true,
       keyTarget: logVisitGlobalKey,
       contents: [
-        ContentTarget(
-          align: AlignContent.bottom,
+        TargetContent(
+          align: ContentAlign.bottom,
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -939,19 +941,21 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return targetFocusPoints;
   }
 
-  void _showTutorial({@required PROFILE_TYPE profile_type}) async {
+  void _showTutorial({@required PROFILE_TYPE profileType}) async {
     final List<TargetFocus> targets =
-        _buildTargetFocusPoints(profile_type: profile_type);
+        _buildTargetFocusPoints(profileType: profileType);
 
-    TutorialCoachMark tutorial = TutorialCoachMark(context,
-        targets: targets, // List<TargetFocus>
-        colorShadow: Colors.black, onFinish: () {
-      print("finish");
-    }, onClickTarget: (target) {
-      print(target);
-    }, onClickSkip: () {
-      print("skip");
-    });
+    TutorialCoachMark tutorial = TutorialCoachMark(
+      context,
+      targets: targets, // List<TargetFocus>
+      colorShadow: Colors.black,
+      onFinish: () {
+        print("finish");
+      },
+      onClickTarget: (target) {
+        print(target);
+      },
+    );
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
@@ -964,12 +968,11 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 
   @override
-  void showTutorial({PROFILE_TYPE profile_type}) {
-    _showTutorial(profile_type: profile_type);
+  void showTutorial({PROFILE_TYPE profileType}) {
+    _showTutorial(profileType: profileType);
   }
 }

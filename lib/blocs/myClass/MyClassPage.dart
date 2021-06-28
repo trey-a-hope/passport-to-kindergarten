@@ -23,7 +23,7 @@ class MyClassPageState extends State<MyClassPage>
   final TextEditingController _titleConController = TextEditingController();
   final TextEditingController _authorConController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CalendarController _calendarController = CalendarController();
+  // CalendarController _calendarController = CalendarController();
   MyClassBloc _myClassBloc;
 
   @override
@@ -35,7 +35,7 @@ class MyClassPageState extends State<MyClassPage>
 
   @override
   void dispose() {
-    _calendarController.dispose();
+    // _calendarController.dispose();
     super.dispose();
   }
 
@@ -64,7 +64,7 @@ class MyClassPageState extends State<MyClassPage>
           return Scaffold(
             key: _scaffoldKey,
             floatingActionButton: FloatingActionButton(
-              backgroundColor: COLOR_NAVY,
+              backgroundColor: colorNavy,
               child: Icon(Icons.note),
               onPressed: () async {
                 final bool confirm =
@@ -85,7 +85,7 @@ class MyClassPageState extends State<MyClassPage>
               child: Container(
                 width: screenWidth,
                 height: screenHeight,
-                color: COLOR_CREAM,
+                color: colorCream,
                 child: SafeArea(
                   child: ListView(
                     shrinkWrap: true,
@@ -99,7 +99,7 @@ class MyClassPageState extends State<MyClassPage>
                               'Tap a student\'s  name to see a list of their Passport stamps and to log reading or partner visits.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: COLOR_NAVY,
+                                color: colorNavy,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
@@ -118,7 +118,7 @@ class MyClassPageState extends State<MyClassPage>
                                   '${currentUser.firstName} ${currentUser.lastName}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: COLOR_NAVY),
+                                      color: colorNavy),
                                 ),
                               ],
                             ),
@@ -170,7 +170,7 @@ class MyClassPageState extends State<MyClassPage>
 
         if (state is ErrorState) {
           return Scaffold(
-            backgroundColor: COLOR_CREAM,
+            backgroundColor: colorCream,
             body: Center(
               child: Text(
                 state.error.toString(),
@@ -186,8 +186,7 @@ class MyClassPageState extends State<MyClassPage>
 
   @override
   void showMessage({String message}) {
-    locator<ModalService>()
-        .showInSnackBar(scaffoldKey: _scaffoldKey, message: message);
+    locator<ModalService>().showInSnackBar(context: context, message: message);
   }
 
   @override

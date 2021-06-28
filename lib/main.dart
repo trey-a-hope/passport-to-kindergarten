@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:crashlytics/crashlytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,14 +21,14 @@ PackageInfo packageInfo;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   setUpLocater();
 
   analytics = FirebaseAnalytics();
   packageInfo = await PackageInfo.fromPlatform();
 
-  Crashlytics.instance.enableInDevMode = true;
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  Crashlytics.setup();
 
   version = packageInfo.version;
   buildNumber = packageInfo.buildNumber;
@@ -61,12 +62,12 @@ class MyApp extends StatelessWidget {
         nextScreen: StreamBuilder(
           stream: locator<AuthService>().onAuthStateChanged(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            final FirebaseUser firebaseUser = snapshot.data;
+            final User user = snapshot.data;
 
             screenWidth = MediaQuery.of(context).size.width;
             screenHeight = MediaQuery.of(context).size.height;
 
-            return firebaseUser == null
+            return user == null
                 ? BlocProvider(
                     create: (BuildContext context) =>
                         LOGIN_BP.LoginBloc()..add(LOGIN_BP.LoadPageEvent()),

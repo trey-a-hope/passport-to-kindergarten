@@ -1,8 +1,5 @@
 import 'package:p/extensions/HexColorExtension.dart';
 import 'models/UserModel.dart';
-import 'models/VisitModel.dart';
-
-
 
 //Icons
 const String ASSET_directions_icon = 'assets/images/directions_icon.png';
@@ -37,16 +34,25 @@ const String ASSET_p2k20_app_dotted_line =
 const String ASSET_success_message_background =
     'assets/images/success_message_background.png';
 
-const String STAMP_BOONSHOFT = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fboonshoft.png?alt=media&token=fd342060-9b10-4b81-88eb-7340cb139ffb';
-const String STAMP_DAYTON_ART_INSTITUE = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fdayton_art_institute.png?alt=media&token=1d1818bc-d02f-4eb2-ad7a-ceb85de1e589';
-const String STAMP_DAYTON_METRO_LIBRARY = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fdayton_metro_library.png?alt=media&token=36c8ad0a-b3c0-4824-b385-d917e8ff5007';
-const String STAMP_FIVE_RIVERS_METROPARKS = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Ffive_rivers_metro_park.png?alt=media&token=ad4d96b7-09a6-4c43-b456-817d0ecde138';
-const String STAMP_15_BOOKS_READ = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2F15_books_read.png?alt=media&token=9f225e2c-f15f-4505-ab03-fec3ba26c2dc';
+const String STAMP_BOONSHOFT =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fboonshoft.png?alt=media&token=fd342060-9b10-4b81-88eb-7340cb139ffb';
+const String STAMP_DAYTON_ART_INSTITUE =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fdayton_art_institute.png?alt=media&token=1d1818bc-d02f-4eb2-ad7a-ceb85de1e589';
+const String STAMP_DAYTON_METRO_LIBRARY =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Fdayton_metro_library.png?alt=media&token=36c8ad0a-b3c0-4824-b385-d917e8ff5007';
+const String STAMP_FIVE_RIVERS_METROPARKS =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2Ffive_rivers_metro_park.png?alt=media&token=ad4d96b7-09a6-4c43-b456-817d0ecde138';
+const String STAMP_15_BOOKS_READ =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FStamps%2F15_books_read.png?alt=media&token=9f225e2c-f15f-4505-ab03-fec3ba26c2dc';
 
-const String LOGO_BOONSHOFT = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fboonshoft_logo.png?alt=media&token=f0d0ed23-c108-4fc0-a3dd-191939f4042d';
-const String LOGO_DAYTON_ART_INSTITUTE = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fdayton_art_institute_logo.png?alt=media&token=34625dc5-f3fa-4d9e-927b-1fb27bb3a2da';
-const String LOGO_DAYTON_METRO_LIBRARY = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fdayton_metro_library_logo.png?alt=media&token=980f60fb-e5f5-4c4f-8ee1-08accb811a36';
-const String LOGO_FIVE_RIVERS_METROPARKS = 'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Ffive_rivers_metroparks_logo.png?alt=media&token=2ba8c9b1-9df2-4547-acfb-88c88965a1c9';
+const String LOGO_BOONSHOFT =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fboonshoft_logo.png?alt=media&token=f0d0ed23-c108-4fc0-a3dd-191939f4042d';
+const String LOGO_DAYTON_ART_INSTITUTE =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fdayton_art_institute_logo.png?alt=media&token=34625dc5-f3fa-4d9e-927b-1fb27bb3a2da';
+const String LOGO_DAYTON_METRO_LIBRARY =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Fdayton_metro_library_logo.png?alt=media&token=980f60fb-e5f5-4c4f-8ee1-08accb811a36';
+const String LOGO_FIVE_RIVERS_METROPARKS =
+    'https://firebasestorage.googleapis.com/v0/b/passport-to-kindergarten.appspot.com/o/Images%2FVisits%2Ffive_rivers_metroparks_logo.png?alt=media&token=2ba8c9b1-9df2-4547-acfb-88c88965a1c9';
 
 //OTHER
 const String DUMMY_PROFILE_PHOTO_URL =
@@ -56,11 +62,11 @@ const String DUMMY_PROFILE_PHOTO_URL =
 const String COMPANY_EMAIL = 'passport@preschoolpromise.org';
 
 //COLORS
-final HexColorExtension COLOR_CREAM = HexColorExtension('#fff8ec');
-final HexColorExtension COLOR_DARK_CREAM = HexColorExtension('#ffe3b9');
-final HexColorExtension COLOR_ORANGE = HexColorExtension('#f4692f');
-final HexColorExtension COLOR_NAVY = HexColorExtension('#09487e');
-final HexColorExtension COLOR_YELLOW = HexColorExtension('#ffbc5a');
+final HexColorExtension colorCream = HexColorExtension('#fff8ec');
+final HexColorExtension colorDarkCream = HexColorExtension('#ffe3b9');
+final HexColorExtension colorOrange = HexColorExtension('#f4692f');
+final HexColorExtension colorNavy = HexColorExtension('#09487e');
+final HexColorExtension colorYellow = HexColorExtension('#ffbc5a');
 
 //KEYS
 const String ALGOLIA_APP_ID = 'UO39GB988T';
@@ -93,7 +99,7 @@ enum APP_PAGES {
   AWESOME_READING_TIPS
 }
 
-UserModel IDK_TEACHER_MODEL = UserModel(
+UserModel idkTeacherModel = UserModel(
   created: DateTime.now(),
   imgUrl: DUMMY_PROFILE_PHOTO_URL,
   lastName: 'I do not know the teacher',

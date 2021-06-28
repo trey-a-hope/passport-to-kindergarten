@@ -11,7 +11,6 @@ import 'package:p/models/VisitModel.dart';
 import 'package:p/services/AuthService.dart';
 import 'package:p/services/LogService.dart';
 import 'package:p/services/StampService.dart';
-import 'package:p/services/UserService.dart';
 import 'package:p/services/VisitService.dart';
 
 import 'Bloc.dart';
@@ -70,7 +69,7 @@ class VisitingLogBloc extends Bloc<VisitingLogEvent, VisitingLogState> {
 
         entriesStream.listen(
           (QuerySnapshot event) {
-            List<EntryModel> visitEntries = event.documents
+            List<EntryModel> visitEntries = event.docs
                 .map(
                   (doc) => EntryModel.fromDocSnapshot(ds: doc),
                 )
