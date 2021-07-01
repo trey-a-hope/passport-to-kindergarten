@@ -256,6 +256,39 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                     outsideDaysVisible: false,
                                   ),
                                   calendarBuilders: CalendarBuilders(
+                                    markerBuilder: (context, day, events) {
+                                      final children = <Widget>[];
+
+                                      if (events.isNotEmpty) {
+                                        children.add(
+                                          Center(
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                    height: 50, width: 50),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: colorNavy,
+                                                    child: Text(
+                                                      '${events.length}',
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    radius: 10,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      return children[0];
+                                    },
                                     dowBuilder: (context, day) {
                                       // final children = <Widget>[];
 

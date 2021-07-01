@@ -277,8 +277,10 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                 availableCalendarFormats: const {
                                   CalendarFormat.month: 'Month'
                                 },
-                                eventLoader: (day) => bookEntry.logEvents[day],
+                                eventLoader: (day) =>
+                                    bookEntry.logEvents[day] ?? [],
                                 //TODO: Complete this calendar.
+
                                 // calendarController: _calendarController,
                                 // events: bookEntry.logEvents,
                                 startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -290,6 +292,34 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                   outsideDaysVisible: false,
                                 ),
                                 calendarBuilders: CalendarBuilders(
+                                  markerBuilder: (context, day, events) {
+                                    if (events.isNotEmpty) {
+                                      return Center(
+                                        child: Stack(
+                                          children: [
+                                            Container(height: 50, width: 50),
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              child: CircleAvatar(
+                                                backgroundColor: colorNavy,
+                                                child: Text(
+                                                  '${events.length}',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                radius: 10,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
                                   dowBuilder: (context, day) {
                                     // final children = <Widget>[];
 
