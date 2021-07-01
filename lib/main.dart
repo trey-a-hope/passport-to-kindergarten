@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:crashlytics/crashlytics.dart';
+// import 'package:crashlytics/crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +28,7 @@ void main() async {
   analytics = FirebaseAnalytics();
   packageInfo = await PackageInfo.fromPlatform();
 
-  Crashlytics.setup();
+  // Crashlytics.setup();
 
   version = packageInfo.version;
   buildNumber = packageInfo.buildNumber;

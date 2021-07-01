@@ -439,6 +439,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
                       aboutListTile(),
+                      settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
@@ -522,6 +523,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
                       aboutListTile(),
+                      settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,
@@ -603,6 +605,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
                       awesomeReadingTipsListTile(),
                       editProfileListTile(),
                       aboutListTile(),
+                      settingsListTile(),
                       logOutListTile(),
                       SizedBox(
                         height: _menuBottomPadding,

@@ -61,6 +61,9 @@ const String DUMMY_PROFILE_PHOTO_URL =
 //Phone & Email
 const String COMPANY_EMAIL = 'passport@preschoolpromise.org';
 
+const String PRIVACY_POLICY_URL =
+    'https://drive.google.com/file/d/1jnEsgbh_7sSFHEvdYdEF54QSbPDTUysS/view?usp=sharing';
+
 //COLORS
 final HexColorExtension colorCream = HexColorExtension('#fff8ec');
 final HexColorExtension colorDarkCream = HexColorExtension('#ffe3b9');

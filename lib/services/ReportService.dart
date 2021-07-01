@@ -26,7 +26,7 @@ class ReportService extends IReportService {
   Future<void> emailReport({
     @required Excel excel,
   }) async {
-    final List<int> encoded = await excel.encode();
+    final List<int> encoded = excel.encode();
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
 
