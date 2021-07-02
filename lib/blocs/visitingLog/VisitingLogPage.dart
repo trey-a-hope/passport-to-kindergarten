@@ -248,88 +248,45 @@ class VisitingLogPageState extends State<VisitingLogPage>
                                   lastDay: DateTime.now().add(
                                     Duration(days: 365),
                                   ),
-                                  // calendarController: _calendarController,
-                                  eventLoader: (day) =>
-                                      visitEntry.logEvents[day],
+                                  eventLoader: (day) {
+                                    DateTime dayKey = DateTime(
+                                      day.year,
+                                      day.month,
+                                      day.day,
+                                    );
+                                    return visitEntry.logEvents[dayKey] ?? [];
+                                  },
                                   startingDayOfWeek: StartingDayOfWeek.sunday,
                                   calendarStyle: CalendarStyle(
                                     outsideDaysVisible: false,
                                   ),
                                   calendarBuilders: CalendarBuilders(
                                     markerBuilder: (context, day, events) {
-                                      final children = <Widget>[];
-
                                       if (events.isNotEmpty) {
-                                        children.add(
-                                          Center(
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                    height: 50, width: 50),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  child: CircleAvatar(
-                                                    backgroundColor: colorNavy,
-                                                    child: Text(
-                                                      '${events.length}',
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    radius: 10,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                      return children[0];
-                                    },
-                                    dowBuilder: (context, day) {
-                                      // final children = <Widget>[];
-
-                                      // if (events.isNotEmpty) {
-                                      //   children.add(
-                                      //     Center(
-                                      //       child: Stack(
-                                      //         children: [
-                                      //           Container(height: 50, width: 50),
-                                      //           Positioned(
-                                      //             bottom: 0,
-                                      //             right: 0,
-                                      //             child: CircleAvatar(
-                                      //               backgroundColor: colorNavy,
-                                      //               child: Text(
-                                      //                 '${events.length}',
-                                      //                 style: TextStyle(
-                                      //                   fontSize: 10,
-                                      //                   color: Colors.white,
-                                      //                 ),
-                                      //               ),
-                                      //               radius: 10,
-                                      //             ),
-                                      //           )
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //   );
-                                      // }
-
-                                      // return children;
-
-                                      if (day.weekday == DateTime.sunday) {
-                                        final text = DateFormat.E().format(day);
-
                                         return Center(
-                                          child: Text(
-                                            text,
-                                            style: TextStyle(color: Colors.red),
+                                          child: Stack(
+                                            children: [
+                                              Container(height: 50, width: 50),
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: CircleAvatar(
+                                                  backgroundColor: colorNavy,
+                                                  child: Text(
+                                                    '${events.length}',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  radius: 10,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         );
+                                      } else {
+                                        return Container();
                                       }
                                     },
                                   ),

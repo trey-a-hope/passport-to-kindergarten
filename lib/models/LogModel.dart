@@ -22,6 +22,9 @@ class LogModel {
   }
 
   Map<String, dynamic> toMap() {
+    //Add 12 hours to date to prevent UTC issues when saving to database, (it subtracts 4 hours from 12am, giving the wrong date)
+    created = created.add(Duration(hours: 12));
+
     return {
       'id': id,
       'created': created,

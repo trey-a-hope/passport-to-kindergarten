@@ -277,18 +277,18 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                 availableCalendarFormats: const {
                                   CalendarFormat.month: 'Month'
                                 },
-                                eventLoader: (day) =>
-                                    bookEntry.logEvents[day] ?? [],
-                                //TODO: Complete this calendar.
+                                eventLoader: (day) {
+                                  DateTime dayKey = DateTime(
+                                    day.year,
+                                    day.month,
+                                    day.day,
+                                  );
 
-                                // calendarController: _calendarController,
-                                // events: bookEntry.logEvents,
+                                  return bookEntry.logEvents[dayKey] ?? [];
+                                },
                                 startingDayOfWeek: StartingDayOfWeek.sunday,
                                 focusedDay: DateTime.now(),
                                 calendarStyle: CalendarStyle(
-                                  // selectedColor: Colors.deepOrange[400],
-                                  // todayColor: Colors.deepOrange[200],
-                                  // markersColor: Colors.black,
                                   outsideDaysVisible: false,
                                 ),
                                 calendarBuilders: CalendarBuilders(
@@ -318,49 +318,6 @@ class ReadingLogPageState extends State<ReadingLogPage>
                                       );
                                     } else {
                                       return Container();
-                                    }
-                                  },
-                                  dowBuilder: (context, day) {
-                                    // final children = <Widget>[];
-
-                                    // if (events.isNotEmpty) {
-                                    //   children.add(
-                                    //     Center(
-                                    //       child: Stack(
-                                    //         children: [
-                                    //           Container(height: 50, width: 50),
-                                    //           Positioned(
-                                    //             bottom: 0,
-                                    //             right: 0,
-                                    //             child: CircleAvatar(
-                                    //               backgroundColor: colorNavy,
-                                    //               child: Text(
-                                    //                 '${events.length}',
-                                    //                 style: TextStyle(
-                                    //                   fontSize: 10,
-                                    //                   color: Colors.white,
-                                    //                 ),
-                                    //               ),
-                                    //               radius: 10,
-                                    //             ),
-                                    //           )
-                                    //         ],
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // }
-
-                                    // return children;
-
-                                    if (day.weekday == DateTime.sunday) {
-                                      final text = DateFormat.E().format(day);
-
-                                      return Center(
-                                        child: Text(
-                                          text,
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      );
                                     }
                                   },
                                 ),
