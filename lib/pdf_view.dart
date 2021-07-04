@@ -45,6 +45,7 @@ class _PDFViewState extends State<PDFView> {
         height: screenHeight,
         color: Colors.grey.shade200,
         child: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               AppBarWidget(title: widget.appBarTitle),
