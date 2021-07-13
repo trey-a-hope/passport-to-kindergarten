@@ -32,14 +32,15 @@ class MenuPage extends StatefulWidget {
 }
 
 class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
-  static GlobalKey myClassGlobalKey = GlobalKey();
-  static GlobalKey exploreBookOfTheMonthGlobalKey = GlobalKey();
-  static GlobalKey awesomeReadingTipsGlobalKey = GlobalKey();
-  static GlobalKey editProfileGlobalKey = GlobalKey();
-  static GlobalKey aboutGlobalKey = GlobalKey();
   static GlobalKey myPassportGlobalKey = GlobalKey();
   static GlobalKey logReadingGlobalKey = GlobalKey();
   static GlobalKey logVisitGlobalKey = GlobalKey();
+  static GlobalKey exploreBookOfTheMonthGlobalKey = GlobalKey();
+  static GlobalKey awesomeReadingTipsGlobalKey = GlobalKey();
+  static GlobalKey myClassGlobalKey = GlobalKey();
+  static GlobalKey editProfileGlobalKey = GlobalKey();
+  static GlobalKey aboutGlobalKey = GlobalKey();
+  static GlobalKey settingsGlobalKey = GlobalKey();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _menuBottomPadding = 50;
@@ -288,6 +289,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
     return ListTile(
       leading: Image.asset(
         ASSET_icon_settings,
+        key: settingsGlobalKey,
         width: 20,
       ),
       title: Text(
@@ -822,6 +824,38 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       ],
     );
 
+    final TargetFocus settingsFocus = TargetFocus(
+      enableOverlayTab: true,
+      keyTarget: settingsGlobalKey,
+      contents: [
+        TargetContent(
+          align: ContentAlign.bottom,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Settings",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Configure the app the way you want.",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+
     final TargetFocus myPassportFocus = TargetFocus(
       enableOverlayTab: true,
       keyTarget: myPassportGlobalKey,
@@ -922,6 +956,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       targetFocusPoints.add(awesomeReadingTipsFocus);
       targetFocusPoints.add(editProfileFocus);
       targetFocusPoints.add(aboutFocus);
+      targetFocusPoints.add(settingsFocus);
     }
 
     if (isParent) {
@@ -932,6 +967,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       targetFocusPoints.add(awesomeReadingTipsFocus);
       targetFocusPoints.add(editProfileFocus);
       targetFocusPoints.add(aboutFocus);
+      targetFocusPoints.add(settingsFocus);
     }
 
     if (isSuperAdmin) {
@@ -939,6 +975,7 @@ class MenuPageState extends State<MenuPage> implements MenuBlocDelegate {
       targetFocusPoints.add(awesomeReadingTipsFocus);
       targetFocusPoints.add(editProfileFocus);
       targetFocusPoints.add(aboutFocus);
+      targetFocusPoints.add(settingsFocus);
     }
 
     return targetFocusPoints;
